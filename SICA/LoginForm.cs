@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.VisualStyles;
-using System.Security.Cryptography;
+using System.Data.SQLite;
+using Microsoft.VisualBasic;
 
 namespace SICA
 {
@@ -56,29 +57,85 @@ namespace SICA
 
         private void tbPassword_KeyDown(object sender, KeyEventArgs e)
         {
-            if (tbUsername.Text != "")
-            {
-                MessageBox.Show("Username Vacio");
-            }
-            if (tbPassword.Text != "")
-            {
-                MessageBox.Show("Contraseña Vacia");
-            }
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                MessageBox.Show(sha256(tbPassword.Text));
+                if (tbUsername.Text == "")
+                {
+                    MessageBox.Show("Username Vacio");
+                    return;
+                }
+
+                var dt = new DataTable("Password");
+                
+                using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                {
+                    reintentar_coneccion: //caso se establesca una nueva contraseña
+                    String strSQL = "SELECT PASSWORD FROM USUARIO WHERE USERNAME = '" + tbUsername.Text + "'";
+                    SQLiteCommand sqliteCmd;
+                    try
+                    {
+                        sqliteConnection.Open();
+                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                        sqliteCmd.ExecuteNonQuery();
+                        using (var sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd))
+                        {
+                            sqliteDataAdapter.Fill(dt);
+                            sqliteConnection.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        sqliteConnection.Close();
+                        MessageBox.Show(ex.Message + "\n" + strSQL);
+                        return;
+                    }
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        MessageBox.Show("Usuario o Contraseña Errada");
+                        return;
+                    }
+
+                    if (dt.Rows[0][0].ToString() != "")
+                    {
+                        if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
+                        {
+                            this.Hide();
+                            MainForm mf = new MainForm();
+                            mf.Closed += (s, args) => this.Close();
+                            mf.Show();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Usuario o Contraseña Errada");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Usuario no tiene contraseña\nDesea Considerar esta contraseña?", "Usuario no tiene contraseña", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            try
+                            {
+                                sqliteConnection.Open();
+                                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                                sqliteCmd = new SQLiteCommand("UPDATE USUARIO SET PASSWORD = '" + GlobalFunctions.sha256(tbPassword.Text).ToUpper() + "'", sqliteConnection);
+                                sqliteCmd.ExecuteNonQuery();
+                                sqliteTransaction.Commit();
+                                sqliteConnection.Close();
+                                MessageBox.Show("Contraseña actualizada");
+                                goto reintentar_coneccion;
+                            }
+                            catch (Exception ex)
+                            {
+                                sqliteConnection.Close();
+                                MessageBox.Show(ex.Message + "\n" + strSQL);
+                            }
+                        }
+                    }
+                }
             }
-        }
-        static string sha256(string randomString)
-        {
-            var crypt = new SHA256Managed();
-            string hash = String.Empty;
-            byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(randomString));
-            foreach (byte theByte in crypto)
-            {
-                hash += theByte.ToString("x2");
-            }
-            return hash;
         }
     }
 
