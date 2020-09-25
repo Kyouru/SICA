@@ -17,6 +17,14 @@ namespace SICA
         public MainForm()
         {
             InitializeComponent();
+
+            //Form
+            this.Text = string.Empty;
+            this.ControlBox = false;
+            this.DoubleBuffered = true;
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+
+            lbUsuario.Text = Globals.Username;
         }
 
         private void OpenChildForm(Form childForm)
@@ -27,6 +35,7 @@ namespace SICA
                 currentChildForm.Close();
             }
             currentChildForm = childForm;
+
             //End
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
@@ -36,11 +45,6 @@ namespace SICA
             childForm.BringToFront();
             childForm.Show();
             //lblTitleChildForm.Text = childForm.Text;
-        }
-
-        private void btImportar_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new ImportarForm());
         }
 
         //Drag Form
@@ -76,5 +80,19 @@ namespace SICA
             WindowState = FormWindowState.Minimized;
         }
 
+
+        private void btImportar_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new ImportarForm());
+        }
+        private void btBusqueda_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new BusquedaForm());
+        }
+
+        private void btRecibir_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new RecibirForm());
+        }
     }
 }

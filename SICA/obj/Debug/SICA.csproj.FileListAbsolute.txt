@@ -33,3 +33,5 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.csproj.CopyComplete
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.exe
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.pdb
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.csproj.ResolveComReference.cache
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.BusquedaForm.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.RecibirForm.resources

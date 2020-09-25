@@ -101,6 +101,7 @@ namespace SICA
                         if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
                         {
                             this.Hide();
+                            Globals.Username = tbUsername.Text;
                             MainForm mf = new MainForm();
                             mf.Closed += (s, args) => this.Close();
                             mf.Show();
@@ -137,6 +138,7 @@ namespace SICA
                 }
             }
         }
+
     }
 
 
