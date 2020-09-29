@@ -1,9 +1,11 @@
-﻿using System;
+﻿using SICA.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,12 +33,21 @@ namespace SICA
                 string strSQL;
                 DataTable dt = new DataTable();
                 DataTable dt2 = new DataTable();
+                DataTable dt3 = new DataTable();
                 SQLiteCommand sqliteCmd;
                 SQLiteDataAdapter sqliteDataAdapter;
-                dt = GlobalFunctions.ConvertExcelToDataTable(ofd.FileName, 1);
+                try
+                {
+                    dt = GlobalFunctions.ConvertExcelToDataTable(ofd.FileName, 1);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
                 dgvCargo.DataSource = dt;
                 dt.Columns.Add("STATUS");
-
+                dt.Columns.Add("ID REPORTE");
                 foreach (DataGridViewRow row in dgvCargo.Rows)
                 {
                     if (row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() == "")
@@ -74,26 +85,57 @@ namespace SICA
                         valido = false;
                         row.Cells["STATUS"].Value = row.Cells["STATUS"].Value + "Quien Entrega Vacío;";
                     }
-                    if (row.Cells["STATUS"].Value.ToString() == "" && row.Cells["DESCRIPCION 1"].Value.ToString() == "EXPEDIENTES DE CREDITO" && row.Cells["DESCRIPCION 2"].Value.ToString() != "")
+                    if (row.Cells["STATUS"].Value.ToString() == "" && row.Cells["DESCRIPCION 2"].Value.ToString() != "")
                     {
                         using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
                         {
-                            dt2 = new DataTable();
-                            sqliteConnection.Open();
-                            strSQL = "SELECT COUNT(*) FROM REPORTE_VALORADOS WHERE SOLICITUD_SISGO = '" + row.Cells["DESCRIPCION 2"].Value.ToString() + "'";
-                            sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                            sqliteCmd.ExecuteNonQuery();
-                            sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                            sqliteDataAdapter.Fill(dt2);
-                            sqliteConnection.Close();
+                            try
+                            {
+                                dt2 = new DataTable();
+                                sqliteConnection.Open();
+                                strSQL = "SELECT ID_USUARIO FROM USUARIO WHERE USERNAME = '" + row.Cells["QUIEN ENTREGA"].Value.ToString() + "'";
+                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                                sqliteCmd.ExecuteNonQuery();
+                                sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                                sqliteDataAdapter.Fill(dt2);
+
+
+                                strSQL = "SELECT ID_REPORTE_VALORADOS FROM REPORTE_VALORADOS WHERE SOLICITUD_SISGO = '" + row.Cells["DESCRIPCION 2"].Value.ToString().Replace("'", "''") + "'";
+                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                                sqliteCmd.ExecuteNonQuery();
+                                sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                                sqliteDataAdapter.Fill(dt3);
+                                sqliteConnection.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                sqliteConnection.Close();
+                                MessageBox.Show(ex.Message);
+                                return;
+                            }
                         }
-                        if (dt2.Rows[0][0].ToString() == "1")
+                        if (dt2.Rows.Count > 0)
                         {
-                            row.Cells["STATUS"].Value = "OK";
+                            Globals.IdUsernameSelect = Int32.Parse(dt2.Rows[0][0].ToString());
                         }
-                        else if (dt2.Rows[0][0].ToString() == "0")
+                        else
                         {
-                            row.Cells["STATUS"].Value = "OK, Credito sin desembolsar";
+                            row.Cells["STATUS"].Value = "Quien Entrega No existe;";
+                        }
+                        
+                        if (dt3.Rows.Count == 1)
+                        {
+                            row.Cells["ID REPORTE"].Value = dt3.Rows[0][0].ToString();
+                            row.Cells["STATUS"].Value = row.Cells["STATUS"].Value.ToString() + "OK, Desembolsado";
+                        }
+                        else if (dt3.Rows.Count == 0)
+                        {
+                            row.Cells["STATUS"].Value = row.Cells["STATUS"].Value.ToString() + "OK, SIN desembolsar";
+                        }
+                        else if (dt3.Rows.Count > 1)
+                        {
+                            row.Cells["ID REPORTE"].Value = dt3.Rows[0][0].ToString();
+                            row.Cells["STATUS"].Value = row.Cells["STATUS"].Value.ToString() + "OK, Desembolsado";
                         }
                     }
                 }
@@ -107,111 +149,345 @@ namespace SICA
         private void btCargarValido_Click(object sender, EventArgs e)
         {
             SQLiteCommand sqliteCmd;
-            string strSQL;
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                foreach (DataGridViewRow row in dgvCargo.Rows)
+                Boolean pagare;
+                Boolean expediente;
+                try
                 {
-                    if (row.Cells["STATUS"].Value.ToString() == "OK")
+                    sqliteConnection.Open();
+                    SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                    foreach (DataGridViewRow row in dgvCargo.Rows)
                     {
-                        DataTable dt = new DataTable();
-                        sqliteConnection.Open();
-                        strSQL = @"INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESC_CONCAT, USUARIO_ENTREGA, FECHA_INGRESO, USUARIO_RECIBE, USUARIO_POSEE, CUSTODIADO)
-                                        VALUES (";
-                        if (row.Cells["NUMERO DE CAJA IRON MOUNTAIN"].Value.ToString() != "")
+                        if (row.Cells["PAGARE"].Value.ToString() == "SI")
                         {
-                            strSQL = strSQL + "'" + row.Cells["NUMERO DE CAJA IRON MOUNTAIN"].Value.ToString() + "', ";
+                            pagare = true;
                         }
                         else
                         {
-                            strSQL = strSQL + "NULL, ";
+                            pagare = false;
                         }
-                        if (row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() != "")
+                        if (row.Cells["EXPEDIENTE"].Value.ToString() == "SI")
                         {
-                            strSQL = strSQL + "'" + row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["CODIGO DOCUMENTO"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["CODIGO DOCUMENTO"].Value.ToString() + "', ";
+                            expediente = true;
                         }
                         else
                         {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["FECHA DESDE"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["FECHA DESDE"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["FECHA HASTA"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["FECHA HASTA"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["DESCRIPCION 1"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["DESCRIPCION 2"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["DESCRIPCION 3"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["DESCRIPCION 3"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
-                        }
-                        if (row.Cells["DESCRIPCION 4"].Value.ToString() != "")
-                        {
-                            strSQL = strSQL + "'" + row.Cells["DESCRIPCION 4"].Value.ToString() + "', ";
-                        }
-                        else
-                        {
-                            strSQL = strSQL + "NULL, ";
+                            expediente = false;
                         }
 
-                        //DESC_CONCAT
-                        strSQL = strSQL + "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + ";" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";', ";
-                        strSQL = strSQL + "'" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:dd") + "', ";
-                        strSQL = strSQL + "'" + row.Cells["QUIEN ENTREGA"].Value.ToString() + "', ";
-                        strSQL = strSQL + "'" + Globals.Username + "', ";
-                        strSQL = strSQL + "'" + Globals.Username + "', ";
-                        strSQL = strSQL + "TRUE";
+                        if (row.Cells["STATUS"].Value.ToString() == "OK, Desembolsado")
+                        {
+                            if (row.Cells["DESCRIPCION 1"].Value.ToString() == "EXPEDIENTES DE CREDITO" && expediente)
+                            {
+                                if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESCRIPCION 2"].Value.ToString(), expediente, pagare, sqliteConnection))
+                                {
+                                    sqliteConnection.Close();
+                                    return;
+                                }
+                            }
 
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
+                            sqliteCmd = new SQLiteCommand(ArmarStrCargo(row), sqliteConnection);
+                            sqliteCmd.ExecuteNonQuery();
 
+                            sqliteCmd = new SQLiteCommand("INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_RECIBE) VALUES (" + sqliteConnection.LastInsertRowId + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", '" + DateTime.Now.ToString("yyyy-MM-ss HH:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')", sqliteConnection);
+                            sqliteCmd.ExecuteNonQuery();
+                        }
+                        else if (row.Cells["STATUS"].Value.ToString() == "OK, SIN desembolsar")
+                        {
+                            sqliteCmd = new SQLiteCommand(ArmarStrCargo(row), sqliteConnection);
+                            sqliteCmd.ExecuteNonQuery();
+
+                            sqliteCmd = new SQLiteCommand("INSERT INTO SIN_DESEMBOLSAR (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK) VALUES ('" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', " + expediente + ", " + pagare + ", " + sqliteConnection.LastInsertRowId + ")", sqliteConnection);
+                            sqliteCmd.ExecuteNonQuery();
+                        }
                     }
-                    else if (row.Cells["STATUS"].Value.ToString() == "OK, Credito sin desembolsar")
-                    {
+                    sqliteTransaction.Commit();
+                    sqliteConnection.Close();
+                    MessageBox.Show("Proceso Finalizado");
+                    dgvCargo.DataSource = null;
+                }
+                catch (Exception ex)
+                {
+                    sqliteConnection.Close();
+                    MessageBox.Show(ex.Message);
+                }
+            } 
+        }
 
+        private void btBuscarReingreso_Click(object sender, EventArgs e)
+        {
+            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            {
+                string strSQL;
+                DataTable dt = new DataTable("INVENTARIO_GENERAL");
+                sqliteConnection.Open();
+
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, ID_REPORTE_VALORADOS_FK AS 'ID REPORTE' FROM INVENTARIO_GENERAL WHERE (CUSTODIADO = 'PRESTADO' OR CUSTODIADO = 'DEVUELTO')";
+
+                if (tbUsuario.Text != "")
+                {
+                    strSQL = strSQL + " AND USUARIO_POSEE LIKE '%" + tbUsuario.Text + "%'";
+                }
+                if (tbBusquedaLibre.Text != "")
+                {
+                    strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
+                }
+                strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
+
+                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+
+                try
+                {
+                    sqliteCmd.ExecuteNonQuery();
+                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                    sqliteDataAdapter.Fill(dt);
+                    sqliteConnection.Close();
+
+                    dgvReingreso.DataSource = dt;
+                    dgvReingreso.Columns[0].Width = 0;
+                }
+                catch (Exception ex)
+                {
+                    sqliteConnection.Close();
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+            }
+        }
+
+        private string ArmarStrCargo (DataGridViewRow row)
+        {
+            string strSQL;
+            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, ID_REPORTE_VALORADOS_FK, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE)";
+            strSQL = strSQL + "VALUES(";
+            if (row.Cells["NUMERO DE CAJA IRON MOUNTAIN"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["NUMERO DE CAJA IRON MOUNTAIN"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["CODIGO DOCUMENTO"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["CODIGO DOCUMENTO"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["FECHA DESDE"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells["FECHA DESDE"].Value.ToString(), "DD/MM/YYYY", CultureInfo.InvariantCulture) +"', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["FECHA HASTA"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells["FECHA HASTA"].Value.ToString(), "DD/MM/YYYY", CultureInfo.InvariantCulture) + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 1"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 2"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 3"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["DESCRIPCION 3"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 4"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["DESCRIPCION 4"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+
+            if (row.Cells["ID REPORTE"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["ID REPORTE"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
+
+            //DESC_CONCAT
+            strSQL = strSQL + "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + ";" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";', ";
+            strSQL = strSQL + "'" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "', ";
+            strSQL = strSQL + "'" + Globals.Username + "')";
+            return strSQL;
+
+        }
+
+        private void btRecibir_Click(object sender, EventArgs e)
+        {
+            if (dgvReingreso.SelectedRows.Count == 1)
+            {
+                SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
+                suf.Show();
+                if (Globals.IdUsernameSelect > 0)
+                {
+                    string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
+                    using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                    {
+                        sqliteConnection.Open();
+                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                        SQLiteCommand sqliteCmd;
+                        string strSQL = "";
+                        try
+                        {
+                            strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = '" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "' WHERE ID_INVENTARIO_GENERAL = " + dgvReingreso.SelectedRows[0].Cells["ID"].ToString();
+                            sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                            sqliteCmd.ExecuteNonQuery();
+
+                            strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION)
+                                 VALUES (" + dgvReingreso.SelectedRows[0].Cells["ID"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", '" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "', '" + observacion + "')";
+
+                            sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                            sqliteCmd.ExecuteNonQuery();
+
+                            if (dgvReingreso.SelectedRows[0].Cells["ID REPORTE"].ToString() != "" && dgvReingreso.SelectedRows[0].Cells["DESC 1"].ToString() == "EXPEDIENTES DE CREDITO")
+                            {
+                                strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO' WHERE ID_REPORTE_VALORADOS = " + dgvReingreso.SelectedRows[0].Cells["ID REPORTE"].ToString();
+                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                                sqliteCmd.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            sqliteConnection.Close();
+                            MessageBox.Show(ex.Message + "\n" + strSQL);
+                            return;
+                        }
+                        sqliteTransaction.Commit();
+                        sqliteConnection.Close();
+                        dgvReingreso.SelectedRows[0].Height = 0;
+                        MessageBox.Show("Registrado");
                     }
                 }
-                sqliteTransaction.Commit();
-                sqliteConnection.Close();
-            } 
+            }
+        }
+        private void btBuscarPagare_Click(object sender, EventArgs e)
+        {
+            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            {
+                string strSQL;
+                DataTable dt = new DataTable("REPORTE_VALORADOS");
+                sqliteConnection.Open();
+
+                strSQL = "SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS CANCELACION, PAGARE FROM REPORTE_VALORADOS WHERE 1 = 1";
+
+                if (tbSolicitud.Text != "")
+                {
+                    strSQL = strSQL + " AND SOLICITUD_SISGO LIKE '%" + tbSolicitud.Text + "%'";
+                }
+                strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
+
+                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+
+                try
+                {
+                    sqliteCmd.ExecuteNonQuery();
+                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                    sqliteDataAdapter.Fill(dt);
+                    sqliteConnection.Close();
+
+                    dgvPagare.DataSource = dt;
+                    dgvPagare.Columns[0].Width = 0;
+                }
+                catch (Exception ex)
+                {
+                    sqliteConnection.Close();
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+            }
+        }
+
+        private void btRecibirPagare_Click(object sender, EventArgs e)
+        {
+            RecibirPagare();
+        }
+
+        private void RecibirPagare()
+        {
+            if (dgvPagare.SelectedRows.Count > 0)
+            {
+                SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
+                suf.ShowDialog();
+                if (Globals.IdUsernameSelect > 0)
+                {
+                    using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                    {
+                        sqliteConnection.Open();
+                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                        SQLiteCommand sqliteCmd;
+                        string strSQL = "";
+                        try
+                        {
+                            foreach (DataGridViewRow row in dgvPagare.SelectedRows)
+                            {
+                                strSQL = @"INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA)
+                                 VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row.Cells["ID"].Value.ToString() + ", '" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "')";
+
+                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                                sqliteCmd.ExecuteNonQuery();
+
+                                strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO' WHERE ID_REPORTE_VALORADOS = " + row.Cells["ID"].Value.ToString();
+                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                                sqliteCmd.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            sqliteConnection.Close();
+                            MessageBox.Show(ex.Message + "\n" + strSQL);
+                            return;
+                        }
+                        sqliteTransaction.Commit();
+                        sqliteConnection.Close();
+                        dgvPagare.SelectedRows[0].Height = 0;
+                        MessageBox.Show("Registrado");
+                    }
+                }
+            }
+        }
+
+        private void btCargarLetras_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

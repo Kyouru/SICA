@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -50,11 +51,9 @@ namespace SICA
                 dt.Columns.Add("DESC 4", System.Type.GetType("System.String"));
                 dt.Columns.Add("CUSTODIADO", System.Type.GetType("System.String"));
                 dt.Columns.Add("POSEE", System.Type.GetType("System.String"));
-                dt.Columns.Add("ENTREGA", System.Type.GetType("System.String"));
-                dt.Columns.Add("INGRESO", System.Type.GetType("System.String"));
-                dt.Columns.Add("RECIBE", System.Type.GetType("System.String"));
+                dt.Columns.Add("FECHA", System.Type.GetType("System.String"));
 
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, USUARIO_ENTREGA AS ENTREGA, FECHA_INGRESO AS INGRESO, USUARIO_RECIBE AS RECIBE FROM INVENTARIO_GENERAL WHERE 1 = 1";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA FROM INVENTARIO_GENERAL WHERE 1 = 1";
                     
                 if (cbFecha.Checked)
                 {
@@ -70,7 +69,8 @@ namespace SICA
                     strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
                 }
                 strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
-                    
+
+                //MessageBox.Show(strSQL);
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
 
                 try

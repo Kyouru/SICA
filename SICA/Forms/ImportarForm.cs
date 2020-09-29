@@ -166,7 +166,7 @@ namespace SICA
                             strSQL = "UPDATE REPORTE_VALORADOS SET FECHA_CANCELACION = ";
                             try
                             {
-                                strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells[cancelado_column].Value.ToString(), "dd/mm/yy", CultureInfo.InvariantCulture).ToString("yyyy-mm-dd") + "' WHERE ID_REPORTE_VALORADOS = " + row.Cells[id_column].Value;
+                                strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells[cancelado_column].Value.ToString(), "dd/mm/yy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + "' WHERE ID_REPORTE_VALORADOS = " + row.Cells[id_column].Value;
                             }
                             catch (Exception ex)
                             {
@@ -248,7 +248,7 @@ namespace SICA
                             {
                                 if (cell.ColumnIndex == otorgado_column || cell.ColumnIndex == cancelado_column)
                                 {
-                                    strSQL = strSQL + "'" + DateTime.ParseExact(cell.Value.ToString(), "dd/mm/yy", CultureInfo.InvariantCulture).ToString("yyyy-mm-dd") + "', ";
+                                    strSQL = strSQL + "'" + DateTime.ParseExact(cell.Value.ToString(), "dd/mm/yy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + "', ";
                                 }
                                 else
                                 {

@@ -79,11 +79,29 @@
     <Compile Include="Forms\BusquedaForm.Designer.cs">
       <DependentUpon>BusquedaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EntregarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EntregarForm.Designer.cs">
+      <DependentUpon>EntregarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountainForm.Designer.cs">
+      <DependentUpon>IronMountainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RecibirForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\RecibirForm.Designer.cs">
       <DependentUpon>RecibirForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SeleccionarUsuarioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SeleccionarUsuarioForm.Designer.cs">
+      <DependentUpon>SeleccionarUsuarioForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalFunctions.cs" />
     <Compile Include="Globals.cs" />
@@ -110,6 +128,12 @@
     <EmbeddedResource Include="Forms\BusquedaForm.resx">
       <DependentUpon>BusquedaForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EntregarForm.resx">
+      <DependentUpon>EntregarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountainForm.resx">
+      <DependentUpon>IronMountainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\RecibirForm.resx">
       <DependentUpon>RecibirForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SeleccionarUsuarioForm.resx">
+      <DependentUpon>SeleccionarUsuarioForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -108,7 +108,7 @@
             this.dgvBusqueda.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvBusqueda.EnableHeadersVisualStyles = false;
             this.dgvBusqueda.GridColor = System.Drawing.Color.Gainsboro;
-            this.dgvBusqueda.Location = new System.Drawing.Point(12, 39);
+            this.dgvBusqueda.Location = new System.Drawing.Point(12, 43);
             this.dgvBusqueda.Name = "dgvBusqueda";
             this.dgvBusqueda.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvBusqueda.RowHeadersVisible = false;
@@ -116,7 +116,7 @@
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvBusqueda.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvBusqueda.Size = new System.Drawing.Size(1091, 554);
+            this.dgvBusqueda.Size = new System.Drawing.Size(1091, 550);
             this.dgvBusqueda.TabIndex = 6;
             // 
             // cbFecha

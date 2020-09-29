@@ -70,7 +70,7 @@ namespace SICA
                 using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
                 {
                     reintentar_coneccion: //caso se establesca una nueva contraseña
-                    String strSQL = "SELECT PASSWORD FROM USUARIO WHERE USERNAME = '" + tbUsername.Text + "'";
+                    String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = '" + tbUsername.Text + "'";
                     SQLiteCommand sqliteCmd;
                     try
                     {
@@ -102,6 +102,7 @@ namespace SICA
                         {
                             this.Hide();
                             Globals.Username = tbUsername.Text;
+                            Globals.IdUsername = Int32.Parse(dt.Rows[0][1].ToString());
                             MainForm mf = new MainForm();
                             mf.Closed += (s, args) => this.Close();
                             mf.Show();

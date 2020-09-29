@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SICA.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -93,6 +94,21 @@ namespace SICA
         private void btRecibir_Click(object sender, EventArgs e)
         {
             OpenChildForm(new RecibirForm());
+        }
+
+        private void btEntregar_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new EntregarForm());
+        }
+
+        private void btIronMountain_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new IronMountainForm());
+        }
+
+        private void pnTop_DoubleClick(object sender, EventArgs e)
+        {
+
         }
     }
 }
