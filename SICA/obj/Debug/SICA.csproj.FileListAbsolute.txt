@@ -38,3 +38,4 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.RecibirForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.EntregarForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.SeleccionarUsuarioForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.IronMountainForm.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.CarritoForm.resources
