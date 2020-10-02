@@ -60,7 +60,7 @@
             this.pnLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnLeft.Location = new System.Drawing.Point(0, 0);
             this.pnLeft.Name = "pnLeft";
-            this.pnLeft.Size = new System.Drawing.Size(156, 668);
+            this.pnLeft.Size = new System.Drawing.Size(181, 668);
             this.pnLeft.TabIndex = 0;
             // 
             // btImportar
@@ -77,8 +77,8 @@
             this.btImportar.Location = new System.Drawing.Point(0, 405);
             this.btImportar.Name = "btImportar";
             this.btImportar.Rotation = 0D;
-            this.btImportar.Size = new System.Drawing.Size(156, 61);
-            this.btImportar.TabIndex = 12;
+            this.btImportar.Size = new System.Drawing.Size(181, 61);
+            this.btImportar.TabIndex = 13;
             this.btImportar.Text = "Importar Desembolsos";
             this.btImportar.UseVisualStyleBackColor = true;
             this.btImportar.Click += new System.EventHandler(this.btImportar_Click);
@@ -97,7 +97,7 @@
             this.btBoveda.Location = new System.Drawing.Point(0, 344);
             this.btBoveda.Name = "btBoveda";
             this.btBoveda.Rotation = 0D;
-            this.btBoveda.Size = new System.Drawing.Size(156, 61);
+            this.btBoveda.Size = new System.Drawing.Size(181, 61);
             this.btBoveda.TabIndex = 11;
             this.btBoveda.Text = "Boveda";
             this.btBoveda.UseVisualStyleBackColor = true;
@@ -116,7 +116,7 @@
             this.btIronMountain.Location = new System.Drawing.Point(0, 283);
             this.btIronMountain.Name = "btIronMountain";
             this.btIronMountain.Rotation = 0D;
-            this.btIronMountain.Size = new System.Drawing.Size(156, 61);
+            this.btIronMountain.Size = new System.Drawing.Size(181, 61);
             this.btIronMountain.TabIndex = 9;
             this.btIronMountain.Text = "Iron Mountain";
             this.btIronMountain.UseVisualStyleBackColor = true;
@@ -136,7 +136,7 @@
             this.btEntregar.Location = new System.Drawing.Point(0, 222);
             this.btEntregar.Name = "btEntregar";
             this.btEntregar.Rotation = 0D;
-            this.btEntregar.Size = new System.Drawing.Size(156, 61);
+            this.btEntregar.Size = new System.Drawing.Size(181, 61);
             this.btEntregar.TabIndex = 7;
             this.btEntregar.Text = "Entregar";
             this.btEntregar.UseVisualStyleBackColor = true;
@@ -156,7 +156,7 @@
             this.btRecibir.Location = new System.Drawing.Point(0, 161);
             this.btRecibir.Name = "btRecibir";
             this.btRecibir.Rotation = 0D;
-            this.btRecibir.Size = new System.Drawing.Size(156, 61);
+            this.btRecibir.Size = new System.Drawing.Size(181, 61);
             this.btRecibir.TabIndex = 5;
             this.btRecibir.Text = "Recibir";
             this.btRecibir.UseVisualStyleBackColor = true;
@@ -176,7 +176,7 @@
             this.btBusqueda.Location = new System.Drawing.Point(0, 100);
             this.btBusqueda.Name = "btBusqueda";
             this.btBusqueda.Rotation = 0D;
-            this.btBusqueda.Size = new System.Drawing.Size(156, 61);
+            this.btBusqueda.Size = new System.Drawing.Size(181, 61);
             this.btBusqueda.TabIndex = 3;
             this.btBusqueda.Text = "Busqueda";
             this.btBusqueda.UseVisualStyleBackColor = true;
@@ -192,7 +192,7 @@
             this.icMain.IconSize = 100;
             this.icMain.Location = new System.Drawing.Point(0, 0);
             this.icMain.Name = "icMain";
-            this.icMain.Size = new System.Drawing.Size(156, 100);
+            this.icMain.Size = new System.Drawing.Size(181, 100);
             this.icMain.TabIndex = 0;
             this.icMain.TabStop = false;
             this.icMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.icMain_MouseDown);
@@ -206,9 +206,9 @@
             this.pnTop.Controls.Add(this.btMaximizar);
             this.pnTop.Controls.Add(this.btCerrar);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnTop.Location = new System.Drawing.Point(156, 0);
+            this.pnTop.Location = new System.Drawing.Point(181, 0);
             this.pnTop.Name = "pnTop";
-            this.pnTop.Size = new System.Drawing.Size(1144, 34);
+            this.pnTop.Size = new System.Drawing.Size(1125, 34);
             this.pnTop.TabIndex = 1;
             this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             // 
@@ -242,7 +242,7 @@
             this.btMinimizar.IconColor = System.Drawing.Color.White;
             this.btMinimizar.IconSize = 24;
             this.btMinimizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMinimizar.Location = new System.Drawing.Point(1065, 0);
+            this.btMinimizar.Location = new System.Drawing.Point(1046, 0);
             this.btMinimizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMinimizar.Name = "btMinimizar";
             this.btMinimizar.Rotation = 0D;
@@ -261,7 +261,7 @@
             this.btMaximizar.IconColor = System.Drawing.Color.White;
             this.btMaximizar.IconSize = 24;
             this.btMaximizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMaximizar.Location = new System.Drawing.Point(1091, 0);
+            this.btMaximizar.Location = new System.Drawing.Point(1072, 0);
             this.btMaximizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMaximizar.Name = "btMaximizar";
             this.btMaximizar.Rotation = 0D;
@@ -280,7 +280,7 @@
             this.btCerrar.IconColor = System.Drawing.Color.White;
             this.btCerrar.IconSize = 24;
             this.btCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCerrar.Location = new System.Drawing.Point(1117, 0);
+            this.btCerrar.Location = new System.Drawing.Point(1098, 0);
             this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
             this.btCerrar.Name = "btCerrar";
             this.btCerrar.Rotation = 0D;
@@ -292,9 +292,9 @@
             // pnMain
             // 
             this.pnMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnMain.Location = new System.Drawing.Point(156, 34);
+            this.pnMain.Location = new System.Drawing.Point(181, 34);
             this.pnMain.Name = "pnMain";
-            this.pnMain.Size = new System.Drawing.Size(1144, 634);
+            this.pnMain.Size = new System.Drawing.Size(1125, 634);
             this.pnMain.TabIndex = 2;
             // 
             // MainForm
@@ -302,7 +302,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
-            this.ClientSize = new System.Drawing.Size(1300, 668);
+            this.ClientSize = new System.Drawing.Size(1306, 668);
             this.Controls.Add(this.pnMain);
             this.Controls.Add(this.pnTop);
             this.Controls.Add(this.pnLeft);

@@ -34,26 +34,43 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tcEntregar = new System.Windows.Forms.TabControl();
             this.tbExpedientes = new System.Windows.Forms.TabPage();
+            this.lbCantidadEXP = new System.Windows.Forms.Label();
+            this.btVerCarritoEXP = new FontAwesome.Sharp.IconButton();
             this.btEntregarEXP = new FontAwesome.Sharp.IconButton();
             this.btBuscarEXP = new FontAwesome.Sharp.IconButton();
             this.tbBusquedaLibreEXP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dgvExpedientes = new System.Windows.Forms.DataGridView();
             this.tpDocumentos = new System.Windows.Forms.TabPage();
-            this.dgvDocumentos = new System.Windows.Forms.DataGridView();
-            this.tpPagare = new System.Windows.Forms.TabPage();
-            this.tpLetras = new System.Windows.Forms.TabPage();
             this.btEntregarDOC = new FontAwesome.Sharp.IconButton();
             this.btBuscarDOC = new FontAwesome.Sharp.IconButton();
             this.tbBusquedaLibreDOC = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dgvDocumentos = new System.Windows.Forms.DataGridView();
+            this.tpPagare = new System.Windows.Forms.TabPage();
+            this.tpLetras = new System.Windows.Forms.TabPage();
+            this.lbCantidadDOC = new System.Windows.Forms.Label();
+            this.btVerCarritoDocumento = new FontAwesome.Sharp.IconButton();
+            this.btEntregarPagare = new FontAwesome.Sharp.IconButton();
+            this.dgvPagare = new System.Windows.Forms.DataGridView();
+            this.btBuscarPagare = new FontAwesome.Sharp.IconButton();
+            this.tbBusquedaLibrePagare = new System.Windows.Forms.TextBox();
+            this.lbCantidadPagare = new System.Windows.Forms.Label();
+            this.btVerCarritoPagare = new FontAwesome.Sharp.IconButton();
+            this.cbDesembolsado = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.tcEntregar.SuspendLayout();
             this.tbExpedientes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExpedientes)).BeginInit();
             this.tpDocumentos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDocumentos)).BeginInit();
+            this.tpPagare.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPagare)).BeginInit();
             this.SuspendLayout();
             // 
             // tcEntregar
@@ -73,6 +90,8 @@
             // tbExpedientes
             // 
             this.tbExpedientes.BackColor = System.Drawing.Color.MidnightBlue;
+            this.tbExpedientes.Controls.Add(this.lbCantidadEXP);
+            this.tbExpedientes.Controls.Add(this.btVerCarritoEXP);
             this.tbExpedientes.Controls.Add(this.btEntregarEXP);
             this.tbExpedientes.Controls.Add(this.btBuscarEXP);
             this.tbExpedientes.Controls.Add(this.tbBusquedaLibreEXP);
@@ -84,6 +103,35 @@
             this.tbExpedientes.Size = new System.Drawing.Size(1151, 582);
             this.tbExpedientes.TabIndex = 0;
             this.tbExpedientes.Text = "Expedientes";
+            this.tbExpedientes.Enter += new System.EventHandler(this.tbExpedientes_Enter);
+            // 
+            // lbCantidadEXP
+            // 
+            this.lbCantidadEXP.AutoSize = true;
+            this.lbCantidadEXP.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidadEXP.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidadEXP.Location = new System.Drawing.Point(925, 8);
+            this.lbCantidadEXP.Name = "lbCantidadEXP";
+            this.lbCantidadEXP.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidadEXP.TabIndex = 24;
+            this.lbCantidadEXP.Text = "(0)";
+            // 
+            // btVerCarritoEXP
+            // 
+            this.btVerCarritoEXP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarritoEXP.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarritoEXP.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarritoEXP.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarritoEXP.IconColor = System.Drawing.Color.Black;
+            this.btVerCarritoEXP.IconSize = 30;
+            this.btVerCarritoEXP.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarritoEXP.Location = new System.Drawing.Point(870, 4);
+            this.btVerCarritoEXP.Name = "btVerCarritoEXP";
+            this.btVerCarritoEXP.Rotation = 0D;
+            this.btVerCarritoEXP.Size = new System.Drawing.Size(51, 30);
+            this.btVerCarritoEXP.TabIndex = 23;
+            this.btVerCarritoEXP.UseVisualStyleBackColor = true;
+            this.btVerCarritoEXP.Click += new System.EventHandler(this.btVerCarritoEXP_Click);
             // 
             // btEntregarEXP
             // 
@@ -92,7 +140,7 @@
             this.btEntregarEXP.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btEntregarEXP.IconColor = System.Drawing.Color.Black;
             this.btEntregarEXP.IconSize = 16;
-            this.btEntregarEXP.Location = new System.Drawing.Point(804, 11);
+            this.btEntregarEXP.Location = new System.Drawing.Point(982, 10);
             this.btEntregarEXP.Name = "btEntregarEXP";
             this.btEntregarEXP.Rotation = 0D;
             this.btEntregarEXP.Size = new System.Drawing.Size(110, 23);
@@ -179,10 +227,13 @@
             this.dgvExpedientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvExpedientes.Size = new System.Drawing.Size(1135, 529);
             this.dgvExpedientes.TabIndex = 0;
+            this.dgvExpedientes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvExpedientes_CellDoubleClick);
             // 
             // tpDocumentos
             // 
             this.tpDocumentos.BackColor = System.Drawing.Color.MidnightBlue;
+            this.tpDocumentos.Controls.Add(this.lbCantidadDOC);
+            this.tpDocumentos.Controls.Add(this.btVerCarritoDocumento);
             this.tpDocumentos.Controls.Add(this.btEntregarDOC);
             this.tpDocumentos.Controls.Add(this.btBuscarDOC);
             this.tpDocumentos.Controls.Add(this.tbBusquedaLibreDOC);
@@ -194,67 +245,7 @@
             this.tpDocumentos.Size = new System.Drawing.Size(1151, 582);
             this.tpDocumentos.TabIndex = 1;
             this.tpDocumentos.Text = "Documentos";
-            // 
-            // dgvDocumentos
-            // 
-            this.dgvDocumentos.AllowUserToAddRows = false;
-            this.dgvDocumentos.AllowUserToDeleteRows = false;
-            this.dgvDocumentos.AllowUserToResizeRows = false;
-            this.dgvDocumentos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvDocumentos.BackgroundColor = System.Drawing.Color.MidnightBlue;
-            this.dgvDocumentos.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvDocumentos.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDocumentos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvDocumentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDocumentos.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvDocumentos.EnableHeadersVisualStyles = false;
-            this.dgvDocumentos.GridColor = System.Drawing.Color.Gainsboro;
-            this.dgvDocumentos.Location = new System.Drawing.Point(8, 46);
-            this.dgvDocumentos.Name = "dgvDocumentos";
-            this.dgvDocumentos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvDocumentos.RowHeadersVisible = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.MidnightBlue;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvDocumentos.RowsDefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvDocumentos.Size = new System.Drawing.Size(1135, 529);
-            this.dgvDocumentos.TabIndex = 4;
-            // 
-            // tpPagare
-            // 
-            this.tpPagare.BackColor = System.Drawing.Color.MidnightBlue;
-            this.tpPagare.Location = new System.Drawing.Point(4, 31);
-            this.tpPagare.Name = "tpPagare";
-            this.tpPagare.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPagare.Size = new System.Drawing.Size(1151, 582);
-            this.tpPagare.TabIndex = 2;
-            this.tpPagare.Text = "Pagares";
-            // 
-            // tpLetras
-            // 
-            this.tpLetras.BackColor = System.Drawing.Color.MidnightBlue;
-            this.tpLetras.Location = new System.Drawing.Point(4, 31);
-            this.tpLetras.Name = "tpLetras";
-            this.tpLetras.Padding = new System.Windows.Forms.Padding(3);
-            this.tpLetras.Size = new System.Drawing.Size(1151, 582);
-            this.tpLetras.TabIndex = 3;
-            this.tpLetras.Text = "Letras";
+            this.tpDocumentos.Enter += new System.EventHandler(this.tpDocumentos_Enter);
             // 
             // btEntregarDOC
             // 
@@ -263,7 +254,7 @@
             this.btEntregarDOC.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btEntregarDOC.IconColor = System.Drawing.Color.Black;
             this.btEntregarDOC.IconSize = 16;
-            this.btEntregarDOC.Location = new System.Drawing.Point(806, 11);
+            this.btEntregarDOC.Location = new System.Drawing.Point(1017, 11);
             this.btEntregarDOC.Name = "btEntregarDOC";
             this.btEntregarDOC.Rotation = 0D;
             this.btEntregarDOC.Size = new System.Drawing.Size(110, 24);
@@ -308,6 +299,240 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Busqueda Libre:";
             // 
+            // dgvDocumentos
+            // 
+            this.dgvDocumentos.AllowUserToAddRows = false;
+            this.dgvDocumentos.AllowUserToDeleteRows = false;
+            this.dgvDocumentos.AllowUserToResizeRows = false;
+            this.dgvDocumentos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvDocumentos.BackgroundColor = System.Drawing.Color.MidnightBlue;
+            this.dgvDocumentos.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvDocumentos.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDocumentos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvDocumentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDocumentos.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvDocumentos.EnableHeadersVisualStyles = false;
+            this.dgvDocumentos.GridColor = System.Drawing.Color.Gainsboro;
+            this.dgvDocumentos.Location = new System.Drawing.Point(8, 46);
+            this.dgvDocumentos.Name = "dgvDocumentos";
+            this.dgvDocumentos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvDocumentos.RowHeadersVisible = false;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.MidnightBlue;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvDocumentos.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvDocumentos.Size = new System.Drawing.Size(1135, 529);
+            this.dgvDocumentos.TabIndex = 4;
+            this.dgvDocumentos.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDocumentos_CellDoubleClick);
+            // 
+            // tpPagare
+            // 
+            this.tpPagare.BackColor = System.Drawing.Color.MidnightBlue;
+            this.tpPagare.Controls.Add(this.label3);
+            this.tpPagare.Controls.Add(this.cbDesembolsado);
+            this.tpPagare.Controls.Add(this.lbCantidadPagare);
+            this.tpPagare.Controls.Add(this.btVerCarritoPagare);
+            this.tpPagare.Controls.Add(this.btEntregarPagare);
+            this.tpPagare.Controls.Add(this.dgvPagare);
+            this.tpPagare.Controls.Add(this.btBuscarPagare);
+            this.tpPagare.Controls.Add(this.tbBusquedaLibrePagare);
+            this.tpPagare.Location = new System.Drawing.Point(4, 31);
+            this.tpPagare.Name = "tpPagare";
+            this.tpPagare.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPagare.Size = new System.Drawing.Size(1151, 582);
+            this.tpPagare.TabIndex = 2;
+            this.tpPagare.Text = "Pagares";
+            this.tpPagare.Enter += new System.EventHandler(this.tpPagare_Enter);
+            // 
+            // tpLetras
+            // 
+            this.tpLetras.BackColor = System.Drawing.Color.MidnightBlue;
+            this.tpLetras.Location = new System.Drawing.Point(4, 31);
+            this.tpLetras.Name = "tpLetras";
+            this.tpLetras.Padding = new System.Windows.Forms.Padding(3);
+            this.tpLetras.Size = new System.Drawing.Size(1151, 582);
+            this.tpLetras.TabIndex = 3;
+            this.tpLetras.Text = "Letras";
+            // 
+            // lbCantidadDOC
+            // 
+            this.lbCantidadDOC.AutoSize = true;
+            this.lbCantidadDOC.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidadDOC.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidadDOC.Location = new System.Drawing.Point(969, 11);
+            this.lbCantidadDOC.Name = "lbCantidadDOC";
+            this.lbCantidadDOC.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidadDOC.TabIndex = 26;
+            this.lbCantidadDOC.Text = "(0)";
+            // 
+            // btVerCarritoDocumento
+            // 
+            this.btVerCarritoDocumento.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarritoDocumento.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarritoDocumento.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarritoDocumento.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarritoDocumento.IconColor = System.Drawing.Color.Black;
+            this.btVerCarritoDocumento.IconSize = 30;
+            this.btVerCarritoDocumento.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarritoDocumento.Location = new System.Drawing.Point(914, 7);
+            this.btVerCarritoDocumento.Name = "btVerCarritoDocumento";
+            this.btVerCarritoDocumento.Rotation = 0D;
+            this.btVerCarritoDocumento.Size = new System.Drawing.Size(51, 30);
+            this.btVerCarritoDocumento.TabIndex = 25;
+            this.btVerCarritoDocumento.UseVisualStyleBackColor = true;
+            this.btVerCarritoDocumento.Click += new System.EventHandler(this.btVerCarritoDocumento_Click);
+            // 
+            // btEntregarPagare
+            // 
+            this.btEntregarPagare.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btEntregarPagare.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btEntregarPagare.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btEntregarPagare.IconColor = System.Drawing.Color.Black;
+            this.btEntregarPagare.IconSize = 16;
+            this.btEntregarPagare.Location = new System.Drawing.Point(1046, 10);
+            this.btEntregarPagare.Name = "btEntregarPagare";
+            this.btEntregarPagare.Rotation = 0D;
+            this.btEntregarPagare.Size = new System.Drawing.Size(88, 23);
+            this.btEntregarPagare.TabIndex = 32;
+            this.btEntregarPagare.Text = "Entregar";
+            this.btEntregarPagare.UseVisualStyleBackColor = true;
+            this.btEntregarPagare.Click += new System.EventHandler(this.btEntregarPagare_Click);
+            // 
+            // dgvPagare
+            // 
+            this.dgvPagare.AllowUserToAddRows = false;
+            this.dgvPagare.AllowUserToDeleteRows = false;
+            this.dgvPagare.AllowUserToResizeRows = false;
+            this.dgvPagare.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvPagare.BackgroundColor = System.Drawing.Color.MidnightBlue;
+            this.dgvPagare.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPagare.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPagare.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dgvPagare.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPagare.DefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvPagare.EnableHeadersVisualStyles = false;
+            this.dgvPagare.GridColor = System.Drawing.Color.Gainsboro;
+            this.dgvPagare.Location = new System.Drawing.Point(6, 38);
+            this.dgvPagare.Name = "dgvPagare";
+            this.dgvPagare.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvPagare.RowHeadersVisible = false;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.MidnightBlue;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvPagare.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            this.dgvPagare.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvPagare.Size = new System.Drawing.Size(1139, 536);
+            this.dgvPagare.TabIndex = 31;
+            this.dgvPagare.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPagare_CellDoubleClick);
+            // 
+            // btBuscarPagare
+            // 
+            this.btBuscarPagare.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btBuscarPagare.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBuscarPagare.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btBuscarPagare.IconColor = System.Drawing.Color.Black;
+            this.btBuscarPagare.IconSize = 16;
+            this.btBuscarPagare.Location = new System.Drawing.Point(671, 13);
+            this.btBuscarPagare.Name = "btBuscarPagare";
+            this.btBuscarPagare.Rotation = 0D;
+            this.btBuscarPagare.Size = new System.Drawing.Size(88, 23);
+            this.btBuscarPagare.TabIndex = 30;
+            this.btBuscarPagare.Text = "Buscar";
+            this.btBuscarPagare.UseVisualStyleBackColor = true;
+            this.btBuscarPagare.Click += new System.EventHandler(this.btBuscarPagare_Click);
+            // 
+            // tbBusquedaLibrePagare
+            // 
+            this.tbBusquedaLibrePagare.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbBusquedaLibrePagare.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbBusquedaLibrePagare.Location = new System.Drawing.Point(184, 10);
+            this.tbBusquedaLibrePagare.Name = "tbBusquedaLibrePagare";
+            this.tbBusquedaLibrePagare.Size = new System.Drawing.Size(278, 26);
+            this.tbBusquedaLibrePagare.TabIndex = 29;
+            // 
+            // lbCantidadPagare
+            // 
+            this.lbCantidadPagare.AutoSize = true;
+            this.lbCantidadPagare.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidadPagare.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidadPagare.Location = new System.Drawing.Point(995, 9);
+            this.lbCantidadPagare.Name = "lbCantidadPagare";
+            this.lbCantidadPagare.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidadPagare.TabIndex = 34;
+            this.lbCantidadPagare.Text = "(0)";
+            // 
+            // btVerCarritoPagare
+            // 
+            this.btVerCarritoPagare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarritoPagare.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarritoPagare.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarritoPagare.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarritoPagare.IconColor = System.Drawing.Color.Black;
+            this.btVerCarritoPagare.IconSize = 30;
+            this.btVerCarritoPagare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarritoPagare.Location = new System.Drawing.Point(940, 5);
+            this.btVerCarritoPagare.Name = "btVerCarritoPagare";
+            this.btVerCarritoPagare.Rotation = 0D;
+            this.btVerCarritoPagare.Size = new System.Drawing.Size(51, 30);
+            this.btVerCarritoPagare.TabIndex = 33;
+            this.btVerCarritoPagare.UseVisualStyleBackColor = true;
+            // 
+            // cbDesembolsado
+            // 
+            this.cbDesembolsado.AutoSize = true;
+            this.cbDesembolsado.Checked = true;
+            this.cbDesembolsado.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDesembolsado.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.cbDesembolsado.Location = new System.Drawing.Point(480, 11);
+            this.cbDesembolsado.Name = "cbDesembolsado";
+            this.cbDesembolsado.Size = new System.Drawing.Size(159, 26);
+            this.cbDesembolsado.TabIndex = 35;
+            this.cbDesembolsado.Text = "Desembolsado";
+            this.cbDesembolsado.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label3.Location = new System.Drawing.Point(24, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(149, 22);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "Busqueda Libre:";
+            // 
             // EntregarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -324,6 +549,9 @@
             this.tpDocumentos.ResumeLayout(false);
             this.tpDocumentos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDocumentos)).EndInit();
+            this.tpPagare.ResumeLayout(false);
+            this.tpPagare.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPagare)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -345,5 +573,17 @@
         private FontAwesome.Sharp.IconButton btBuscarDOC;
         private System.Windows.Forms.TextBox tbBusquedaLibreDOC;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbCantidadEXP;
+        private FontAwesome.Sharp.IconButton btVerCarritoEXP;
+        private System.Windows.Forms.Label lbCantidadDOC;
+        private FontAwesome.Sharp.IconButton btVerCarritoDocumento;
+        private FontAwesome.Sharp.IconButton btEntregarPagare;
+        private System.Windows.Forms.DataGridView dgvPagare;
+        private FontAwesome.Sharp.IconButton btBuscarPagare;
+        private System.Windows.Forms.TextBox tbBusquedaLibrePagare;
+        private System.Windows.Forms.Label lbCantidadPagare;
+        private FontAwesome.Sharp.IconButton btVerCarritoPagare;
+        private System.Windows.Forms.CheckBox cbDesembolsado;
+        private System.Windows.Forms.Label label3;
     }
 }

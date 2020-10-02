@@ -73,6 +73,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BovedaFunctions.cs" />
+    <Compile Include="EntregarFunctions.cs" />
+    <Compile Include="Forms\BovedaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BovedaForm.Designer.cs">
+      <DependentUpon>BovedaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\BusquedaForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,8 +137,13 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IronMountainFunctions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecibirFunctions.cs" />
+    <EmbeddedResource Include="Forms\BovedaForm.resx">
+      <DependentUpon>BovedaForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BusquedaForm.resx">
       <DependentUpon>BusquedaForm.cs</DependentUpon>
     </EmbeddedResource>

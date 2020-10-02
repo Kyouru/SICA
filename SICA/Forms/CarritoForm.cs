@@ -25,20 +25,8 @@ namespace SICA.Forms
                 string strSQL;
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
                 sqliteConnection.Open();
-                
-                dt.Columns.Add("ID", System.Type.GetType("System.Int32"));
-                dt.Columns.Add("CAJA", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESDE", System.Type.GetType("System.String"));
-                dt.Columns.Add("HASTA", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 1", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 2", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 3", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 4", System.Type.GetType("System.String"));
-                dt.Columns.Add("CUSTODIADO", System.Type.GetType("System.String"));
-                dt.Columns.Add("POSEE", System.Type.GetType("System.String"));
-                dt.Columns.Add("FECHA", System.Type.GetType("System.String"));
 
-                if (Globals.CarritoSeleccionado == "IM_ARMAR")
+                if (Globals.CarritoSeleccionado == Globals.strIronMountainArmar || Globals.CarritoSeleccionado == Globals.strEntregarExpediente)
                 {
                     strSQL = "SELECT ID_TMP_CARRITO AS ID, NUMERO_CAJA, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "'";
@@ -50,7 +38,7 @@ namespace SICA.Forms
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.NUMERO_DE_CAJA = TC.NUMERO_CAJA WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "'";
                     strSQL = strSQL + " ORDER BY NUMERO_CAJA";
                 }
-
+                MessageBox.Show(strSQL);
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
 
                 try

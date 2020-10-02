@@ -46,6 +46,8 @@
             this.btBuscarCargo = new System.Windows.Forms.Button();
             this.dgvCargo = new System.Windows.Forms.DataGridView();
             this.tpReingreso = new System.Windows.Forms.TabPage();
+            this.lbCantidadReingreso = new System.Windows.Forms.Label();
+            this.btVerCarritoReingreso = new FontAwesome.Sharp.IconButton();
             this.btRecibir = new FontAwesome.Sharp.IconButton();
             this.label1 = new System.Windows.Forms.Label();
             this.tbUsuario = new System.Windows.Forms.TextBox();
@@ -168,6 +170,8 @@
             // tpReingreso
             // 
             this.tpReingreso.BackColor = System.Drawing.Color.MidnightBlue;
+            this.tpReingreso.Controls.Add(this.lbCantidadReingreso);
+            this.tpReingreso.Controls.Add(this.btVerCarritoReingreso);
             this.tpReingreso.Controls.Add(this.btRecibir);
             this.tpReingreso.Controls.Add(this.label1);
             this.tpReingreso.Controls.Add(this.tbUsuario);
@@ -181,6 +185,35 @@
             this.tpReingreso.Size = new System.Drawing.Size(1065, 548);
             this.tpReingreso.TabIndex = 1;
             this.tpReingreso.Text = "Reingreso";
+            this.tpReingreso.Enter += new System.EventHandler(this.tpReingreso_Enter);
+            // 
+            // lbCantidadReingreso
+            // 
+            this.lbCantidadReingreso.AutoSize = true;
+            this.lbCantidadReingreso.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidadReingreso.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidadReingreso.Location = new System.Drawing.Point(930, 12);
+            this.lbCantidadReingreso.Name = "lbCantidadReingreso";
+            this.lbCantidadReingreso.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidadReingreso.TabIndex = 24;
+            this.lbCantidadReingreso.Text = "(0)";
+            // 
+            // btVerCarritoReingreso
+            // 
+            this.btVerCarritoReingreso.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarritoReingreso.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarritoReingreso.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarritoReingreso.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarritoReingreso.IconColor = System.Drawing.Color.Black;
+            this.btVerCarritoReingreso.IconSize = 30;
+            this.btVerCarritoReingreso.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarritoReingreso.Location = new System.Drawing.Point(875, 8);
+            this.btVerCarritoReingreso.Name = "btVerCarritoReingreso";
+            this.btVerCarritoReingreso.Rotation = 0D;
+            this.btVerCarritoReingreso.Size = new System.Drawing.Size(51, 30);
+            this.btVerCarritoReingreso.TabIndex = 23;
+            this.btVerCarritoReingreso.UseVisualStyleBackColor = true;
+            this.btVerCarritoReingreso.Click += new System.EventHandler(this.btVerCarritoReingreso_Click);
             // 
             // btRecibir
             // 
@@ -189,21 +222,21 @@
             this.btRecibir.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btRecibir.IconColor = System.Drawing.Color.Black;
             this.btRecibir.IconSize = 16;
-            this.btRecibir.Location = new System.Drawing.Point(945, 13);
+            this.btRecibir.Location = new System.Drawing.Point(969, 11);
             this.btRecibir.Name = "btRecibir";
             this.btRecibir.Rotation = 0D;
             this.btRecibir.Size = new System.Drawing.Size(88, 23);
             this.btRecibir.TabIndex = 20;
             this.btRecibir.Text = "Recibir";
             this.btRecibir.UseVisualStyleBackColor = true;
-            this.btRecibir.Click += new System.EventHandler(this.btRecibir_Click);
+            this.btRecibir.Click += new System.EventHandler(this.btRecibirReingreso_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(40, 10);
+            this.label1.Location = new System.Drawing.Point(11, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 22);
             this.label1.TabIndex = 19;
@@ -212,7 +245,7 @@
             // tbUsuario
             // 
             this.tbUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUsuario.Location = new System.Drawing.Point(125, 10);
+            this.tbUsuario.Location = new System.Drawing.Point(96, 10);
             this.tbUsuario.Name = "tbUsuario";
             this.tbUsuario.Size = new System.Drawing.Size(177, 24);
             this.tbUsuario.TabIndex = 18;
@@ -230,7 +263,7 @@
             this.dgvReingreso.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 14.25F);
             dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gainsboro;
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -258,6 +291,7 @@
             this.dgvReingreso.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvReingreso.Size = new System.Drawing.Size(1040, 498);
             this.dgvReingreso.TabIndex = 14;
+            this.dgvReingreso.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReingreso_CellDoubleClick);
             // 
             // btBuscarReingreso
             // 
@@ -266,7 +300,7 @@
             this.btBuscarReingreso.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btBuscarReingreso.IconColor = System.Drawing.Color.Black;
             this.btBuscarReingreso.IconSize = 16;
-            this.btBuscarReingreso.Location = new System.Drawing.Point(818, 13);
+            this.btBuscarReingreso.Location = new System.Drawing.Point(778, 11);
             this.btBuscarReingreso.Name = "btBuscarReingreso";
             this.btBuscarReingreso.Rotation = 0D;
             this.btBuscarReingreso.Size = new System.Drawing.Size(88, 23);
@@ -279,7 +313,7 @@
             // 
             this.tbBusquedaLibre.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.tbBusquedaLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbBusquedaLibre.Location = new System.Drawing.Point(480, 11);
+            this.tbBusquedaLibre.Location = new System.Drawing.Point(451, 11);
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
             this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 26);
             this.tbBusquedaLibre.TabIndex = 12;
@@ -289,7 +323,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(325, 12);
+            this.label2.Location = new System.Drawing.Point(296, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(149, 22);
             this.label2.TabIndex = 11;
@@ -317,7 +351,7 @@
             this.btRecibirPagare.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btRecibirPagare.IconColor = System.Drawing.Color.Black;
             this.btRecibirPagare.IconSize = 16;
-            this.btRecibirPagare.Location = new System.Drawing.Point(589, 12);
+            this.btRecibirPagare.Location = new System.Drawing.Point(942, 13);
             this.btRecibirPagare.Name = "btRecibirPagare";
             this.btRecibirPagare.Rotation = 0D;
             this.btRecibirPagare.Size = new System.Drawing.Size(88, 23);
@@ -367,6 +401,7 @@
             this.dgvPagare.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPagare.Size = new System.Drawing.Size(1040, 498);
             this.dgvPagare.TabIndex = 24;
+            this.dgvPagare.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPagare_CellDoubleClick);
             // 
             // btBuscarPagare
             // 
@@ -529,5 +564,7 @@
         private System.Windows.Forms.Button btCargarLetrasValidas;
         private System.Windows.Forms.Button btCargarLetras;
         private System.Windows.Forms.DataGridView dgvLetras;
+        private System.Windows.Forms.Label lbCantidadReingreso;
+        private FontAwesome.Sharp.IconButton btVerCarritoReingreso;
     }
 }

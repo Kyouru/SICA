@@ -16,6 +16,7 @@ namespace SICA.Forms
         public EntregarForm()
         {
             InitializeComponent();
+            lbCantidadEXP.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarExpediente) + ")";
         }
 
         private void btBuscarEXP_Click(object sender, EventArgs e)
@@ -26,21 +27,9 @@ namespace SICA.Forms
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
                 sqliteConnection.Open();
 
-                dt.Columns.Add("ID", System.Type.GetType("System.Int32"));
-                dt.Columns.Add("CAJA", System.Type.GetType("System.String"));
-                dt.Columns.Add("DEPART", System.Type.GetType("System.String"));
-                dt.Columns.Add("DOC", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESDE", System.Type.GetType("System.String"));
-                dt.Columns.Add("HASTA", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 1", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 2", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 3", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 4", System.Type.GetType("System.String"));
-                dt.Columns.Add("CUSTODIADO", System.Type.GetType("System.String"));
-                dt.Columns.Add("POSEE", System.Type.GetType("System.String"));
-                dt.Columns.Add("FECHA", System.Type.GetType("System.String"));
-
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA FROM INVENTARIO_GENERAL WHERE DESCRIPCION_1 = 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = '" + Globals.Username + "'";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA ";
+                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL ";
+                strSQL = strSQL + " AND DESCRIPCION_1 = 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = '" + Globals.Username + "'";
 
                 if (tbBusquedaLibreEXP.Text != "")
                 {
@@ -48,7 +37,6 @@ namespace SICA.Forms
                 }
                 strSQL = strSQL + " ORDER BY DESCRIPCION_2";
 
-                //MessageBox.Show(strSQL);
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
 
                 try
@@ -77,71 +65,46 @@ namespace SICA.Forms
                 this.btBuscarEXP_Click(sender, e);
             }
         }
+        
+        private void dgvExpedientes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvExpedientes.SelectedRows.Count == 1)
+            {
+                GlobalFunctions.AgregarCarrito(dgvExpedientes.SelectedRows[0].Cells[0].Value.ToString(), "0", dgvExpedientes.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarExpediente);
+                lbCantidadEXP.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarExpediente) + ")";
+                btBuscarEXP_Click(sender, e);
+            }
+        }
 
         private void btEntregarEXP_Click(object sender, EventArgs e)
         {
-            if (dgvExpedientes.Rows.Count > 0)
+            if (lbCantidadEXP.Text != "(0)")
             {
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
-                if (Globals.IdUsernameSelect > 0)
+                if (Globals.IdUsernameSelect > 0 )
                 {
-                    DataTable dt = new DataTable("CARGO");
-                    using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                    {
-                        SQLiteCommand sqliteCmd;
-                        sqliteConnection.Open();
-                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                    EntregarFunctions.EntregarExpedientesCarrito();
+                    lbCantidadEXP.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarExpediente) + ")";
 
-                        try
-                        {
-
-                            int i = 0;
-
-                            int desc_1 = 6;
-                            int desc_2 = 7;
-                            int desc_3 = 8;
-                            int desc_4 = 9;
-
-                            dt.Columns.Add("#", System.Type.GetType("System.Int32"));
-                            dt.Columns.Add("DEFINICION", System.Type.GetType("System.String"));
-                            dt.Columns.Add("SOLICITUD", System.Type.GetType("System.String"));
-                            dt.Columns.Add("COD. PRESTAMO", System.Type.GetType("System.String"));
-                            dt.Columns.Add("NOMBRE SOCIO", System.Type.GetType("System.String"));
-
-                            foreach (DataGridViewRow row in dgvExpedientes.SelectedRows)
-                            {
-                                dt.Rows.Add();
-                                dt.Rows[i][0] = i + 1;
-                                dt.Rows[i][1] = row.Cells[desc_1].Value.ToString();
-                                dt.Rows[i][2] = row.Cells[desc_2].Value.ToString();
-                                dt.Rows[i][3] = row.Cells[desc_3].Value.ToString();
-                                dt.Rows[i][4] = row.Cells[desc_4].Value.ToString();
-                                row.Height = 0;
-                                i++;
-
-                                sqliteCmd = new SQLiteCommand("UPDATE INVENTARIO_GENERAL SET CUSTODIADO = 'PRESTADO', USUARIO_POSEE = '" + Globals.UsernameSelect + "', FECHA_POSEE = '" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "' WHERE ID_INVENTARIO_GENERAL = " + row.Cells[0].Value.ToString(), sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-
-                                sqliteCmd = new SQLiteCommand("INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO) VALUES (" + row.Cells[0].Value.ToString() + ", " + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')", sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-
-                            }
-
-                            sqliteTransaction.Commit();
-                            sqliteConnection.Close();
-                        }
-                        catch (Exception ex)
-                        {
-                            sqliteConnection.Close();
-                            MessageBox.Show(ex.Message);
-                        }
-                    }
-
-                    GlobalFunctions.ArmarCargoExcel(dt, Globals.CargoPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
+                    btBuscarEXP_Click(sender, e);
                 }
-                
             }
+        }
+
+        private void btVerCarritoEXP_Click(object sender, EventArgs e)
+        {
+            if (lbCantidadEXP.Text != "(0)")
+            {
+                Globals.CarritoSeleccionado = Globals.strEntregarExpediente;
+                CarritoForm vCarrito = new CarritoForm();
+                vCarrito.Show();
+            }
+        }
+
+        private void tbExpedientes_Enter(object sender, EventArgs e)
+        {
+            lbCantidadEXP.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarExpediente) + ")";
         }
 
         private void btBuscarDOC_Click(object sender, EventArgs e)
@@ -152,29 +115,16 @@ namespace SICA.Forms
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
                 sqliteConnection.Open();
 
-                dt.Columns.Add("ID", System.Type.GetType("System.Int32"));
-                dt.Columns.Add("CAJA", System.Type.GetType("System.String"));
-                dt.Columns.Add("DEPART", System.Type.GetType("System.String"));
-                dt.Columns.Add("DOC", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESDE", System.Type.GetType("System.String"));
-                dt.Columns.Add("HASTA", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 1", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 2", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 3", System.Type.GetType("System.String"));
-                dt.Columns.Add("DESC 4", System.Type.GetType("System.String"));
-                dt.Columns.Add("CUSTODIADO", System.Type.GetType("System.String"));
-                dt.Columns.Add("POSEE", System.Type.GetType("System.String"));
-                dt.Columns.Add("FECHA", System.Type.GetType("System.String"));
-
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA FROM INVENTARIO_GENERAL WHERE DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = '" + Globals.Username + "'";
-
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
+                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL ";
+                strSQL = strSQL + " AND DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND AND USUARIO_POSEE = '" + Globals.Username + "'";
+                
                 if (tbBusquedaLibreDOC.Text != "")
                 {
                     strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibreDOC.Text + "%'";
                 }
                 strSQL = strSQL + " ORDER BY DESCRIPCION_2";
 
-                //MessageBox.Show(strSQL);
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
 
                 try
@@ -198,64 +148,150 @@ namespace SICA.Forms
 
         private void btEntregarDOC_Click(object sender, EventArgs e)
         {
-            if (dgvDocumentos.Rows.Count > 0)
+            if (lbCantidadDOC.Text != "(0)")
             {
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
-                suf.Show();
+                suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
-                    DataTable dt = new DataTable("CARGO");
-                    using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                    {
-                        SQLiteCommand sqliteCmd;
-                        sqliteConnection.Open();
-                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                    EntregarFunctions.EntregarDocumentosCarrito();
+                    lbCantidadDOC.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarDocumento) + ")";
 
-                        try
-                        {
-                            int i = 0;
-
-                            int desc_1 = 6;
-                            int desc_2 = 7;
-                            int desc_3 = 8;
-                            int desc_4 = 9;
-
-                            dt.Columns.Add("#", System.Type.GetType("System.Int32"));
-                            dt.Columns.Add("DESCRIPCION 1", System.Type.GetType("System.String"));
-                            dt.Columns.Add("DESCRIPCION 2", System.Type.GetType("System.String"));
-                            dt.Columns.Add("DESCRIPCION 3", System.Type.GetType("System.String"));
-                            dt.Columns.Add("DESCRIPCION 4", System.Type.GetType("System.String"));
-
-                            foreach (DataGridViewRow row in dgvDocumentos.SelectedRows)
-                            {
-                                dt.Rows.Add();
-                                dt.Rows[i][0] = i + 1;
-                                dt.Rows[i][1] = row.Cells[desc_1].Value.ToString();
-                                dt.Rows[i][2] = row.Cells[desc_2].Value.ToString();
-                                dt.Rows[i][3] = row.Cells[desc_3].Value.ToString();
-                                dt.Rows[i][4] = row.Cells[desc_4].Value.ToString();
-                                i++;
-
-                                sqliteCmd = new SQLiteCommand("UPDATE INVENTARIO_GENERAL SET CUSTODIADO = 'PRESTADO', USUARIO_POSEE = '" + Globals.UsernameSelect + "', FECHA_POSEE = '" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "' WHERE ID_INVENTARIO_GENERAL = " + row.Cells[0].Value.ToString(), sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-
-                                sqliteCmd = new SQLiteCommand("INSERT INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN) VALUES (" + row.Cells[0].Value.ToString() + ", " + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')", sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            sqliteConnection.Close();
-                            MessageBox.Show(ex.Message);
-                        }
-                        sqliteTransaction.Commit();
-                        sqliteConnection.Close();
-                    }
-
-                    GlobalFunctions.ArmarCargoExcel(dt, Globals.CargoPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
+                    btBuscarDOC_Click(sender, e);
                 }
             }
         }
+
+        private void btVerCarritoDocumento_Click(object sender, EventArgs e)
+        {
+            if (lbCantidadDOC.Text != "(0)")
+            {
+                Globals.CarritoSeleccionado = Globals.strEntregarDocumento;
+                CarritoForm vCarrito = new CarritoForm();
+                vCarrito.Show();
+            }
+        }
+
+        private void dgvDocumentos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvDocumentos.SelectedRows.Count == 1)
+            {
+                GlobalFunctions.AgregarCarrito(dgvDocumentos.SelectedRows[0].Cells[0].Value.ToString(), "0", dgvDocumentos.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarDocumento);
+                lbCantidadDOC.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarDocumento) + ")";
+                btBuscarDOC_Click(sender, e);
+            }
+        }
+
+        private void tpDocumentos_Enter(object sender, EventArgs e)
+        {
+            lbCantidadDOC.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarDocumento) + ")";
+        }
+
+        private void btBuscarPagare_Click(object sender, EventArgs e)
+        {
+            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            {
+                string strSQL;
+                DataTable dt = new DataTable("REPORTE_VALORADOS");
+                sqliteConnection.Open();
+                if (cbDesembolsado.Checked)
+                {
+                    strSQL = "SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS CANCELACION, PAGARE ";
+                    strSQL = strSQL + "FROM REPORTE_VALORADOS RV LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = RV.ID_REPORTE_VALORADOS";
+                    strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = '" + Globals.Username + "'";
+                    if (tbBusquedaLibrePagare.Text != "")
+                    {
+                        strSQL = strSQL + " AND SOLICITUD_SISGO LIKE '%" + tbBusquedaLibrePagare.Text + "%'";
+                    }
+                    strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
+                }
+                else
+                {
+                    strSQL = "SELECT ID_PAGARE_SIN_DESEMBOLSAR AS ID, SOLICITUD_SISGO AS SISGO, DESCRIPCION_1, DESCRIPCION_2, SDESCRIPCION_3, DESCRIPCION_4";
+                    strSQL = strSQL + "FROM PAGARE_SIN_DESEMBOLSAR PSD LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = PSD.ID_PAGARE_SIN_DESEMBOLSAR";
+                    strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = '" + Globals.Username + "'";
+                    if (tbBusquedaLibrePagare.Text != "")
+                    {
+                        strSQL = strSQL + " AND CONCATENADO LIKE '%" + tbBusquedaLibrePagare.Text + "%'";
+                    }
+                    strSQL = strSQL + " AND DESEMBOLSADO = 0 ";
+                    strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
+                }
+                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+
+                try
+                {
+                    sqliteCmd.ExecuteNonQuery();
+                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                    sqliteDataAdapter.Fill(dt);
+                    sqliteConnection.Close();
+
+                    dgvPagare.DataSource = dt;
+                    dgvPagare.Columns[0].Width = 0;
+                }
+                catch (Exception ex)
+                {
+                    sqliteConnection.Close();
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+            }
+        }
+
+        private void dgvPagare_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvPagare.SelectedRows.Count == 1)
+            {
+                if (cbDesembolsado.Checked)
+                {
+                    GlobalFunctions.AgregarCarrito("0", dgvPagare.SelectedRows[0].Cells[0].Value.ToString(), dgvPagare.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarPagare);
+                    lbCantidadPagare.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarPagare) + ")";
+                }
+                else
+                {
+                    GlobalFunctions.AgregarCarrito("0", dgvPagare.SelectedRows[0].Cells[0].Value.ToString(), dgvPagare.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarPagareSinDesembolsar);
+                    lbCantidadPagare.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarPagareSinDesembolsar) + ")";
+                }
+                
+                btBuscarPagare_Click(sender, e);
+            }
+        }
+
+        private void btEntregarPagare_Click(object sender, EventArgs e)
+        {
+            if (lbCantidadPagare.Text != "(0)")
+            {
+                SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
+                suf.ShowDialog();
+                if (Globals.IdUsernameSelect > 0)
+                {
+                    if (cbDesembolsado.Checked)
+                    {
+                        EntregarFunctions.EntregarPagaresCarrito(1);
+                        lbCantidadPagare.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarPagare) + ")";
+                    }
+                    else
+                    {
+                        EntregarFunctions.EntregarPagaresCarrito(0);
+                        lbCantidadPagare.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarPagareSinDesembolsar) + ")";
+                    }
+
+                    btBuscarPagare_Click(sender, e);
+                }
+            }
+        }
+
+        private void tpPagare_Enter(object sender, EventArgs e)
+        {
+            if (cbDesembolsado.Checked)
+            {
+                lbCantidadPagare.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarPagare) + ")";
+            }
+            else
+            {
+                lbCantidadPagare.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarPagareSinDesembolsar) + ")";
+            }
+        }
+
     }
 }

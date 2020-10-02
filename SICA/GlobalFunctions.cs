@@ -11,6 +11,9 @@ using System.Data.OleDb;
 using System.Data.SQLite;
 using System.Globalization;
 using Microsoft.Office.Core;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
 
 namespace SICA
 {
@@ -147,7 +150,6 @@ namespace SICA
             }
         }
 
-        /// Método que exporta a un fichero Excel el contenido de un DataGridView
         public static void ExportarDataTableExcel(DataTable dt, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
             Microsoft.Office.Interop.Excel.Application aplicacion;
@@ -184,14 +186,15 @@ namespace SICA
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
-        public static void ArmarCargoExcel(DataTable dt, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
+        
+        public static void ArmarCargoExcel(DataTable dt, string plantilla, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
             Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
             aplicacion = new Microsoft.Office.Interop.Excel.Application();
             aplicacion.Visible = true;
-            libros_trabajo = aplicacion.Workbooks.Open(Globals.PlantillaCargoPath);
+            libros_trabajo = aplicacion.Workbooks.Open(plantilla);
             hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
 
             //Cabeceras
@@ -220,6 +223,7 @@ namespace SICA
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
+        
         public static bool IsDate(Object obj)
         {
             string strDate = obj.ToString();
@@ -235,6 +239,7 @@ namespace SICA
                 return false;
             }
         }
+
         public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare, SQLiteConnection sqliteConnection)
         {
             SQLiteCommand sqliteCmd;
@@ -265,8 +270,40 @@ namespace SICA
                 return false;
             }
         }
+        
+        public static bool PrestarCustodiaReporteID(List<string> idlist)
+        {
+            string strSQL = "";
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                {
+                    sqliteConnection.Open();
+                    SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                    SQLiteCommand sqliteCmd;
 
-        public static bool AgregarCarrito(string id_inventario, string id_inventario_h, string caja, string tipo)
+                    foreach (string id in idlist)
+                    {
+                        strSQL = "UPDATE REPORTE_VALORADOS SET CUSTODIADO = 'PRESTADO'";
+                        strSQL = strSQL + "WHERE ID_REPORTE_VALORADOS = '" + id + "'";
+                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                        sqliteCmd.ExecuteNonQuery();
+                    }
+
+                    sqliteTransaction.Commit();
+                    sqliteConnection.Close();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + strSQL);
+                return false;
+            }
+        }
+
+        public static bool AgregarCarrito(string id_inventario, string id_reporte, string caja, string tipo)
         {
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
@@ -276,7 +313,7 @@ namespace SICA
 
                 try
                 {
-                    sqliteCmd = new SQLiteCommand("INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_INVENTARIO_HISTORICO_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_inventario_h + ", " + Globals.IdUsername +  ", '" + tipo + "', '" + caja + "')", sqliteConnection);
+                    sqliteCmd = new SQLiteCommand("INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_REPORTE_VALORADOS_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_reporte + ", " + Globals.IdUsername +  ", '" + tipo + "', '" + caja + "')", sqliteConnection);
                     
                     sqliteCmd.ExecuteNonQuery();
 
@@ -292,7 +329,7 @@ namespace SICA
                 }
             }
         }
-
+        
         public static int CantidadCarrito(string tipo)
         {
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
@@ -316,321 +353,40 @@ namespace SICA
                 }
             }
         }
-
-        public static bool SolicitarCarrito(string tipo)
+                
+        public static DataTable ToDataTable<T>(List<T> items)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            DataTable dataTable = new DataTable(typeof(T).Name);
+
+            //Get all the properties
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo prop in Props)
             {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    sqliteCmd = new SQLiteCommand("SELECT ID_INVENTARIO_GENERAL_FK AS ID, NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + tipo + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        string strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION) VALUES (" + row["ID"].ToString();
-                        strSQL = strSQL + ", " + Globals.IdIM;
-                        strSQL = strSQL + ", " + fecha + "";
-                        strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
-                        strSQL = strSQL + ", '" + Globals.Username + "')";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + tipo + "'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Solicitado");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
+                //Defining type of data column gives proper data table 
+                var type = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType);
+                //Setting column names as Property names
+                dataTable.Columns.Add(prop.Name, type);
             }
+            foreach (T item in items)
+            {
+                var values = new object[Props.Length];
+                for (int i = 0; i < Props.Length; i++)
+                {
+                    //inserting property values to datatable rows
+                    values[i] = Props[i].GetValue(item, null);
+                }
+                dataTable.Rows.Add(values);
+            }
+            //put a breakpoint here and check datatable
+            return dataTable;
         }
-        public static bool SolicitarCajasCarrito()
+        
+        public static string SinTildes(string texto)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    SQLiteDataAdapter sqliteDataAdapter;
-                    string strSQL;
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_SOLICITAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'EN TRANSITO A CP' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    dt = new DataTable();
-                    strSQL = "SELECT IG.ID_INVENTARIO_GENERAL AS ID, NUMERO_CAJA FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_SOLICITAR' AND ID_USUARIO_FK = " + Globals.IdUsername + ") CAJAS";
-                    strSQL = strSQL + " ON IG.NUMERO_DE_CAJA = CAJAS.NUMERO_CAJA WHERE CAJAS.NUMERO_CAJA IS NOT NULL";
-
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION) VALUES (" + row["ID"].ToString();
-                        strSQL = strSQL + ", " + Globals.IdIM;
-                        strSQL = strSQL + ", " + fecha + "";
-                        strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
-                        strSQL = strSQL + ", '" + Globals.Username + "')";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_SOLICITAR'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Solicitado");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
-        }
-
-        public static bool RecibirCajasCarrito()
-        {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    SQLiteDataAdapter sqliteDataAdapter;
-                    string strSQL;
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_RECIBIR' AND ID_USUARIO_FK = " + Globals.IdUsername;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-
-                        strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_RECIBE_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + " WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND ID_USUARIO_RECIBE_FK IS NULL AND FECHA_FIN IS NULL";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_RECIBIR'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Recibido");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
-        }
-
-        public static bool ArmarCajasCarrito(string caja)
-        {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    SQLiteDataAdapter sqliteDataAdapter;
-                    string strSQL;
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET NUMERO_DE_CAJA = '' WHERE NUMERO_DE_CAJA ='" + caja + "'";
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    strSQL = "SELECT ID_INVENTARIO_GENERAL_FK FROM TMP_CARRITO WHERE TIPO = 'IM_ARMAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "INSERT INTO ARMAR_CAJA_HISTORICO (NUMERO_CAJA, USUARIO, FECHA, ID_INVENTARIO_GENERAL_FK) VALUES ('" + caja + "', '" + Globals.Username + "', " + fecha + ", " + row["ID_INVENTARIO_GENERAL_FK"].ToString() + ")";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET NUMERO_DE_CAJA = '" + caja + "' WHERE ID_INVENTARIO_GENERAL = " + row["ID_INVENTARIO_GENERAL_FK"].ToString() + "";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_ARMAR'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Caja " + caja + " Armada");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
-        }
-
-        public static bool EnviarCajasCarrito()
-        {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    SQLiteDataAdapter sqliteDataAdapter;
-                    string strSQL;
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENVIAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'EN TRANSITO A CP' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    dt = new DataTable();
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENVIAR' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
-
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, NUMERO_CAJA, FECHA_INICIO, OBSERVACION) VALUES (";
-                        strSQL = strSQL + "" + Globals.IdIM;
-                        strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
-                        strSQL = strSQL + ", " + fecha + "";
-                        strSQL = strSQL + ", '" + Globals.Username + "')";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_ENVIAR'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Solicitud Enviada");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
-        }
-        public static bool EntregarCajasCarrito()
-        {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    SQLiteDataAdapter sqliteDataAdapter;
-                    string strSQL;
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENTREGAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_ENTREGA_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + " WHERE NUMERO_CAJA = " + row["NUMERO_CAJA"].ToString() + " AND ID_USUARIO_ENTREGA_FK IS NULL AND FECHA_FIN IS NULL";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'IRON MOUNTAIN' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_ENTREGAR'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Cajas Entregadas");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
+            string textoNormalizado = texto.Normalize(NormalizationForm.FormD);
+            //Regex reg = new Regex("[^a-zA-Z0-9]");
+            //return reg.Replace(textoNormalizado, "");
+            return textoNormalizado;
         }
 
     }

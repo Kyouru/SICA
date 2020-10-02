@@ -57,6 +57,7 @@ namespace SICA.Forms
             if (cmbUsuario.SelectedIndex != -1)
             {
                 Globals.IdUsernameSelect = Int32.Parse(cmbUsuario.SelectedValue.ToString());
+                Globals.UsernameSelect = cmbUsuario.Text;
                 this.Close();
             }
         }
