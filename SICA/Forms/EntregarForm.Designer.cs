@@ -47,23 +47,23 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dgvExpedientes = new System.Windows.Forms.DataGridView();
             this.tpDocumentos = new System.Windows.Forms.TabPage();
+            this.lbCantidadDOC = new System.Windows.Forms.Label();
+            this.btVerCarritoDocumento = new FontAwesome.Sharp.IconButton();
             this.btEntregarDOC = new FontAwesome.Sharp.IconButton();
             this.btBuscarDOC = new FontAwesome.Sharp.IconButton();
             this.tbBusquedaLibreDOC = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvDocumentos = new System.Windows.Forms.DataGridView();
             this.tpPagare = new System.Windows.Forms.TabPage();
-            this.tpLetras = new System.Windows.Forms.TabPage();
-            this.lbCantidadDOC = new System.Windows.Forms.Label();
-            this.btVerCarritoDocumento = new FontAwesome.Sharp.IconButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbDesembolsado = new System.Windows.Forms.CheckBox();
+            this.lbCantidadPagare = new System.Windows.Forms.Label();
+            this.btVerCarritoPagare = new FontAwesome.Sharp.IconButton();
             this.btEntregarPagare = new FontAwesome.Sharp.IconButton();
             this.dgvPagare = new System.Windows.Forms.DataGridView();
             this.btBuscarPagare = new FontAwesome.Sharp.IconButton();
             this.tbBusquedaLibrePagare = new System.Windows.Forms.TextBox();
-            this.lbCantidadPagare = new System.Windows.Forms.Label();
-            this.btVerCarritoPagare = new FontAwesome.Sharp.IconButton();
-            this.cbDesembolsado = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.tpLetras = new System.Windows.Forms.TabPage();
             this.tcEntregar.SuspendLayout();
             this.tbExpedientes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExpedientes)).BeginInit();
@@ -84,7 +84,7 @@
             this.tcEntregar.Location = new System.Drawing.Point(0, 0);
             this.tcEntregar.Name = "tcEntregar";
             this.tcEntregar.SelectedIndex = 0;
-            this.tcEntregar.Size = new System.Drawing.Size(1159, 617);
+            this.tcEntregar.Size = new System.Drawing.Size(1276, 661);
             this.tcEntregar.TabIndex = 1;
             // 
             // tbExpedientes
@@ -100,7 +100,7 @@
             this.tbExpedientes.Location = new System.Drawing.Point(4, 31);
             this.tbExpedientes.Name = "tbExpedientes";
             this.tbExpedientes.Padding = new System.Windows.Forms.Padding(3);
-            this.tbExpedientes.Size = new System.Drawing.Size(1151, 582);
+            this.tbExpedientes.Size = new System.Drawing.Size(1268, 626);
             this.tbExpedientes.TabIndex = 0;
             this.tbExpedientes.Text = "Expedientes";
             this.tbExpedientes.Enter += new System.EventHandler(this.tbExpedientes_Enter);
@@ -225,7 +225,7 @@
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvExpedientes.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvExpedientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvExpedientes.Size = new System.Drawing.Size(1135, 529);
+            this.dgvExpedientes.Size = new System.Drawing.Size(1252, 573);
             this.dgvExpedientes.TabIndex = 0;
             this.dgvExpedientes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvExpedientes_CellDoubleClick);
             // 
@@ -246,6 +246,34 @@
             this.tpDocumentos.TabIndex = 1;
             this.tpDocumentos.Text = "Documentos";
             this.tpDocumentos.Enter += new System.EventHandler(this.tpDocumentos_Enter);
+            // 
+            // lbCantidadDOC
+            // 
+            this.lbCantidadDOC.AutoSize = true;
+            this.lbCantidadDOC.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidadDOC.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidadDOC.Location = new System.Drawing.Point(969, 11);
+            this.lbCantidadDOC.Name = "lbCantidadDOC";
+            this.lbCantidadDOC.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidadDOC.TabIndex = 26;
+            this.lbCantidadDOC.Text = "(0)";
+            // 
+            // btVerCarritoDocumento
+            // 
+            this.btVerCarritoDocumento.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarritoDocumento.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarritoDocumento.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarritoDocumento.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarritoDocumento.IconColor = System.Drawing.Color.Black;
+            this.btVerCarritoDocumento.IconSize = 30;
+            this.btVerCarritoDocumento.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarritoDocumento.Location = new System.Drawing.Point(914, 7);
+            this.btVerCarritoDocumento.Name = "btVerCarritoDocumento";
+            this.btVerCarritoDocumento.Rotation = 0D;
+            this.btVerCarritoDocumento.Size = new System.Drawing.Size(51, 30);
+            this.btVerCarritoDocumento.TabIndex = 25;
+            this.btVerCarritoDocumento.UseVisualStyleBackColor = true;
+            this.btVerCarritoDocumento.Click += new System.EventHandler(this.btVerCarritoDocumento_Click);
             // 
             // btEntregarDOC
             // 
@@ -360,43 +388,56 @@
             this.tpPagare.Text = "Pagares";
             this.tpPagare.Enter += new System.EventHandler(this.tpPagare_Enter);
             // 
-            // tpLetras
+            // label3
             // 
-            this.tpLetras.BackColor = System.Drawing.Color.MidnightBlue;
-            this.tpLetras.Location = new System.Drawing.Point(4, 31);
-            this.tpLetras.Name = "tpLetras";
-            this.tpLetras.Padding = new System.Windows.Forms.Padding(3);
-            this.tpLetras.Size = new System.Drawing.Size(1151, 582);
-            this.tpLetras.TabIndex = 3;
-            this.tpLetras.Text = "Letras";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label3.Location = new System.Drawing.Point(24, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(149, 22);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "Busqueda Libre:";
             // 
-            // lbCantidadDOC
+            // cbDesembolsado
             // 
-            this.lbCantidadDOC.AutoSize = true;
-            this.lbCantidadDOC.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCantidadDOC.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbCantidadDOC.Location = new System.Drawing.Point(969, 11);
-            this.lbCantidadDOC.Name = "lbCantidadDOC";
-            this.lbCantidadDOC.Size = new System.Drawing.Size(33, 22);
-            this.lbCantidadDOC.TabIndex = 26;
-            this.lbCantidadDOC.Text = "(0)";
+            this.cbDesembolsado.AutoSize = true;
+            this.cbDesembolsado.Checked = true;
+            this.cbDesembolsado.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDesembolsado.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.cbDesembolsado.Location = new System.Drawing.Point(480, 11);
+            this.cbDesembolsado.Name = "cbDesembolsado";
+            this.cbDesembolsado.Size = new System.Drawing.Size(159, 26);
+            this.cbDesembolsado.TabIndex = 35;
+            this.cbDesembolsado.Text = "Desembolsado";
+            this.cbDesembolsado.UseVisualStyleBackColor = true;
             // 
-            // btVerCarritoDocumento
+            // lbCantidadPagare
             // 
-            this.btVerCarritoDocumento.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btVerCarritoDocumento.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btVerCarritoDocumento.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btVerCarritoDocumento.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
-            this.btVerCarritoDocumento.IconColor = System.Drawing.Color.Black;
-            this.btVerCarritoDocumento.IconSize = 30;
-            this.btVerCarritoDocumento.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btVerCarritoDocumento.Location = new System.Drawing.Point(914, 7);
-            this.btVerCarritoDocumento.Name = "btVerCarritoDocumento";
-            this.btVerCarritoDocumento.Rotation = 0D;
-            this.btVerCarritoDocumento.Size = new System.Drawing.Size(51, 30);
-            this.btVerCarritoDocumento.TabIndex = 25;
-            this.btVerCarritoDocumento.UseVisualStyleBackColor = true;
-            this.btVerCarritoDocumento.Click += new System.EventHandler(this.btVerCarritoDocumento_Click);
+            this.lbCantidadPagare.AutoSize = true;
+            this.lbCantidadPagare.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidadPagare.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidadPagare.Location = new System.Drawing.Point(995, 9);
+            this.lbCantidadPagare.Name = "lbCantidadPagare";
+            this.lbCantidadPagare.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidadPagare.TabIndex = 34;
+            this.lbCantidadPagare.Text = "(0)";
+            // 
+            // btVerCarritoPagare
+            // 
+            this.btVerCarritoPagare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarritoPagare.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarritoPagare.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarritoPagare.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarritoPagare.IconColor = System.Drawing.Color.Black;
+            this.btVerCarritoPagare.IconSize = 30;
+            this.btVerCarritoPagare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarritoPagare.Location = new System.Drawing.Point(940, 5);
+            this.btVerCarritoPagare.Name = "btVerCarritoPagare";
+            this.btVerCarritoPagare.Rotation = 0D;
+            this.btVerCarritoPagare.Size = new System.Drawing.Size(51, 30);
+            this.btVerCarritoPagare.TabIndex = 33;
+            this.btVerCarritoPagare.UseVisualStyleBackColor = true;
             // 
             // btEntregarPagare
             // 
@@ -482,63 +523,22 @@
             this.tbBusquedaLibrePagare.Size = new System.Drawing.Size(278, 26);
             this.tbBusquedaLibrePagare.TabIndex = 29;
             // 
-            // lbCantidadPagare
+            // tpLetras
             // 
-            this.lbCantidadPagare.AutoSize = true;
-            this.lbCantidadPagare.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCantidadPagare.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbCantidadPagare.Location = new System.Drawing.Point(995, 9);
-            this.lbCantidadPagare.Name = "lbCantidadPagare";
-            this.lbCantidadPagare.Size = new System.Drawing.Size(33, 22);
-            this.lbCantidadPagare.TabIndex = 34;
-            this.lbCantidadPagare.Text = "(0)";
-            // 
-            // btVerCarritoPagare
-            // 
-            this.btVerCarritoPagare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btVerCarritoPagare.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btVerCarritoPagare.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btVerCarritoPagare.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
-            this.btVerCarritoPagare.IconColor = System.Drawing.Color.Black;
-            this.btVerCarritoPagare.IconSize = 30;
-            this.btVerCarritoPagare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btVerCarritoPagare.Location = new System.Drawing.Point(940, 5);
-            this.btVerCarritoPagare.Name = "btVerCarritoPagare";
-            this.btVerCarritoPagare.Rotation = 0D;
-            this.btVerCarritoPagare.Size = new System.Drawing.Size(51, 30);
-            this.btVerCarritoPagare.TabIndex = 33;
-            this.btVerCarritoPagare.UseVisualStyleBackColor = true;
-            // 
-            // cbDesembolsado
-            // 
-            this.cbDesembolsado.AutoSize = true;
-            this.cbDesembolsado.Checked = true;
-            this.cbDesembolsado.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDesembolsado.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.cbDesembolsado.Location = new System.Drawing.Point(480, 11);
-            this.cbDesembolsado.Name = "cbDesembolsado";
-            this.cbDesembolsado.Size = new System.Drawing.Size(159, 26);
-            this.cbDesembolsado.TabIndex = 35;
-            this.cbDesembolsado.Text = "Desembolsado";
-            this.cbDesembolsado.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Location = new System.Drawing.Point(24, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(149, 22);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "Busqueda Libre:";
+            this.tpLetras.BackColor = System.Drawing.Color.MidnightBlue;
+            this.tpLetras.Location = new System.Drawing.Point(4, 31);
+            this.tpLetras.Name = "tpLetras";
+            this.tpLetras.Padding = new System.Windows.Forms.Padding(3);
+            this.tpLetras.Size = new System.Drawing.Size(1151, 582);
+            this.tpLetras.TabIndex = 3;
+            this.tpLetras.Text = "Letras";
             // 
             // EntregarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
-            this.ClientSize = new System.Drawing.Size(1159, 617);
+            this.ClientSize = new System.Drawing.Size(1276, 661);
             this.Controls.Add(this.tcEntregar);
             this.Name = "EntregarForm";
             this.Text = "EntregarForm";

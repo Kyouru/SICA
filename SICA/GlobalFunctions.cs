@@ -150,8 +150,16 @@ namespace SICA
             }
         }
 
-        public static void ExportarDataTableExcel(DataTable dt, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
+        public static void ExportarDataGridViewExcel(DataGridView dgv, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
+            if (dgv.Rows.Count > 200)
+            {
+                DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 200 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
+                if (dialogResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
             Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
@@ -163,30 +171,37 @@ namespace SICA
             //Cabeceras
             if (cabecera)
             {
-                for (int j = 0; j < dt.Columns.Count; j++)
+                for (int j = 0; j < dgv.Columns.Count; j++)
                 {
-                    hoja_trabajo.Cells[inicio_row, j + inicio_col] = "'" + dt.Columns[j].ColumnName;
+                    hoja_trabajo.Cells[inicio_row, j + inicio_col] = "'" + dgv.Columns[j].Name;
                 }
             }
 
             //Recorremos el DataTable rellenando la hoja de trabajo
-            for (int i = 1; i < dt.Rows.Count - 1; i++)
+            for (int i = 1; i < dgv.Rows.Count - 1; i++)
             {
-                for (int j = 0; j < dt.Columns.Count; j++)
+                for (int j = 0; j < dgv.Columns.Count; j++)
                 {
-                    if (dt.Rows[i][j] != null)
+                    if (dgv.Rows[i].Cells[j] != null)
                     {
-                        hoja_trabajo.Cells[i + inicio_row, j + inicio_col] = "'" + dt.Rows[i][j].ToString();
+                        hoja_trabajo.Cells[i + inicio_row, j + inicio_col] = "'" + dgv.Rows[i].Cells[j].Value.ToString();
                     }
                 }
             }
-            libros_trabajo.SaveAs(fileName,
-                Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
-            aplicacion.Workbooks.Open(fileName);
+            if (fileName != "")
+            {
+                libros_trabajo.SaveAs(fileName,
+                    Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
+                aplicacion.Workbooks.Open(fileName);
+            }
+            else
+            {
+                aplicacion.Visible = true;
+            }
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
-        
+
         public static void ArmarCargoExcel(DataTable dt, string plantilla, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
             Microsoft.Office.Interop.Excel.Application aplicacion;

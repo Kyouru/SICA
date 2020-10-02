@@ -82,6 +82,7 @@ namespace SICA
 
                     dgvBusqueda.DataSource = dt;
                     dgvBusqueda.Columns[0].Width = 0;
+                    dgvBusqueda.Columns["DESC 1"].Width = 250;
                 }
                 catch (Exception ex)
                 {
@@ -124,6 +125,11 @@ namespace SICA
             {
                 tbCaja.Enabled = false;
             }
+        }
+
+        private void btExcel_Click(object sender, EventArgs e)
+        {
+            GlobalFunctions.ExportarDataGridViewExcel(dgvBusqueda, "", 1, 1, true);
         }
     }
 }

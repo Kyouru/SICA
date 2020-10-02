@@ -99,6 +99,24 @@
     <Compile Include="Forms\EntregarForm.Designer.cs">
       <DependentUpon>EntregarForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Entregar\EntregarDocumento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarDocumento.Designer.cs">
+      <DependentUpon>EntregarDocumento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarExpediente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarExpediente.Designer.cs">
+      <DependentUpon>EntregarExpediente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarSubMain.Designer.cs">
+      <DependentUpon>EntregarSubMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\IronMountainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +170,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EntregarForm.resx">
       <DependentUpon>EntregarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Entregar\EntregarDocumento.resx">
+      <DependentUpon>EntregarDocumento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Entregar\EntregarExpediente.resx">
+      <DependentUpon>EntregarExpediente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
+      <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\IronMountainForm.resx">
       <DependentUpon>IronMountainForm.cs</DependentUpon>

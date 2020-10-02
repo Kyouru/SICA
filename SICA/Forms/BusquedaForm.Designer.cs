@@ -39,6 +39,8 @@
             this.tbFecha = new System.Windows.Forms.TextBox();
             this.tbCaja = new System.Windows.Forms.TextBox();
             this.cbCaja = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btExcel = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBusqueda)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,34 +49,36 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(505, 13);
+            this.label2.Location = new System.Drawing.Point(505, 12);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(149, 22);
+            this.label2.Size = new System.Drawing.Size(101, 22);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Busqueda Libre:";
+            this.label2.Text = "Busqueda:";
             // 
             // tbBusquedaLibre
             // 
             this.tbBusquedaLibre.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tbBusquedaLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbBusquedaLibre.Location = new System.Drawing.Point(660, 13);
+            this.tbBusquedaLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbBusquedaLibre.Location = new System.Drawing.Point(612, 12);
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
-            this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 22);
+            this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 24);
             this.tbBusquedaLibre.TabIndex = 4;
             this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
             // 
             // btBuscar
             // 
+            this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btBuscar.IconColor = System.Drawing.Color.Black;
-            this.btBuscar.IconSize = 16;
-            this.btBuscar.Location = new System.Drawing.Point(1002, 13);
+            this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.Search;
+            this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconSize = 30;
+            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBuscar.Location = new System.Drawing.Point(939, 2);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Rotation = 0D;
-            this.btBuscar.Size = new System.Drawing.Size(88, 23);
+            this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 5;
-            this.btBuscar.Text = "Buscar";
             this.btBuscar.UseVisualStyleBackColor = true;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
@@ -108,15 +112,16 @@
             this.dgvBusqueda.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvBusqueda.EnableHeadersVisualStyles = false;
             this.dgvBusqueda.GridColor = System.Drawing.Color.Gainsboro;
-            this.dgvBusqueda.Location = new System.Drawing.Point(12, 43);
+            this.dgvBusqueda.Location = new System.Drawing.Point(12, 46);
             this.dgvBusqueda.Name = "dgvBusqueda";
+            this.dgvBusqueda.ReadOnly = true;
             this.dgvBusqueda.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvBusqueda.RowHeadersVisible = false;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.MidnightBlue;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvBusqueda.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvBusqueda.Size = new System.Drawing.Size(1091, 550);
+            this.dgvBusqueda.Size = new System.Drawing.Size(1087, 547);
             this.dgvBusqueda.TabIndex = 6;
             // 
             // cbFecha
@@ -162,12 +167,40 @@
             this.cbCaja.UseVisualStyleBackColor = true;
             this.cbCaja.CheckedChanged += new System.EventHandler(this.cbCaja_CheckedChanged);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(5, 605);
+            this.panel1.TabIndex = 11;
+            // 
+            // btExcel
+            // 
+            this.btExcel.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btExcel.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btExcel.IconChar = FontAwesome.Sharp.IconChar.FileExcel;
+            this.btExcel.IconColor = System.Drawing.Color.Gainsboro;
+            this.btExcel.IconSize = 30;
+            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btExcel.Location = new System.Drawing.Point(993, 2);
+            this.btExcel.Name = "btExcel";
+            this.btExcel.Rotation = 0D;
+            this.btExcel.Size = new System.Drawing.Size(48, 38);
+            this.btExcel.TabIndex = 12;
+            this.btExcel.UseVisualStyleBackColor = true;
+            this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
+            // 
             // BusquedaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
             this.ClientSize = new System.Drawing.Size(1111, 605);
+            this.Controls.Add(this.btExcel);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbCaja);
             this.Controls.Add(this.cbCaja);
             this.Controls.Add(this.tbFecha);
@@ -194,5 +227,7 @@
         private System.Windows.Forms.TextBox tbFecha;
         private System.Windows.Forms.TextBox tbCaja;
         private System.Windows.Forms.CheckBox cbCaja;
+        private System.Windows.Forms.Panel panel1;
+        private FontAwesome.Sharp.IconButton btExcel;
     }
 }
