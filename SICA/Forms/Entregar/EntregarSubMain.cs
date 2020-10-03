@@ -58,9 +58,9 @@ namespace SICA.Forms.Entregar
                 currentBtn.IconColor = color;
                 //currentBtn.TextImageRelation = TextImageRelation.TextBeforeImage;
                 //currentBtn.ImageAlign = ContentAlignment.MiddleRight;
-                //Left border button
+
                 topBorderBtn.BackColor = color;
-                topBorderBtn.Location = new Point(0, currentBtn.Location.Y);
+                topBorderBtn.Location = new Point(currentBtn.Location.X, 0);
                 topBorderBtn.Visible = true;
                 topBorderBtn.BringToFront();
                 //Current Child Form Icon
@@ -75,6 +75,7 @@ namespace SICA.Forms.Entregar
             {
                 currentBtn.BackColor = Color.MidnightBlue;
                 currentBtn.ForeColor = Color.Gainsboro;
+                currentBtn.FlatAppearance.BorderSize = 1;
                 //currentBtn.TextAlign = ContentAlignment.MiddleLeft;
                 //currentBtn.IconColor = Color.Gainsboro;
                 //currentBtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -95,6 +96,18 @@ namespace SICA.Forms.Entregar
         {
             ActivateButton(sender, RGBColors.color4);
             OpenChildForm(new EntregarExpediente());
+        }
+
+        private void btDocumento_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new EntregarDocumento());
+        }
+
+        private void btPagare_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new EntregarPagare());
         }
     }
 }

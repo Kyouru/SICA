@@ -14,6 +14,7 @@ using Microsoft.Office.Core;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms.VisualStyles;
+using SICA.Forms;
 
 namespace SICA
 {
@@ -178,13 +179,27 @@ namespace SICA
             }
 
             //Recorremos el DataTable rellenando la hoja de trabajo
-            for (int i = 1; i < dgv.Rows.Count - 1; i++)
+            for (int i = 0; i < dgv.Rows.Count; i++)
             {
                 for (int j = 0; j < dgv.Columns.Count; j++)
                 {
                     if (dgv.Rows[i].Cells[j] != null)
                     {
-                        hoja_trabajo.Cells[i + inicio_row, j + inicio_col] = "'" + dgv.Rows[i].Cells[j].Value.ToString();
+                        if (GlobalFunctions.IsDate(dgv.Rows[i].Cells[j].Value.ToString()))
+                        {
+                            try
+                            {
+                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = DateTime.Parse(dgv.Rows[i].Cells[j].Value.ToString()).ToString("yyyy-MM-dd");
+                            }
+                            catch
+                            {
+                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = "'" +dgv.Rows[i].Cells[j].Value.ToString();
+                            }
+                        }
+                        else
+                        {
+                            hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = dgv.Rows[i].Cells[j].Value.ToString();
+                        }
                     }
                 }
             }
@@ -228,7 +243,21 @@ namespace SICA
                 {
                     if (dt.Rows[i][j] != null)
                     {
-                        hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = "'" + dt.Rows[i][j].ToString();
+                        if (GlobalFunctions.IsDate(dt.Rows[i][j].ToString()))
+                        {
+                            try
+                            {
+                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = DateTime.Parse(dt.Rows[i][j].ToString()).ToString("yyyy-MM-dd");
+                            }
+                            catch
+                            {
+                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = "'" + dt.Rows[i][j].ToString();
+                            }
+                        }
+                        else
+                        {
+                            hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = dt.Rows[i][j].ToString();
+                        }
                     }
                 }
             }
@@ -264,15 +293,15 @@ namespace SICA
                 strSQL = "UPDATE REPORTE_VALORADOS SET ";
                 if (expediente)
                 {
-                    strSQL = strSQL + "EXPEDIENTE = TRUE ";
+                    strSQL = strSQL + "EXPEDIENTE = 1 ";
                     if (pagare)
                     {
-                        strSQL = strSQL + ", PAGARE = TRUE ";
+                        strSQL = strSQL + ", PAGARE = 1 ";
                     }
                 }
                 else if (pagare)
                 {
-                    strSQL = strSQL + "PAGARE = TRUE ";
+                    strSQL = strSQL + "PAGARE = 1 ";
                 }
                 strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + sisgo + "'";
                 sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
@@ -404,5 +433,90 @@ namespace SICA
             return textoNormalizado;
         }
 
+        public static bool LimpiarCarrito(string tipo)
+        {
+            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            {
+                SQLiteCommand sqliteCmd;
+                sqliteConnection.Open();
+                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+
+                try
+                {
+                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + tipo + "'", sqliteConnection);
+
+                    sqliteCmd.ExecuteNonQuery();
+
+                    sqliteTransaction.Commit();
+                    sqliteConnection.Close();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    sqliteConnection.Close();
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+            }
+        }
+    
+        public static bool actualizarNoDesembolsados()
+        {
+            string strSQL = "";
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                {
+                    sqliteConnection.Open();
+
+                    DataTable dt = new DataTable();
+
+                    SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                    SQLiteCommand sqliteCmd;
+                    SQLiteDataAdapter sqliteDataAdapter;
+
+                    strSQL = "SELECT SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON ESD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE ESD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
+                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                    sqliteCmd.ExecuteNonQuery();
+
+                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                    sqliteDataAdapter.Fill(dt);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO'";
+                        strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
+                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                        sqliteCmd.ExecuteNonQuery();
+                    }
+
+                    dt = new DataTable();
+                    strSQL = "SELECT SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON PSD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE PSD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
+                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                    sqliteCmd.ExecuteNonQuery();
+
+                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
+                    sqliteDataAdapter.Fill(dt);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO'";
+                        strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
+                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                        sqliteCmd.ExecuteNonQuery();
+                    }
+
+                    sqliteTransaction.Commit();
+                    sqliteConnection.Close();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + strSQL);
+                return false;
+            }
+        }
     }
 }

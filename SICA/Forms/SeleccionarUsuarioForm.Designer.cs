@@ -39,6 +39,7 @@
             this.cmbUsuario.Name = "cmbUsuario";
             this.cmbUsuario.Size = new System.Drawing.Size(231, 21);
             this.cmbUsuario.TabIndex = 0;
+            this.cmbUsuario.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbUsuario_KeyPress);
             // 
             // btSeleccionar
             // 

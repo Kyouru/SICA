@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.pnTop = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btLetra = new FontAwesome.Sharp.IconButton();
             this.btPagare = new FontAwesome.Sharp.IconButton();
             this.btDocumento = new FontAwesome.Sharp.IconButton();
             this.btBusqueda = new FontAwesome.Sharp.IconButton();
             this.pnSubMain = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,6 +51,15 @@
             this.pnTop.Name = "pnTop";
             this.pnTop.Size = new System.Drawing.Size(1048, 45);
             this.pnTop.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(560, 44);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(488, 1);
+            this.panel1.TabIndex = 8;
             // 
             // btLetra
             // 
@@ -95,6 +104,7 @@
             this.btPagare.TabIndex = 6;
             this.btPagare.Text = "Pagare";
             this.btPagare.UseVisualStyleBackColor = false;
+            this.btPagare.Click += new System.EventHandler(this.btPagare_Click);
             // 
             // btDocumento
             // 
@@ -117,6 +127,7 @@
             this.btDocumento.TabIndex = 5;
             this.btDocumento.Text = "Documentos";
             this.btDocumento.UseVisualStyleBackColor = false;
+            this.btDocumento.Click += new System.EventHandler(this.btDocumento_Click);
             // 
             // btBusqueda
             // 
@@ -148,15 +159,6 @@
             this.pnSubMain.Name = "pnSubMain";
             this.pnSubMain.Size = new System.Drawing.Size(1048, 563);
             this.pnSubMain.TabIndex = 1;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(560, 44);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(488, 1);
-            this.panel1.TabIndex = 8;
             // 
             // EntregarSubMain
             // 

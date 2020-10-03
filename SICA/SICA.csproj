@@ -14,6 +14,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -52,6 +52,9 @@
   <PropertyGroup>
     <StartupObject>SICA.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo2.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome.Sharp, Version=5.14.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.Sharp.5.14.1\lib\net472\FontAwesome.Sharp.dll</HintPath>
@@ -74,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BovedaFunctions.cs" />
-    <Compile Include="EntregarFunctions.cs" />
+    <Compile Include="Forms\Entregar\EntregarFunctions.cs" />
     <Compile Include="Forms\BovedaForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,10 +96,10 @@
     <Compile Include="Forms\CarritoForm.Designer.cs">
       <DependentUpon>CarritoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EntregarForm.cs">
+    <Compile Include="Forms\Old\EntregarForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\EntregarForm.Designer.cs">
+    <Compile Include="Forms\Old\EntregarForm.Designer.cs">
       <DependentUpon>EntregarForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Entregar\EntregarDocumento.cs">
@@ -111,6 +114,12 @@
     <Compile Include="Forms\Entregar\EntregarExpediente.Designer.cs">
       <DependentUpon>EntregarExpediente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Entregar\EntregarPagare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarPagare.Designer.cs">
+      <DependentUpon>EntregarPagare.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Entregar\EntregarSubMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +131,12 @@
     </Compile>
     <Compile Include="Forms\IronMountainForm.Designer.cs">
       <DependentUpon>IronMountainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoadingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadingScreen.Designer.cs">
+      <DependentUpon>LoadingScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\RecibirForm.cs">
       <SubType>Form</SubType>
@@ -168,7 +183,7 @@
     <EmbeddedResource Include="Forms\CarritoForm.resx">
       <DependentUpon>CarritoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EntregarForm.resx">
+    <EmbeddedResource Include="Forms\Old\EntregarForm.resx">
       <DependentUpon>EntregarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entregar\EntregarDocumento.resx">
@@ -177,20 +192,26 @@
     <EmbeddedResource Include="Forms\Entregar\EntregarExpediente.resx">
       <DependentUpon>EntregarExpediente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Entregar\EntregarPagare.resx">
+      <DependentUpon>EntregarPagare.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\IronMountainForm.resx">
       <DependentUpon>IronMountainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoadingScreen.resx">
+      <DependentUpon>LoadingScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\RecibirForm.resx">
       <DependentUpon>RecibirForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportarForm.resx">
       <DependentUpon>ImportarForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -206,6 +227,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -261,6 +283,24 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading2.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading3.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets')" />

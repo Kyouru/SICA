@@ -28,6 +28,7 @@ namespace SICA
             pnLeft.Controls.Add(leftBorderBtn);
 
             //Form
+            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Text = string.Empty;
             this.ControlBox = false;
             this.DoubleBuffered = true;
@@ -171,5 +172,6 @@ namespace SICA
             ActivateButton(sender, RGBColors.color1);
             OpenChildForm(new BovedaForm());
         }
+
     }
 }

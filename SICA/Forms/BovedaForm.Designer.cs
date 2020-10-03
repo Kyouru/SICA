@@ -137,7 +137,7 @@
             this.btBuscarGuardar.Rotation = 0D;
             this.btBuscarGuardar.Size = new System.Drawing.Size(88, 23);
             this.btBuscarGuardar.TabIndex = 30;
-            this.btBuscarGuardar.Text = "Guardar";
+            this.btBuscarGuardar.Text = "Buscar";
             this.btBuscarGuardar.UseVisualStyleBackColor = true;
             this.btBuscarGuardar.Click += new System.EventHandler(this.btBuscarGuardar_Click);
             // 
@@ -200,6 +200,7 @@
             this.dgvBovedaGuardar.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvBovedaGuardar.Location = new System.Drawing.Point(12, 41);
             this.dgvBovedaGuardar.Name = "dgvBovedaGuardar";
+            this.dgvBovedaGuardar.ReadOnly = true;
             this.dgvBovedaGuardar.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvBovedaGuardar.RowHeadersVisible = false;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.MidnightBlue;

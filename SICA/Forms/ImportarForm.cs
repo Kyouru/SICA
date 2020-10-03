@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using SICA.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -31,6 +33,9 @@ namespace SICA
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+                t.Start();
+
                 DataTable dt = new DataTable();
                 dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
 
@@ -56,6 +61,10 @@ namespace SICA
                              };
                 dgvDesembolsado.DataSource = result.ToList();
                 btCargarVigentes.Visible = true;
+
+                t.Abort();
+
+                MessageBox.Show(dgvDesembolsado.Rows.Count + " nuevos expedientes");
             }
         }
 
@@ -70,6 +79,8 @@ namespace SICA
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+                t.Start();
                 DataTable dt = new DataTable();
                 dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
 
@@ -100,6 +111,7 @@ namespace SICA
                         dgvCancelados.DataSource = result.ToList();
                         dgvCancelados.Columns[1].Width = 300;
                         btCargarCancelados.Visible = true;
+                        t.Abort();
                         MessageBox.Show("Se Encontró " + result.ToList().Count.ToString() + " Créditos Cancelados que no se encuentran en la BD");
                     }
                     else
@@ -130,6 +142,9 @@ namespace SICA
                         dgvCancelados.Columns[1].Width = 50;
                         dgvCancelados.Columns[2].Width = 300;
                         btActualizarCancelados.Visible = true;
+                        t.Abort();
+
+                        MessageBox.Show(dgvCancelados.Rows.Count + " expedientes cancelados");
                     }
                 }
             }
@@ -145,6 +160,8 @@ namespace SICA
                 SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
                 SQLiteCommand sqliteCmd;
                 string strSQL = "";
+
+
                 foreach (DataGridViewColumn col in dgvCancelados.Columns)
                 {
                     if (col.HeaderText == "ID")
@@ -159,6 +176,8 @@ namespace SICA
                 }
                 if (id_column >= 0 && cancelado_column >= 0)
                 {
+                    Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+                    t.Start();
                     try
                     {
                         foreach (DataGridViewRow row in dgvCancelados.Rows)
@@ -171,6 +190,7 @@ namespace SICA
                             catch (Exception ex)
                             {
                                 sqliteConnection.Close();
+                                t.Abort();
                                 MessageBox.Show(ex.Message + "\n" + strSQL);
                                 return;
                             }
@@ -181,13 +201,15 @@ namespace SICA
                     catch (Exception ex)
                     {
                         sqliteConnection.Close();
+                        t.Abort();
                         MessageBox.Show(ex.Message + "\n" + strSQL);
                         return;
                     }
                     sqliteTransaction.Commit();
+                    sqliteConnection.Close();
+                    t.Abort();
                     MessageBox.Show("Actualizacion Finalizada");
                     dgvCancelados.DataSource = null;
-                    sqliteConnection.Close();
                 }
                 else
                 {
@@ -231,13 +253,17 @@ namespace SICA
                 sqliteConnection.Open();
                 SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
                 SQLiteCommand sqliteCmd;
-                String strSQL;
-                foreach (DataGridViewRow row in dgv.Rows)
-                {
-                    strSQL = "INSERT INTO REPORTE_VALORADOS (CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FECHA_OTORGADO, FECHA_CANCELACION, TIPO_PRESTAMO, SOLICITUD_SISGO) VALUES (";
+                String strSQL = "";
 
-                    try
+                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+                t.Start();
+                System.Threading.Thread.Sleep(2000);
+                try
+                {
+                    foreach (DataGridViewRow row in dgv.Rows)
                     {
+                        strSQL = "INSERT INTO REPORTE_VALORADOS (CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FECHA_OTORGADO, FECHA_CANCELACION, TIPO_PRESTAMO, SOLICITUD_SISGO) VALUES (";
+
                         foreach (DataGridViewCell cell in row.Cells)
                         {
                             if (cell.Value is null || cell.Value.ToString() == "")
@@ -261,18 +287,38 @@ namespace SICA
                         sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                         sqliteCmd.ExecuteNonQuery();
                     }
-                    catch (Exception ex)
+                    sqliteTransaction.Commit();
+                    sqliteConnection.Close();
+                    if (t.ThreadState == ThreadState.Running)
                     {
-                        sqliteConnection.Close();
-                        MessageBox.Show(ex.Message + "\n" + strSQL);
+                        t.Abort();
                     }
+                    MessageBox.Show("Carga Finalizada");
+                    dgv.DataSource = null;
                 }
-                sqliteTransaction.Commit();
-                MessageBox.Show("Carga Finalizada");
-                dgv.DataSource = null;
-                sqliteConnection.Close();
+                catch (Exception ex)
+                {
+                    sqliteConnection.Close();
+                    if (t.ThreadState == ThreadState.Running)
+                    {
+                        t.Abort();
+                    }
+                    MessageBox.Show(ex.Message + "\n" + strSQL);
+                }
+
             }
 
+        }
+        public static void StartLoadingScreen()
+        {
+            try
+            {
+                Application.Run(new LoadingScreen());
+            }
+            catch
+            {
+
+            }
         }
     }
 }

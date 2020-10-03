@@ -33,11 +33,12 @@
             this.btImportar = new FontAwesome.Sharp.IconButton();
             this.btBoveda = new FontAwesome.Sharp.IconButton();
             this.btIronMountain = new FontAwesome.Sharp.IconButton();
-            this.btEntregar = new FontAwesome.Sharp.IconButton();
             this.btRecibir = new FontAwesome.Sharp.IconButton();
+            this.btEntregar = new FontAwesome.Sharp.IconButton();
             this.btBusqueda = new FontAwesome.Sharp.IconButton();
             this.icMain = new FontAwesome.Sharp.IconPictureBox();
             this.pnTop = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.lbUsuario = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btMinimizar = new FontAwesome.Sharp.IconButton();
@@ -138,30 +139,6 @@
             this.btIronMountain.UseVisualStyleBackColor = true;
             this.btIronMountain.Click += new System.EventHandler(this.btIronMountain_Click);
             // 
-            // btEntregar
-            // 
-            this.btEntregar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btEntregar.FlatAppearance.BorderSize = 0;
-            this.btEntregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btEntregar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btEntregar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btEntregar.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btEntregar.IconChar = FontAwesome.Sharp.IconChar.FileUpload;
-            this.btEntregar.IconColor = System.Drawing.Color.Gainsboro;
-            this.btEntregar.IconSize = 30;
-            this.btEntregar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btEntregar.Location = new System.Drawing.Point(0, 131);
-            this.btEntregar.Name = "btEntregar";
-            this.btEntregar.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btEntregar.Rotation = 0D;
-            this.btEntregar.Size = new System.Drawing.Size(200, 61);
-            this.btEntregar.TabIndex = 4;
-            this.btEntregar.Text = "  Entregar";
-            this.btEntregar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btEntregar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btEntregar.UseVisualStyleBackColor = true;
-            this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
-            // 
             // btRecibir
             // 
             this.btRecibir.Dock = System.Windows.Forms.DockStyle.Top;
@@ -185,6 +162,30 @@
             this.btRecibir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btRecibir.UseVisualStyleBackColor = true;
             this.btRecibir.Click += new System.EventHandler(this.btRecibir_Click);
+            // 
+            // btEntregar
+            // 
+            this.btEntregar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btEntregar.FlatAppearance.BorderSize = 0;
+            this.btEntregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btEntregar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btEntregar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btEntregar.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btEntregar.IconChar = FontAwesome.Sharp.IconChar.FileUpload;
+            this.btEntregar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btEntregar.IconSize = 30;
+            this.btEntregar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btEntregar.Location = new System.Drawing.Point(0, 131);
+            this.btEntregar.Name = "btEntregar";
+            this.btEntregar.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btEntregar.Rotation = 0D;
+            this.btEntregar.Size = new System.Drawing.Size(200, 61);
+            this.btEntregar.TabIndex = 4;
+            this.btEntregar.Text = "  Entregar";
+            this.btEntregar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btEntregar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btEntregar.UseVisualStyleBackColor = true;
+            this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
             // 
             // btBusqueda
             // 
@@ -228,24 +229,35 @@
             // 
             // pnTop
             // 
-            this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.pnTop.BackColor = System.Drawing.Color.MidnightBlue;
+            this.pnTop.Controls.Add(this.panel2);
             this.pnTop.Controls.Add(this.lbUsuario);
             this.pnTop.Controls.Add(this.label1);
             this.pnTop.Controls.Add(this.btMinimizar);
             this.pnTop.Controls.Add(this.btMaximizar);
             this.pnTop.Controls.Add(this.btCerrar);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnTop.Location = new System.Drawing.Point(200, 0);
+            this.pnTop.Location = new System.Drawing.Point(5, 0);
             this.pnTop.Name = "pnTop";
-            this.pnTop.Size = new System.Drawing.Size(1064, 34);
+            this.pnTop.Size = new System.Drawing.Size(1059, 34);
             this.pnTop.TabIndex = 1;
             this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 29);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1059, 5);
+            this.panel2.TabIndex = 8;
+            // 
             // lbUsuario
             // 
+            this.lbUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbUsuario.AutoSize = true;
             this.lbUsuario.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbUsuario.Location = new System.Drawing.Point(815, 10);
+            this.lbUsuario.Location = new System.Drawing.Point(832, 10);
             this.lbUsuario.Name = "lbUsuario";
             this.lbUsuario.Size = new System.Drawing.Size(109, 13);
             this.lbUsuario.TabIndex = 7;
@@ -253,9 +265,10 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(763, 10);
+            this.label1.Location = new System.Drawing.Point(780, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 6;
@@ -271,7 +284,7 @@
             this.btMinimizar.IconColor = System.Drawing.Color.White;
             this.btMinimizar.IconSize = 24;
             this.btMinimizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMinimizar.Location = new System.Drawing.Point(985, 0);
+            this.btMinimizar.Location = new System.Drawing.Point(980, 0);
             this.btMinimizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMinimizar.Name = "btMinimizar";
             this.btMinimizar.Rotation = 0D;
@@ -290,7 +303,7 @@
             this.btMaximizar.IconColor = System.Drawing.Color.White;
             this.btMaximizar.IconSize = 24;
             this.btMaximizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMaximizar.Location = new System.Drawing.Point(1011, 0);
+            this.btMaximizar.Location = new System.Drawing.Point(1006, 0);
             this.btMaximizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMaximizar.Name = "btMaximizar";
             this.btMaximizar.Rotation = 0D;
@@ -309,7 +322,7 @@
             this.btCerrar.IconColor = System.Drawing.Color.White;
             this.btCerrar.IconSize = 24;
             this.btCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCerrar.Location = new System.Drawing.Point(1037, 0);
+            this.btCerrar.Location = new System.Drawing.Point(1032, 0);
             this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
             this.btCerrar.Name = "btCerrar";
             this.btCerrar.Rotation = 0D;
@@ -320,11 +333,12 @@
             // 
             // pnMain
             // 
+            this.pnMain.Controls.Add(this.pnTop);
             this.pnMain.Controls.Add(this.panel1);
             this.pnMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnMain.Location = new System.Drawing.Point(200, 34);
+            this.pnMain.Location = new System.Drawing.Point(200, 0);
             this.pnMain.Name = "pnMain";
-            this.pnMain.Size = new System.Drawing.Size(1064, 647);
+            this.pnMain.Size = new System.Drawing.Size(1064, 681);
             this.pnMain.TabIndex = 2;
             // 
             // panel1
@@ -333,7 +347,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(5, 647);
+            this.panel1.Size = new System.Drawing.Size(5, 681);
             this.panel1.TabIndex = 12;
             // 
             // MainForm
@@ -343,9 +357,8 @@
             this.BackColor = System.Drawing.Color.MidnightBlue;
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.pnMain);
-            this.Controls.Add(this.pnTop);
             this.Controls.Add(this.pnLeft);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Form1";
             this.pnLeft.ResumeLayout(false);
@@ -375,6 +388,7 @@
         private FontAwesome.Sharp.IconButton btImportar;
         private FontAwesome.Sharp.IconButton btBoveda;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 

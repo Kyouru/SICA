@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,6 +24,9 @@ namespace SICA.Forms
         {
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
+                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+                t.Start();
+
                 string strSQL;
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
                 sqliteConnection.Open();
@@ -52,10 +56,12 @@ namespace SICA.Forms
 
                     dgvSolicitarIM.DataSource = dt;
                     dgvSolicitarIM.Columns[0].Width = 0;
+                    t.Abort();
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    t.Abort();
                     MessageBox.Show(ex.Message);
                     return;
                 }
@@ -68,8 +74,7 @@ namespace SICA.Forms
             {
                 GlobalFunctions.AgregarCarrito(dgvSolicitarIM.SelectedRows[0].Cells[0].Value.ToString(), "0", dgvSolicitarIM.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainSolicitar);
                 lbCantidadSolicitar.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainSolicitar) + ")";
-                //btBuscarSolicitarIM_Click(sender, e);
-                dgvSolicitarIM.SelectedRows[0].Height = 0;
+                btBuscarSolicitarIM_Click(sender, e);
             }
         }
 
@@ -537,6 +542,17 @@ namespace SICA.Forms
             else
             {
                 MessageBox.Show("Vacio");
+            }
+        }
+        public static void StartLoadingScreen()
+        {
+            try
+            {
+                Application.Run(new LoadingScreen());
+            }
+            catch
+            {
+
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace SICA.Forms.Entregar
 {
-    partial class EntregarDocumento
+    partial class EntregarPagare
     {
         /// <summary>
         /// Required designer variable.
@@ -32,48 +32,54 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnTop = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.cbDesembolsado = new System.Windows.Forms.CheckBox();
             this.tbBusquedaLibre = new System.Windows.Forms.TextBox();
             this.btLimpiarCarrito = new FontAwesome.Sharp.IconButton();
-            this.btVerCarrito = new FontAwesome.Sharp.IconButton();
+            this.label2 = new System.Windows.Forms.Label();
             this.btEntregar = new FontAwesome.Sharp.IconButton();
-            this.lbCantidad = new System.Windows.Forms.Label();
+            this.btVerCarrito = new FontAwesome.Sharp.IconButton();
             this.btExcel = new FontAwesome.Sharp.IconButton();
+            this.lbCantidad = new System.Windows.Forms.Label();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.dgv = new System.Windows.Forms.DataGridView();
-            this.pnBottom = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.pnTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
-            this.pnBottom.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.pnTop.Controls.Add(this.label2);
+            this.pnTop.Controls.Add(this.cbDesembolsado);
             this.pnTop.Controls.Add(this.tbBusquedaLibre);
             this.pnTop.Controls.Add(this.btLimpiarCarrito);
-            this.pnTop.Controls.Add(this.btVerCarrito);
+            this.pnTop.Controls.Add(this.label2);
             this.pnTop.Controls.Add(this.btEntregar);
-            this.pnTop.Controls.Add(this.lbCantidad);
+            this.pnTop.Controls.Add(this.btVerCarrito);
             this.pnTop.Controls.Add(this.btExcel);
+            this.pnTop.Controls.Add(this.lbCantidad);
             this.pnTop.Controls.Add(this.btBuscar);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTop.Location = new System.Drawing.Point(0, 0);
             this.pnTop.Name = "pnTop";
             this.pnTop.Size = new System.Drawing.Size(1048, 47);
-            this.pnTop.TabIndex = 45;
+            this.pnTop.TabIndex = 54;
             // 
-            // label2
+            // cbDesembolsado
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(12, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 22);
-            this.label2.TabIndex = 37;
-            this.label2.Text = "Busqueda:";
+            this.cbDesembolsado.AutoSize = true;
+            this.cbDesembolsado.Checked = true;
+            this.cbDesembolsado.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDesembolsado.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDesembolsado.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.cbDesembolsado.Location = new System.Drawing.Point(320, 12);
+            this.cbDesembolsado.Name = "cbDesembolsado";
+            this.cbDesembolsado.Size = new System.Drawing.Size(121, 20);
+            this.cbDesembolsado.TabIndex = 36;
+            this.cbDesembolsado.Text = "Desembolsado";
+            this.cbDesembolsado.UseVisualStyleBackColor = true;
+            this.cbDesembolsado.CheckedChanged += new System.EventHandler(this.cbDesembolsado_CheckedChanged);
             // 
             // tbBusquedaLibre
             // 
@@ -81,9 +87,8 @@
             this.tbBusquedaLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbBusquedaLibre.Location = new System.Drawing.Point(119, 10);
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
-            this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 24);
-            this.tbBusquedaLibre.TabIndex = 38;
-            this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
+            this.tbBusquedaLibre.Size = new System.Drawing.Size(190, 24);
+            this.tbBusquedaLibre.TabIndex = 47;
             // 
             // btLimpiarCarrito
             // 
@@ -99,27 +104,20 @@
             this.btLimpiarCarrito.Name = "btLimpiarCarrito";
             this.btLimpiarCarrito.Rotation = 0D;
             this.btLimpiarCarrito.Size = new System.Drawing.Size(48, 38);
-            this.btLimpiarCarrito.TabIndex = 44;
+            this.btLimpiarCarrito.TabIndex = 53;
             this.btLimpiarCarrito.UseVisualStyleBackColor = true;
             this.btLimpiarCarrito.Click += new System.EventHandler(this.btLimpiarCarrito_Click);
             // 
-            // btVerCarrito
+            // label2
             // 
-            this.btVerCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btVerCarrito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btVerCarrito.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btVerCarrito.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btVerCarrito.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
-            this.btVerCarrito.IconColor = System.Drawing.Color.Gainsboro;
-            this.btVerCarrito.IconSize = 30;
-            this.btVerCarrito.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btVerCarrito.Location = new System.Drawing.Point(662, 5);
-            this.btVerCarrito.Name = "btVerCarrito";
-            this.btVerCarrito.Rotation = 0D;
-            this.btVerCarrito.Size = new System.Drawing.Size(48, 38);
-            this.btVerCarrito.TabIndex = 39;
-            this.btVerCarrito.UseVisualStyleBackColor = true;
-            this.btVerCarrito.Click += new System.EventHandler(this.btVerCarrito_Click);
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label2.Location = new System.Drawing.Point(12, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(101, 22);
+            this.label2.TabIndex = 46;
+            this.label2.Text = "Busqueda:";
             // 
             // btEntregar
             // 
@@ -135,20 +133,27 @@
             this.btEntregar.Name = "btEntregar";
             this.btEntregar.Rotation = 0D;
             this.btEntregar.Size = new System.Drawing.Size(48, 38);
-            this.btEntregar.TabIndex = 43;
+            this.btEntregar.TabIndex = 52;
             this.btEntregar.UseVisualStyleBackColor = true;
             this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
             // 
-            // lbCantidad
+            // btVerCarrito
             // 
-            this.lbCantidad.AutoSize = true;
-            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
-            this.lbCantidad.Name = "lbCantidad";
-            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
-            this.lbCantidad.TabIndex = 40;
-            this.lbCantidad.Text = "(0)";
+            this.btVerCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btVerCarrito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarrito.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btVerCarrito.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarrito.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarrito.IconColor = System.Drawing.Color.Gainsboro;
+            this.btVerCarrito.IconSize = 30;
+            this.btVerCarrito.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarrito.Location = new System.Drawing.Point(662, 5);
+            this.btVerCarrito.Name = "btVerCarrito";
+            this.btVerCarrito.Rotation = 0D;
+            this.btVerCarrito.Size = new System.Drawing.Size(48, 38);
+            this.btVerCarrito.TabIndex = 48;
+            this.btVerCarrito.UseVisualStyleBackColor = true;
+            this.btVerCarrito.Click += new System.EventHandler(this.btVerCarrito_Click);
             // 
             // btExcel
             // 
@@ -163,9 +168,20 @@
             this.btExcel.Name = "btExcel";
             this.btExcel.Rotation = 0D;
             this.btExcel.Size = new System.Drawing.Size(48, 38);
-            this.btExcel.TabIndex = 42;
+            this.btExcel.TabIndex = 51;
             this.btExcel.UseVisualStyleBackColor = true;
             this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
+            // 
+            // lbCantidad
+            // 
+            this.lbCantidad.AutoSize = true;
+            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
+            this.lbCantidad.Name = "lbCantidad";
+            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidad.TabIndex = 49;
+            this.lbCantidad.Text = "(0)";
             // 
             // btBuscar
             // 
@@ -180,7 +196,7 @@
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Rotation = 0D;
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
-            this.btBuscar.TabIndex = 41;
+            this.btBuscar.TabIndex = 50;
             this.btBuscar.UseVisualStyleBackColor = true;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
@@ -189,9 +205,6 @@
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
             this.dgv.AllowUserToResizeRows = false;
-            this.dgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -212,6 +225,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.EnableHeadersVisualStyles = false;
             this.dgv.GridColor = System.Drawing.Color.Gainsboro;
             this.dgv.Location = new System.Drawing.Point(0, 0);
@@ -224,34 +238,33 @@
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgv.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1048, 569);
+            this.dgv.Size = new System.Drawing.Size(1048, 561);
             this.dgv.TabIndex = 25;
-            this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellDoubleClick);
+            this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
-            // pnBottom
+            // panel1
             // 
-            this.pnBottom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnBottom.Controls.Add(this.dgv);
-            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnBottom.Location = new System.Drawing.Point(0, 47);
-            this.pnBottom.Name = "pnBottom";
-            this.pnBottom.Size = new System.Drawing.Size(1048, 569);
-            this.pnBottom.TabIndex = 46;
+            this.panel1.Controls.Add(this.dgv);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 47);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1048, 561);
+            this.panel1.TabIndex = 55;
             // 
-            // EntregarDocumento
+            // EntregarPagare
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1048, 608);
-            this.Controls.Add(this.pnBottom);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnTop);
-            this.Name = "EntregarDocumento";
-            this.Text = "EntregarDocumento";
+            this.Name = "EntregarPagare";
+            this.Text = "EntregarPagare";
             this.pnTop.ResumeLayout(false);
             this.pnTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
-            this.pnBottom.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -268,6 +281,7 @@
         private FontAwesome.Sharp.IconButton btVerCarrito;
         private System.Windows.Forms.TextBox tbBusquedaLibre;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel pnBottom;
+        private System.Windows.Forms.CheckBox cbDesembolsado;
+        private System.Windows.Forms.Panel panel1;
     }
 }

@@ -158,6 +158,7 @@
             this.dgvCargo.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvCargo.Location = new System.Drawing.Point(8, 48);
             this.dgvCargo.Name = "dgvCargo";
+            this.dgvCargo.ReadOnly = true;
             this.dgvCargo.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvCargo.RowHeadersVisible = false;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.MidnightBlue;
@@ -280,8 +281,9 @@
             this.dgvReingreso.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvReingreso.EnableHeadersVisualStyles = false;
             this.dgvReingreso.GridColor = System.Drawing.Color.Gainsboro;
-            this.dgvReingreso.Location = new System.Drawing.Point(17, 47);
+            this.dgvReingreso.Location = new System.Drawing.Point(8, 47);
             this.dgvReingreso.Name = "dgvReingreso";
+            this.dgvReingreso.ReadOnly = true;
             this.dgvReingreso.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvReingreso.RowHeadersVisible = false;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.MidnightBlue;
@@ -289,7 +291,7 @@
             dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgvReingreso.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvReingreso.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvReingreso.Size = new System.Drawing.Size(1040, 498);
+            this.dgvReingreso.Size = new System.Drawing.Size(1049, 498);
             this.dgvReingreso.TabIndex = 14;
             this.dgvReingreso.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReingreso_CellDoubleClick);
             // 
@@ -392,6 +394,7 @@
             this.dgvPagare.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvPagare.Location = new System.Drawing.Point(12, 41);
             this.dgvPagare.Name = "dgvPagare";
+            this.dgvPagare.ReadOnly = true;
             this.dgvPagare.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvPagare.RowHeadersVisible = false;
             dataGridViewCellStyle9.BackColor = System.Drawing.Color.MidnightBlue;

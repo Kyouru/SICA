@@ -43,3 +43,5 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.BovedaForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarExpediente.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarDocumento.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.LoadingScreen.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarPagare.resources

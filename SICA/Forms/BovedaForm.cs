@@ -27,7 +27,7 @@ namespace SICA.Forms
                 DataTable dt = new DataTable("REPORTE_VALORADOS");
                 sqliteConnection.Open();
 
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, U.ID_USUARIO_FK, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, U.ID_USUARIO, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
                 strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
                 strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
                 strSQL = strSQL + " WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
@@ -135,7 +135,7 @@ namespace SICA.Forms
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
                 strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
-                strSQL = strSQL + " WHERE CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
+                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
 
                 if (tbBusquedaLibreGuardar.Text != "")
                 {
@@ -166,7 +166,7 @@ namespace SICA.Forms
 
         private void dgvBovedaGuardar_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvBovedaRetirar.SelectedRows.Count == 1)
+            if (dgvBovedaGuardar.SelectedRows.Count == 1)
             {
                 if (cbCajaRetiro.Checked)
                 {
@@ -186,7 +186,7 @@ namespace SICA.Forms
                             strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
                             strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL_FK";
                             strSQL = strSQL + " WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
-                            strSQL = strSQL + " AND NUMERO_DE_CAJA = '" + dgvBovedaRetirar.SelectedRows[0].Cells["ID"].Value.ToString() + "'";
+                            strSQL = strSQL + " AND NUMERO_DE_CAJA = '" + dgvBovedaGuardar.SelectedRows[0].Cells["ID"].Value.ToString() + "'";
                             sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                             sqliteCmd.ExecuteNonQuery();
                             sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);

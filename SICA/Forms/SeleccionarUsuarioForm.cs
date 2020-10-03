@@ -27,7 +27,7 @@ namespace SICA.Forms
                 DataTable dt = new DataTable("USUARIO");
                 sqliteConnection.Open();
 
-                strSQL = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = 1 ORDER BY ORDEN";
+                strSQL = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = 1 AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
 
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
 
@@ -49,7 +49,7 @@ namespace SICA.Forms
                     return;
                 }
             }
-            //cmbUsuario.DataSource
+            
         }
 
         private void btSeleccionar_Click(object sender, EventArgs e)
@@ -60,6 +60,37 @@ namespace SICA.Forms
                 Globals.UsernameSelect = cmbUsuario.Text;
                 this.Close();
             }
+            else
+            {
+                DialogResult dialogResult = MessageBox.Show("Usuario no existe.\nDesea Crear?", "Usuario no ingresado", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                    {
+                        sqliteConnection.Open();
+
+                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+
+                        string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', 0, 1, 0, 0)";
+                        SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
+                        sqliteCmd.ExecuteNonQuery();
+
+                        Globals.IdUsernameSelect = Int32.Parse(sqliteConnection.LastInsertRowId.ToString());
+                        Globals.UsernameSelect = cmbUsuario.Text;
+
+                        sqliteTransaction.Commit();
+                        sqliteConnection.Close();
+
+                        this.Close();
+                    }
+                }
+            }
+        }
+
+        private void cmbUsuario_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar >= 'a' && e.KeyChar <= 'z')
+                e.KeyChar -= (char)32;
         }
     }
 }

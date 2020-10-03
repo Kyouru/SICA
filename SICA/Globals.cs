@@ -11,6 +11,7 @@ namespace SICA
         public static String DBPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\BD_SICA";
         public static String CargoPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\CARGO\\";
         public static String PlantillaCargoPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO.xlsx";
+        public static String PlantillaCargoPagPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO PAGARE.xlsx";
         public static String PlantillaCargoIMPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO IM.xlsx";
 
         public static String DBPasswod = "";

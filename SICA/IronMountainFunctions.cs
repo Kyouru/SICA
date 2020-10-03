@@ -25,7 +25,7 @@ namespace SICA
                     SQLiteDataAdapter sqliteDataAdapter;
                     string strSQL;
                     string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_SOLICITAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
                     sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
@@ -38,7 +38,7 @@ namespace SICA
                     }
 
                     dt = new DataTable();
-                    strSQL = "SELECT IG.ID_INVENTARIO_GENERAL AS ID, NUMERO_CAJA FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_SOLICITAR' AND ID_USUARIO_FK = " + Globals.IdUsername + ") CAJAS";
+                    strSQL = "SELECT IG.ID_INVENTARIO_GENERAL AS ID, NUMERO_CAJA FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + ") CAJAS";
                     strSQL = strSQL + " ON IG.NUMERO_DE_CAJA = CAJAS.NUMERO_CAJA WHERE CAJAS.NUMERO_CAJA IS NOT NULL";
 
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
@@ -90,7 +90,7 @@ namespace SICA
                     string strSQL;
                     string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_RECIBIR' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainRecibir + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
                     sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
@@ -106,7 +106,7 @@ namespace SICA
                         sqliteCmd.ExecuteNonQuery();
                     }
 
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_RECIBIR'", sqliteConnection);
+                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strIronMountainRecibir + "'", sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
 
                     sqliteTransaction.Commit();
@@ -141,7 +141,7 @@ namespace SICA
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
 
-                    strSQL = "SELECT ID_INVENTARIO_GENERAL_FK FROM TMP_CARRITO WHERE TIPO = 'IM_ARMAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                    strSQL = "SELECT ID_INVENTARIO_GENERAL_FK FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainArmar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
                     sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
@@ -157,7 +157,7 @@ namespace SICA
                         sqliteCmd.ExecuteNonQuery();
                     }
 
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_ARMAR'", sqliteConnection);
+                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strIronMountainArmar + "'", sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
 
                     sqliteTransaction.Commit();
@@ -195,13 +195,13 @@ namespace SICA
                     sqliteDataAdapter.Fill(dt);
                     foreach (DataRow row in dt.Rows)
                     {
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'EN TRANSITO A CP' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
+                        strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'EN TRANSITO A IM' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
                         sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                         sqliteCmd.ExecuteNonQuery();
                     }
 
                     dt = new DataTable();
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENVIAR' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
+                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainEnviar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
 
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
@@ -220,7 +220,7 @@ namespace SICA
                         sqliteCmd.ExecuteNonQuery();
                     }
 
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_ENVIAR'", sqliteConnection);
+                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strIronMountainEnviar + "'", sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
 
                     sqliteTransaction.Commit();
@@ -251,14 +251,14 @@ namespace SICA
                     SQLiteDataAdapter sqliteDataAdapter;
                     string strSQL;
                     string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENTREGAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                    strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                     sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
                     sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
                     sqliteDataAdapter.Fill(dt);
                     foreach (DataRow row in dt.Rows)
                     {
-                        strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_ENTREGA_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + " WHERE NUMERO_CAJA = " + row["NUMERO_CAJA"].ToString() + " AND ID_USUARIO_ENTREGA_FK IS NULL AND FECHA_FIN IS NULL";
+                        strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_ENTREGA_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + " WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND ID_USUARIO_ENTREGA_FK IS NULL AND FECHA_FIN IS NULL";
                         sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                         sqliteCmd.ExecuteNonQuery();
 
@@ -267,7 +267,7 @@ namespace SICA
                         sqliteCmd.ExecuteNonQuery();
                     }
 
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = 'IM_ENTREGAR'", sqliteConnection);
+                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strIronMountainEntregar + "'", sqliteConnection);
                     sqliteCmd.ExecuteNonQuery();
 
                     sqliteTransaction.Commit();
