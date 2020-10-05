@@ -134,18 +134,6 @@ namespace SICA.Forms.Entregar
             actualizarCantidad();
         }
 
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
-            }
-        }
-
         private void btVerCarrito_Click(object sender, EventArgs e)
         {
             if (lbCantidad.Text != "(0)")
@@ -173,6 +161,18 @@ namespace SICA.Forms.Entregar
                     actualizarCantidad();
                     btBuscar_Click(sender, e);
                 }
+            }
+        }
+
+        public static void StartLoadingScreen()
+        {
+            try
+            {
+                Application.Run(new LoadingScreen());
+            }
+            catch
+            {
+
             }
         }
     }

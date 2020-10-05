@@ -77,11 +77,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BovedaFunctions.cs" />
-    <Compile Include="Forms\Entregar\EntregarFunctions.cs" />
-    <Compile Include="Forms\BovedaForm.cs">
+    <Compile Include="Forms\Boveda\BovedaGuardar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\BovedaForm.Designer.cs">
+    <Compile Include="Forms\Boveda\BovedaGuardar.Designer.cs">
+      <DependentUpon>BovedaGuardar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Boveda\BovedaRetirar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Boveda\BovedaRetirar.Designer.cs">
+      <DependentUpon>BovedaRetirar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Boveda\BovedaSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Boveda\BovedaSubMain.Designer.cs">
+      <DependentUpon>BovedaSubMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Entregar\EntregarFunctions.cs" />
+    <Compile Include="Forms\Old\BovedaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Old\BovedaForm.Designer.cs">
       <DependentUpon>BovedaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\BusquedaForm.cs">
@@ -95,6 +113,48 @@
     </Compile>
     <Compile Include="Forms\CarritoForm.Designer.cs">
       <DependentUpon>CarritoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainArmar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainArmar.Designer.cs">
+      <DependentUpon>IronMountainArmar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainCargo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainCargo.Designer.cs">
+      <DependentUpon>IronMountainCargo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainEntregar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainEntregar.Designer.cs">
+      <DependentUpon>IronMountainEntregar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainEnviar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainEnviar.Designer.cs">
+      <DependentUpon>IronMountainEnviar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainRecibir.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainRecibir.Designer.cs">
+      <DependentUpon>IronMountainRecibir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainSolicitar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainSolicitar.Designer.cs">
+      <DependentUpon>IronMountainSolicitar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IronMountain\IronMountainSubMain.Designer.cs">
+      <DependentUpon>IronMountainSubMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Old\EntregarForm.cs">
       <SubType>Form</SubType>
@@ -126,10 +186,10 @@
     <Compile Include="Forms\Entregar\EntregarSubMain.Designer.cs">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\IronMountainForm.cs">
+    <Compile Include="Forms\Old\IronMountainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\IronMountainForm.Designer.cs">
+    <Compile Include="Forms\Old\IronMountainForm.Designer.cs">
       <DependentUpon>IronMountainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LoadingScreen.cs">
@@ -138,11 +198,35 @@
     <Compile Include="Forms\LoadingScreen.Designer.cs">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RecibirForm.cs">
+    <Compile Include="Forms\Old\RecibirForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RecibirForm.Designer.cs">
+    <Compile Include="Forms\Old\RecibirForm.Designer.cs">
       <DependentUpon>RecibirForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirNuevo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirNuevo.Designer.cs">
+      <DependentUpon>RecibirNuevo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirPagare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirPagare.Designer.cs">
+      <DependentUpon>RecibirPagare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirReingreso.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirReingreso.Designer.cs">
+      <DependentUpon>RecibirReingreso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirSubMain.Designer.cs">
+      <DependentUpon>RecibirSubMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SeleccionarUsuarioForm.cs">
       <SubType>Form</SubType>
@@ -170,18 +254,48 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IronMountainFunctions.cs" />
+    <Compile Include="Forms\IronMountain\IronMountainFunctions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecibirFunctions.cs" />
-    <EmbeddedResource Include="Forms\BovedaForm.resx">
+    <Compile Include="Forms\Recibir\RecibirFunctions.cs" />
+    <EmbeddedResource Include="Forms\Old\BovedaForm.resx">
       <DependentUpon>BovedaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Boveda\BovedaGuardar.resx">
+      <DependentUpon>BovedaGuardar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Boveda\BovedaRetirar.resx">
+      <DependentUpon>BovedaRetirar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Boveda\BovedaSubMain.resx">
+      <DependentUpon>BovedaSubMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BusquedaForm.resx">
       <DependentUpon>BusquedaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CarritoForm.resx">
       <DependentUpon>CarritoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainArmar.resx">
+      <DependentUpon>IronMountainArmar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainCargo.resx">
+      <DependentUpon>IronMountainCargo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainEntregar.resx">
+      <DependentUpon>IronMountainEntregar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainEnviar.resx">
+      <DependentUpon>IronMountainEnviar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainRecibir.resx">
+      <DependentUpon>IronMountainRecibir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainSolicitar.resx">
+      <DependentUpon>IronMountainSolicitar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IronMountain\IronMountainSubMain.resx">
+      <DependentUpon>IronMountainSubMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Old\EntregarForm.resx">
       <DependentUpon>EntregarForm.cs</DependentUpon>
@@ -198,7 +312,7 @@
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\IronMountainForm.resx">
+    <EmbeddedResource Include="Forms\Old\IronMountainForm.resx">
       <DependentUpon>IronMountainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadingScreen.resx">
@@ -207,7 +321,7 @@
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RecibirForm.resx">
+    <EmbeddedResource Include="Forms\Old\RecibirForm.resx">
       <DependentUpon>RecibirForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportarForm.resx">
@@ -215,6 +329,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recibir\RecibirNuevo.resx">
+      <DependentUpon>RecibirNuevo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recibir\RecibirPagare.resx">
+      <DependentUpon>RecibirPagare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recibir\RecibirReingreso.resx">
+      <DependentUpon>RecibirReingreso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recibir\RecibirSubMain.resx">
+      <DependentUpon>RecibirSubMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SeleccionarUsuarioForm.resx">
       <DependentUpon>SeleccionarUsuarioForm.cs</DependentUpon>
@@ -302,6 +428,7 @@
   <ItemGroup>
     <Content Include="logo2.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms.VisualStyles;
 using SICA.Forms;
+using System.Threading;
 
 namespace SICA
 {
@@ -161,6 +162,10 @@ namespace SICA
                     return;
                 }
             }
+
+            Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+            t.Start();
+
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
             Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
@@ -213,12 +218,17 @@ namespace SICA
             {
                 aplicacion.Visible = true;
             }
+
+            t.Abort();
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
 
         public static void ArmarCargoExcel(DataTable dt, string plantilla, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
+            Thread t = new Thread(new ThreadStart(StartLoadingScreen));
+            t.Start();
+
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
             Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
@@ -263,6 +273,8 @@ namespace SICA
             }
             libros_trabajo.SaveAs(fileName,
                 Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault);
+
+            t.Abort();
             //aplicacion.Workbooks.Open(fileName);
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
@@ -516,6 +528,18 @@ namespace SICA
             {
                 MessageBox.Show(ex.Message + "\n" + strSQL);
                 return false;
+            }
+        }
+        
+        public static void StartLoadingScreen()
+        {
+            try
+            {
+                Application.Run(new LoadingScreen());
+            }
+            catch
+            {
+
             }
         }
     }

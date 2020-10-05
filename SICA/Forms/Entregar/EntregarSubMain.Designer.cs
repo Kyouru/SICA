@@ -33,7 +33,7 @@
             this.btLetra = new FontAwesome.Sharp.IconButton();
             this.btPagare = new FontAwesome.Sharp.IconButton();
             this.btDocumento = new FontAwesome.Sharp.IconButton();
-            this.btBusqueda = new FontAwesome.Sharp.IconButton();
+            this.btExpediente = new FontAwesome.Sharp.IconButton();
             this.pnSubMain = new System.Windows.Forms.Panel();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +45,7 @@
             this.pnTop.Controls.Add(this.btLetra);
             this.pnTop.Controls.Add(this.btPagare);
             this.pnTop.Controls.Add(this.btDocumento);
-            this.pnTop.Controls.Add(this.btBusqueda);
+            this.pnTop.Controls.Add(this.btExpediente);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTop.Location = new System.Drawing.Point(0, 0);
             this.pnTop.Name = "pnTop";
@@ -129,28 +129,28 @@
             this.btDocumento.UseVisualStyleBackColor = false;
             this.btDocumento.Click += new System.EventHandler(this.btDocumento_Click);
             // 
-            // btBusqueda
+            // btExpediente
             // 
-            this.btBusqueda.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btBusqueda.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btBusqueda.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btBusqueda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBusqueda.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btBusqueda.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btBusqueda.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btBusqueda.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btBusqueda.IconColor = System.Drawing.Color.Gainsboro;
-            this.btBusqueda.IconSize = 30;
-            this.btBusqueda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBusqueda.Location = new System.Drawing.Point(0, 0);
-            this.btBusqueda.Name = "btBusqueda";
-            this.btBusqueda.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btBusqueda.Rotation = 0D;
-            this.btBusqueda.Size = new System.Drawing.Size(140, 45);
-            this.btBusqueda.TabIndex = 4;
-            this.btBusqueda.Text = "Expedientes";
-            this.btBusqueda.UseVisualStyleBackColor = false;
-            this.btBusqueda.Click += new System.EventHandler(this.btBusqueda_Click);
+            this.btExpediente.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btExpediente.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btExpediente.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btExpediente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btExpediente.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btExpediente.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btExpediente.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btExpediente.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btExpediente.IconColor = System.Drawing.Color.Gainsboro;
+            this.btExpediente.IconSize = 30;
+            this.btExpediente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btExpediente.Location = new System.Drawing.Point(0, 0);
+            this.btExpediente.Name = "btExpediente";
+            this.btExpediente.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.btExpediente.Rotation = 0D;
+            this.btExpediente.Size = new System.Drawing.Size(140, 45);
+            this.btExpediente.TabIndex = 4;
+            this.btExpediente.Text = "Expedientes";
+            this.btExpediente.UseVisualStyleBackColor = false;
+            this.btExpediente.Click += new System.EventHandler(this.btBusqueda_Click);
             // 
             // pnSubMain
             // 
@@ -178,7 +178,7 @@
         #endregion
 
         private System.Windows.Forms.Panel pnTop;
-        private FontAwesome.Sharp.IconButton btBusqueda;
+        private FontAwesome.Sharp.IconButton btExpediente;
         private FontAwesome.Sharp.IconButton btLetra;
         private FontAwesome.Sharp.IconButton btPagare;
         private FontAwesome.Sharp.IconButton btDocumento;

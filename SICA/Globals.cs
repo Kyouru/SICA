@@ -42,5 +42,7 @@ namespace SICA
 
         public static String strBovedaRetirar = "BOVEDA_RETIRAR";
         public static String strBovedaGuardar = "BOVEDA_GUARDAR";
+
+        public static String strSeleccionarUsuario = "";
     }
 }

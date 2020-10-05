@@ -396,6 +396,7 @@ namespace SICA.Forms
                 btActualizarEntregar_Click(sender, e);
             }
         }
+        
         private void tpSolicitarIM_Enter(object sender, EventArgs e)
         {
             lbCantidadSolicitar.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainSolicitar) + ")";

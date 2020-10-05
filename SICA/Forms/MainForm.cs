@@ -1,6 +1,8 @@
 ﻿using FontAwesome.Sharp;
 using SICA.Forms;
+using SICA.Forms.Boveda;
 using SICA.Forms.Entregar;
+using SICA.Forms.Recibir;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -151,7 +153,8 @@ namespace SICA
         private void btRecibir_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color1);
-            OpenChildForm(new RecibirForm());
+            //OpenChildForm(new RecibirForm());
+            OpenChildForm(new RecibirSubMain());
         }
 
         private void btEntregar_Click(object sender, EventArgs e)
@@ -164,13 +167,13 @@ namespace SICA
         private void btIronMountain_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color1);
-            OpenChildForm(new IronMountainForm());
+            OpenChildForm(new Forms.IronMountain.IronMountainSubMain());
         }
 
         private void btBoveda_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color1);
-            OpenChildForm(new BovedaForm());
+            OpenChildForm(new BovedaSubMain());
         }
 
     }

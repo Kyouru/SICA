@@ -84,16 +84,6 @@ namespace SICA.Forms.Entregar
             }
         }
 
-        private void dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dgv.SelectedRows.Count == 1)
-            {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarDocumento);
-                actualizarCantidad();
-                btBuscar_Click(sender, e);
-            }
-        }
-
         private void btExcel_Click(object sender, EventArgs e)
         {
             GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
@@ -117,6 +107,15 @@ namespace SICA.Forms.Entregar
             GlobalFunctions.LimpiarCarrito(Globals.strEntregarDocumento);
             actualizarCantidad();
         }
-    
+
+        private void dgv_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+            {
+                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarDocumento);
+                actualizarCantidad();
+                btBuscar_Click(sender, e);
+            }
+        }
     }
 }
