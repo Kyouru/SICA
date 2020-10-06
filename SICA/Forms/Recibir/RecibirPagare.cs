@@ -59,6 +59,7 @@ namespace SICA.Forms.Recibir
         {
             if (dgv.SelectedRows.Count == 1)
             {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

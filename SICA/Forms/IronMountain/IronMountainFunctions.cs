@@ -69,6 +69,7 @@ namespace SICA
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return false;
                 }
@@ -117,6 +118,7 @@ namespace SICA
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return false;
                 }
@@ -168,6 +170,7 @@ namespace SICA
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return false;
                 }
@@ -231,6 +234,7 @@ namespace SICA
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return false;
                 }
@@ -278,6 +282,7 @@ namespace SICA
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return false;
                 }

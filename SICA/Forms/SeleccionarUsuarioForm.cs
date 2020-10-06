@@ -21,13 +21,14 @@ namespace SICA.Forms
 
         private void SeleccionarUsuarioForm_Load(object sender, EventArgs e)
         {
+            Globals.IdUsernameSelect = -1;
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
-                string strSQL;
+                string strSQL = Globals.strQueryUser;
                 DataTable dt = new DataTable("USUARIO");
                 sqliteConnection.Open();
 
-                strSQL = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = 1 AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
+                strSQL = strSQL + " AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
 
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
 
@@ -37,6 +38,15 @@ namespace SICA.Forms
                     SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
                     sqliteDataAdapter.Fill(dt);
                     sqliteConnection.Close();
+
+                    if (dt.Rows[0]["CUSTODIA"].ToString() == "1")
+                    {
+                        Globals.strEntregarEstado = "CUSTODIADO";
+                    }
+                    else
+                    {
+                        Globals.strEntregarEstado = "PRESTADO";
+                    }
 
                     cmbUsuario.DataSource = dt;
                     cmbUsuario.ValueMember = "ID_USUARIO";

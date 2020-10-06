@@ -69,14 +69,15 @@ namespace SICA
                     sqliteTransaction.Commit();
                     sqliteConnection.Close();
 
-                    GlobalFunctions.ArmarCargoExcel(dt, Globals.PlantillaCargoPath, Globals.CargoPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
+                    GlobalFunctions.ArmarCargoExcel(dt, Globals.PlantillaCargoExpPath, Globals.CargoPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
 
-                    MessageBox.Show("Proceso Finalizado");
+                    //MessageBox.Show("Proceso Finalizado");
                     return true;
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message + "\n" + strSQL);
                     return false;
                 }
@@ -97,7 +98,7 @@ namespace SICA
                     SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
                     SQLiteCommand sqliteCmd;
 
-                    strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, IG.ID_REPORTE_VALORADOS_FK AS ID_REPORTE, '0' AS '#', DESCRIPCION_1 AS 'DESCRIPCION 1', DESCRIPCION_2 AS 'DESCRIPCION 2', DESCRIPCION_3 AS 'DESCRIPCION 3', DESCRIPCION_4 AS 'DESCRIPCION 4' FROM TMP_CARRITO TC";
+                    strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, IG.ID_REPORTE_VALORADOS_FK AS ID_REPORTE, '0' AS '#', STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESCRIPCION 1', DESCRIPCION_2 AS 'DESCRIPCION 2', DESCRIPCION_3 AS 'DESCRIPCION 3', DESCRIPCION_4 AS 'DESCRIPCION 4' FROM TMP_CARRITO TC";
                     strSQL = strSQL + " LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
                     strSQL = strSQL + " WHERE TIPO = '" + Globals.strEntregarDocumento + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
@@ -133,14 +134,15 @@ namespace SICA
                     sqliteTransaction.Commit();
                     sqliteConnection.Close();
 
-                    GlobalFunctions.ArmarCargoExcel(dt, Globals.PlantillaCargoPath, Globals.CargoPath + "CARGO_DOC_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
+                    GlobalFunctions.ArmarCargoExcel(dt, Globals.PlantillaCargoDocPath, Globals.CargoPath + "CARGO_DOC_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
 
-                    MessageBox.Show("Proceso Finalizado");
+                    //MessageBox.Show("Proceso Finalizado");
                     return true;
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message + "\n" + strSQL);
                     return false;
                 }
@@ -185,11 +187,11 @@ namespace SICA
                     {
                         if (desembolsado == 1)
                         {
-                            strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["SISGO"].ToString() + ", " + fecha + ")";
+                            strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + row["SISGO"].ToString() + "', " + fecha + ")";
                         }
                         else
                         {
-                            strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + row["SISGO"].ToString() + ", " + fecha + ")";
+                            strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', " + fecha + ")";
                         }
                         sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                         sqliteCmd.ExecuteNonQuery();
@@ -217,12 +219,13 @@ namespace SICA
 
                     GlobalFunctions.ArmarCargoExcel(dt, Globals.PlantillaCargoPagPath, Globals.CargoPath + "CARGO_PAG_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".xlsx", 4, 1, true);
 
-                    MessageBox.Show("Proceso Finalizado");
+                    //MessageBox.Show("Proceso Finalizado");
                     return true;
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message + "\n" + strSQL);
                     return false;
                 }

@@ -73,11 +73,12 @@ namespace SICA.Forms.IronMountain
                 lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainRecibir) + ")";
             }
         }
+
         private void dgv_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainSolicitar);
+                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainRecibir);
                 actualizarCantidad();
                 actualizarCajas();
             }
@@ -95,7 +96,7 @@ namespace SICA.Forms.IronMountain
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strIronMountainRecibir) + ")";
+            GlobalFunctions.LimpiarCarrito(Globals.strIronMountainRecibir);
             actualizarCantidad();
         }
 

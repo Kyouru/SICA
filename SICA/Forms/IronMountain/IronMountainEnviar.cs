@@ -55,7 +55,7 @@ namespace SICA.Forms.IronMountain
                     sqliteConnection.Close();
 
                     dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
+                    dgv.Columns[0].Visible = false;
                 }
                 catch (Exception ex)
                 {
@@ -97,7 +97,7 @@ namespace SICA.Forms.IronMountain
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strIronMountainEnviar) + ")";
+            GlobalFunctions.LimpiarCarrito(Globals.strIronMountainEnviar);
             actualizarCantidad();
         }
 

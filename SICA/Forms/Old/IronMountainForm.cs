@@ -24,8 +24,7 @@ namespace SICA.Forms
         {
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
-                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                t.Start();
+                GlobalFunctions.iniciarLoading();
 
                 string strSQL;
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
@@ -56,12 +55,12 @@ namespace SICA.Forms
 
                     dgvSolicitarIM.DataSource = dt;
                     dgvSolicitarIM.Columns[0].Width = 0;
-                    t.Abort();
+                    Globals.t.Abort();
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
-                    t.Abort();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return;
                 }
@@ -543,17 +542,6 @@ namespace SICA.Forms
             else
             {
                 MessageBox.Show("Vacio");
-            }
-        }
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
             }
         }
     }

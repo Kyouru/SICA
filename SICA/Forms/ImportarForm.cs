@@ -33,8 +33,7 @@ namespace SICA
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                t.Start();
+                GlobalFunctions.iniciarLoading();
 
                 DataTable dt = new DataTable();
                 dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
@@ -62,7 +61,7 @@ namespace SICA
                 dgvDesembolsado.DataSource = result.ToList();
                 btCargarVigentes.Visible = true;
 
-                t.Abort();
+                Globals.t.Abort();
 
                 MessageBox.Show(dgvDesembolsado.Rows.Count + " nuevos expedientes");
             }
@@ -79,8 +78,7 @@ namespace SICA
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                t.Start();
+                GlobalFunctions.iniciarLoading();
                 DataTable dt = new DataTable();
                 dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
 
@@ -111,7 +109,7 @@ namespace SICA
                         dgvCancelados.DataSource = result.ToList();
                         dgvCancelados.Columns[1].Width = 300;
                         btCargarCancelados.Visible = true;
-                        t.Abort();
+                        Globals.t.Abort();
                         MessageBox.Show("Se Encontró " + result.ToList().Count.ToString() + " Créditos Cancelados que no se encuentran en la BD");
                     }
                     else
@@ -138,11 +136,11 @@ namespace SICA
                                      };
 
                         dgvCancelados.DataSource = result2.ToList();
-                        dgvCancelados.Columns[0].Width = 0;
+                        dgvCancelados.Columns[0].Visible = false;
                         dgvCancelados.Columns[1].Width = 50;
                         dgvCancelados.Columns[2].Width = 300;
                         btActualizarCancelados.Visible = true;
-                        t.Abort();
+                        Globals.t.Abort();
 
                         MessageBox.Show(dgvCancelados.Rows.Count + " expedientes cancelados");
                     }
@@ -176,8 +174,7 @@ namespace SICA
                 }
                 if (id_column >= 0 && cancelado_column >= 0)
                 {
-                    Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                    t.Start();
+                    GlobalFunctions.iniciarLoading();
                     try
                     {
                         foreach (DataGridViewRow row in dgvCancelados.Rows)
@@ -190,26 +187,27 @@ namespace SICA
                             catch (Exception ex)
                             {
                                 sqliteConnection.Close();
-                                t.Abort();
+                                Globals.t.Abort();
                                 MessageBox.Show(ex.Message + "\n" + strSQL);
                                 return;
                             }
                             sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                             sqliteCmd.ExecuteNonQuery();
                         }
+                        sqliteTransaction.Commit();
+                        sqliteConnection.Close();
+
+                        Globals.t.Abort();
+                        MessageBox.Show("Actualizacion Finalizada");
+                        dgvCancelados.DataSource = null;
                     }
                     catch (Exception ex)
                     {
                         sqliteConnection.Close();
-                        t.Abort();
+                        Globals.t.Abort();
                         MessageBox.Show(ex.Message + "\n" + strSQL);
                         return;
                     }
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    t.Abort();
-                    MessageBox.Show("Actualizacion Finalizada");
-                    dgvCancelados.DataSource = null;
                 }
                 else
                 {
@@ -233,92 +231,48 @@ namespace SICA
         {
             using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
-
-                int otorgado_column = -1;
-                int cancelado_column = -1;
-
-                foreach (DataGridViewColumn col in dgv.Columns)
-                {
-                    if (col.HeaderText == "OTORGADO")
-                    {
-                        otorgado_column = col.Index;
-                    }
-
-                    if (col.HeaderText == "CANCELACION")
-                    {
-                        cancelado_column = col.Index;
-                    }
-                }
-
                 sqliteConnection.Open();
                 SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
                 SQLiteCommand sqliteCmd;
                 String strSQL = "";
 
-                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                t.Start();
-                System.Threading.Thread.Sleep(2000);
+                GlobalFunctions.iniciarLoading();
                 try
                 {
                     foreach (DataGridViewRow row in dgv.Rows)
                     {
-                        strSQL = "INSERT INTO REPORTE_VALORADOS (CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FECHA_OTORGADO, FECHA_CANCELACION, TIPO_PRESTAMO, SOLICITUD_SISGO) VALUES (";
+                        strSQL = "INSERT INTO REPORTE_VALORADOS (CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FECHA_OTORGADO, FECHA_CANCELACION, TIPO_PRESTAMO, SOLICITUD_SISGO, CONCATENADO) VALUES (";
 
-                        foreach (DataGridViewCell cell in row.Cells)
-                        {
-                            if (cell.Value is null || cell.Value.ToString() == "")
-                            {
-                                strSQL = strSQL + "'', ";
-                            }
-                            else
-                            {
-                                if (cell.ColumnIndex == otorgado_column || cell.ColumnIndex == cancelado_column)
-                                {
-                                    strSQL = strSQL + "'" + DateTime.ParseExact(cell.Value.ToString(), "dd/mm/yy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + "', ";
-                                }
-                                else
-                                {
-                                    strSQL = strSQL + "'" + cell.Value.ToString().Replace("'", "''") + "', ";
-                                }
-                            }
-                        }
-                        strSQL = strSQL.Substring(0, strSQL.Length - 2) + ")";
+                        strSQL = strSQL + "'" + row.Cells["CIP"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["NOMBRE"].Value.ToString() + "', ";
+                        strSQL = strSQL + row.Cells["MONTO"].Value.ToString() + ", ";
+                        strSQL = strSQL + "'" + row.Cells["PERIODO"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["NUMERO"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["MD"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["OTORGADO"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["CANCELACION"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["TIPO"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["SISGO"].Value.ToString() + "', ";
+                        strSQL = strSQL + "'" + row.Cells["CIP"].Value.ToString() + ";" + row.Cells["NOMBRE"].Value.ToString() + ";" + row.Cells["SISGO"].Value.ToString() + ";" + row.Cells["TIPO"].Value.ToString() + ")";
 
                         sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                         sqliteCmd.ExecuteNonQuery();
                     }
                     sqliteTransaction.Commit();
                     sqliteConnection.Close();
-                    if (t.ThreadState == ThreadState.Running)
-                    {
-                        t.Abort();
-                    }
+                    Globals.t.Abort();
                     MessageBox.Show("Carga Finalizada");
                     dgv.DataSource = null;
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
-                    if (t.ThreadState == ThreadState.Running)
-                    {
-                        t.Abort();
-                    }
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message + "\n" + strSQL);
                 }
 
             }
 
-        }
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
-            }
         }
     }
 }

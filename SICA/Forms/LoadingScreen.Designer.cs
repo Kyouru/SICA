@@ -55,6 +55,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoadingScreen";
             this.Load += new System.EventHandler(this.LoadingScreen_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoadingScreen_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).EndInit();
             this.ResumeLayout(false);
 

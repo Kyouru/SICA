@@ -60,10 +60,9 @@ namespace SICA
 
                 //MessageBox.Show(strSQL);
                 SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
                 try
                 {
-                    t.Start();
+                    GlobalFunctions.iniciarLoading();
 
                     sqliteCmd.ExecuteNonQuery();
                     SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
@@ -72,22 +71,16 @@ namespace SICA
 
 
                     dgvBusqueda.DataSource = dt;
-                    dgvBusqueda.Columns[0].Width = 0;
+                    dgvBusqueda.Columns[0].Visible = false;
                     dgvBusqueda.Columns["DESC 1"].Width = 250;
 
-                    if (t.ThreadState == ThreadState.Running)
-                    {
-                        t.Abort();
-                    }
+                    Globals.t.Abort();
 
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
-                    if (t.ThreadState == ThreadState.Running)
-                    {
-                        t.Abort();
-                    }
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return;
                 }
@@ -131,17 +124,6 @@ namespace SICA
         private void btExcel_Click(object sender, EventArgs e)
         {
             GlobalFunctions.ExportarDataGridViewExcel(dgvBusqueda, "", 1, 1, true);
-        }
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
-            }
         }
     }
 }

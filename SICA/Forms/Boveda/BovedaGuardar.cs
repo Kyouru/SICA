@@ -47,7 +47,7 @@ namespace SICA.Forms.Boveda
                     sqliteConnection.Close();
 
                     dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
+                    dgv.Columns[0].Visible = false;
                 }
                 catch (Exception ex)
                 {
@@ -58,6 +58,24 @@ namespace SICA.Forms.Boveda
             }
         }
         private void btSiguiente_Click(object sender, EventArgs e)
+        {
+            if (lbCantidad.Text != "(0)")
+            {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE BOVEDA > 0";
+                SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
+                suf.ShowDialog();
+                if (Globals.IdUsernameSelect > 0)
+                {
+
+                    BovedaFunctions.GuardarCarrito();
+                    actualizarCantidad();
+
+                    btBuscar_Click(sender, e);
+                }
+            }
+        }
+
+        private void agregar()
         {
             if (dgv.SelectedRows.Count == 1)
             {
@@ -78,7 +96,7 @@ namespace SICA.Forms.Boveda
                             strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
                             strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
                             strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL_FK";
-                            strSQL = strSQL + " WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
+                            strSQL = strSQL + " WHERE CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                             strSQL = strSQL + " AND NUMERO_DE_CAJA = '" + dgv.SelectedRows[0].Cells["ID"].Value.ToString() + "'";
                             sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
                             sqliteCmd.ExecuteNonQuery();
@@ -107,18 +125,8 @@ namespace SICA.Forms.Boveda
                     GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardar);
                 }
 
-                lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaGuardar) + ")";
-                btBuscar_Click(sender, e);
-            }
-        }
-
-        private void btBovedaGuardar_Click(object sender, EventArgs e)
-        {
-            if (lbCantidad.Text != "(0)")
-            {
-                BovedaFunctions.RetiroCarrito();
-                lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaGuardar) + ")";
-                btBuscar_Click(sender, e);
+                actualizarCantidad();
+                agregar();
             }
         }
 
@@ -133,7 +141,7 @@ namespace SICA.Forms.Boveda
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainSolicitar);
+                agregar();
                 actualizarCantidad();
                 btBuscar_Click(sender, e);
             }
@@ -141,7 +149,7 @@ namespace SICA.Forms.Boveda
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainSolicitar) + ")";
+            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaGuardar) + ")";
         }
 
         private void btExcel_Click(object sender, EventArgs e)
@@ -151,7 +159,7 @@ namespace SICA.Forms.Boveda
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strIronMountainSolicitar) + ")";
+            GlobalFunctions.LimpiarCarrito(Globals.strBovedaGuardar);
             actualizarCantidad();
         }
 
@@ -159,20 +167,9 @@ namespace SICA.Forms.Boveda
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strIronMountainSolicitar;
+                Globals.CarritoSeleccionado = Globals.strBovedaGuardar;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
-            }
-        }
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
             }
         }
 

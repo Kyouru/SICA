@@ -54,8 +54,7 @@ namespace SICA.Forms.Entregar
 
                 try
                 {
-                    Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                    t.Start();
+                    GlobalFunctions.iniciarLoading();
 
                     sqliteCmd.ExecuteNonQuery();
                     SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
@@ -64,11 +63,12 @@ namespace SICA.Forms.Entregar
 
                     dgv.DataSource = dt;
                     dgv.Columns[0].Width = 0;
-                    t.Abort();
+                    Globals.t.Abort();
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return;
                 }
@@ -79,6 +79,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
@@ -125,11 +126,11 @@ namespace SICA.Forms.Entregar
         {
             if (cbDesembolsado.Checked)
             {
-                lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strEntregarPagare) + ")";
+                GlobalFunctions.LimpiarCarrito(Globals.strEntregarPagare);
             }
             else
             {
-                lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strEntregarPagareSinDesembolsar) + ")";
+                GlobalFunctions.LimpiarCarrito(Globals.strEntregarPagareSinDesembolsar);
             }
             actualizarCantidad();
         }
@@ -164,16 +165,5 @@ namespace SICA.Forms.Entregar
             }
         }
 
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
-            }
-        }
     }
 }

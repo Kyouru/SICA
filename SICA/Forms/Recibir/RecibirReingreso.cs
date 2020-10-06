@@ -29,9 +29,9 @@ namespace SICA.Forms.Recibir
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE";
                 strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK) ";
-                strSQL = strSQL + " LEFT JOIN (SELECT * FROM USUARIO WHERE CUSTODIA = 0 AND REAL = 1) U ON U.USERNAME = IG.USUARIO_POSEE";
+                strSQL = strSQL + " LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE";
                 //strSQL = strSQL + " LEFT JOIN (SELECT * FROM USUARIO WHERE REAL = 1) U ON U.USERNAME = IG.USUARIO_POSEE";
-                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND (CUSTODIADO = 'PRESTADO' OR CUSTODIADO = 'DEVUELTO')";
+                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND (CUSTODIADO = 'PRESTADO' OR CUSTODIADO = 'DEVUELTO') AND U.CUSTODIA = 0 AND U.REAL = 1";
 
                 if (tbBusquedaLibre.Text != "")
                 {
@@ -69,6 +69,7 @@ namespace SICA.Forms.Recibir
         {
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

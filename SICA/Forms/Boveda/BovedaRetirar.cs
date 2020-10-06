@@ -47,7 +47,7 @@ namespace SICA.Forms.Boveda
                     sqliteConnection.Close();
 
                     dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
+                    dgv.Columns[0].Visible = false;
                 }
                 catch (Exception ex)
                 {
@@ -134,11 +134,12 @@ namespace SICA.Forms.Boveda
         {
             if (lbCantidad.Text != "(0)")
             {
-                BovedaFunctions.RetiroCarrito();
+                BovedaFunctions.RetirarCarrito();
                 lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaRetirar) + ")";
                 btBuscar_Click(sender, e);
             }
         }
+
         private void actualizarCantidad()
         {
             lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaRetirar) + ")";
@@ -152,7 +153,7 @@ namespace SICA.Forms.Boveda
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strBovedaRetirar) + ")";
+            GlobalFunctions.LimpiarCarrito(Globals.strBovedaRetirar);
             actualizarCantidad();
         }
 
@@ -163,17 +164,6 @@ namespace SICA.Forms.Boveda
                 Globals.CarritoSeleccionado = Globals.strBovedaRetirar;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
-            }
-        }
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
             }
         }
     }

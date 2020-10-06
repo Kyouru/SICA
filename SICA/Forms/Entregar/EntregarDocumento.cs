@@ -62,6 +62,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

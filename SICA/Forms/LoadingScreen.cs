@@ -34,5 +34,13 @@ namespace SICA.Forms
         {
 
         }
+
+        private void LoadingScreen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return || e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }

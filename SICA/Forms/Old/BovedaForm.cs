@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SICA.Forms.Boveda;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -118,7 +119,7 @@ namespace SICA.Forms
         {
             if (lbCantidadRetiro.Text != "(0)")
             {
-                BovedaFunctions.RetiroCarrito();
+                BovedaFunctions.RetirarCarrito();
                 lbCantidadRetiro.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaRetirar) + ")";
                 btBuscarRetirar_Click(sender, e);
             }
@@ -223,7 +224,7 @@ namespace SICA.Forms
         {
             if (lbCantidadRetiro.Text != "(0)")
             {
-                BovedaFunctions.RetiroCarrito();
+                BovedaFunctions.RetirarCarrito();
                 lbCantidadGuardar.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaGuardar) + ")";
                 btBuscarGuardar_Click(sender, e);
             }

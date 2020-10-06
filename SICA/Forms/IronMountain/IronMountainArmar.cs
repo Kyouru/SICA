@@ -60,7 +60,7 @@ namespace SICA.Forms.IronMountain
                     sqliteConnection.Close();
 
                     dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
+                    dgv.Columns[0].Visible = false;
                 }
                 catch (Exception ex)
                 {
@@ -151,7 +151,7 @@ namespace SICA.Forms.IronMountain
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strIronMountainArmar) + ")";
+            GlobalFunctions.LimpiarCarrito(Globals.strIronMountainArmar);
             actualizarCantidad();
         }
 
@@ -162,18 +162,6 @@ namespace SICA.Forms.IronMountain
                 Globals.CarritoSeleccionado = Globals.strIronMountainArmar;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
-            }
-        }
-
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
             }
         }
 

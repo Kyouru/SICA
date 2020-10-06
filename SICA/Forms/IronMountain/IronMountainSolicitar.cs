@@ -24,8 +24,7 @@ namespace SICA.Forms.IronMountain
         {
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
-                Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-                t.Start();
+                GlobalFunctions.iniciarLoading();
 
                 string strSQL;
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
@@ -55,13 +54,13 @@ namespace SICA.Forms.IronMountain
                     sqliteConnection.Close();
 
                     dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
-                    t.Abort();
+                    dgv.Columns[0].Visible = false;
+                    Globals.t.Abort();
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
-                    t.Abort();
+                    Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return;
                 }
@@ -73,8 +72,8 @@ namespace SICA.Forms.IronMountain
             if (lbCantidad.Text != "(0)")
             {
                 IronMountainFunctions.SolicitarCajasCarrito();
-                lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainSolicitar) + ")";
-                dgv.SelectedRows[0].Height = 0;
+                actualizarCantidad();
+                //dgv.SelectedRows[0].Height = 0;
             }
         }
 
@@ -101,7 +100,7 @@ namespace SICA.Forms.IronMountain
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            lbCantidad.Text = "(" + GlobalFunctions.LimpiarCarrito(Globals.strIronMountainSolicitar) + ")";
+            GlobalFunctions.LimpiarCarrito(Globals.strIronMountainSolicitar);
             actualizarCantidad();
         }
 
@@ -112,17 +111,6 @@ namespace SICA.Forms.IronMountain
                 Globals.CarritoSeleccionado = Globals.strIronMountainSolicitar;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
-            }
-        }
-        public static void StartLoadingScreen()
-        {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
             }
         }
 

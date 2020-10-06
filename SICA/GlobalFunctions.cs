@@ -163,8 +163,7 @@ namespace SICA
                 }
             }
 
-            Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-            t.Start();
+            GlobalFunctions.iniciarLoading();
 
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
@@ -219,15 +218,14 @@ namespace SICA
                 aplicacion.Visible = true;
             }
 
-            t.Abort();
+            Globals.t.Abort();
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
 
         public static void ArmarCargoExcel(DataTable dt, string plantilla, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
-            Thread t = new Thread(new ThreadStart(StartLoadingScreen));
-            t.Start();
+            GlobalFunctions.iniciarLoading();
 
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
@@ -274,7 +272,7 @@ namespace SICA
             libros_trabajo.SaveAs(fileName,
                 Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault);
 
-            t.Abort();
+            Globals.t.Abort();
             //aplicacion.Workbooks.Open(fileName);
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
@@ -531,16 +529,11 @@ namespace SICA
             }
         }
         
-        public static void StartLoadingScreen()
+        public static bool iniciarLoading()
         {
-            try
-            {
-                Application.Run(new LoadingScreen());
-            }
-            catch
-            {
-
-            }
+            Globals.t = new Thread(new ThreadStart(Globals.StartLoadingScreen));
+            Globals.t.Start();
+            return true;
         }
     }
 }

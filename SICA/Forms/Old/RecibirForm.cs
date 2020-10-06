@@ -155,6 +155,7 @@ namespace SICA
 
         private void btCargarValido_Click(object sender, EventArgs e)
         {
+            Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1 AND CUSTODIA = 0";
             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
             suf.ShowDialog();
             if (Globals.IdUsernameSelect > 0)
@@ -319,6 +320,7 @@ namespace SICA
         {
             if (lbCantidadReingreso.Text != "(0)")
             {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1 AND CUSTODIA = 0";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
@@ -372,6 +374,7 @@ namespace SICA
         {
             if (dgvPagare.SelectedRows.Count == 1)
             {
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1 AND CUSTODIA = 0";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

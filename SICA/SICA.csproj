@@ -76,7 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BovedaFunctions.cs" />
+    <Compile Include="Forms\Boveda\BovedaFunctions.cs" />
     <Compile Include="Forms\Boveda\BovedaGuardar.cs">
       <SubType>Form</SubType>
     </Compile>

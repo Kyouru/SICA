@@ -153,6 +153,7 @@ namespace SICA.Forms.Recibir
 
         private void btCargarValido_Click(object sender, EventArgs e)
         {
+            Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1 AND CUSTODIA = 0";
             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
             suf.ShowDialog();
             if (Globals.IdUsernameSelect > 0)
