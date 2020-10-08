@@ -1,0 +1,22 @@
+<LogEntry Date="2020-10-07 18:52:28" Severity="Info" Source="SICA.LoginForm..ctor" ThreadId="1">
+  <Message>Test entry to see if logging works.</Message>
+</LogEntry>
+<LogEntry Date="2020-10-07 18:52:29" Severity="Info" Source="SICA.Conexion.conectar" ThreadId="1">
+  <Message>XxLeN</Message>
+</LogEntry>
+<LogEntry Date="2020-10-07 18:52:29" Severity="Exception" Source="SICA.Conexion.conectar" ThreadId="1">
+  <Exception Type="System.InvalidOperationException" Source="System.Data.OleDb.OleDbServicesWrapper.GetDataSource">
+    <Message>El proveedor 'Microsoft.ACE.OLEDB.12.0' no está registrado en el equipo local.</Message>
+    <StackTrace>   en System.Data.OleDb.OleDbServicesWrapper.GetDataSource(OleDbConnectionString constr, DataSourceWrapper&amp; datasrcWrapper)
+   en System.Data.OleDb.OleDbConnectionInternal..ctor(OleDbConnectionString constr, OleDbConnection connection)
+   en System.Data.OleDb.OleDbConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   en System.Data.ProviderBase.DbConnectionFactory.CreateNonPooledConnection(DbConnection owningConnection, DbConnectionPoolGroup poolGroup, DbConnectionOptions userOptions)
+   en System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal&amp; connection)
+   en System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   en System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   en System.Data.ProviderBase.DbConnectionInternal.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.OleDb.OleDbConnection.Open()
+   en SICA.Conexion.conectar() en C:\Zona Trabajo\Visual C#\SICA\SICA\Conexion.cs:línea 24</StackTrace>
+  </Exception>
+</LogEntry>

@@ -21,7 +21,7 @@ namespace SICA.Forms.Boveda
             InitializeComponent();
 
             topBorderBtn = new Panel();
-            topBorderBtn.Size = new Size(140, 3);
+            topBorderBtn.Size = new Size(250, 3);
             pnTop.Controls.Add(topBorderBtn);
         }
         private void OpenChildForm(Form childForm)
@@ -98,10 +98,16 @@ namespace SICA.Forms.Boveda
             OpenChildForm(new BovedaRetirar());
         }
 
-        private void btGuardar_Click(object sender, EventArgs e)
+        private void btGuardarDoc_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new BovedaGuardar());
+            OpenChildForm(new BovedaGuardarDoc());
+        }
+
+        private void btGuardarCaja_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new BovedaGuardarCaja());
         }
     }
 }

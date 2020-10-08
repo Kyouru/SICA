@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleLogger;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,8 @@ namespace SICA.Forms.Entregar
 {
     public partial class EntregarDocumento : Form
     {
+        string tipo_carrito = Globals.strEntregarDocumento;
+
         public EntregarDocumento()
         {
             InitializeComponent();
@@ -21,40 +24,45 @@ namespace SICA.Forms.Entregar
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
+                                FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL
+                                AND DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = @usuario_posee";
+            if (tbBusquedaLibre.Text != "")
+                strSQL = strSQL + " AND DESC_CONCAT LIKE @busqueda_libre";
+            strSQL = strSQL + " ORDER BY DESCRIPCION_2";
+            try
             {
-                string strSQL;
-                DataTable dt = new DataTable("INVENTARIO_GENERAL");
-                sqliteConnection.Open();
+                DataTable dt = new DataTable();
 
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
-                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL ";
-                strSQL = strSQL + " AND DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = '" + Globals.Username + "'";
-
-                if (tbBusquedaLibre.Text != "")
-                {
-                    strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
-                }
-                strSQL = strSQL + " ORDER BY DESCRIPCION_2";
-
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
-                }
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.agregarParametroCommand("@usuario_posee", Globals.Username))
+                    return;
+                if (!Conexion.agregarParametroCommand("@busqueda_libre", "%" + tbBusquedaLibre.Text + "%"))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                dgv.DataSource = dt;
+                dgv.Columns[0].Visible = false;
+
+                Conexion.cerrar();
+            }
+            catch (Exception ex)
+            {
+                Conexion.cerrar();
+                SimpleLog.Info(Environment.UserName);
+                SimpleLog.Log(ex);
+                MessageBox.Show(ex.Message + "\n" + strSQL);
             }
         }
 
@@ -79,7 +87,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strEntregarDocumento;
+                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
             }
@@ -100,12 +108,12 @@ namespace SICA.Forms.Entregar
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strEntregarDocumento) + ")";
+            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(tipo_carrito) + ")";
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.LimpiarCarrito(Globals.strEntregarDocumento);
+            GlobalFunctions.LimpiarCarrito(tipo_carrito);
             actualizarCantidad();
         }
 
@@ -113,7 +121,7 @@ namespace SICA.Forms.Entregar
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strEntregarDocumento);
+                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
                 actualizarCantidad();
                 btBuscar_Click(sender, e);
             }

@@ -37,8 +37,8 @@ namespace SICA
             this.btMinimizar = new FontAwesome.Sharp.IconButton();
             this.btMaximizar = new FontAwesome.Sharp.IconButton();
             this.btCerrar = new FontAwesome.Sharp.IconButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btEntrar = new FontAwesome.Sharp.IconButton();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -154,15 +154,6 @@ namespace SICA
             this.btCerrar.UseVisualStyleBackColor = true;
             this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SICA.Properties.Resources.logo3;
-            this.pictureBox1.Location = new System.Drawing.Point(33, 33);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(380, 380);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
-            // 
             // btEntrar
             // 
             this.btEntrar.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
@@ -179,6 +170,15 @@ namespace SICA
             this.btEntrar.TabIndex = 6;
             this.btEntrar.UseVisualStyleBackColor = true;
             this.btEntrar.Click += new System.EventHandler(this.btEntrar_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SICA.Properties.Resources.logo3;
+            this.pictureBox1.Location = new System.Drawing.Point(33, 33);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(380, 380);
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // LoginForm
             // 

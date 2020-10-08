@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace SICA.Forms.Boveda
 {
-    public partial class BovedaGuardar : Form
+    public partial class BovedaGuardarDoc : Form
     {
-        public BovedaGuardar()
+        public BovedaGuardarDoc()
         {
             InitializeComponent();
         }
@@ -75,61 +75,6 @@ namespace SICA.Forms.Boveda
             }
         }
 
-        private void agregar()
-        {
-            if (dgv.SelectedRows.Count == 1)
-            {
-                if (cbCaja.Checked)
-                {
-                    using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                    {
-                        SQLiteCommand sqliteCmd;
-                        sqliteConnection.Open();
-                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                        try
-                        {
-                            DataTable dt = new DataTable();
-                            SQLiteDataAdapter sqliteDataAdapter;
-                            string strSQL;
-                            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                            strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
-                            strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
-                            strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL_FK";
-                            strSQL = strSQL + " WHERE CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
-                            strSQL = strSQL + " AND NUMERO_DE_CAJA = '" + dgv.SelectedRows[0].Cells["ID"].Value.ToString() + "'";
-                            sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                            sqliteCmd.ExecuteNonQuery();
-                            sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                            sqliteDataAdapter.Fill(dt);
-
-                            foreach (DataRow row in dt.Rows)
-                            {
-                                strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARION_GENERAL_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", '" + Globals.strBovedaGuardar + "', '" + row["CAJA"].ToString() + "')";
-                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-                            }
-
-                            sqliteTransaction.Commit();
-                            sqliteConnection.Close();
-                        }
-                        catch (Exception ex)
-                        {
-                            sqliteConnection.Close();
-                            MessageBox.Show(ex.Message);
-                        }
-                    }
-                }
-                else
-                {
-                    GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardar);
-                }
-
-                actualizarCantidad();
-                agregar();
-            }
-        }
-
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
@@ -141,9 +86,13 @@ namespace SICA.Forms.Boveda
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                agregar();
-                actualizarCantidad();
-                btBuscar_Click(sender, e);
+                if (dgv.SelectedRows.Count == 1)
+                {
+                    GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardar);
+
+                    actualizarCantidad();
+                    btBuscar_Click(sender, e);
+                }
             }
         }
 

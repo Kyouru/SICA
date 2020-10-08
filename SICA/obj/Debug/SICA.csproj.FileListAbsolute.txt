@@ -22,7 +22,6 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\bin\Debug\FontAwesome.Sharp.dll
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\Debug\System.Data.SQLite.dll
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\Debug\System.Data.SQLite.xml
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\Debug\System.Data.SQLite.dll.config
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.csprojAssemblyReference.cache
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.ImportarForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.LoginForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.MainForm.resources
@@ -48,7 +47,6 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarPagare
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Recibir.RecibirNuevo.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Recibir.RecibirSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Recibir.RecibirReingreso.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaGuardar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaRetirar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.IronMountain.IronMountainArmar.resources
@@ -59,3 +57,6 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.IronMountain.IronMounta
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.IronMountain.IronMountainSolicitar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.IronMountain.IronMountainSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Recibir.RecibirPagare.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaGuardarCaja.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaGuardarDoc.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.csprojAssemblyReference.cache

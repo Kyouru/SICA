@@ -1,16 +1,13 @@
 ﻿using Microsoft.VisualBasic;
 using SICA.Forms;
+using SimpleLogger;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA
@@ -35,55 +32,63 @@ namespace SICA
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL;
+            string fecha;
+            if (tbFecha.Text != "")
+                fecha = DateTime.ParseExact(tbFecha.Text, "dd/mm/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-mm-dd");
+            else
+                fecha = "";
+            DataTable dt = new DataTable("INVENTARIO_GENERAL");
+            strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, 
+                        FORMAT(FECHA_DESDE, 'dd/mm/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/mm/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2,
+                        DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
+                        FROM INVENTARIO_GENERAL WHERE 1 = 1";
+            if (tbBusquedaLibre.Text != "")
+                strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
+            if (tbCaja.Text != "")
+                strSQL = strSQL + " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
+            if (tbFecha.Text != "")
+                strSQL = strSQL + " AND FECHA_DESDE <= @fecha_desde AND FECHA_HASTA >= @fecha_hasta";
+            strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
+            
+            LoadingScreen.iniciarLoading();
+
+            try
             {
-                string strSQL;
-                DataTable dt = new DataTable("INVENTARIO_GENERAL");
-                sqliteConnection.Open();
-
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA FROM INVENTARIO_GENERAL WHERE 1 = 1";
-                    
-                if (cbFecha.Checked)
-                {
-                    string fecha = DateTime.ParseExact(tbFecha.Text, "dd/mm/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-mm-dd");
-                    strSQL = strSQL + " AND FECHA_DESDE <= '" + fecha + "' AND FECHA_HASTA >= '" + fecha + "'";
-                }
-                if (cbCaja.Checked)
-                {
-                    strSQL = strSQL + " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
-                }
-                if (tbBusquedaLibre.Text != "")
-                {
-                    strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
-                }
-                strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
-
-                //MessageBox.Show(strSQL);
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                try
-                {
-                    GlobalFunctions.iniciarLoading();
-
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-
-                    dgvBusqueda.DataSource = dt;
-                    dgvBusqueda.Columns[0].Visible = false;
-                    dgvBusqueda.Columns["DESC 1"].Width = 250;
-
-                    Globals.t.Abort();
-
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    Globals.t.Abort();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
-                }
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.agregarParametroCommand("@fecha_desde", fecha))
+                    return;
+                if (!Conexion.agregarParametroCommand("@fecha_hasta", fecha))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                Conexion.cerrar();
+
+                dgvBusqueda.DataSource = dt;
+                dgvBusqueda.Columns[0].Visible = false;
+                dgvBusqueda.Columns["DESC_1"].Width = 250;
+
+                LoadingScreen.cerrarLoading();
+            }
+            catch (Exception ex)
+            {
+                Conexion.cerrar();
+                LoadingScreen.cerrarLoading();
+
+                SimpleLog.Info(Environment.UserName);
+                SimpleLog.Log(ex);
+                MessageBox.Show(ex.Message);
             }
         }
 

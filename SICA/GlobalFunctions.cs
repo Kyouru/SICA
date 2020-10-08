@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms.VisualStyles;
 using SICA.Forms;
 using System.Threading;
+using SimpleLogger;
 
 namespace SICA
 {
@@ -163,7 +164,7 @@ namespace SICA
                 }
             }
 
-            GlobalFunctions.iniciarLoading();
+            //GlobalFunctions.iniciarLoading();
 
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
@@ -218,14 +219,14 @@ namespace SICA
                 aplicacion.Visible = true;
             }
 
-            Globals.t.Abort();
+            //Globals.t.Abort();
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
 
         public static void ArmarCargoExcel(DataTable dt, string plantilla, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
-            GlobalFunctions.iniciarLoading();
+            //GlobalFunctions.iniciarLoading();
 
             Microsoft.Office.Interop.Excel.Application aplicacion;
             Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
@@ -272,7 +273,7 @@ namespace SICA
             libros_trabajo.SaveAs(fileName,
                 Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault);
 
-            Globals.t.Abort();
+            //Globals.t.Abort();
             //aplicacion.Workbooks.Open(fileName);
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
@@ -386,25 +387,29 @@ namespace SICA
         
         public static int CantidadCarrito(string tipo)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                int n;
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
+            int n;
+            string strSQL;
+            if (!Conexion.conectar())
+                return 0;
 
-                try
-                {
-                    sqliteCmd = new SQLiteCommand("SELECT COUNT(*) FROM TMP_CARRITO WHERE TIPO = '" + tipo + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "", sqliteConnection);
-                    n = Convert.ToInt32(sqliteCmd.ExecuteScalar());
-                    sqliteConnection.Close();
-                    return n;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+            strSQL = "SELECT COUNT(*) FROM TMP_CARRITO WHERE TIPO = '" + tipo + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+            try
+            {
+                if (!Conexion.iniciaCommand(strSQL))
                     return 0;
-                }
+
+                n = Convert.ToInt32(Conexion.ejecutarQueryEscalar());
+                Conexion.cerrar();
+                return n;
+            }
+            catch (Exception ex)
+            {
+                Conexion.cerrar();
+                SimpleLog.Info(Environment.UserName);
+                SimpleLog.Log(ex);
+                LoadingScreen.cerrarLoading();
+                MessageBox.Show(ex.Message + "\n" + strSQL);
+                return 0;
             }
         }
                 
@@ -529,11 +534,6 @@ namespace SICA
             }
         }
         
-        public static bool iniciarLoading()
-        {
-            Globals.t = new Thread(new ThreadStart(Globals.StartLoadingScreen));
-            Globals.t.Start();
-            return true;
-        }
+
     }
 }

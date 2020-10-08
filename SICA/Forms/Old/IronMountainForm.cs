@@ -24,7 +24,7 @@ namespace SICA.Forms
         {
             using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
             {
-                GlobalFunctions.iniciarLoading();
+                //GlobalFunctions.iniciarLoading();
 
                 string strSQL;
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
@@ -55,12 +55,12 @@ namespace SICA.Forms
 
                     dgvSolicitarIM.DataSource = dt;
                     dgvSolicitarIM.Columns[0].Width = 0;
-                    Globals.t.Abort();
+                    //Globals.t.Abort();
                 }
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
-                    Globals.t.Abort();
+                    //Globals.t.Abort();
                     MessageBox.Show(ex.Message);
                     return;
                 }

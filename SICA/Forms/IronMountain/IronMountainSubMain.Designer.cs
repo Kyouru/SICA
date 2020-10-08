@@ -51,9 +51,9 @@
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.pnTop.Controls.Add(this.panel1);
             this.pnTop.Controls.Add(this.btCargo);
             this.pnTop.Controls.Add(this.btEntregar);
-            this.pnTop.Controls.Add(this.panel1);
             this.pnTop.Controls.Add(this.btEnviar);
             this.pnTop.Controls.Add(this.btArmar);
             this.pnTop.Controls.Add(this.btRecibir);
@@ -81,7 +81,7 @@
             this.btCargo.Name = "btCargo";
             this.btCargo.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.btCargo.Rotation = 0D;
-            this.btCargo.Size = new System.Drawing.Size(140, 44);
+            this.btCargo.Size = new System.Drawing.Size(140, 45);
             this.btCargo.TabIndex = 10;
             this.btCargo.Text = "Cargo";
             this.btCargo.UseVisualStyleBackColor = false;
@@ -104,7 +104,7 @@
             this.btEntregar.Name = "btEntregar";
             this.btEntregar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.btEntregar.Rotation = 0D;
-            this.btEntregar.Size = new System.Drawing.Size(140, 44);
+            this.btEntregar.Size = new System.Drawing.Size(140, 45);
             this.btEntregar.TabIndex = 9;
             this.btEntregar.Text = "Entregar";
             this.btEntregar.UseVisualStyleBackColor = false;
@@ -114,9 +114,9 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(560, 44);
+            this.panel1.Location = new System.Drawing.Point(840, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(488, 1);
+            this.panel1.Size = new System.Drawing.Size(208, 1);
             this.panel1.TabIndex = 8;
             // 
             // btEnviar

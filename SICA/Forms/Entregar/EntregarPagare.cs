@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleLogger;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace SICA.Forms.Entregar
 {
     public partial class EntregarPagare : Form
     {
+
         public EntregarPagare()
         {
             InitializeComponent();
@@ -21,58 +23,65 @@ namespace SICA.Forms.Entregar
         }
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL;
+            if (cbDesembolsado.Checked)
             {
-                string strSQL;
-                DataTable dt = new DataTable("REPORTE_VALORADOS");
-                sqliteConnection.Open();
-                if (cbDesembolsado.Checked)
+                strSQL = @"SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO
+                            , FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS CANCELACION, PAGARE
+                            FROM REPORTE_VALORADOS RV LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = RV.ID_REPORTE_VALORADOS
+                            WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
+                if (tbBusquedaLibre.Text != "")
                 {
-                    strSQL = "SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS CANCELACION, PAGARE ";
-                    strSQL = strSQL + ", CIP || ';' || NOMBRE || ';' || SOLICITUD_SISGO AS CONCATENADO";
-                    strSQL = strSQL + " FROM REPORTE_VALORADOS RV LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = RV.ID_REPORTE_VALORADOS";
-                    strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
-                    if (tbBusquedaLibre.Text != "")
-                    {
-                        strSQL = strSQL + " AND CONCATENADO LIKE '%" + tbBusquedaLibre.Text + "%'";
-                    }
-                    strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
+                    strSQL = strSQL + " AND CONCATENADO LIKE @busqueda_libre";
                 }
-                else
-                {
-                    strSQL = "SELECT ID_PAGARE_SIN_DESEMBOLSAR AS ID, SOLICITUD_SISGO AS SISGO, DESCRIPCION_1, DESCRIPCION_2, SDESCRIPCION_3, DESCRIPCION_4";
-                    strSQL = strSQL + "FROM PAGARE_SIN_DESEMBOLSAR PSD LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = PSD.ID_PAGARE_SIN_DESEMBOLSAR";
-                    strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
-                    if (tbBusquedaLibre.Text != "")
-                    {
-                        strSQL = strSQL + " AND CONCATENADO LIKE '%" + tbBusquedaLibre.Text + "%'";
-                    }
-                    strSQL = strSQL + " AND DESEMBOLSADO = 0 ";
-                    strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
-                }
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    GlobalFunctions.iniciarLoading();
-
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    dgv.DataSource = dt;
-                    dgv.Columns[0].Width = 0;
-                    Globals.t.Abort();
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    Globals.t.Abort();
-                    MessageBox.Show(ex.Message);
-                    return;
-                }
+                strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
             }
+            else
+            {
+                strSQL = @"SELECT ID_PAGARE_SIN_DESEMBOLSAR AS ID, SOLICITUD_SISGO AS SISGO, DESCRIPCION_1, DESCRIPCION_2, SDESCRIPCION_3, DESCRIPCION_4
+                            FROM PAGARE_SIN_DESEMBOLSAR PSD LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = PSD.ID_PAGARE_SIN_DESEMBOLSAR
+                            WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
+                if (tbBusquedaLibre.Text != "")
+                {
+                    strSQL = strSQL + " AND CONCATENADO LIKE @busqueda_libre";
+                }
+                strSQL = strSQL + " AND DESEMBOLSADO = 0 ";
+                strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
+            }
+
+            try
+            {
+                DataTable dt = new DataTable();
+
+                if (!Conexion.conectar())
+                    return;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.agregarParametroCommand("@busqueda_libre", "%" + tbBusquedaLibre.Text + "%"))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                dgv.DataSource = dt;
+                dgv.Columns[0].Visible = false;
+
+                Conexion.cerrar();
+            }
+            catch (Exception ex)
+            {
+                Conexion.cerrar();
+                SimpleLog.Info(Environment.UserName);
+                SimpleLog.Log(ex);
+                MessageBox.Show(ex.Message + "\n" + strSQL);
+            }
+
         }
 
         private void btEntregar_Click(object sender, EventArgs e)

@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms.VisualStyles;
 using System.Data.SQLite;
 using Microsoft.VisualBasic;
+using SimpleLogger;
 
 namespace SICA
 {
@@ -19,6 +20,8 @@ namespace SICA
         public LoginForm()
         {
             InitializeComponent();
+
+            SimpleLog.SetLogFile(".\\Log", "MyLog_");
 
             //Form
             this.Text = string.Empty;
@@ -59,169 +62,110 @@ namespace SICA
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                if (tbUsername.Text == "")
-                {
-                    MessageBox.Show("Username Vacio");
-                    return;
-                }
-
-                var dt = new DataTable("Password");
-
-                using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                {
-                reintentar_coneccion: //caso se establesca una nueva contraseña
-                    String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = '" + tbUsername.Text + "'";
-                    SQLiteCommand sqliteCmd;
-                    try
-                    {
-                        sqliteConnection.Open();
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                        using (var sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd))
-                        {
-                            sqliteDataAdapter.Fill(dt);
-                            sqliteConnection.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        sqliteConnection.Close();
-                        MessageBox.Show(ex.Message + "\n" + strSQL);
-                        return;
-                    }
-
-                    if (dt.Rows.Count == 0)
-                    {
-                        MessageBox.Show("Usuario o Contraseña Errada");
-                        return;
-                    }
-
-                    if (dt.Rows[0][0].ToString() != "")
-                    {
-                        if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
-                        {
-                            this.Hide();
-                            Globals.Username = tbUsername.Text;
-                            Globals.IdUsername = Int32.Parse(dt.Rows[0][1].ToString());
-                            MainForm mf = new MainForm();
-                            mf.Closed += (s, args) => this.Close();
-                            mf.Show();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Usuario o Contraseña Errada");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        DialogResult dialogResult = MessageBox.Show("Usuario no tiene contraseña\nDesea Considerar esta contraseña?", "Usuario no tiene contraseña", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            try
-                            {
-                                sqliteConnection.Open();
-                                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                                sqliteCmd = new SQLiteCommand("UPDATE USUARIO SET PASSWORD = '" + GlobalFunctions.sha256(tbPassword.Text).ToUpper() + "'", sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-                                sqliteTransaction.Commit();
-                                sqliteConnection.Close();
-                                MessageBox.Show("Contraseña actualizada");
-                                goto reintentar_coneccion;
-                            }
-                            catch (Exception ex)
-                            {
-                                sqliteConnection.Close();
-                                MessageBox.Show(ex.Message + "\n" + strSQL);
-                            }
-                        }
-                    }
-                }
+                entrar();
             }
         }
 
         private void btEntrar_Click(object sender, EventArgs e)
         {
+            entrar();
+        }
+
+        private void entrar()
+        {
             if (tbPassword.Text != "")
             {
                 var dt = new DataTable("Password");
 
-                using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                {
-                    String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = '" + tbUsername.Text + "' AND REAL = 1";
-                    SQLiteCommand sqliteCmd;
-                    try
-                    {
-                        sqliteConnection.Open();
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                        using (var sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd))
-                        {
-                            sqliteDataAdapter.Fill(dt);
-                            sqliteConnection.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        sqliteConnection.Close();
-                        MessageBox.Show(ex.Message + "\n" + strSQL);
-                        return;
-                    }
+                String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = @username AND REAL = 1";
 
-                    if (dt.Rows.Count == 0)
+                try
+                {
+                    if (!Conexion.conectar())
+                        return;
+
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return;
+                    if (!Conexion.agregarParametroCommand("@username", tbUsername.Text))
+                        return;
+
+                    if (!Conexion.ejecutarQuery())
+                        return;
+
+                    dt = Conexion.llenarDataTable();
+                    if (dt is null)
+                        return;
+                    Conexion.cerrar();
+                }
+                catch (Exception ex)
+                {
+                    Conexion.cerrar();
+                    SimpleLog.Log(ex);
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Usuario o Contraseña Errada");
+                    return;
+                }
+
+                if (dt.Rows[0][0].ToString() != "")
+                {
+                    if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
+                    {
+                        this.Hide();
+                        Globals.Username = tbUsername.Text;
+                        Globals.IdUsername = Int32.Parse(dt.Rows[0][1].ToString());
+                        MainForm mf = new MainForm();
+                        mf.Closed += (s, args) => this.Close();
+                        mf.Show();
+                    }
+                    else
                     {
                         MessageBox.Show("Usuario o Contraseña Errada");
                         return;
                     }
+                }
+                else
+                {
+                    DialogResult dialogResult = MessageBox.Show("Usuario no tiene contraseña\nDesea Considerar esta contraseña?", "Usuario no tiene contraseña", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            if (!Conexion.conectar())
+                                return;
 
-                    if (dt.Rows[0][0].ToString() != "")
-                    {
-                        if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
-                        {
-                            this.Hide();
-                            Globals.Username = tbUsername.Text;
-                            Globals.IdUsername = Int32.Parse(dt.Rows[0][1].ToString());
-                            MainForm mf = new MainForm();
-                            mf.Closed += (s, args) => this.Close();
-                            mf.Show();
+                            strSQL = "UPDATE USUARIO SET [PASSWORD] = @password WHERE [USERNAME] = @username";
+                            if (!Conexion.iniciaCommand(strSQL))
+                                return;
+
+                            if (!Conexion.agregarParametroCommand("@password", GlobalFunctions.sha256(tbPassword.Text).ToUpper()))
+                                return;
+                            if (!Conexion.agregarParametroCommand("@username", tbUsername.Text))
+                                return;
+
+                            if (!Conexion.ejecutarQuery())
+                                return;
+
+                            Conexion.cerrar();
+                            MessageBox.Show("Contraseña actualizada");
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Usuario o Contraseña Errada");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        DialogResult dialogResult = MessageBox.Show("Usuario no tiene contraseña\nDesea Considerar esta contraseña?", "Usuario no tiene contraseña", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            try
-                            {
-                                sqliteConnection.Open();
-                                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                                sqliteCmd = new SQLiteCommand("UPDATE USUARIO SET PASSWORD = '" + GlobalFunctions.sha256(tbPassword.Text).ToUpper() + "' WHERE USERNAME = '" + tbUsername.Text + "'", sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-                                sqliteTransaction.Commit();
-                                sqliteConnection.Close();
-                                MessageBox.Show("Contraseña actualizada");
-                            }
-                            catch (Exception ex)
-                            {
-                                sqliteConnection.Close();
-                                MessageBox.Show(ex.Message + "\n" + strSQL);
-                            }
+                            Conexion.cerrar();
+                            SimpleLog.Log(ex);
+                            MessageBox.Show(ex.Message + "\n" + strSQL);
                         }
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Contraseña vacia\nEn caso no tenga, escriba una." );
+                MessageBox.Show("Contraseña vacia\nEn caso no tenga, escriba una.");
             }
         }
-
     }
-
-
 }

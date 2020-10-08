@@ -17,9 +17,11 @@ namespace SICA
         public static String PlantillaCargoPagPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO PAGARE.xlsx";
         public static String PlantillaCargoIMPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO IM.xlsx";*/
 
-        public static Thread t = new Thread(new ThreadStart(StartLoadingScreen));
 
+        //public static String DBPath = "\\\\\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\BD_SICA";
         public static String DBPath = Application.StartupPath + "\\BD\\BD_SICA";
+        public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=C:\\Zona Trabajo\\Visual C#\\SICA\\SICA\\bin\\Debug\\BD\\DB_SICA.accdb";
+        //public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\DB_SICA.accdb";
         public static String CargoPath = Application.StartupPath + "\\CARGO\\";
         public static String PlantillaCargoExpPath = Application.StartupPath + "\\PLANTILLA\\CARGO EXP.xlsx";
         public static String PlantillaCargoDocPath = Application.StartupPath + "\\PLANTILLA\\CARGO DOC.xlsx";
@@ -59,9 +61,6 @@ namespace SICA
         public static String strBovedaGuardar = "BOVEDA_GUARDAR";
 
         public static String strSeleccionarUsuario = "";
-        public static void StartLoadingScreen()
-        {
-            Application.Run(new LoadingScreen());
-        }
+        
     }
 }
