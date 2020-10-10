@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SICA;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -598,10 +599,10 @@ namespace SimpleLogger
         /// </remarks>
         /// <param name="message">Test message to write to the log file</param>
         /// <returns>Null on success, otherwise an exception with what went wrong.</returns>
-        public static Exception Check(string message = "Test entry to see if logging works.")
+        public static Exception Check(string message = " Inicio")
         {
             // Try to write directly to the file to see if it's working.
-            return Log(message, Severity.Info, false);
+            return Log(Environment.UserName + message, Severity.Info, false);
         }
 
         /// <summary>
@@ -683,7 +684,7 @@ namespace SimpleLogger
             var xElement = new XElement("Exception");
             xElement.Add(new XAttribute("Type", ex.GetType().FullName));
             xElement.Add(new XAttribute("Source", ex.TargetSite == null || ex.TargetSite.DeclaringType == null ? ex.Source : string.Format("{0}.{1}", ex.TargetSite.DeclaringType.FullName, ex.TargetSite.Name)));
-            xElement.Add(new XElement("Message", ex.Message));
+            xElement.Add(new XElement("Message", Environment.UserName + ": " + ex.Message + "\nLast Query: " + Globals.lastSQL));
 
             if (ex.Data.Count > 0)
             {

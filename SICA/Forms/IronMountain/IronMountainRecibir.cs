@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms.IronMountain
@@ -21,15 +14,12 @@ namespace SICA.Forms.IronMountain
 
         private void actualizarCajas()
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = "";
+            try
             {
-                string strSQL;
-                DataTable dt = new DataTable("INVENTARIO_GENERAL");
-                sqliteConnection.Open();
+                LoadingScreen.iniciarLoading();
 
-                dt.Columns.Add("CAJA", System.Type.GetType("System.String"));
-                dt.Columns.Add("FECHA SOLICITUD", System.Type.GetType("System.String"));
-                dt.Columns.Add("USUARIO", System.Type.GetType("System.String"));
+                DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
                 strSQL = "SELECT DISTINCT IH.NUMERO_CAJA AS CAJA, IH.FECHA_INICIO AS 'FECHA SOLICITUD', OBSERVACION AS USUARIO FROM INVENTARIO_HISTORICO IH";
                 strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IH.NUMERO_CAJA";
@@ -41,27 +31,29 @@ namespace SICA.Forms.IronMountain
                 strSQL = strSQL + " AND IH.FECHA_FIN IS NULL";
 
                 strSQL = strSQL + " ORDER BY FECHA_INICIO";
-
-                //MessageBox.Show(strSQL);
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    dgv.DataSource = dt;
-                    dgv.Columns[1].Width = 400;
-                    dgv.Columns[2].Width = 200;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
-                }
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+                if (!Conexion.ejecutarQuery())
+                    return;
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                Conexion.cerrar();
+
+                dgv.DataSource = dt;
+                dgv.Columns[1].Width = 400;
+                dgv.Columns[2].Width = 200;
+                dgv.ClearSelection();
+
+                LoadingScreen.cerrarLoading();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
             }
         }
 
@@ -91,7 +83,7 @@ namespace SICA.Forms.IronMountain
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)

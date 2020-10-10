@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms.Boveda
@@ -16,45 +9,47 @@ namespace SICA.Forms.Boveda
         public BovedaRetirar()
         {
             InitializeComponent();
+            actualizarCantidad();
         }
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = "";
+            try
             {
-
-                string strSQL;
+                LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable("REPORTE_VALORADOS");
-                sqliteConnection.Open();
-
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, U.ID_USUARIO, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, U.ID_USUARIO, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
                 strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
                 strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
-                strSQL = strSQL + " WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
-
+                strSQL = strSQL + " WHERE U.BOVEDA > 0 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL";
                 if (tbBusquedaLibre.Text != "")
                 {
                     strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
                 }
                 strSQL = strSQL + " ORDER BY NUMERO_DE_CAJA";
 
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    dgv.DataSource = dt;
-                    dgv.Columns[0].Visible = false;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
-                }
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+                if (!Conexion.ejecutarQuery())
+                    return;
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                Conexion.cerrar();
+
+                dgv.DataSource = dt;
+                dgv.Columns[0].Visible = false;
+                dgv.ClearSelection();
+
+                LoadingScreen.cerrarLoading();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
             }
         }
 
@@ -64,43 +59,45 @@ namespace SICA.Forms.Boveda
             {
                 if (cbCaja.Checked)
                 {
-                    using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                    string strSQL = "";
+                    try
                     {
-                        SQLiteCommand sqliteCmd;
-                        sqliteConnection.Open();
-                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                        DataTable dt = new DataTable();
+                        
+                        string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                        strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
+                        strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
+                        strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
+                        strSQL = strSQL + " WHERE U.BOVEDA > 0 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL ";
+                        strSQL = strSQL + " AND IG.ID_INVENTARIO_GENERAL = " + dgv.SelectedRows[0].Cells["ID"].Value.ToString();
 
-                        try
+                        if (!Conexion.conectar())
+                            return;
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
+                        dt = Conexion.llenarDataTable();
+                        if (dt is null)
+                            return;
+                        
+                        foreach (DataRow row in dt.Rows)
                         {
-                            DataTable dt = new DataTable();
-                            SQLiteDataAdapter sqliteDataAdapter;
-                            string strSQL;
-                            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                            strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
-                            strSQL = strSQL + "FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
-                            strSQL = strSQL + "LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL_FK";
-                            strSQL = strSQL + "WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL ";
-                            strSQL = strSQL + " AND NUMERO_DE_CAJA = '" + dgv.SelectedRows[0].Cells["ID"].Value.ToString() + "'";
-                            sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                            sqliteCmd.ExecuteNonQuery();
-                            sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                            sqliteDataAdapter.Fill(dt);
-
-                            foreach (DataRow row in dt.Rows)
-                            {
-                                strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARION_GENERAL_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", '" + Globals.strBovedaRetirar + "', '" + row["CAJA"].ToString() + "')";
-                                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                                sqliteCmd.ExecuteNonQuery();
-                            }
-
-                            sqliteTransaction.Commit();
-                            sqliteConnection.Close();
+                            strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", '" + Globals.strBovedaRetirar + "', '" + row["CAJA"].ToString() + "')";
+                            
+                            if (!Conexion.iniciaCommand(strSQL))
+                                return;
+                            if (!Conexion.ejecutarQuery())
+                                return;
                         }
-                        catch (Exception ex)
-                        {
-                            sqliteConnection.Close();
-                            MessageBox.Show(ex.Message);
-                        }
+
+                        Conexion.cerrar();
+                        LoadingScreen.cerrarLoading();
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalFunctions.casoError(ex, strSQL);
+                        return;
                     }
                 }
                 else
@@ -148,7 +145,7 @@ namespace SICA.Forms.Boveda
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)

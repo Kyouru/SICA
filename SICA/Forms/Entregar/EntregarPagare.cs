@@ -1,14 +1,6 @@
-﻿using SimpleLogger;
+﻿
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms.Entregar
@@ -23,7 +15,8 @@ namespace SICA.Forms.Entregar
         }
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            string strSQL;
+            string strSQL = "";
+            LoadingScreen.iniciarLoading();
             if (cbDesembolsado.Checked)
             {
                 strSQL = @"SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO
@@ -69,17 +62,19 @@ namespace SICA.Forms.Entregar
                 if (dt is null)
                     return;
 
+                Conexion.cerrar();
+
                 dgv.DataSource = dt;
                 dgv.Columns[0].Visible = false;
+                dgv.ClearSelection();
 
-                Conexion.cerrar();
+
+                LoadingScreen.cerrarLoading();
             }
             catch (Exception ex)
             {
-                Conexion.cerrar();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
             }
 
         }
@@ -88,7 +83,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
@@ -128,7 +123,7 @@ namespace SICA.Forms.Entregar
         
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
         
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
@@ -169,7 +164,8 @@ namespace SICA.Forms.Entregar
                         GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells[0].Value.ToString(), "", Globals.strEntregarPagareSinDesembolsar);
                     }
                     actualizarCantidad();
-                    btBuscar_Click(sender, e);
+                    //btBuscar_Click(sender, e);
+                    dgv.SelectedRows[0].Height = 0;
                 }
             }
         }

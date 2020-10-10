@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms.IronMountain
@@ -22,15 +14,14 @@ namespace SICA.Forms.IronMountain
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = "" ;
+            try
             {
-                //GlobalFunctions.iniciarLoading();
+                LoadingScreen.iniciarLoading();
 
-                string strSQL;
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
-                sqliteConnection.Open();
 
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, STRFTIME('%d/%m/%Y', FECHA_DESDE) AS DESDE, STRFTIME('%d/%m/%Y', FECHA_HASTA) AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, STRFTIME('%d/%m/%Y %H:%M:%S', FECHA_POSEE) AS FECHA";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
                 strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.NUMERO_DE_CAJA = TC.NUMERO_CAJA WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = 'IRON MOUNTAIN'";
 
                 if (tbCaja.Text != "")
@@ -44,26 +35,29 @@ namespace SICA.Forms.IronMountain
                 }
                 strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
 
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    dgv.DataSource = dt;
-                    dgv.Columns[0].Visible = false;
-                    //Globals.t.Abort();
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    //Globals.t.Abort();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
-                }
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                Conexion.cerrar();
+
+                dgv.DataSource = dt;
+                dgv.Columns[0].Visible = false;
+                dgv.ClearSelection();
+
+                LoadingScreen.cerrarLoading();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
             }
         }
 
@@ -73,7 +67,7 @@ namespace SICA.Forms.IronMountain
             {
                 IronMountainFunctions.SolicitarCajasCarrito();
                 actualizarCantidad();
-                //dgv.SelectedRows[0].Height = 0;
+                btBuscar_Click(sender, e);
             }
         }
 
@@ -95,7 +89,7 @@ namespace SICA.Forms.IronMountain
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)

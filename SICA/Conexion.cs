@@ -1,4 +1,5 @@
 ﻿
+using SICA.Forms;
 using SimpleLogger;
 using System;
 using System.Collections.Generic;
@@ -20,16 +21,13 @@ namespace SICA
         {
             try
             {
-                connection = new OleDbConnection(Globals.DBconnectionString);
+                connection = new OleDbConnection(Globals.Provider + Globals.DBPath);
                 connection.Open();
                 return true;
             }
             catch (Exception ex)
             {
-                //Globals.t.Abort();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, "");
                 return false;
             }
         }
@@ -42,10 +40,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                //Globals.t.Abort();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, strSQL);
                 return false;
             }
         }
@@ -58,9 +53,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, "(" + nombre + ", " + valor + ")");
                 return false;
             }
         }
@@ -74,9 +67,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, command.CommandText);
                 return false;
             }
         }
@@ -88,9 +79,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, command.CommandText);
                 return -1;
             }
         }
@@ -106,53 +95,64 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                //Globals.t.Abort();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, "Llenar DataTable");
                 return null;
             }
         }
+        public static int lastIdInsert()
+        {
+            OleDbCommand cmd2 = new OleDbCommand("SELECT @@IDENTITY", connection);
+            try
+            {
+                return Convert.ToInt32(cmd2.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "SELECT @@IDENTITY");
+                return -1;
+            }
+        }
+        
 
         public static void cerrar()
         {
             try
             {
-                connection.Close();
+                if (connection != null)
+                    connection.Close();
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
                 SimpleLog.Log(ex);
             }
 
             try
             {
-                connection.Dispose();
+                if (connection != null)
+                    connection.Dispose();
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
                 SimpleLog.Log(ex);
             }
 
             try
             {
-                adapter.Dispose();
+                if (adapter != null)
+                    adapter.Dispose();
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
                 SimpleLog.Log(ex);
             }
 
             try
             {
-                command.Dispose();
+                if (command != null)
+                    command.Dispose();
             }
             catch (Exception ex)
             {
-                SimpleLog.Info(Environment.UserName);
                 SimpleLog.Log(ex);
             }
         }

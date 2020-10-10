@@ -86,15 +86,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExcelLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelLibrary.1.2011.7.31\lib\ExcelLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="FontAwesome.Sharp, Version=5.14.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.Sharp.5.14.1\lib\net472\FontAwesome.Sharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Access.Dao, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Access.Dao.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.Access.Dao.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
@@ -104,9 +103,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.113.1\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -145,12 +141,6 @@
       <DependentUpon>BovedaSubMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Entregar\EntregarFunctions.cs" />
-    <Compile Include="Forms\Old\BovedaForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Old\BovedaForm.Designer.cs">
-      <DependentUpon>BovedaForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\BusquedaForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,12 +195,6 @@
     <Compile Include="Forms\IronMountain\IronMountainSubMain.Designer.cs">
       <DependentUpon>IronMountainSubMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Old\EntregarForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Old\EntregarForm.Designer.cs">
-      <DependentUpon>EntregarForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Entregar\EntregarDocumento.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,23 +219,17 @@
     <Compile Include="Forms\Entregar\EntregarSubMain.Designer.cs">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Old\IronMountainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Old\IronMountainForm.Designer.cs">
-      <DependentUpon>IronMountainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\LoadingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\LoadingScreen.Designer.cs">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Old\RecibirForm.cs">
+    <Compile Include="Forms\Recibir\RecibirConfirmar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Old\RecibirForm.Designer.cs">
-      <DependentUpon>RecibirForm.cs</DependentUpon>
+    <Compile Include="Forms\Recibir\RecibirConfirmar.Designer.cs">
+      <DependentUpon>RecibirConfirmar.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Recibir\RecibirNuevo.cs">
       <SubType>Form</SubType>
@@ -311,9 +289,6 @@
     <EmbeddedResource Include="Forms\Boveda\BovedaGuardarCaja.resx">
       <DependentUpon>BovedaGuardarCaja.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Old\BovedaForm.resx">
-      <DependentUpon>BovedaForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Boveda\BovedaGuardarDoc.resx">
       <DependentUpon>BovedaGuardarDoc.cs</DependentUpon>
     </EmbeddedResource>
@@ -350,9 +325,6 @@
     <EmbeddedResource Include="Forms\IronMountain\IronMountainSubMain.resx">
       <DependentUpon>IronMountainSubMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Old\EntregarForm.resx">
-      <DependentUpon>EntregarForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entregar\EntregarDocumento.resx">
       <DependentUpon>EntregarDocumento.cs</DependentUpon>
     </EmbeddedResource>
@@ -365,23 +337,20 @@
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Old\IronMountainForm.resx">
-      <DependentUpon>IronMountainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadingScreen.resx">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Old\RecibirForm.resx">
-      <DependentUpon>RecibirForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportarForm.resx">
       <DependentUpon>ImportarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recibir\RecibirConfirmar.resx">
+      <DependentUpon>RecibirConfirmar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirNuevo.resx">
       <DependentUpon>RecibirNuevo.cs</DependentUpon>
@@ -474,11 +443,4 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets'))" />
-  </Target>
 </Project>

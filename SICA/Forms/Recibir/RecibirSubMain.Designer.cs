@@ -33,6 +33,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btLetra = new FontAwesome.Sharp.IconButton();
             this.btPagare = new FontAwesome.Sharp.IconButton();
+            this.btConfirmar = new FontAwesome.Sharp.IconButton();
             this.btReingreso = new FontAwesome.Sharp.IconButton();
             this.btNuevo = new FontAwesome.Sharp.IconButton();
             this.pnTop.SuspendLayout();
@@ -53,6 +54,7 @@
             this.pnTop.Controls.Add(this.panel1);
             this.pnTop.Controls.Add(this.btLetra);
             this.pnTop.Controls.Add(this.btPagare);
+            this.pnTop.Controls.Add(this.btConfirmar);
             this.pnTop.Controls.Add(this.btReingreso);
             this.pnTop.Controls.Add(this.btNuevo);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -65,9 +67,9 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(560, 44);
+            this.panel1.Location = new System.Drawing.Point(700, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(488, 1);
+            this.panel1.Size = new System.Drawing.Size(348, 1);
             this.panel1.TabIndex = 8;
             // 
             // btLetra
@@ -83,7 +85,7 @@
             this.btLetra.IconColor = System.Drawing.Color.Gainsboro;
             this.btLetra.IconSize = 30;
             this.btLetra.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btLetra.Location = new System.Drawing.Point(420, 0);
+            this.btLetra.Location = new System.Drawing.Point(560, 0);
             this.btLetra.Name = "btLetra";
             this.btLetra.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.btLetra.Rotation = 0D;
@@ -105,7 +107,7 @@
             this.btPagare.IconColor = System.Drawing.Color.Gainsboro;
             this.btPagare.IconSize = 30;
             this.btPagare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btPagare.Location = new System.Drawing.Point(280, 0);
+            this.btPagare.Location = new System.Drawing.Point(420, 0);
             this.btPagare.Name = "btPagare";
             this.btPagare.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.btPagare.Rotation = 0D;
@@ -114,6 +116,29 @@
             this.btPagare.Text = "Pagare";
             this.btPagare.UseVisualStyleBackColor = false;
             this.btPagare.Click += new System.EventHandler(this.btPagare_Click);
+            // 
+            // btConfirmar
+            // 
+            this.btConfirmar.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btConfirmar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btConfirmar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btConfirmar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btConfirmar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btConfirmar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btConfirmar.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btConfirmar.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btConfirmar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btConfirmar.IconSize = 30;
+            this.btConfirmar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btConfirmar.Location = new System.Drawing.Point(280, 0);
+            this.btConfirmar.Name = "btConfirmar";
+            this.btConfirmar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.btConfirmar.Rotation = 0D;
+            this.btConfirmar.Size = new System.Drawing.Size(140, 45);
+            this.btConfirmar.TabIndex = 9;
+            this.btConfirmar.Text = "Confirmar";
+            this.btConfirmar.UseVisualStyleBackColor = false;
+            this.btConfirmar.Click += new System.EventHandler(this.btConfirmar_Click);
             // 
             // btReingreso
             // 
@@ -185,5 +210,6 @@
         private FontAwesome.Sharp.IconButton btPagare;
         private FontAwesome.Sharp.IconButton btReingreso;
         private FontAwesome.Sharp.IconButton btNuevo;
+        private FontAwesome.Sharp.IconButton btConfirmar;
     }
 }

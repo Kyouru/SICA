@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.IO;
 using System.Data;
-using System.Data.OleDb;
-using System.Data.SQLite;
-using System.Globalization;
-using Microsoft.Office.Core;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Windows.Forms.VisualStyles;
 using SICA.Forms;
-using System.Threading;
 using SimpleLogger;
+using ExcelLibrary.SpreadSheet;
+using System.Diagnostics;
+using System.Windows.Forms.VisualStyles;
 
 namespace SICA
 {
@@ -68,50 +62,48 @@ namespace SICA
                     {
                         csvAdapter.Fill(dt);
                         csvConnection.Close();
+                        return dt;
                     }
                     catch (Exception ex)
                     {
                         csvConnection.Close();
-                        MessageBox.Show(ex.Message + "\n" + FileName);
+                        GlobalFunctions.casoError(ex, "");
+                        return null;
                     }
                 }
             }
-            return dt;
         }
 
         public static DataTable ConvertExcelToDataTable(string FileName, int index)
         {
-            Microsoft.Office.Interop.Excel.Application objXL = null;
-            Microsoft.Office.Interop.Excel.Workbook objWB = null;
-            objXL = new Microsoft.Office.Interop.Excel.Application();
-            objWB = objXL.Workbooks.Open(FileName);
-            Microsoft.Office.Interop.Excel.Worksheet objSHT = objWB.Worksheets[index];
+            Workbook workbook = Workbook.Load(FileName);
+            Worksheet worksheet = workbook.Worksheets[index];
 
-            int rows = objSHT.UsedRange.Rows.Count;
-            int cols = objSHT.UsedRange.Columns.Count;
             DataTable dt = new DataTable();
-            int noofrow = 1;
 
-            for (int c = 1; c <= cols; c++)
+            for(int i = 0; i <= worksheet.Cells.LastColIndex; i++)
             {
-                string colname = objSHT.Cells[1, c].Text;
-                dt.Columns.Add(colname);
-                noofrow = 2;
+                dt.Columns.Add(worksheet.Cells[0, i].Value.ToString());
             }
 
-            for (int r = noofrow; r <= rows; r++)
-            {
-                DataRow dr = dt.NewRow();
-                for (int c = 1; c <= cols; c++)
-                {
-                    dr[c - 1] = objSHT.Cells[r, c].Text;
-                }
+            DataRow dr;
 
+            for (int rowIndex = worksheet.Cells.FirstRowIndex + 1; rowIndex <= worksheet.Cells.LastRowIndex; rowIndex++)
+            {
+                dr = dt.NewRow();
+                for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
+                {
+                    if (worksheet.Cells[rowIndex, i].Value != null)
+                    {
+                        dr[i] = worksheet.Cells[rowIndex, i].Value.ToString();
+                    }
+                    else
+                    {
+                        dr[i] = "";
+                    }
+                }
                 dt.Rows.Add(dr);
             }
-
-            objWB.Close();
-            objXL.Quit();
             return dt;
         }
 
@@ -119,41 +111,112 @@ namespace SICA
         {
             DataTable dt = new DataTable("REPORTE_VALORADOS");
 
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            dt.Columns.Add("ID_REPORTE_VALORADOS", System.Type.GetType("System.Int32"));
+            dt.Columns.Add("CIP", System.Type.GetType("System.String"));
+            dt.Columns.Add("NOMBRE", System.Type.GetType("System.String"));
+            dt.Columns.Add("MONTOPRESTAMO", System.Type.GetType("System.Double"));
+            dt.Columns.Add("PERIODO_SOLICITUD", System.Type.GetType("System.String"));
+            dt.Columns.Add("NUMERO_SOLICITUD", System.Type.GetType("System.String"));
+            dt.Columns.Add("MONEDA", System.Type.GetType("System.String"));
+            dt.Columns.Add("FECHA_OTORGADO", System.Type.GetType("System.String"));
+            dt.Columns.Add("FECHA_CANCELACION", System.Type.GetType("System.String"));
+            dt.Columns.Add("TIPO_PRESTAMO", System.Type.GetType("System.String"));
+
+            try
             {
-                sqliteConnection.Open();
-
-                dt.Columns.Add("ID_REPORTE_VALORADOS", System.Type.GetType("System.Int32"));
-                dt.Columns.Add("CIP", System.Type.GetType("System.String"));
-                dt.Columns.Add("NOMBRE", System.Type.GetType("System.String"));
-                dt.Columns.Add("MONTOPRESTAMO", System.Type.GetType("System.Double"));
-                dt.Columns.Add("PERIODO_SOLICITUD", System.Type.GetType("System.String"));
-                dt.Columns.Add("NUMERO_SOLICITUD", System.Type.GetType("System.String"));
-                dt.Columns.Add("MONEDA", System.Type.GetType("System.String"));
-                dt.Columns.Add("FECHA_OTORGADO", System.Type.GetType("System.String"));
-                dt.Columns.Add("FECHA_CANCELACION", System.Type.GetType("System.String"));
-                dt.Columns.Add("TIPO_PRESTAMO", System.Type.GetType("System.String"));
-
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-                    return dt;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return null;
-                }
+                if (!Conexion.iniciaCommand(strSQL))
+                    return null;
+                if (!Conexion.ejecutarQuery())
+                    return null;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return null;
+
+                Conexion.cerrar();
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return null;
             }
         }
 
-        public static void ExportarDataGridViewExcel(DataGridView dgv, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
+        public static void ExportarDataGridViewExcel(DataGridView dgv, string fileName)
+        {
+            if (dgv.Rows.Count > 200)
+            {
+                DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 500 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
+                if (dialogResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            if (fileName is null)
+            {
+                fileName = Globals.CargoPath + "EXPORTAR_" + Globals.Username + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".csv";
+            }    
+            LoadingScreen.iniciarLoading();
+
+            int cols;
+
+            try
+            {
+                StreamWriter wr = new StreamWriter(fileName);
+                cols = dgv.Columns.Count;
+                for (int j = 0; j < dgv.Columns.Count; j++)
+                {
+                    wr.Write(dgv.Columns[j].Name + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                }
+                wr.WriteLine();
+
+                //Recorremos el DataTable rellenando la hoja de trabajo
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dgv.Columns.Count; j++)
+                    {
+                        if (dgv.Rows[i].Cells[j] != null)
+                        {
+                            if (GlobalFunctions.IsDate(dgv.Rows[i].Cells[j].Value.ToString()))
+                            {
+                                try
+                                {
+                                    wr.Write(DateTime.Parse(dgv.Rows[i].Cells[j].Value.ToString()).ToString("yyyy-MM-dd") + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                                }
+                                catch
+                                {
+                                    wr.Write("'" + dgv.Rows[i].Cells[j].Value.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                                }
+                            }
+                            else
+                            {
+                                wr.Write(dgv.Rows[i].Cells[j].Value.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                            }
+                        }
+                    }
+                    wr.WriteLine();
+                }
+                wr.Close();
+
+                Process.Start(fileName);
+
+                LoadingScreen.cerrarLoading();
+
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "");
+                return;
+            }
+
+        }
+
+        public static void ExportarDataGridViewExcelXLS(DataGridView dgv, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
         {
             if (dgv.Rows.Count > 200)
             {
@@ -164,121 +227,134 @@ namespace SICA
                 }
             }
 
-            //GlobalFunctions.iniciarLoading();
-
-            Microsoft.Office.Interop.Excel.Application aplicacion;
-            Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
-            Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
-            aplicacion = new Microsoft.Office.Interop.Excel.Application();
-            libros_trabajo = aplicacion.Workbooks.Add();
-            hoja_trabajo =
-                (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
-
-            //Cabeceras
-            if (cabecera)
+            try
             {
-                for (int j = 0; j < dgv.Columns.Count; j++)
-                {
-                    hoja_trabajo.Cells[inicio_row, j + inicio_col] = "'" + dgv.Columns[j].Name;
-                }
-            }
+                LoadingScreen.iniciarLoading();
 
-            //Recorremos el DataTable rellenando la hoja de trabajo
-            for (int i = 0; i < dgv.Rows.Count; i++)
-            {
-                for (int j = 0; j < dgv.Columns.Count; j++)
+                Workbook workbook = new Workbook();
+                Worksheet worksheet = new Worksheet("Cargo");
+
+                workbook.Worksheets.Add(worksheet);
+
+                if (cabecera)
                 {
-                    if (dgv.Rows[i].Cells[j] != null)
+                    for (int j = 0; j < dgv.Columns.Count; j++)
                     {
-                        if (GlobalFunctions.IsDate(dgv.Rows[i].Cells[j].Value.ToString()))
+                        worksheet.Cells[inicio_row, j + inicio_col] = new Cell(dgv.Columns[j].Name);
+                    }
+                }
+
+                //Recorremos el DataTable rellenando la hoja de trabajo
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dgv.Columns.Count; j++)
+                    {
+                        if (dgv.Rows[i].Cells[j] != null)
                         {
-                            try
+                            if (GlobalFunctions.IsDate(dgv.Rows[i].Cells[j].Value.ToString()))
                             {
-                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = DateTime.Parse(dgv.Rows[i].Cells[j].Value.ToString()).ToString("yyyy-MM-dd");
+                                try
+                                {
+                                    worksheet.Cells[i + inicio_row + 1, j + inicio_col] = new Cell(DateTime.Parse(dgv.Rows[i].Cells[j].Value.ToString()).ToString("yyyy-MM-dd"));
+                                }
+                                catch
+                                {
+                                    worksheet.Cells[i + inicio_row + 1, j + inicio_col] = new Cell("'" + dgv.Rows[i].Cells[j].Value.ToString());
+                                }
                             }
-                            catch
+                            else
                             {
-                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = "'" +dgv.Rows[i].Cells[j].Value.ToString();
+                                worksheet.Cells[i + inicio_row + 1, j + inicio_col] = new Cell(dgv.Rows[i].Cells[j].Value.ToString());
                             }
-                        }
-                        else
-                        {
-                            hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = dgv.Rows[i].Cells[j].Value.ToString();
                         }
                     }
                 }
+
+                workbook.Save(fileName);
+
+                workbook = Workbook.Load(fileName);
             }
-            if (fileName != "")
+            catch (Exception ex)
             {
-                libros_trabajo.SaveAs(fileName,
-                    Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal);
-                aplicacion.Workbooks.Open(fileName);
-            }
-            else
-            {
-                aplicacion.Visible = true;
+                Conexion.cerrar();
+                SimpleLog.Info(Environment.UserName);
+                SimpleLog.Log(ex);
+                LoadingScreen.cerrarLoading();
+                MessageBox.Show(ex.Message);
+                return;
             }
 
-            //Globals.t.Abort();
+            LoadingScreen.cerrarLoading();
+
             //libros_trabajo.Close(true);
             //aplicacion.Quit();
         }
 
-        public static void ArmarCargoExcel(DataTable dt, string plantilla, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
+        public static void ArmarCargoExcel(DataTable dt, string nombre_cargo, string fileName, Boolean cabecera)
         {
-            //GlobalFunctions.iniciarLoading();
+            LoadingScreen.iniciarLoading();
+            int cols;
 
-            Microsoft.Office.Interop.Excel.Application aplicacion;
-            Microsoft.Office.Interop.Excel.Workbook libros_trabajo;
-            Microsoft.Office.Interop.Excel.Worksheet hoja_trabajo;
-            aplicacion = new Microsoft.Office.Interop.Excel.Application();
-            aplicacion.Visible = true;
-            libros_trabajo = aplicacion.Workbooks.Open(plantilla);
-            hoja_trabajo = (Microsoft.Office.Interop.Excel.Worksheet)libros_trabajo.Worksheets.get_Item(1);
-
-            //Cabeceras
-            if (cabecera)
+            try
             {
-                for (int j = 0; j < dt.Columns.Count; j++)
+                StreamWriter wr = new StreamWriter(fileName);
+                cols = dt.Columns.Count;
+                if (cabecera)
                 {
-                    hoja_trabajo.Cells[inicio_row, j + inicio_col] = "'" + dt.Columns[j].ColumnName;
+
+                    wr.WriteLine();
+                    wr.Write(nombre_cargo +",,,FECHA," + DateTime.Now.ToString("yyyy-MM-dd") + ",");
+                    wr.WriteLine();
+                    wr.WriteLine();
                 }
-            }
 
-            //Recorremos el DataTable rellenando la hoja de trabajo
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
-                    if (dt.Rows[i][j] != null)
+                    wr.Write(dt.Columns[j].ColumnName + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                }
+                wr.WriteLine();
+
+                //Recorremos el DataTable rellenando la hoja de trabajo
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
                     {
-                        if (GlobalFunctions.IsDate(dt.Rows[i][j].ToString()))
+                        if (dt.Rows[i][j] != null)
                         {
-                            try
+                            if (GlobalFunctions.IsDate(dt.Rows[i][j].ToString()))
                             {
-                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = DateTime.Parse(dt.Rows[i][j].ToString()).ToString("yyyy-MM-dd");
+                                try
+                                {
+                                    wr.Write(DateTime.Parse(dt.Rows[i][j].ToString()).ToString("yyyy-MM-dd") + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                                }
+                                catch
+                                {
+                                    wr.Write("'" + dt.Rows[i][j].ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                                }
                             }
-                            catch
+                            else
                             {
-                                hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = "'" + dt.Rows[i][j].ToString();
+                                wr.Write(dt.Rows[i][j].ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
                             }
-                        }
-                        else
-                        {
-                            hoja_trabajo.Cells[i + inicio_row + 1, j + inicio_col] = dt.Rows[i][j].ToString();
                         }
                     }
+                    wr.WriteLine();
                 }
-            }
-            libros_trabajo.SaveAs(fileName,
-                Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault);
+                wr.Close();
 
-            //Globals.t.Abort();
-            //aplicacion.Workbooks.Open(fileName);
-            //libros_trabajo.Close(true);
-            //aplicacion.Quit();
+                Process.Start(fileName);
+
+                LoadingScreen.cerrarLoading();
+
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "");
+                return;
+            }
+
         }
-        
+
         public static bool IsDate(Object obj)
         {
             string strDate = obj.ToString();
@@ -295,96 +371,62 @@ namespace SICA
             }
         }
 
-        public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare, SQLiteConnection sqliteConnection)
+        public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare)
         {
-            SQLiteCommand sqliteCmd;
             string strSQL = "";
             try
             {
-                strSQL = "UPDATE REPORTE_VALORADOS SET ";
+                strSQL = "UPDATE REPORTE_VALORADOS SET";
                 if (expediente)
                 {
-                    strSQL = strSQL + "EXPEDIENTE = 1 ";
+                    strSQL = strSQL + " [EXPEDIENTE] = 'CUSTODIADO'";
                     if (pagare)
                     {
-                        strSQL = strSQL + ", PAGARE = 1 ";
+                        strSQL = strSQL + ", [PAGARE] = 'CUSTODIADO'";
                     }
                 }
                 else if (pagare)
                 {
-                    strSQL = strSQL + "PAGARE = 1 ";
+                    strSQL = strSQL + " [PAGARE] = 'CUSTODIADO'";
                 }
-                strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + sisgo + "'";
-                sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                sqliteCmd.ExecuteNonQuery();
+                strSQL = strSQL + " WHERE SOLICITUD_SISGO = '" + sisgo + "'";
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
                 return false;
             }
         }
         
-        public static bool PrestarCustodiaReporteID(List<string> idlist)
+        public static bool AgregarCarrito(string id_inventario, string id_reporte, string caja, string tipo)
         {
-            string strSQL = "";
+            string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_REPORTE_VALORADOS_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_reporte + ", " + Globals.IdUsername + ", '" + tipo + "', '" + caja + "')";
             try
             {
-                using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                {
-                    sqliteConnection.Open();
-                    SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                    SQLiteCommand sqliteCmd;
+                if (!Conexion.conectar())
+                    return false;
 
-                    foreach (string id in idlist)
-                    {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET CUSTODIADO = 'PRESTADO'";
-                        strSQL = strSQL + "WHERE ID_REPORTE_VALORADOS = '" + id + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
 
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
+                Conexion.cerrar();
 
-                    return true;
-                }
+                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
                 return false;
             }
         }
 
-        public static bool AgregarCarrito(string id_inventario, string id_reporte, string caja, string tipo)
-        {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    sqliteCmd = new SQLiteCommand("INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_REPORTE_VALORADOS_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_reporte + ", " + Globals.IdUsername +  ", '" + tipo + "', '" + caja + "')", sqliteConnection);
-                    
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
-                    return false;
-                }
-            }
-        }
-        
         public static int CantidadCarrito(string tipo)
         {
             int n;
@@ -404,15 +446,11 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                Conexion.cerrar();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                LoadingScreen.cerrarLoading();
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
                 return 0;
             }
         }
-                
+
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
@@ -439,7 +477,7 @@ namespace SICA
             //put a breakpoint here and check datatable
             return dataTable;
         }
-        
+
         public static string SinTildes(string texto)
         {
             string textoNormalizado = texto.Normalize(NormalizationForm.FormD);
@@ -450,90 +488,99 @@ namespace SICA
 
         public static bool LimpiarCarrito(string tipo)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + tipo + "'";
+            try
             {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + tipo + "'", sqliteConnection);
-
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return false;
-                }
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                Conexion.cerrar();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return false;
             }
         }
-    
+
         public static bool actualizarNoDesembolsados()
         {
             string strSQL = "";
             try
             {
-                using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+                DataTable dt = new DataTable();
+
+                strSQL = "SELECT SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON ESD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE ESD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
+                if (!Conexion.conectar())
+                    return false;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return false;
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    sqliteConnection.Open();
+                    strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO'";
+                    strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
 
-                    DataTable dt = new DataTable();
-
-                    SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                    SQLiteCommand sqliteCmd;
-                    SQLiteDataAdapter sqliteDataAdapter;
-
-                    strSQL = "SELECT SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON ESD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE ESD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO'";
-                        strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    dt = new DataTable();
-                    strSQL = "SELECT SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON PSD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE PSD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO'";
-                        strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-
-                    return true;
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
                 }
+
+                dt = new DataTable();
+                strSQL = "SELECT SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON PSD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE PSD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return false;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO'";
+                    strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
+                }
+
+                Conexion.cerrar();
+                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
                 return false;
             }
         }
-        
-
+    
+        public static void casoError(Exception ex, string strSQL)
+        {
+            Conexion.cerrar();
+            Globals.lastSQL = strSQL;
+            SimpleLog.Log(ex);
+            LoadingScreen.cerrarLoading();
+            MessageBox.Show(ex.Message + "\n" + strSQL);
+        }
     }
 }

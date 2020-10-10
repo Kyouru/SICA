@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Windows.Forms.VisualStyles;
-using System.Data.SQLite;
-using Microsoft.VisualBasic;
 using SimpleLogger;
+using System.IO;
 
 namespace SICA
 {
@@ -75,9 +67,9 @@ namespace SICA
         {
             if (tbPassword.Text != "")
             {
-                var dt = new DataTable("Password");
+                DataTable dt = new DataTable("Password");
 
-                String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = @username AND REAL = 1";
+                String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = @username AND REAL = TRUE";
 
                 try
                 {
@@ -99,9 +91,7 @@ namespace SICA
                 }
                 catch (Exception ex)
                 {
-                    Conexion.cerrar();
-                    SimpleLog.Log(ex);
-                    MessageBox.Show(ex.Message);
+                    GlobalFunctions.casoError(ex, strSQL);
                     return;
                 }
 
@@ -115,6 +105,7 @@ namespace SICA
                 {
                     if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
                     {
+                        SimpleLog.Info(tbUsername.Text + " inicio Session Exitosamente");
                         this.Hide();
                         Globals.Username = tbUsername.Text;
                         Globals.IdUsername = Int32.Parse(dt.Rows[0][1].ToString());
@@ -155,9 +146,7 @@ namespace SICA
                         }
                         catch (Exception ex)
                         {
-                            Conexion.cerrar();
-                            SimpleLog.Log(ex);
-                            MessageBox.Show(ex.Message + "\n" + strSQL);
+                            GlobalFunctions.casoError(ex, strSQL);
                         }
                     }
                 }
@@ -166,6 +155,12 @@ namespace SICA
             {
                 MessageBox.Show("Contraseña vacia\nEn caso no tenga, escriba una.");
             }
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            //string text = File.ReadAllText(Globals.configPathDB);
+
         }
     }
 }

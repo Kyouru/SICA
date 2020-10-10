@@ -67,13 +67,16 @@ namespace SICA.Forms
 
         public static void cerrarLoading()
         {
-            if (screenLoading.InvokeRequired)
+            if (screenLoading != null)
             {
-                screenLoading.Invoke(new MethodInvoker(cerrarLoading));
-            }
-            else
-            {
-                screenLoading.Close();
+                if (screenLoading.InvokeRequired)
+                {
+                    screenLoading.Invoke(new MethodInvoker(cerrarLoading));
+                }
+                else
+                {
+                    screenLoading.Close();
+                }
             }
         }
     }

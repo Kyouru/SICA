@@ -11,24 +11,18 @@ namespace SICA
 {
     public static class Globals
     {
-        /*public static String DBPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\BD_SICA";
-        public static String CargoPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\CARGO\\";
-        public static String PlantillaCargoPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO.xlsx";
-        public static String PlantillaCargoPagPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO PAGARE.xlsx";
-        public static String PlantillaCargoIMPath = "C:\\Zona Trabajo\\Visual C#\\SICA\\PLANTILLA\\CARGO IM.xlsx";*/
+        public static string lastSQL = "";
+
+        public static String configPathDB = Application.StartupPath + "\\config";
+        public static String DBPath = Application.StartupPath + "\\BD\\DB_SICA.accdb"; //caso nulo
 
 
-        //public static String DBPath = "\\\\\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\BD_SICA";
-        public static String DBPath = Application.StartupPath + "\\BD\\BD_SICA";
-        public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=C:\\Zona Trabajo\\Visual C#\\SICA\\SICA\\bin\\Debug\\BD\\DB_SICA.accdb";
+        public static String Provider = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=";
         //public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\DB_SICA.accdb";
-        public static String CargoPath = Application.StartupPath + "\\CARGO\\";
-        public static String PlantillaCargoExpPath = Application.StartupPath + "\\PLANTILLA\\CARGO EXP.xlsx";
-        public static String PlantillaCargoDocPath = Application.StartupPath + "\\PLANTILLA\\CARGO DOC.xlsx";
-        public static String PlantillaCargoPagPath = Application.StartupPath + "\\PLANTILLA\\CARGO PAGARE.xlsx";
-        public static String PlantillaCargoIMPath = Application.StartupPath + "\\PLANTILLA\\CARGO IM.xlsx";
 
-        public static String strQueryUser = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = 1";
+        public static String CargoPath = Application.StartupPath + "\\CARGO\\";
+
+        public static String strQueryUser = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = TRUE";
 
         public static String DBPasswod = "";
 
@@ -37,6 +31,7 @@ namespace SICA
 
         public static Int32 IdUsernameSelect = -1;
         public static String UsernameSelect = "";
+        public static bool EntregarConfirmacion = false;
 
         public static Int32 CantidadCarrito = 0;
         public static String CarritoSeleccionado = "";
@@ -50,6 +45,7 @@ namespace SICA
         public static String strIronMountainEntregar = "IM_ENTREGAR";
 
         public static String strRecibirReingreso = "RECIBIR_REINGRESO";
+        public static String strRecibirConfirmar = "RECIBIR_CONFIRMAR";
 
         public static String strEntregarExpediente = "ENTREGAR_EXP";
         public static String strEntregarDocumento = "ENTREGAR_DOC";
@@ -61,6 +57,6 @@ namespace SICA
         public static String strBovedaGuardar = "BOVEDA_GUARDAR";
 
         public static String strSeleccionarUsuario = "";
-        
+
     }
 }

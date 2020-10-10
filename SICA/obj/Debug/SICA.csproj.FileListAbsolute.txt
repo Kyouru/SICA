@@ -33,12 +33,8 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.exe
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.pdb
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.csproj.ResolveComReference.cache
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.BusquedaForm.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.RecibirForm.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.EntregarForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.SeleccionarUsuarioForm.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.IronMountainForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.CarritoForm.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.BovedaForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarExpediente.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Entregar.EntregarDocumento.resources
@@ -60,3 +56,5 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Recibir.RecibirPagare.r
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaGuardarCaja.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.Forms.Boveda.BovedaGuardarDoc.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\SICA.csprojAssemblyReference.cache
+C:\Zona Trabajo\Visual C#\SICA\SICA\bin\Debug\ExcelLibrary.dll
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\Debug\Interop.MDACVer.dll

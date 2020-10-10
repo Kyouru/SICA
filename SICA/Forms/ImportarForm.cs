@@ -1,17 +1,9 @@
-﻿using Microsoft.VisualBasic;
+﻿
 using SICA.Forms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA
@@ -37,9 +29,12 @@ namespace SICA
 
                 DataTable dt = new DataTable();
                 dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
-
+                if (dt is null)
+                    return;
                 DataTable dt2 = new DataTable("REPORTE_VALORADOS");
-                dt2 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS FECHA_OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS");
+                dt2 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS FECHA_OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS");
+                if (dt2 is null)
+                    return;
 
                 var result = from c1 in dt.AsEnumerable()
                              join c2 in dt2.AsEnumerable() on new { X1 = c1.Field<string>("PERIODO_SOLICITUD"), X2 = c1.Field<string>("NUMERO_SOLICITUD") } equals new { X1 = c2.Field<string>("PERIODO_SOLICITUD"), X2 = c2.Field<string>("NUMERO_SOLICITUD") } into j
@@ -82,9 +77,13 @@ namespace SICA
 
                 DataTable dt = new DataTable();
                 dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
+                if (dt is null)
+                    return;
 
                 DataTable dt2 = new DataTable("REPORTE_VALORADOS");
-                dt2 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS FECHA_OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS");
+                dt2 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS FECHA_OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS");
+                if (dt2 is null)
+                    return;
 
                 var result = from c1 in dt.AsEnumerable()
                                 join c2 in dt2.AsEnumerable() on new { X1 = c1.Field<string>("PERIODO_SOLICITUD"), X2 = c1.Field<string>("NUMERO_SOLICITUD") } equals new { X1 = c2.Field<string>("PERIODO_SOLICITUD"), X2 = c2.Field<string>("NUMERO_SOLICITUD") } into j
@@ -108,14 +107,16 @@ namespace SICA
                     dgvCancelados.DataSource = result.ToList();
                     dgvCancelados.Columns[1].Width = 300;
                     btCargarCancelados.Visible = true;
-                    //.t.Abort();
+
+                    LoadingScreen.cerrarLoading();
                     MessageBox.Show("Se Encontró " + result.ToList().Count.ToString() + " Créditos Cancelados que no se encuentran en la BD");
                 }
                 else
                 {
                     DataTable dt3 = new DataTable("REPORTE_VALORADOS_VIGENTES");
-                    dt3 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS FECHA_OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS WHERE FECHA_CANCELACION = ''");
-
+                    dt3 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS FECHA_OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS WHERE FECHA_CANCELACION = ''");
+                    if (dt3 is null)
+                        return;
                     var result2 = from c1 in dt.AsEnumerable()
                                     join c2 in dt3.AsEnumerable() on new { X1 = c1.Field<string>("PERIODO_SOLICITUD"), X2 = c1.Field<string>("NUMERO_SOLICITUD") } equals new { X1 = c2.Field<string>("PERIODO_SOLICITUD"), X2 = c2.Field<string>("NUMERO_SOLICITUD") }
                                     where string.IsNullOrEmpty(c2.Field<string>("FECHA_CANCELACION"))
@@ -139,8 +140,8 @@ namespace SICA
                     dgvCancelados.Columns[1].Width = 50;
                     dgvCancelados.Columns[2].Width = 300;
                     btActualizarCancelados.Visible = true;
-                    //Globals.t.Abort();
 
+                    LoadingScreen.cerrarLoading();
                     MessageBox.Show(dgvCancelados.Rows.Count + " expedientes cancelados");
                 }
             }
@@ -163,8 +164,7 @@ namespace SICA
                     }
                     catch (Exception ex)
                     {
-                        LoadingScreen.cerrarLoading();
-                        MessageBox.Show(ex.Message + "\n" + strSQL);
+                        GlobalFunctions.casoError(ex, strSQL);
                         return;
                     }
                     if (!Conexion.iniciaCommand(strSQL))
@@ -181,9 +181,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                Conexion.cerrar();
-                LoadingScreen.cerrarLoading();
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
                 return;
             }
         }
@@ -245,9 +243,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                Conexion.cerrar();
-                LoadingScreen.cerrarLoading();
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
             }
 
         }

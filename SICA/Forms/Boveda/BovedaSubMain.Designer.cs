@@ -30,10 +30,10 @@
         {
             this.pnSubMain = new System.Windows.Forms.Panel();
             this.pnTop = new System.Windows.Forms.Panel();
-            this.btGuardarExp = new FontAwesome.Sharp.IconButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btGuardarDoc = new FontAwesome.Sharp.IconButton();
             this.btRetirar = new FontAwesome.Sharp.IconButton();
+            this.btGuardarCaja = new FontAwesome.Sharp.IconButton();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,46 +48,23 @@
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.pnTop.Controls.Add(this.btGuardarCaja);
             this.pnTop.Controls.Add(this.panel1);
             this.pnTop.Controls.Add(this.btGuardarDoc);
             this.pnTop.Controls.Add(this.btRetirar);
-            this.pnTop.Controls.Add(this.btGuardarExp);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTop.Location = new System.Drawing.Point(0, 0);
             this.pnTop.Name = "pnTop";
             this.pnTop.Size = new System.Drawing.Size(1048, 45);
             this.pnTop.TabIndex = 2;
             // 
-            // btGuardarExp
-            // 
-            this.btGuardarExp.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btGuardarExp.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btGuardarExp.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btGuardarExp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btGuardarExp.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btGuardarExp.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btGuardarExp.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btGuardarExp.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btGuardarExp.IconColor = System.Drawing.Color.Gainsboro;
-            this.btGuardarExp.IconSize = 30;
-            this.btGuardarExp.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btGuardarExp.Location = new System.Drawing.Point(0, 0);
-            this.btGuardarExp.Name = "btGuardarExp";
-            this.btGuardarExp.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btGuardarExp.Rotation = 0D;
-            this.btGuardarExp.Size = new System.Drawing.Size(250, 45);
-            this.btGuardarExp.TabIndex = 9;
-            this.btGuardarExp.Text = "Guardar Expediente";
-            this.btGuardarExp.UseVisualStyleBackColor = false;
-            this.btGuardarExp.Click += new System.EventHandler(this.btGuardarCaja_Click);
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(750, 44);
+            this.panel1.Location = new System.Drawing.Point(500, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(298, 1);
+            this.panel1.Size = new System.Drawing.Size(548, 1);
             this.panel1.TabIndex = 8;
             // 
             // btGuardarDoc
@@ -103,7 +80,7 @@
             this.btGuardarDoc.IconColor = System.Drawing.Color.Gainsboro;
             this.btGuardarDoc.IconSize = 30;
             this.btGuardarDoc.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btGuardarDoc.Location = new System.Drawing.Point(500, 0);
+            this.btGuardarDoc.Location = new System.Drawing.Point(250, 0);
             this.btGuardarDoc.Name = "btGuardarDoc";
             this.btGuardarDoc.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.btGuardarDoc.Rotation = 0D;
@@ -126,7 +103,7 @@
             this.btRetirar.IconColor = System.Drawing.Color.Gainsboro;
             this.btRetirar.IconSize = 30;
             this.btRetirar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btRetirar.Location = new System.Drawing.Point(250, 0);
+            this.btRetirar.Location = new System.Drawing.Point(0, 0);
             this.btRetirar.Name = "btRetirar";
             this.btRetirar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.btRetirar.Rotation = 0D;
@@ -135,6 +112,29 @@
             this.btRetirar.Text = "Retirar";
             this.btRetirar.UseVisualStyleBackColor = false;
             this.btRetirar.Click += new System.EventHandler(this.btRetirar_Click);
+            // 
+            // btGuardarCaja
+            // 
+            this.btGuardarCaja.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btGuardarCaja.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btGuardarCaja.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btGuardarCaja.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btGuardarCaja.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btGuardarCaja.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btGuardarCaja.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btGuardarCaja.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btGuardarCaja.IconColor = System.Drawing.Color.Gainsboro;
+            this.btGuardarCaja.IconSize = 30;
+            this.btGuardarCaja.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btGuardarCaja.Location = new System.Drawing.Point(500, 0);
+            this.btGuardarCaja.Name = "btGuardarCaja";
+            this.btGuardarCaja.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.btGuardarCaja.Rotation = 0D;
+            this.btGuardarCaja.Size = new System.Drawing.Size(250, 44);
+            this.btGuardarCaja.TabIndex = 9;
+            this.btGuardarCaja.Text = "Guardar Caja";
+            this.btGuardarCaja.UseVisualStyleBackColor = false;
+            this.btGuardarCaja.Click += new System.EventHandler(this.btGuardarCaja_Click);
             // 
             // BovedaSubMain
             // 
@@ -158,6 +158,6 @@
         private System.Windows.Forms.Panel panel1;
         private FontAwesome.Sharp.IconButton btGuardarDoc;
         private FontAwesome.Sharp.IconButton btRetirar;
-        private FontAwesome.Sharp.IconButton btGuardarExp;
+        private FontAwesome.Sharp.IconButton btGuardarCaja;
     }
 }

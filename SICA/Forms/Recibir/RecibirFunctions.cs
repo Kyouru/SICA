@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 using System.Data;
-using System.Data.SQLite;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA
@@ -15,7 +11,7 @@ namespace SICA
         public static string ArmarStrNuevoIngreso(DataGridViewRow row)
         {
             string strSQL;
-            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, ID_REPORTE_VALORADOS_FK, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE)";
+            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, ID_REPORTE_VALORADOS_FK, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
             strSQL = strSQL + "VALUES(";
             if (row.Cells["NUMERO_CAJA"].Value.ToString() != "")
             {
@@ -43,7 +39,7 @@ namespace SICA
             }
             if (row.Cells["DESDE"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "DD/MM/YYYY", CultureInfo.InvariantCulture) + "', ";
+                strSQL = strSQL + "#" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "DD/MM/YYYY", CultureInfo.InvariantCulture) + "#, ";
             }
             else
             {
@@ -51,7 +47,7 @@ namespace SICA
             }
             if (row.Cells["HASTA"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "DD/MM/YYYY", CultureInfo.InvariantCulture) + "', ";
+                strSQL = strSQL + "#" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "DD/MM/YYYY", CultureInfo.InvariantCulture) + "#, ";
             }
             else
             {
@@ -101,136 +97,146 @@ namespace SICA
 
             //DESC_CONCAT
             strSQL = strSQL + "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";', ";
-            strSQL = strSQL + "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
-            strSQL = strSQL + "'" + Globals.Username + "')";
+            strSQL = strSQL + "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
+            strSQL = strSQL + "'" + Globals.Username + "', 'CUSTODIADO')";
             return strSQL;
 
         }
 
-        public static bool Reingreso(int id_inventario, int id_valodado, string tipo, string observacion)
-        {
-            using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                SQLiteCommand sqliteCmd;
-                string strSQL = "";
-                string fecha = "'" + DateTime.Now.ToString("yyyy-mm-dd HH:mm:ss") + "'";
-                try
-                {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = " + fecha + ", CUSTODIADO = 'CUSTODIADO' WHERE ID_INVENTARIO_GENERAL = " + id_inventario;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION)
-                                VALUES (" + id_inventario + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
-
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    if (tipo == "EXPEDIENTES DE CREDITO")
-                    {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO' WHERE ID_REPORTE_VALORADOS = " + id_valodado;
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    //Globals.t.Abort();
-                    MessageBox.Show(ex.Message + "\n" + strSQL);
-                    return false;
-                }
-            }
-        }
-
         public static bool ReingresoCarrito(int entrega, string observacion)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = "";
+            try
             {
-                SQLiteCommand sqliteCmd;
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-
-                try
-                {
-                    DataTable dt = new DataTable();
-                    SQLiteDataAdapter sqliteDataAdapter;
-                    string strSQL;
-                    string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strRecibirReingreso + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-                    sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION) VALUES (" + row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-
-                        strSQL = "UPDATE INVENTARIO_GENERAL SET CUSTODIADO = 'CUSTODIADO', USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row[0].ToString() + "";
-                        sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
-                    }
-
-                    sqliteCmd = new SQLiteCommand("DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strRecibirReingreso + "'", sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-                    MessageBox.Show("Proceso Finalizado");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    //Globals.t.Abort();
-                    MessageBox.Show(ex.Message);
+                DataTable dt = new DataTable();
+                string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strRecibirReingreso + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                if (!Conexion.conectar())
                     return false;
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return false;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION) VALUES (" + row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
+
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET CUSTODIADO = 'CUSTODIADO', USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = #" + fecha + "# WHERE ID_INVENTARIO_GENERAL = " + row[0].ToString() + "";
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false; ;
                 }
+
+                strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strRecibirReingreso + "'";
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                Conexion.cerrar();
+
+                MessageBox.Show("Proceso Finalizado");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return false;
             }
         }
-    
+
         public static bool RecibirPagare(string id_reporte_valorados)
         {
-            using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string strSQL = "";
+            try
             {
-                string  fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                sqliteConnection.Open();
-                SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
-                SQLiteCommand sqliteCmd;
-                string strSQL = "";
-                try
-                {
-                    strSQL = @"INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA)
-                                VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + id_reporte_valorados + ", " + fecha + ")";
+                strSQL = @"INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA)
+                            VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + id_reporte_valorados + ", #" + fecha + "#)";
 
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO' WHERE ID_REPORTE_VALORADOS = " + id_reporte_valorados;
-                    sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                    sqliteCmd.ExecuteNonQuery();
-
-                    sqliteTransaction.Commit();
-                    sqliteConnection.Close();
-
-                    MessageBox.Show("Registrado");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    //Globals.t.Abort();
-                    MessageBox.Show(ex.Message + "\n" + strSQL);
+                if (!Conexion.conectar())
                     return false;
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO' WHERE ID_REPORTE_VALORADOS = " + id_reporte_valorados;
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                Conexion.cerrar();
+
+                MessageBox.Show("Registrado");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return false;
+            }
+        }
+
+        public static bool ConfirmarRecepcion(string id_inventario_general)
+        {
+            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string strSQL = "";
+            try
+            {
+                DataTable dt = new DataTable();
+                strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strRecibirConfirmar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                if (!Conexion.conectar())
+                    return false;
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return false;
+
+                if (!Conexion.conectar())
+                    return false;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = #" + fecha + "#, [RECIBIDO] = TRUE WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString();
+
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
+
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = #" + fecha + "# WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString();
+
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
                 }
+
+                Conexion.cerrar();
+
+                MessageBox.Show("Recibido");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return false;
             }
         }
     }

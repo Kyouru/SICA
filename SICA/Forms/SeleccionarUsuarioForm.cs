@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using SimpleLogger;
+using System;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms
@@ -22,42 +16,47 @@ namespace SICA.Forms
         private void SeleccionarUsuarioForm_Load(object sender, EventArgs e)
         {
             Globals.IdUsernameSelect = -1;
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
+            string strSQL = Globals.strQueryUser;
+            DataTable dt = new DataTable("USUARIO");
+
+            strSQL = strSQL + " AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
+
+            try
             {
-                string strSQL = Globals.strQueryUser;
-                DataTable dt = new DataTable("USUARIO");
-                sqliteConnection.Open();
-
-                strSQL = strSQL + " AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
-
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    if (dt.Rows[0]["CUSTODIA"].ToString() == "1")
-                    {
-                        Globals.strEntregarEstado = "CUSTODIADO";
-                    }
-                    else
-                    {
-                        Globals.strEntregarEstado = "PRESTADO";
-                    }
-
-                    cmbUsuario.DataSource = dt;
-                    cmbUsuario.ValueMember = "ID_USUARIO";
-                    cmbUsuario.DisplayMember = "USERNAME";
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+
+                Conexion.cerrar();
+
+                if (dt.Rows[0]["CUSTODIA"].ToString() == "True")
+                {
+                    Globals.EntregarConfirmacion = true;
+                    Globals.strEntregarEstado = "CUSTODIADO";
                 }
+                else
+                {
+                    Globals.EntregarConfirmacion = false;
+                    Globals.strEntregarEstado = "PRESTADO";
+                }
+
+                cmbUsuario.DataSource = dt;
+                cmbUsuario.ValueMember = "ID_USUARIO";
+                cmbUsuario.DisplayMember = "USERNAME";
+                LoadingScreen.cerrarLoading();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
             }
             
         }
@@ -68,6 +67,8 @@ namespace SICA.Forms
             {
                 Globals.IdUsernameSelect = Int32.Parse(cmbUsuario.SelectedValue.ToString());
                 Globals.UsernameSelect = cmbUsuario.Text;
+
+                LoadingScreen.cerrarLoading();
                 this.Close();
             }
             else
@@ -75,24 +76,24 @@ namespace SICA.Forms
                 DialogResult dialogResult = MessageBox.Show("Usuario no existe.\nDesea Crear?", "Usuario no ingresado", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-                    {
-                        sqliteConnection.Open();
+                    string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', 0, 1, 0, 0)";
+                    
+                    if (!Conexion.conectar())
+                        return;
 
-                        SQLiteTransaction sqliteTransaction = sqliteConnection.BeginTransaction();
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return;
 
-                        string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', 0, 1, 0, 0)";
-                        SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-                        sqliteCmd.ExecuteNonQuery();
+                    if (!Conexion.ejecutarQuery())
+                        return;
 
-                        Globals.IdUsernameSelect = Int32.Parse(sqliteConnection.LastInsertRowId.ToString());
-                        Globals.UsernameSelect = cmbUsuario.Text;
+                    Conexion.cerrar();
+                    LoadingScreen.cerrarLoading();
 
-                        sqliteTransaction.Commit();
-                        sqliteConnection.Close();
-
-                        this.Close();
-                    }
+                    Globals.IdUsernameSelect = Conexion.lastIdInsert();
+                    Globals.UsernameSelect = cmbUsuario.Text;
+                    Globals.EntregarConfirmacion = false;
+                    this.Close();
                 }
             }
         }

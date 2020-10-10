@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms.Recibir
@@ -19,13 +12,14 @@ namespace SICA.Forms.Recibir
         }
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            using (var sqliteConnection = new SQLiteConnection("Data Source=" + Globals.DBPath))
-            {
-                string strSQL;
-                DataTable dt = new DataTable("REPORTE_VALORADOS");
-                sqliteConnection.Open();
+            LoadingScreen.iniciarLoading();
 
-                strSQL = "SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO, STRFTIME('%d/%m/%Y', FECHA_OTORGADO) AS OTORGADO, STRFTIME('%d/%m/%Y', FECHA_CANCELACION) AS CANCELACION, PAGARE ";
+            string strSQL = "";
+            try
+            {
+                DataTable dt = new DataTable("REPORTE_VALORADOS");
+
+                strSQL = "SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS CANCELACION, PAGARE ";
                 strSQL = strSQL + " FROM REPORTE_VALORADOS";
                 strSQL = strSQL + " WHERE (PAGARE = 'NO CUSTODIADO' OR PAGARE = 'PRESTADO' OR PAGARE = 'PROTESTO' OR PAGARE IS NULL)";
                 if (tbBusquedaLibre.Text != "")
@@ -33,25 +27,28 @@ namespace SICA.Forms.Recibir
                     strSQL = strSQL + " AND SOLICITUD_SISGO LIKE '%" + tbBusquedaLibre.Text + "%'";
                 }
                 strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
-
-                SQLiteCommand sqliteCmd = new SQLiteCommand(strSQL, sqliteConnection);
-
-                try
-                {
-                    sqliteCmd.ExecuteNonQuery();
-                    SQLiteDataAdapter sqliteDataAdapter = new SQLiteDataAdapter(sqliteCmd);
-                    sqliteDataAdapter.Fill(dt);
-                    sqliteConnection.Close();
-
-                    dgv.DataSource = dt;
-                    dgv.Columns[0].Visible = false;
-                }
-                catch (Exception ex)
-                {
-                    sqliteConnection.Close();
-                    MessageBox.Show(ex.Message);
+                if (!Conexion.conectar())
                     return;
-                }
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return;
+                Conexion.cerrar();
+
+                dgv.DataSource = dt;
+                dgv.Columns[0].Visible = false;
+                dgv.ClearSelection();
+
+                LoadingScreen.cerrarLoading();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
             }
         }
 
@@ -59,14 +56,14 @@ namespace SICA.Forms.Recibir
         {
             if (dgv.SelectedRows.Count == 1)
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
                     RecibirFunctions.RecibirPagare(dgv.SelectedRows[0].Cells["ID"].Value.ToString());
+                    //btBuscar_Click(sender, e);
                     dgv.SelectedRows[0].Height = 0;
-                    //btBuscarPagare_Click(sender, e);
                 }
             }
         }
@@ -89,7 +86,7 @@ namespace SICA.Forms.Recibir
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
 
     }

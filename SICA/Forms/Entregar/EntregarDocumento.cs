@@ -1,13 +1,6 @@
-﻿using SimpleLogger;
+﻿
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SICA.Forms.Entregar
@@ -24,7 +17,7 @@ namespace SICA.Forms.Entregar
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            string strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS 'DESC 1', DESCRIPCION_2 AS 'DESC 2', DESCRIPCION_3 AS 'DESC 3', DESCRIPCION_4 AS 'DESC 4', CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
+            string strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
                                 FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL
                                 AND DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = @usuario_posee";
             if (tbBusquedaLibre.Text != "")
@@ -32,6 +25,8 @@ namespace SICA.Forms.Entregar
             strSQL = strSQL + " ORDER BY DESCRIPCION_2";
             try
             {
+                LoadingScreen.iniciarLoading();
+
                 DataTable dt = new DataTable();
 
                 if (!Conexion.conectar())
@@ -52,17 +47,18 @@ namespace SICA.Forms.Entregar
                 if (dt is null)
                     return;
 
+                Conexion.cerrar();
+
                 dgv.DataSource = dt;
                 dgv.Columns[0].Visible = false;
+                dgv.ClearSelection();
 
-                Conexion.cerrar();
+                LoadingScreen.cerrarLoading();
             }
             catch (Exception ex)
             {
-                Conexion.cerrar();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                MessageBox.Show(ex.Message + "\n" + strSQL);
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
             }
         }
 
@@ -70,7 +66,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = 1";
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
@@ -95,7 +91,7 @@ namespace SICA.Forms.Entregar
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, "", 1, 1, true);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
 
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)

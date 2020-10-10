@@ -2,12 +2,8 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\SICA.exe.config
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\SICA.exe
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\SICA.pdb
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\FontAwesome.Sharp.dll
-C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\System.Data.SQLite.dll
-C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\System.Data.SQLite.xml
-C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\System.Data.SQLite.dll.config
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.csproj.ResolveComReference.cache
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Boveda.BovedaGuardarCaja.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.BovedaForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Boveda.BovedaGuardarDoc.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Boveda.BovedaRetirar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Boveda.BovedaSubMain.resources
@@ -20,15 +16,12 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.IronMountain.IronMo
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.IronMountain.IronMountainRecibir.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.IronMountain.IronMountainSolicitar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.IronMountain.IronMountainSubMain.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.EntregarForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Entregar.EntregarDocumento.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Entregar.EntregarExpediente.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Entregar.EntregarPagare.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Entregar.EntregarSubMain.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.IronMountainForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.LoadingScreen.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.LoginForm.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.RecibirForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.ImportarForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.MainForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.Forms.Recibir.RecibirNuevo.resources
@@ -44,3 +37,4 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.exe
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.pdb
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\SICA.csprojAssemblyReference.cache
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x86\Debug\Interop.MDACVer.dll
+C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x86\Debug\ExcelLibrary.dll
