@@ -159,8 +159,12 @@ namespace SICA
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            //string text = File.ReadAllText(Globals.configPathDB);
-
+            string text = File.ReadAllText(Globals.configPathDB);
+            if (text != null)
+            {
+                Globals.DBPath = text;
+            }
+            
         }
     }
 }

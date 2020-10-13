@@ -124,5 +124,23 @@ namespace SICA
         {
             GlobalFunctions.ExportarDataGridViewExcel(dgvBusqueda, null);
         }
+
+        private void dgvBusqueda_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+            {
+                if (dgvBusqueda.SelectedCells.Count == 1)
+                {
+                    Globals.idInventarioGeneral = Int32.Parse(dgvBusqueda.Rows[dgvBusqueda.SelectedCells[0].RowIndex].Cells["ID"].Value.ToString());
+                    HistoricoForm vHistorico = new HistoricoForm();
+                    vHistorico.Show();
+                }
+            }
+        }
+
+        private void dgvBusqueda_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

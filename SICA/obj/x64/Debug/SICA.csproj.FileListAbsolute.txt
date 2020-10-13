@@ -5,7 +5,6 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x64\Debug\FontAwesome.Sharp.dll
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csproj.ResolveComReference.cache
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaGuardarCaja.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaGuardarDoc.resources
-C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetirar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.BusquedaForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.CarritoForm.resources
@@ -39,3 +38,7 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\Interop.MDACVer.dll
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csprojAssemblyReference.cache
 C:\Zona Trabajo\Visual C#\SICA\SICA\bin\x64\Debug\ExcelLibrary.dll
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirConfirmar.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetirarCaja.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetirarDoc.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.HistoricoForm.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.InfoForm.resources

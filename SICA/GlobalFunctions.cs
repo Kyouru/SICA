@@ -276,11 +276,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                Conexion.cerrar();
-                SimpleLog.Info(Environment.UserName);
-                SimpleLog.Log(ex);
-                LoadingScreen.cerrarLoading();
-                MessageBox.Show(ex.Message);
+                GlobalFunctions.casoError(ex, "");
                 return;
             }
 
@@ -581,6 +577,74 @@ namespace SICA
             SimpleLog.Log(ex);
             LoadingScreen.cerrarLoading();
             MessageBox.Show(ex.Message + "\n" + strSQL);
+        }
+
+        public static bool verificarCaja (string numero_caja, string usuario)
+        {
+            string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND USUARIO_POSEE <> '" + usuario + "'";
+            int i = -1;
+            if (!Conexion.conectar())
+                return false;
+
+            if (!Conexion.iniciaCommand(strSQL))
+                return false;
+            i = Conexion.ejecutarQueryEscalar();
+
+            Conexion.cerrar();
+
+            if (i > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static int pendienteConfirmarRecepcion()
+        {
+            string strSQL = "";
+            try
+            {
+                strSQL = "SELECT COUNT(*) FROM INVENTARIO_HISTORICO WHERE RECIBIDO = FALSE AND ANULADO = FALSE AND ID_USUARIO_RECIBE_FK = " + Globals.IdUsername;
+                if (!Conexion.conectar())
+                    return -1;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return -1;
+                return Conexion.ejecutarQueryEscalar();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return -1;
+            }
+        }
+
+        public static void limpiarTodoCarrito()
+        {
+            string strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername;
+            try
+            {
+                if (!Conexion.conectar())
+                    return;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                Conexion.cerrar();
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return;
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ namespace SICA
                 }
 
                 dt = new DataTable();
-                strSQL = "SELECT IG.ID_INVENTARIO_GENERAL AS ID, NUMERO_CAJA FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + ") CAJAS";
+                strSQL = "SELECT DISTINCT NUMERO_CAJA FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + ") CAJAS";
                 strSQL = strSQL + " ON IG.NUMERO_DE_CAJA = CAJAS.NUMERO_CAJA WHERE CAJAS.NUMERO_CAJA IS NOT NULL";
 
                 if (!Conexion.iniciaCommand(strSQL))
@@ -49,8 +49,8 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION) VALUES (" + row["ID"].ToString();
-                    strSQL = strSQL + ", " + Globals.IdIM;
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION) VALUES (";
+                    strSQL = strSQL + Globals.IdIM;
                     strSQL = strSQL + ", " + fecha + "";
                     strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
                     strSQL = strSQL + ", '" + Globals.Username + "')";
@@ -61,6 +61,7 @@ namespace SICA
                         return false;
                 }
 
+                strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strIronMountainSolicitar + "'";
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
                 if (!Conexion.ejecutarQuery())
@@ -99,13 +100,13 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = 'EN TRANSITO A CP'";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_RECIBE_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + " WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND ID_USUARIO_RECIBE_FK IS NULL AND FECHA_FIN IS NULL";
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_RECIBE_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + ", RECIBIDO = TRUE WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND RECIBIDO = FALSE AND FECHA_FIN IS NULL AND ID_USUARIO_ENTREGA_FK = " + Globals.IdIM;
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -228,7 +229,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, NUMERO_CAJA, FECHA_INICIO, OBSERVACION) VALUES (";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_RECIBE_FK, NUMERO_CAJA, FECHA_INICIO, OBSERVACION) VALUES (";
                     strSQL = strSQL + "" + Globals.IdIM;
                     strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
                     strSQL = strSQL + ", " + fecha + "";
@@ -277,14 +278,14 @@ namespace SICA
                     return false;
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_ENTREGA_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + " WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND ID_USUARIO_ENTREGA_FK IS NULL AND FECHA_FIN IS NULL";
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET ID_USUARIO_ENTREGA_FK = " + Globals.IdUsername + ", FECHA_FIN = " + fecha + ", RECIBIDO = TRUE WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND RECIBIDO = FALSE AND FECHA_FIN IS NULL AND ID_USUARIO_RECIBE_FK = " + Globals.IdIM;
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'IRON MOUNTAIN' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = 'IRON MOUNTAIN' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = 'EN TRANSITO A IM'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -300,6 +301,7 @@ namespace SICA
                     return false;
 
                 Conexion.cerrar();
+
                 LoadingScreen.cerrarLoading();
                 MessageBox.Show("Cajas Entregadas");
                 return true;

@@ -95,7 +95,7 @@ namespace SICA.Forms.Boveda
         private void btRetirar_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new BovedaRetirar());
+            OpenChildForm(new BovedaRetirarDoc());
         }
 
         private void btGuardarDoc_Click(object sender, EventArgs e)
@@ -108,6 +108,12 @@ namespace SICA.Forms.Boveda
         {
             ActivateButton(sender, RGBColors.color4);
             OpenChildForm(new BovedaGuardarCaja());
+        }
+
+        private void btRetirarCaja_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new BovedaRetirarCaja());
         }
     }
 }

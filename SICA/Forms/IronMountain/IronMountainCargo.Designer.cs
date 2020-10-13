@@ -66,6 +66,7 @@
             this.btGenerar.Size = new System.Drawing.Size(70, 56);
             this.btGenerar.TabIndex = 28;
             this.btGenerar.UseVisualStyleBackColor = true;
+            this.btGenerar.Click += new System.EventHandler(this.btGenerar_Click);
             // 
             // IronMountainCargo
             // 
@@ -78,7 +79,6 @@
             this.Controls.Add(this.tbCargoCajas);
             this.Name = "IronMountainCargo";
             this.Text = "IronMountainCargo";
-            this.Click += new System.EventHandler(this.btGenerarCargo_Click);
             this.ResumeLayout(false);
             this.PerformLayout();
 

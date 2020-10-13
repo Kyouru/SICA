@@ -14,7 +14,7 @@ namespace SICA.Forms.IronMountain
             InitializeComponent();
         }
 
-        private void btGenerarCargo_Click(object sender, EventArgs e)
+        private void btGenerar_Click(object sender, EventArgs e)
         {
             if (tbCargoCajas.Text != "")
             {
@@ -39,8 +39,8 @@ namespace SICA.Forms.IronMountain
                 try
                 {
 
-                    strSQL = "SELECT 'PY121' AS CODIGO_CLIENTE, NUMERO_DE_CAJA, NUMERO_DE_CAJA AS 'NUMERO_DE_CAJA2', 'MASTER' AS CODIGO_DIVISION, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS FECHA_DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3,";
-                    strSQL = strSQL + " REPLACE(DESCRIPCION_4, '&', ' Y ') AS DESCRIPCION_4 FROM INVENTARIO_GENERAL";
+                    strSQL = "SELECT 'PY121' AS CODIGO_CLIENTE, NUMERO_DE_CAJA, CAJA_CLIENTE, 'MASTER' AS CODIGO_DIVISION, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS FECHA_DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3,";
+                    strSQL = strSQL + " DESCRIPCION_4 AS DESCRIPCION_4 FROM INVENTARIO_GENERAL";
 
                     if (!Conexion.conectar())
                         return;
@@ -49,28 +49,29 @@ namespace SICA.Forms.IronMountain
                     if (!Conexion.ejecutarQuery())
                         return;
 
-                    dt = Conexion.llenarDataTable();
-                    if (dt is null)
+                    dt2 = Conexion.llenarDataTable();
+                    if (dt2 is null)
                         return;
-                    Conexion.cerrar();
 
+                    Conexion.cerrar();
+                    
                     var result = from c1 in dt.AsEnumerable()
-                                    join c2 in dt2.AsEnumerable() on c1.Field<string>("NUMERO_CAJA") equals c2.Field<string>("NUMERO_DE_CAJA")
-                                    select new
-                                    {
-                                        CODIGO_CLIENTE = c2.Field<string>("CODIGO_CLIENTE"),
-                                        NUMERO_DE_CAJA = c2.Field<string>("NUMERO_DE_CAJA"),
-                                        NUMERO_DE_CAJA2 = c2.Field<string>("NUMERO_DE_CAJA2"),
-                                        CODIGO_DIVISION = c2.Field<string>("CODIGO_DIVISION"),
-                                        CODIGO_DEPARTAMENTO = c2.Field<string>("CODIGO_DEPARTAMENTO"),
-                                        CODIGO_DOCUMENTO = c2.Field<string>("CODIGO_DOCUMENTO"),
-                                        FECHA_DESDE = c2.Field<string>("FECHA_DESDE"),
-                                        FECHA_HASTA = c2.Field<string>("FECHA_HASTA"),
-                                        DESCRIPCION_1 = c2.Field<string>("DESCRIPCION_1"),
-                                        DESCRIPCION_2 = c2.Field<string>("DESCRIPCION_2"),
-                                        DESCRIPCION_3 = c2.Field<string>("DESCRIPCION_3"),
-                                        DESCRIPCION_4 = GlobalFunctions.SinTildes(c2.Field<string>("DESCRIPCION_4"))
-                                    };
+                                 join c2 in dt2.AsEnumerable() on c1.Field<string>("NUMERO_CAJA") equals c2.Field<string>("NUMERO_DE_CAJA")
+                                 select new
+                                 {
+                                     CODIGO_CLIENTE = c2.Field<string>("CODIGO_CLIENTE"),
+                                     NUMERO_DE_CAJA = c2.Field<string>("NUMERO_DE_CAJA"),
+                                     CAJA_CLIENTE = c2.Field<string>("CAJA_CLIENTE"),
+                                     CODIGO_DIVISION = c2.Field<string>("CODIGO_DIVISION"),
+                                     CODIGO_DEPARTAMENTO = c2.Field<string>("CODIGO_DEPARTAMENTO"),
+                                     CODIGO_DOCUMENTO = c2.Field<string>("CODIGO_DOCUMENTO"),
+                                     FECHA_DESDE = c2.Field<string>("FECHA_DESDE"),
+                                     FECHA_HASTA = c2.Field<string>("FECHA_HASTA"),
+                                     DESCRIPCION_1 = c2.Field<string>("DESCRIPCION_1"),
+                                     DESCRIPCION_2 = c2.Field<string>("DESCRIPCION_2"),
+                                     DESCRIPCION_3 = c2.Field<string>("DESCRIPCION_3"),
+                                     DESCRIPCION_4 = GlobalFunctions.SinTildes(c2.Field<string>("DESCRIPCION_4"))
+                                 };
                     DataTable dt3 = new DataTable("CARGO");
                     dt3 = GlobalFunctions.ToDataTable(result.ToList());
                     GlobalFunctions.ArmarCargoExcel(dt3, "", Globals.CargoPath + "CARGO_IM_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", false);

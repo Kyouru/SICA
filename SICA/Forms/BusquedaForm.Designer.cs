@@ -33,7 +33,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label2 = new System.Windows.Forms.Label();
             this.tbBusquedaLibre = new System.Windows.Forms.TextBox();
-            this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.dgvBusqueda = new System.Windows.Forms.DataGridView();
             this.cbFecha = new System.Windows.Forms.CheckBox();
             this.tbFecha = new System.Windows.Forms.TextBox();
@@ -41,6 +40,7 @@
             this.cbCaja = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btExcel = new FontAwesome.Sharp.IconButton();
+            this.btBuscar = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBusqueda)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,23 +64,6 @@
             this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 24);
             this.tbBusquedaLibre.TabIndex = 4;
             this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
-            // 
-            // btBuscar
-            // 
-            this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.Search;
-            this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
-            this.btBuscar.IconSize = 30;
-            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBuscar.Location = new System.Drawing.Point(939, 2);
-            this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Rotation = 0D;
-            this.btBuscar.Size = new System.Drawing.Size(48, 38);
-            this.btBuscar.TabIndex = 5;
-            this.btBuscar.UseVisualStyleBackColor = true;
-            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // dgvBusqueda
             // 
@@ -123,6 +106,8 @@
             this.dgvBusqueda.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvBusqueda.Size = new System.Drawing.Size(1087, 547);
             this.dgvBusqueda.TabIndex = 6;
+            this.dgvBusqueda.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBusqueda_CellContentClick);
+            this.dgvBusqueda.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvBusqueda_KeyDown);
             // 
             // cbFecha
             // 
@@ -192,6 +177,23 @@
             this.btExcel.TabIndex = 12;
             this.btExcel.UseVisualStyleBackColor = true;
             this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
+            // 
+            // btBuscar
+            // 
+            this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.Search;
+            this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconSize = 30;
+            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBuscar.Location = new System.Drawing.Point(939, 2);
+            this.btBuscar.Name = "btBuscar";
+            this.btBuscar.Rotation = 0D;
+            this.btBuscar.Size = new System.Drawing.Size(48, 38);
+            this.btBuscar.TabIndex = 5;
+            this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // BusquedaForm
             // 

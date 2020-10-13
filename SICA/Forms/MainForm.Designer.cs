@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.pnLeft = new System.Windows.Forms.Panel();
             this.btImportar = new FontAwesome.Sharp.IconButton();
@@ -38,6 +39,8 @@
             this.btBusqueda = new FontAwesome.Sharp.IconButton();
             this.icMain = new FontAwesome.Sharp.IconPictureBox();
             this.pnTop = new System.Windows.Forms.Panel();
+            this.btActualizar = new FontAwesome.Sharp.IconButton();
+            this.lbEstado = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbUsuario = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,6 +49,8 @@
             this.btCerrar = new FontAwesome.Sharp.IconButton();
             this.pnMain = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btDocuClass = new FontAwesome.Sharp.IconButton();
             this.pnLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.icMain)).BeginInit();
             this.pnTop.SuspendLayout();
@@ -54,6 +59,7 @@
             // 
             // pnLeft
             // 
+            this.pnLeft.Controls.Add(this.btDocuClass);
             this.pnLeft.Controls.Add(this.btImportar);
             this.pnLeft.Controls.Add(this.btBoveda);
             this.pnLeft.Controls.Add(this.btIronMountain);
@@ -225,11 +231,14 @@
             this.icMain.Size = new System.Drawing.Size(200, 70);
             this.icMain.TabIndex = 0;
             this.icMain.TabStop = false;
+            this.icMain.Click += new System.EventHandler(this.icMain_Click);
             this.icMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.icMain_MouseDown);
             // 
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.MidnightBlue;
+            this.pnTop.Controls.Add(this.btActualizar);
+            this.pnTop.Controls.Add(this.lbEstado);
             this.pnTop.Controls.Add(this.panel2);
             this.pnTop.Controls.Add(this.lbUsuario);
             this.pnTop.Controls.Add(this.label1);
@@ -242,6 +251,33 @@
             this.pnTop.Size = new System.Drawing.Size(1059, 34);
             this.pnTop.TabIndex = 1;
             this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
+            // 
+            // btActualizar
+            // 
+            this.btActualizar.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btActualizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btActualizar.IconChar = FontAwesome.Sharp.IconChar.SyncAlt;
+            this.btActualizar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btActualizar.IconSize = 20;
+            this.btActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btActualizar.Location = new System.Drawing.Point(6, 3);
+            this.btActualizar.Name = "btActualizar";
+            this.btActualizar.Rotation = 0D;
+            this.btActualizar.Size = new System.Drawing.Size(36, 28);
+            this.btActualizar.TabIndex = 42;
+            this.btActualizar.UseVisualStyleBackColor = true;
+            this.btActualizar.Click += new System.EventHandler(this.btActualizar_Click);
+            // 
+            // lbEstado
+            // 
+            this.lbEstado.AutoSize = true;
+            this.lbEstado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbEstado.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lbEstado.Location = new System.Drawing.Point(48, 8);
+            this.lbEstado.Name = "lbEstado";
+            this.lbEstado.Size = new System.Drawing.Size(0, 18);
+            this.lbEstado.TabIndex = 9;
             // 
             // panel2
             // 
@@ -350,6 +386,34 @@
             this.panel1.Size = new System.Drawing.Size(5, 681);
             this.panel1.TabIndex = 12;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 10000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btDocuClass
+            // 
+            this.btDocuClass.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btDocuClass.FlatAppearance.BorderSize = 0;
+            this.btDocuClass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btDocuClass.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btDocuClass.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btDocuClass.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btDocuClass.IconChar = FontAwesome.Sharp.IconChar.FileImport;
+            this.btDocuClass.IconColor = System.Drawing.Color.Gainsboro;
+            this.btDocuClass.IconSize = 30;
+            this.btDocuClass.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btDocuClass.Location = new System.Drawing.Point(0, 436);
+            this.btDocuClass.Name = "btDocuClass";
+            this.btDocuClass.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btDocuClass.Rotation = 0D;
+            this.btDocuClass.Size = new System.Drawing.Size(200, 61);
+            this.btDocuClass.TabIndex = 9;
+            this.btDocuClass.Text = "  DocuClass";
+            this.btDocuClass.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btDocuClass.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btDocuClass.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -361,6 +425,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.pnLeft.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.icMain)).EndInit();
             this.pnTop.ResumeLayout(false);
@@ -389,6 +454,10 @@
         private FontAwesome.Sharp.IconButton btBoveda;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label lbEstado;
+        private System.Windows.Forms.Timer timer1;
+        private FontAwesome.Sharp.IconButton btActualizar;
+        private FontAwesome.Sharp.IconButton btDocuClass;
     }
 }
 

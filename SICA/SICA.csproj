@@ -128,11 +128,17 @@
     <Compile Include="Forms\Boveda\BovedaGuardarDoc.Designer.cs">
       <DependentUpon>BovedaGuardarDoc.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Boveda\BovedaRetirar.cs">
+    <Compile Include="Forms\Boveda\BovedaRetirarCaja.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Boveda\BovedaRetirar.Designer.cs">
-      <DependentUpon>BovedaRetirar.cs</DependentUpon>
+    <Compile Include="Forms\Boveda\BovedaRetirarCaja.Designer.cs">
+      <DependentUpon>BovedaRetirarCaja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Boveda\BovedaRetirarDoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Boveda\BovedaRetirarDoc.Designer.cs">
+      <DependentUpon>BovedaRetirarDoc.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Boveda\BovedaSubMain.cs">
       <SubType>Form</SubType>
@@ -152,6 +158,18 @@
     </Compile>
     <Compile Include="Forms\CarritoForm.Designer.cs">
       <DependentUpon>CarritoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\HistoricoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HistoricoForm.Designer.cs">
+      <DependentUpon>HistoricoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InfoForm.Designer.cs">
+      <DependentUpon>InfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\IronMountain\IronMountainArmar.cs">
       <SubType>Form</SubType>
@@ -292,8 +310,11 @@
     <EmbeddedResource Include="Forms\Boveda\BovedaGuardarDoc.resx">
       <DependentUpon>BovedaGuardarDoc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Boveda\BovedaRetirar.resx">
-      <DependentUpon>BovedaRetirar.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Boveda\BovedaRetirarCaja.resx">
+      <DependentUpon>BovedaRetirarCaja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Boveda\BovedaRetirarDoc.resx">
+      <DependentUpon>BovedaRetirarDoc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Boveda\BovedaSubMain.resx">
       <DependentUpon>BovedaSubMain.cs</DependentUpon>
@@ -303,6 +324,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CarritoForm.resx">
       <DependentUpon>CarritoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HistoricoForm.resx">
+      <DependentUpon>HistoricoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InfoForm.resx">
+      <DependentUpon>InfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\IronMountain\IronMountainArmar.resx">
       <DependentUpon>IronMountainArmar.cs</DependentUpon>

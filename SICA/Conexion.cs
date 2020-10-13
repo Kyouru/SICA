@@ -95,7 +95,7 @@ namespace SICA
             }
             catch (Exception ex)
             {
-                GlobalFunctions.casoError(ex, "Llenar DataTable");
+                GlobalFunctions.casoError(ex, command.CommandText);
                 return null;
             }
         }

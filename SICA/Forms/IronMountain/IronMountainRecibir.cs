@@ -21,16 +21,17 @@ namespace SICA.Forms.IronMountain
 
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
-                strSQL = "SELECT DISTINCT IH.NUMERO_CAJA AS CAJA, IH.FECHA_INICIO AS 'FECHA SOLICITUD', OBSERVACION AS USUARIO FROM INVENTARIO_HISTORICO IH";
+                strSQL = "SELECT DISTINCT IH.NUMERO_CAJA AS CAJA, IH.FECHA_INICIO AS FECHA_SOLICITUD, OBSERVACION AS USUARIO FROM INVENTARIO_HISTORICO IH";
                 strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IH.NUMERO_CAJA";
 
                 strSQL = strSQL + " WHERE IH.ID_USUARIO_ENTREGA_FK = " + Globals.IdIM;
-                strSQL = strSQL + " AND IH.ANULADO IS NULL";
-                strSQL = strSQL + " AND TC.NUMERO_CAJA IS NULL";
-                strSQL = strSQL + " AND IH.ID_USUARIO_RECIBE_FK IS NULL";
+                strSQL = strSQL + " AND IH.ANULADO = FALSE";
+                strSQL = strSQL + " AND IH.RECIBIDO = FALSE";
                 strSQL = strSQL + " AND IH.FECHA_FIN IS NULL";
+                strSQL = strSQL + " AND TC.ID_TMP_CARRITO IS NULL";
 
                 strSQL = strSQL + " ORDER BY FECHA_INICIO";
+
                 if (!Conexion.conectar())
                     return;
                 if (!Conexion.iniciaCommand(strSQL))

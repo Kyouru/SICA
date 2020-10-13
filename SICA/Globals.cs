@@ -53,8 +53,15 @@ namespace SICA
         public static String strEntregarPagareSinDesembolsar = "ENTREGAR_PAG_SIN";
         public static String strEntregarEstado = "PRESTADO";
 
-        public static String strBovedaRetirar = "BOVEDA_RETIRAR";
-        public static String strBovedaGuardar = "BOVEDA_GUARDAR";
+        public static String strBovedaRetirarDOC = "BOVEDA_RETIRAR_DOC";
+        public static String strBovedaGuardarDOC = "BOVEDA_GUARDAR_DOC";
+        public static String strBovedaRetirarCAJA = "BOVEDA_RETIRAR_CAJA";
+        public static String strBovedaGuardarCAJA = "BOVEDA_GUARDAR_CAJA";
+
+        public static String strVerificarCAJA = "VERIFICAR_CAJA";
+        public static String strnumeroCAJA = "";
+
+        public static Int32 idInventarioGeneral = -1;
 
         public static String strSeleccionarUsuario = "";
 

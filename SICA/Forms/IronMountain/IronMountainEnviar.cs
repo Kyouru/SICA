@@ -64,9 +64,29 @@ namespace SICA.Forms.IronMountain
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainEnviar);
-                actualizarCantidad();
-                actualizarCajas();
+                if (GlobalFunctions.verificarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.Username))
+                {
+                    GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainEnviar);
+                    actualizarCantidad();
+                    actualizarCajas();
+                }
+                else
+                {
+                    DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea enviar la caja de todas manera?", "Incompleto", MessageBoxButtons.YesNo);
+                    if (dialogResult != DialogResult.Yes)
+                    {
+                        GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainEnviar);
+                        actualizarCantidad();
+                        actualizarCajas();
+                    }
+                    else
+                    {
+                        Globals.CarritoSeleccionado = Globals.strVerificarCAJA;
+                        Globals.strnumeroCAJA = dgv.SelectedRows[0].Cells["CAJA"].Value.ToString();
+                        CarritoForm vCarrito = new CarritoForm();
+                        vCarrito.Show();
+                    }
+                }
             }
         }
 

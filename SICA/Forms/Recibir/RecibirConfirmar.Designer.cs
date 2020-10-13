@@ -34,10 +34,10 @@
             this.pnBottom = new System.Windows.Forms.Panel();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.pnTop = new System.Windows.Forms.Panel();
-            this.lbCantidad = new System.Windows.Forms.Label();
             this.btLimpiarCarrito = new FontAwesome.Sharp.IconButton();
             this.btVerCarrito = new FontAwesome.Sharp.IconButton();
             this.btSiguiente = new FontAwesome.Sharp.IconButton();
+            this.lbCantidad = new System.Windows.Forms.Label();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btActualizar = new FontAwesome.Sharp.IconButton();
             this.pnBottom.SuspendLayout();
@@ -112,17 +112,6 @@
             this.pnTop.Size = new System.Drawing.Size(1048, 50);
             this.pnTop.TabIndex = 57;
             // 
-            // lbCantidad
-            // 
-            this.lbCantidad.AutoSize = true;
-            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
-            this.lbCantidad.Name = "lbCantidad";
-            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
-            this.lbCantidad.TabIndex = 40;
-            this.lbCantidad.Text = "(0)";
-            // 
             // btLimpiarCarrito
             // 
             this.btLimpiarCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -175,6 +164,18 @@
             this.btSiguiente.Size = new System.Drawing.Size(48, 38);
             this.btSiguiente.TabIndex = 43;
             this.btSiguiente.UseVisualStyleBackColor = true;
+            this.btSiguiente.Click += new System.EventHandler(this.btSiguiente_Click);
+            // 
+            // lbCantidad
+            // 
+            this.lbCantidad.AutoSize = true;
+            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
+            this.lbCantidad.Name = "lbCantidad";
+            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidad.TabIndex = 40;
+            this.lbCantidad.Text = "(0)";
             // 
             // btExcel
             // 

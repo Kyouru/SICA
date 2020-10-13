@@ -189,7 +189,7 @@ namespace SICA
             }
         }
 
-        public static bool ConfirmarRecepcion(string id_inventario_general)
+        public static bool ConfirmarCarrito()
         {
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string strSQL = "";
@@ -213,20 +213,26 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = #" + fecha + "#, [RECIBIDO] = TRUE WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString();
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = #" + fecha + "#, [RECIBIDO] = TRUE WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = FALSE AND ANULADO = FALSE";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = #" + fecha + "# WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString();
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = #" + fecha + "# WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
                 }
+
+                strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strRecibirConfirmar + "'";
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
 
                 Conexion.cerrar();
 
@@ -239,5 +245,7 @@ namespace SICA
                 return false;
             }
         }
+
+
     }
 }

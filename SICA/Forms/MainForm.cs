@@ -1,4 +1,5 @@
 ﻿using FontAwesome.Sharp;
+using SICA.Forms;
 using SICA.Forms.Boveda;
 using SICA.Forms.Entregar;
 using SICA.Forms.Recibir;
@@ -167,5 +168,40 @@ namespace SICA
             OpenChildForm(new BovedaSubMain());
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+            GlobalFunctions.limpiarTodoCarrito();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            int n = GlobalFunctions.pendienteConfirmarRecepcion();
+            if (n == 0)
+            {
+                lbEstado.Text = "No tiene documentos por confirmar recepcion";
+                lbEstado.ForeColor = Color.Gainsboro;
+            }
+            else if (n > 0)
+            {
+                lbEstado.Text = "Tiene " + n.ToString() + " documentos por confirmar recepcion";
+                lbEstado.ForeColor = Color.Red;
+            }
+            else
+            {
+                timer1.Enabled = false;
+            }
+        }
+
+        private void btActualizar_Click(object sender, EventArgs e)
+        {
+            timer1_Tick(sender, e);
+        }
+
+        private void icMain_Click(object sender, EventArgs e)
+        {
+            InfoForm infoFrm = new InfoForm();
+            infoFrm.Show();
+        }
     }
 }
