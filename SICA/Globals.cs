@@ -37,6 +37,7 @@ namespace SICA
         public static String CarritoSeleccionado = "";
 
         public static Int32 IdIM = 2;
+        public static Int32 IdDC = 10;
 
         public static String strIronMountainSolicitar = "IM_SOLICITAR";
         public static String strIronMountainRecibir = "IM_RECIBIR";
@@ -61,6 +62,9 @@ namespace SICA
         public static String strVerificarCAJA = "VERIFICAR_CAJA";
         public static String strnumeroCAJA = "";
 
+        public static String strDocuClassEntregar = "DOCUCLASS_ENTREGAR";
+        public static String strDocuClassRecibir = "DOCUCLASS_RECIBIR";
+        
         public static Int32 idInventarioGeneral = -1;
 
         public static String strSeleccionarUsuario = "";

@@ -23,7 +23,7 @@ namespace SICA
 
         private void BusquedaForm_Load(object sender, EventArgs e)
         {
-            //dtpFecha.Value = DateTime.Now;
+            tbUsuario.Text = Globals.Username;
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
@@ -52,6 +52,8 @@ namespace SICA
                     strSQL = strSQL + " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
                 if (tbFecha.Text != "")
                     strSQL = strSQL + " AND FECHA_DESDE <= @fecha_desde AND FECHA_HASTA >= @fecha_hasta";
+                if (tbUsuario.Text != "")
+                    strSQL = strSQL + " AND USUARIO_POSEE LIKE '%" + tbUsuario.Text + "%'";
                 strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
 
                 if (!Conexion.conectar())
@@ -86,37 +88,11 @@ namespace SICA
             }
         }
 
-        private void cbFecha_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbFecha.Checked)
-            {
-                tbFecha.Enabled = true;
-                tbFecha.Focus();
-            }
-            else
-            {
-                tbFecha.Enabled = false;
-            }
-        }
-
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
                 this.btBuscar_Click(sender, e);
-            }
-        }
-
-        private void cbCaja_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbCaja.Checked)
-            {
-                tbCaja.Enabled = true;
-                tbCaja.Focus();
-            }
-            else
-            {
-                tbCaja.Enabled = false;
             }
         }
 

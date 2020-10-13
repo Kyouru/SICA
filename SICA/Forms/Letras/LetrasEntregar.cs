@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SICA.Forms.Recibir
+namespace SICA.Forms.Letras
 {
-    public partial class RecibirReingreso : Form
+    public partial class LetrasEntregar : Form
     {
-        public RecibirReingreso()
+        public LetrasEntregar()
         {
             InitializeComponent();
             actualizarCantidad();
@@ -19,18 +25,17 @@ namespace SICA.Forms.Recibir
             try
             {
                 LoadingScreen.iniciarLoading();
-                DataTable dt = new DataTable("INVENTARIO_GENERAL");
+                DataTable dt = new DataTable("LETRAS");
 
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE";
-                strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK) ";
-                strSQL = strSQL + " LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE";
-                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND (CUSTODIADO = 'PRESTADO' OR CUSTODIADO = 'DEVUELTO') AND U.CUSTODIA = FALSE AND U.REAL = TRUE";
+                strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION";
+                strSQL = strSQL + " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_LETRA_FK) ";
+                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = 'CUSTODIADO'";
 
                 if (tbBusquedaLibre.Text != "")
                 {
-                    strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
+                    strSQL = strSQL + " AND CONCATENADO LIKE '%" + tbBusquedaLibre.Text + "%'";
                 }
-                strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
+                strSQL = strSQL + " ORDER BY F_VENCIMIENTO";
 
                 if (!Conexion.conectar())
                     return;
@@ -57,7 +62,7 @@ namespace SICA.Forms.Recibir
             }
         }
 
-        private void btRecibir_Click(object sender, EventArgs e)
+        private void btEntregar_Click(object sender, EventArgs e)
         {
             if (lbCantidad.Text != "(0)")
             {
@@ -67,13 +72,11 @@ namespace SICA.Forms.Recibir
                 if (Globals.IdUsernameSelect > 0)
                 {
                     string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
-                    RecibirFunctions.ReingresoCarrito(Globals.IdUsernameSelect, observacion);
+                    //LetrasFunctions.EntregarCarrito(Globals.IdUsernameSelect, observacion);
                     actualizarCantidad();
                 }
             }
         }
-
-
 
         private void btVerCarrito_Click(object sender, EventArgs e)
         {
@@ -116,4 +119,5 @@ namespace SICA.Forms.Recibir
             actualizarCantidad();
         }
     }
+
 }

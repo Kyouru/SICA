@@ -1,6 +1,7 @@
 ﻿using FontAwesome.Sharp;
 using SICA.Forms;
 using SICA.Forms.Boveda;
+using SICA.Forms.DocuClass;
 using SICA.Forms.Entregar;
 using SICA.Forms.Recibir;
 using System;
@@ -176,6 +177,10 @@ namespace SICA
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (GlobalFunctions.verificarSesion(Globals.IdUsername))
+            {
+                this.Close();
+            }
             int n = GlobalFunctions.pendienteConfirmarRecepcion();
             if (n == 0)
             {
@@ -202,6 +207,12 @@ namespace SICA
         {
             InfoForm infoFrm = new InfoForm();
             infoFrm.Show();
+        }
+
+        private void btDocuClass_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color1);
+            OpenChildForm(new DocuClassSubMain());
         }
     }
 }

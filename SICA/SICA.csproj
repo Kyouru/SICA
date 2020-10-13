@@ -146,6 +146,31 @@
     <Compile Include="Forms\Boveda\BovedaSubMain.Designer.cs">
       <DependentUpon>BovedaSubMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassEntregar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassEntregar.Designer.cs">
+      <DependentUpon>DocuClassEntregar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassFunctions.cs" />
+    <Compile Include="Forms\DocuClass\DocuClassRecibir.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassRecibir.Designer.cs">
+      <DependentUpon>DocuClassRecibir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassSubMain.Designer.cs">
+      <DependentUpon>DocuClassSubMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassValidar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DocuClass\DocuClassValidar.Designer.cs">
+      <DependentUpon>DocuClassValidar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Entregar\EntregarFunctions.cs" />
     <Compile Include="Forms\BusquedaForm.cs">
       <SubType>Form</SubType>
@@ -237,6 +262,24 @@
     <Compile Include="Forms\Entregar\EntregarSubMain.Designer.cs">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Letras\LetrasEntregar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasEntregar.Designer.cs">
+      <DependentUpon>LetrasEntregar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasNuevo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasNuevo.Designer.cs">
+      <DependentUpon>LetrasNuevo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasSubMain.Designer.cs">
+      <DependentUpon>LetrasSubMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\LoadingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -325,6 +368,18 @@
     <EmbeddedResource Include="Forms\CarritoForm.resx">
       <DependentUpon>CarritoForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DocuClass\DocuClassEntregar.resx">
+      <DependentUpon>DocuClassEntregar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DocuClass\DocuClassRecibir.resx">
+      <DependentUpon>DocuClassRecibir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DocuClass\DocuClassSubMain.resx">
+      <DependentUpon>DocuClassSubMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DocuClass\DocuClassValidar.resx">
+      <DependentUpon>DocuClassValidar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\HistoricoForm.resx">
       <DependentUpon>HistoricoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -363,6 +418,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Letras\LetrasEntregar.resx">
+      <DependentUpon>LetrasEntregar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Letras\LetrasNuevo.resx">
+      <DependentUpon>LetrasNuevo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Letras\LetrasSubMain.resx">
+      <DependentUpon>LetrasSubMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadingScreen.resx">
       <DependentUpon>LoadingScreen.cs</DependentUpon>

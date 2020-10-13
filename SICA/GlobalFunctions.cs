@@ -646,5 +646,40 @@ namespace SICA
                 return;
             }
         }
+
+        public static bool verificarSesion(int id)
+        {
+            DataTable dt = new DataTable();
+            string strSQL = "";
+            try
+            {
+                strSQL = "SELECT CERRAR_SESION FROM USUARIO WHERE ID_USUARIO = " + id;
+                if (!Conexion.conectar())
+                    return true;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return true;
+                if (!Conexion.ejecutarQuery())
+                    return true;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
+                    return true;
+
+                if (dt.Rows[0]["CERRAR_SESION"].ToString() == "True")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, strSQL);
+                return false;
+            }
+        }
     }
 }

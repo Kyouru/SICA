@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label2 = new System.Windows.Forms.Label();
             this.tbBusquedaLibre = new System.Windows.Forms.TextBox();
             this.dgvBusqueda = new System.Windows.Forms.DataGridView();
-            this.cbFecha = new System.Windows.Forms.CheckBox();
             this.tbFecha = new System.Windows.Forms.TextBox();
             this.tbCaja = new System.Windows.Forms.TextBox();
-            this.cbCaja = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbUsuario = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBusqueda)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,7 +51,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(505, 12);
+            this.label2.Location = new System.Drawing.Point(383, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(101, 22);
             this.label2.TabIndex = 3;
@@ -59,9 +61,9 @@
             // 
             this.tbBusquedaLibre.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.tbBusquedaLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbBusquedaLibre.Location = new System.Drawing.Point(612, 12);
+            this.tbBusquedaLibre.Location = new System.Drawing.Point(490, 12);
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
-            this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 24);
+            this.tbBusquedaLibre.Size = new System.Drawing.Size(252, 24);
             this.tbBusquedaLibre.TabIndex = 4;
             this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
             // 
@@ -76,23 +78,23 @@
             this.dgvBusqueda.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.dgvBusqueda.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvBusqueda.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBusqueda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBusqueda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgvBusqueda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvBusqueda.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvBusqueda.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgvBusqueda.EnableHeadersVisualStyles = false;
             this.dgvBusqueda.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvBusqueda.Location = new System.Drawing.Point(12, 46);
@@ -100,57 +102,31 @@
             this.dgvBusqueda.ReadOnly = true;
             this.dgvBusqueda.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvBusqueda.RowHeadersVisible = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.MidnightBlue;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvBusqueda.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.MidnightBlue;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvBusqueda.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.dgvBusqueda.Size = new System.Drawing.Size(1087, 547);
             this.dgvBusqueda.TabIndex = 6;
             this.dgvBusqueda.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBusqueda_CellContentClick);
             this.dgvBusqueda.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvBusqueda_KeyDown);
             // 
-            // cbFecha
-            // 
-            this.cbFecha.AutoSize = true;
-            this.cbFecha.Font = new System.Drawing.Font("Arial", 14F);
-            this.cbFecha.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.cbFecha.Location = new System.Drawing.Point(278, 11);
-            this.cbFecha.Name = "cbFecha";
-            this.cbFecha.Size = new System.Drawing.Size(87, 26);
-            this.cbFecha.TabIndex = 7;
-            this.cbFecha.Text = "Fecha:";
-            this.cbFecha.UseVisualStyleBackColor = true;
-            this.cbFecha.CheckedChanged += new System.EventHandler(this.cbFecha_CheckedChanged);
-            // 
             // tbFecha
             // 
             this.tbFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbFecha.Location = new System.Drawing.Point(371, 12);
+            this.tbFecha.Location = new System.Drawing.Point(282, 12);
             this.tbFecha.Name = "tbFecha";
-            this.tbFecha.Size = new System.Drawing.Size(105, 24);
+            this.tbFecha.Size = new System.Drawing.Size(89, 24);
             this.tbFecha.TabIndex = 8;
             // 
             // tbCaja
             // 
             this.tbCaja.Enabled = false;
             this.tbCaja.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbCaja.Location = new System.Drawing.Point(90, 12);
+            this.tbCaja.Location = new System.Drawing.Point(71, 12);
             this.tbCaja.Name = "tbCaja";
-            this.tbCaja.Size = new System.Drawing.Size(162, 24);
+            this.tbCaja.Size = new System.Drawing.Size(125, 24);
             this.tbCaja.TabIndex = 10;
-            // 
-            // cbCaja
-            // 
-            this.cbCaja.AutoSize = true;
-            this.cbCaja.Font = new System.Drawing.Font("Arial", 14F);
-            this.cbCaja.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.cbCaja.Location = new System.Drawing.Point(12, 11);
-            this.cbCaja.Name = "cbCaja";
-            this.cbCaja.Size = new System.Drawing.Size(72, 26);
-            this.cbCaja.TabIndex = 9;
-            this.cbCaja.Text = "Caja:";
-            this.cbCaja.UseVisualStyleBackColor = true;
-            this.cbCaja.CheckedChanged += new System.EventHandler(this.cbCaja_CheckedChanged);
             // 
             // panel1
             // 
@@ -170,7 +146,7 @@
             this.btExcel.IconColor = System.Drawing.Color.Gainsboro;
             this.btExcel.IconSize = 30;
             this.btExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btExcel.Location = new System.Drawing.Point(993, 2);
+            this.btExcel.Location = new System.Drawing.Point(1022, 2);
             this.btExcel.Name = "btExcel";
             this.btExcel.Rotation = 0D;
             this.btExcel.Size = new System.Drawing.Size(48, 38);
@@ -187,7 +163,7 @@
             this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
             this.btBuscar.IconSize = 30;
             this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBuscar.Location = new System.Drawing.Point(939, 2);
+            this.btBuscar.Location = new System.Drawing.Point(968, 2);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Rotation = 0D;
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
@@ -195,18 +171,61 @@
             this.btBuscar.UseVisualStyleBackColor = true;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label1.Location = new System.Drawing.Point(12, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 22);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Caja:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label3.Location = new System.Drawing.Point(208, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(68, 22);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Fecha:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label4.Location = new System.Drawing.Point(752, 12);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(79, 22);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Usuario:";
+            // 
+            // tbUsuario
+            // 
+            this.tbUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbUsuario.Location = new System.Drawing.Point(837, 12);
+            this.tbUsuario.Name = "tbUsuario";
+            this.tbUsuario.Size = new System.Drawing.Size(119, 24);
+            this.tbUsuario.TabIndex = 16;
+            // 
             // BusquedaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1111, 605);
+            this.Controls.Add(this.tbUsuario);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btExcel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbCaja);
-            this.Controls.Add(this.cbCaja);
             this.Controls.Add(this.tbFecha);
-            this.Controls.Add(this.cbFecha);
             this.Controls.Add(this.dgvBusqueda);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.tbBusquedaLibre);
@@ -225,11 +244,13 @@
         private System.Windows.Forms.TextBox tbBusquedaLibre;
         private FontAwesome.Sharp.IconButton btBuscar;
         private System.Windows.Forms.DataGridView dgvBusqueda;
-        private System.Windows.Forms.CheckBox cbFecha;
         private System.Windows.Forms.TextBox tbFecha;
         private System.Windows.Forms.TextBox tbCaja;
-        private System.Windows.Forms.CheckBox cbCaja;
         private System.Windows.Forms.Panel panel1;
         private FontAwesome.Sharp.IconButton btExcel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox tbUsuario;
     }
 }

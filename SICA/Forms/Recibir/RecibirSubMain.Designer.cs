@@ -31,7 +31,6 @@
             this.pnSubMain = new System.Windows.Forms.Panel();
             this.pnTop = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btLetra = new FontAwesome.Sharp.IconButton();
             this.btPagare = new FontAwesome.Sharp.IconButton();
             this.btConfirmar = new FontAwesome.Sharp.IconButton();
             this.btReingreso = new FontAwesome.Sharp.IconButton();
@@ -52,7 +51,6 @@
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.pnTop.Controls.Add(this.panel1);
-            this.pnTop.Controls.Add(this.btLetra);
             this.pnTop.Controls.Add(this.btPagare);
             this.pnTop.Controls.Add(this.btConfirmar);
             this.pnTop.Controls.Add(this.btReingreso);
@@ -67,32 +65,10 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(700, 44);
+            this.panel1.Location = new System.Drawing.Point(560, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(348, 1);
+            this.panel1.Size = new System.Drawing.Size(488, 1);
             this.panel1.TabIndex = 8;
-            // 
-            // btLetra
-            // 
-            this.btLetra.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btLetra.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btLetra.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btLetra.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLetra.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btLetra.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btLetra.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btLetra.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btLetra.IconColor = System.Drawing.Color.Gainsboro;
-            this.btLetra.IconSize = 30;
-            this.btLetra.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btLetra.Location = new System.Drawing.Point(560, 0);
-            this.btLetra.Name = "btLetra";
-            this.btLetra.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btLetra.Rotation = 0D;
-            this.btLetra.Size = new System.Drawing.Size(140, 45);
-            this.btLetra.TabIndex = 7;
-            this.btLetra.Text = "Letra";
-            this.btLetra.UseVisualStyleBackColor = false;
             // 
             // btPagare
             // 
@@ -206,7 +182,6 @@
         private System.Windows.Forms.Panel pnSubMain;
         private System.Windows.Forms.Panel pnTop;
         private System.Windows.Forms.Panel panel1;
-        private FontAwesome.Sharp.IconButton btLetra;
         private FontAwesome.Sharp.IconButton btPagare;
         private FontAwesome.Sharp.IconButton btReingreso;
         private FontAwesome.Sharp.IconButton btNuevo;

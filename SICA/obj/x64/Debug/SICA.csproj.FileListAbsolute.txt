@@ -42,3 +42,7 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetira
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetirarDoc.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.HistoricoForm.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.InfoForm.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassEntregar.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassRecibir.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassSubMain.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassValidar.resources
