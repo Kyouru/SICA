@@ -76,35 +76,69 @@ namespace SICA
 
         public static DataTable ConvertExcelToDataTable(string FileName, int index)
         {
-            Workbook workbook = Workbook.Load(FileName);
-            Worksheet worksheet = workbook.Worksheets[index];
-
-            DataTable dt = new DataTable();
-
-            for(int i = 0; i <= worksheet.Cells.LastColIndex; i++)
+            try
             {
-                dt.Columns.Add(worksheet.Cells[0, i].Value.ToString());
-            }
+                Workbook workbook = Workbook.Load(FileName);
+                Worksheet worksheet = workbook.Worksheets[index];
 
-            DataRow dr;
+                DataTable dt = new DataTable();
 
-            for (int rowIndex = worksheet.Cells.FirstRowIndex + 1; rowIndex <= worksheet.Cells.LastRowIndex; rowIndex++)
-            {
-                dr = dt.NewRow();
+                int j = -1, k = -1, m = -1, n = -1;
+
                 for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
                 {
-                    if (worksheet.Cells[rowIndex, i].Value != null)
+                    dt.Columns.Add(worksheet.Cells[0, i].Value.ToString());
+                    if (worksheet.Cells[0, i].Value.ToString() == "F_GIRO")
                     {
-                        dr[i] = worksheet.Cells[rowIndex, i].Value.ToString();
+                        j = i;
                     }
-                    else
+                    if (worksheet.Cells[0, i].Value.ToString() == "F_VENCIMIENTO")
                     {
-                        dr[i] = "";
+                        k = i;
+                    }
+                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA DESDE")
+                    {
+                        m = i;
+                    }
+                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA HASTA")
+                    {
+                        n = i;
                     }
                 }
-                dt.Rows.Add(dr);
+
+                DataRow dr;
+
+                for (int rowIndex = worksheet.Cells.FirstRowIndex + 1; rowIndex <= worksheet.Cells.LastRowIndex; rowIndex++)
+                {
+                    dr = dt.NewRow();
+                    for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
+                    {
+                        if (worksheet.Cells[rowIndex, i].Value != null)
+                        {
+                            if (i == j || i == k || i == m || i == n)
+                            {
+                                dr[i] = DateTime.FromOADate(Double.Parse(worksheet.Cells[rowIndex, i].Value.ToString()));
+                            }
+                            else
+                            {
+                                dr[i] = worksheet.Cells[rowIndex, i].Value.ToString();
+                            }
+
+                        }
+                        else
+                        {
+                            dr[i] = "";
+                        }
+                    }
+                    dt.Rows.Add(dr);
+                }
+                return dt;
             }
-            return dt;
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "");
+                return null;
+            }
         }
 
         public static DataTable ConvertReporteValoradosToDataTable(string strSQL)
@@ -399,9 +433,9 @@ namespace SICA
             }
         }
         
-        public static bool AgregarCarrito(string id_inventario, string id_reporte, string caja, string tipo)
+        public static bool AgregarCarrito(string id_inventario, string id_aux, string caja, string tipo)
         {
-            string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_REPORTE_VALORADOS_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_reporte + ", " + Globals.IdUsername + ", '" + tipo + "', '" + caja + "')";
+            string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_aux + ", " + Globals.IdUsername + ", '" + tipo + "', '" + caja + "')";
             try
             {
                 if (!Conexion.conectar())

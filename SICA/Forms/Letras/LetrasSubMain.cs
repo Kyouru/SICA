@@ -20,6 +20,10 @@ namespace SICA.Forms.Letras
         public LetrasSubMain()
         {
             InitializeComponent();
+
+            topBorderBtn = new Panel();
+            topBorderBtn.Size = new Size(140, 3);
+            pnTop.Controls.Add(topBorderBtn);
         }
 
         private void OpenChildForm(Form childForm)
@@ -89,10 +93,17 @@ namespace SICA.Forms.Letras
             public static Color color5 = Color.FromArgb(249, 88, 155);
             public static Color color6 = Color.FromArgb(24, 161, 251);
         }
-        private void btSolicitar_Click(object sender, EventArgs e)
+
+        private void btNuevo_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new IronMountainSolicitar());
+            OpenChildForm(new LetrasNuevo());
+        }
+
+        private void btEntregar_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new LetrasEntregar());
         }
     }
 }

@@ -100,7 +100,8 @@ namespace SICA.Forms.Entregar
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
-                    EntregarFunctions.EntregarExpedientesCarrito();
+                    string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
+                    EntregarFunctions.EntregarExpedientesCarrito(observacion);
                     actualizarCantidad();
 
                     btBuscar_Click(sender, e);

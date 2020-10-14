@@ -36,10 +36,10 @@
             this.pnTop = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.tbBusquedaLibre = new System.Windows.Forms.TextBox();
+            this.lbCantidad = new System.Windows.Forms.Label();
             this.btLimpiarCarrito = new FontAwesome.Sharp.IconButton();
             this.btVerCarrito = new FontAwesome.Sharp.IconButton();
             this.btRecibir = new FontAwesome.Sharp.IconButton();
-            this.lbCantidad = new System.Windows.Forms.Label();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.pnBottom.SuspendLayout();
@@ -99,6 +99,7 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1048, 561);
             this.dgv.TabIndex = 25;
+            this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
             // pnTop
             // 
@@ -136,6 +137,18 @@
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
             this.tbBusquedaLibre.Size = new System.Drawing.Size(321, 24);
             this.tbBusquedaLibre.TabIndex = 38;
+            this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
+            // 
+            // lbCantidad
+            // 
+            this.lbCantidad.AutoSize = true;
+            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
+            this.lbCantidad.Name = "lbCantidad";
+            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidad.TabIndex = 40;
+            this.lbCantidad.Text = "(0)";
             // 
             // btLimpiarCarrito
             // 
@@ -153,6 +166,7 @@
             this.btLimpiarCarrito.Size = new System.Drawing.Size(48, 38);
             this.btLimpiarCarrito.TabIndex = 44;
             this.btLimpiarCarrito.UseVisualStyleBackColor = true;
+            this.btLimpiarCarrito.Click += new System.EventHandler(this.btLimpiarCarrito_Click);
             // 
             // btVerCarrito
             // 
@@ -170,6 +184,7 @@
             this.btVerCarrito.Size = new System.Drawing.Size(48, 38);
             this.btVerCarrito.TabIndex = 39;
             this.btVerCarrito.UseVisualStyleBackColor = true;
+            this.btVerCarrito.Click += new System.EventHandler(this.btVerCarrito_Click);
             // 
             // btRecibir
             // 
@@ -187,17 +202,7 @@
             this.btRecibir.Size = new System.Drawing.Size(48, 38);
             this.btRecibir.TabIndex = 43;
             this.btRecibir.UseVisualStyleBackColor = true;
-            // 
-            // lbCantidad
-            // 
-            this.lbCantidad.AutoSize = true;
-            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
-            this.lbCantidad.Name = "lbCantidad";
-            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
-            this.lbCantidad.TabIndex = 40;
-            this.lbCantidad.Text = "(0)";
+            this.btRecibir.Click += new System.EventHandler(this.btEntregar_Click);
             // 
             // btExcel
             // 
@@ -214,6 +219,7 @@
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 42;
             this.btExcel.UseVisualStyleBackColor = true;
+            this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
             // 
             // btBuscar
             // 
@@ -230,6 +236,7 @@
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 41;
             this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // LetrasEntregar
             // 

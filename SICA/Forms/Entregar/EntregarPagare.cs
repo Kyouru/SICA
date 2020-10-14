@@ -21,7 +21,7 @@ namespace SICA.Forms.Entregar
             {
                 strSQL = @"SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO
                             , FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS CANCELACION, PAGARE
-                            FROM REPORTE_VALORADOS RV LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = RV.ID_REPORTE_VALORADOS
+                            FROM REPORTE_VALORADOS RV LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX_FK = RV.ID_REPORTE_VALORADOS
                             WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
                 if (tbBusquedaLibre.Text != "")
                 {
@@ -32,7 +32,7 @@ namespace SICA.Forms.Entregar
             else
             {
                 strSQL = @"SELECT ID_PAGARE_SIN_DESEMBOLSAR AS ID, SOLICITUD_SISGO AS SISGO, DESCRIPCION_1, DESCRIPCION_2, SDESCRIPCION_3, DESCRIPCION_4
-                            FROM PAGARE_SIN_DESEMBOLSAR PSD LEFT JOIN TMP_CARRITO TC ON TC.ID_REPORTE_VALORADOS_FK = PSD.ID_PAGARE_SIN_DESEMBOLSAR
+                            FROM PAGARE_SIN_DESEMBOLSAR PSD LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX_FK = PSD.ID_PAGARE_SIN_DESEMBOLSAR
                             WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
                 if (tbBusquedaLibre.Text != "")
                 {
@@ -88,14 +88,15 @@ namespace SICA.Forms.Entregar
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
+                    string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
 
                     if (cbDesembolsado.Checked)
                     {
-                        EntregarFunctions.EntregarPagaresCarrito(1);
+                        EntregarFunctions.EntregarPagaresCarrito(1, observacion);
                     }
                     else
                     {
-                        EntregarFunctions.EntregarPagaresCarrito(0);
+                        EntregarFunctions.EntregarPagaresCarrito(0, observacion);
                     }
 
                     actualizarCantidad();

@@ -96,7 +96,8 @@ namespace SICA.Forms.Recibir
         {
             if (lbCantidad.Text != "(0)")
             {
-                RecibirFunctions.ConfirmarCarrito();
+                string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
+                RecibirFunctions.ConfirmarCarrito(observacion);
                 actualizarCantidad();
             }
         }

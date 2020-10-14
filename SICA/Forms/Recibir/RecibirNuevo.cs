@@ -162,6 +162,8 @@ namespace SICA.Forms.Recibir
             suf.ShowDialog();
             if (Globals.IdUsernameSelect > 0)
             {
+                string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
+
                 LoadingScreen.iniciarLoading();
 
                 string strSQL = "";
@@ -196,7 +198,7 @@ namespace SICA.Forms.Recibir
                         {
                             if (pagare)
                             {
-                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA) VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row.Cells["ID_REPORTE"].Value.ToString() + ", " + fecha + ")";
+                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA, OBSERVACION_RECIBE) VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row.Cells["ID_REPORTE"].Value.ToString() + ", " + fecha + ", '" + observacion + "')";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
@@ -214,7 +216,7 @@ namespace SICA.Forms.Recibir
                             if (!Conexion.ejecutarQuery())
                                 return;
 
-                            strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN) VALUES (" + Conexion.lastIdInsert() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ")";
+                            strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE) VALUES (" + Conexion.lastIdInsert() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
                             
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;

@@ -3,6 +3,7 @@ using SICA.Forms;
 using SICA.Forms.Boveda;
 using SICA.Forms.DocuClass;
 using SICA.Forms.Entregar;
+using SICA.Forms.Letras;
 using SICA.Forms.Recibir;
 using System;
 using System.Drawing;
@@ -213,6 +214,12 @@ namespace SICA
         {
             ActivateButton(sender, RGBColors.color1);
             OpenChildForm(new DocuClassSubMain());
+        }
+
+        private void btLetras_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color1);
+            OpenChildForm(new LetrasSubMain());
         }
     }
 }

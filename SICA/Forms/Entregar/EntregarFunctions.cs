@@ -9,7 +9,7 @@ namespace SICA
 {
     class EntregarFunctions
     {
-        public static bool EntregarExpedientesCarrito ()
+        public static bool EntregarExpedientesCarrito (string observacion)
         {
             DataTable dt = new DataTable();
 
@@ -51,8 +51,8 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, RECIBIDO)
-                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", #" + fecha + "#, ";
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, RECIBIDO)
+                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", #" + fecha + "#, '" + observacion + "',";
 
 
                     if (!Globals.EntregarConfirmacion)
@@ -158,7 +158,7 @@ namespace SICA
             }
         }
 
-        public static bool EntregarDocumentosCarrito()
+        public static bool EntregarDocumentosCarrito(string observacion)
         {
 
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -194,8 +194,8 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) 
-                            VALUES (@id_usuario, @id_usuario_select, @id_inventario, @fecha_inicio, @fecha_fin, @recibido)";
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO, OBSERVACION_ENTREGA) 
+                            VALUES (@id_usuario, @id_usuario_select, @id_inventario, @fecha_inicio, @fecha_fin, @recibido, @observacion_entrega)";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -219,6 +219,9 @@ namespace SICA
                         if (!Conexion.agregarParametroCommand("@recibido", "TRUE"))
                             return false;
                     }
+
+                    if (!Conexion.agregarParametroCommand("@observacion_entrega", observacion))
+                        return false;
                     if (!Conexion.ejecutarQuery())
                     return false;
 
@@ -282,7 +285,7 @@ namespace SICA
             }
         }
 
-        public static bool EntregarPagaresCarrito(int desembolsado)
+        public static bool EntregarPagaresCarrito(int desembolsado, string observacion)
         {
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string strSQL = "";
@@ -292,7 +295,7 @@ namespace SICA
                 if (desembolsado == 1)
                 {
                     strSQL = "SELECT TC.ID_REPORTE_VALORADOS_FK AS ID, '0' AS NRO, RV.CIP, RV.NOMBRE, RV.MONTOPRESTAMO, RV.SOLICITUD_SISGO AS SISGO";
-                    strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN REPORTE_VALORADOS RV ON TC.ID_REPORTE_VALORADOS_FK = RV.ID_REPORTE_VALORADOS";
+                    strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN REPORTE_VALORADOS RV ON TC.ID_AUX_FK = RV.ID_REPORTE_VALORADOS";
                     strSQL = strSQL + " WHERE TC.TIPO = '" + Globals.strEntregarPagare + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                 }
                 else
@@ -317,11 +320,11 @@ namespace SICA
                 {
                     if (desembolsado == 1)
                     {
-                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#)";
+                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, SOLICITUD_SISGO, FECHA, OBSERVACION_ENTREGA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#, '" + observacion + "')";
                     }
                     else
                     {
-                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#)";
+                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, SOLICITUD_SISGO, FECHA, OBSERVACION_ENTREGA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#, '" + observacion + "')";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))
@@ -335,7 +338,7 @@ namespace SICA
                     }
                     else
                     {
-                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#)";
+                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#)";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))

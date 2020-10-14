@@ -64,7 +64,9 @@ namespace SICA
 
         public static String strDocuClassEntregar = "DOCUCLASS_ENTREGAR";
         public static String strDocuClassRecibir = "DOCUCLASS_RECIBIR";
-        
+
+        public static String strLetrasEntregar = "LETRAS_ENTREGAR";
+
         public static Int32 idInventarioGeneral = -1;
 
         public static String strSeleccionarUsuario = "";

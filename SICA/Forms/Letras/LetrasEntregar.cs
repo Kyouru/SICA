@@ -27,8 +27,8 @@ namespace SICA.Forms.Letras
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable("LETRAS");
 
-                strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION";
-                strSQL = strSQL + " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_LETRA_FK) ";
+                strSQL = "SELECT L.ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION";
+                strSQL = strSQL + " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK) ";
                 strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = 'CUSTODIADO'";
 
                 if (tbBusquedaLibre.Text != "")
@@ -66,13 +66,13 @@ namespace SICA.Forms.Letras
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE";
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE AND CUSTODIA = FALSE";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
                     string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
-                    //LetrasFunctions.EntregarCarrito(Globals.IdUsernameSelect, observacion);
+                    LetrasFunctions.EntregarCarrito(observacion);
                     actualizarCantidad();
                 }
             }
@@ -82,7 +82,7 @@ namespace SICA.Forms.Letras
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strRecibirReingreso;
+                Globals.CarritoSeleccionado = Globals.strLetrasEntregar;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
             }
@@ -91,7 +91,7 @@ namespace SICA.Forms.Letras
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strRecibirReingreso);
+                GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells[0].Value.ToString(), "", Globals.strLetrasEntregar);
                 actualizarCantidad();
                 btBuscar_Click(sender, e);
             }
@@ -110,12 +110,12 @@ namespace SICA.Forms.Letras
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strRecibirReingreso) + ")";
+            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strLetrasEntregar) + ")";
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.LimpiarCarrito(Globals.strRecibirReingreso);
+            GlobalFunctions.LimpiarCarrito(Globals.strLetrasEntregar);
             actualizarCantidad();
         }
     }

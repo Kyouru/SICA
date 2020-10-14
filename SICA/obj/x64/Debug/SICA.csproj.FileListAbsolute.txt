@@ -46,3 +46,8 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClass
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassRecibir.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassValidar.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasEntregar.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasNuevo.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasSubMain.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasBuscar.resources
+C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasReingreso.resources

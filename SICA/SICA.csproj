@@ -262,17 +262,30 @@
     <Compile Include="Forms\Entregar\EntregarSubMain.Designer.cs">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Letras\LetrasBuscar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasBuscar.Designer.cs">
+      <DependentUpon>LetrasBuscar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Letras\LetrasEntregar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Letras\LetrasEntregar.Designer.cs">
       <DependentUpon>LetrasEntregar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Letras\LetrasFunctions.cs" />
     <Compile Include="Forms\Letras\LetrasNuevo.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Letras\LetrasNuevo.Designer.cs">
       <DependentUpon>LetrasNuevo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasReingreso.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Letras\LetrasReingreso.Designer.cs">
+      <DependentUpon>LetrasReingreso.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Letras\LetrasSubMain.cs">
       <SubType>Form</SubType>
@@ -419,11 +432,17 @@
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Letras\LetrasBuscar.resx">
+      <DependentUpon>LetrasBuscar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Letras\LetrasEntregar.resx">
       <DependentUpon>LetrasEntregar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Letras\LetrasNuevo.resx">
       <DependentUpon>LetrasNuevo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Letras\LetrasReingreso.resx">
+      <DependentUpon>LetrasReingreso.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Letras\LetrasSubMain.resx">
       <DependentUpon>LetrasSubMain.cs</DependentUpon>

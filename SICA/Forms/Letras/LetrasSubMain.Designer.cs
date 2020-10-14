@@ -31,9 +31,9 @@
             this.pnSubMain = new System.Windows.Forms.Panel();
             this.pnTop = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btNuevo = new FontAwesome.Sharp.IconButton();
-            this.btEntregar = new FontAwesome.Sharp.IconButton();
             this.btReingreso = new FontAwesome.Sharp.IconButton();
+            this.btEntregar = new FontAwesome.Sharp.IconButton();
+            this.btNuevo = new FontAwesome.Sharp.IconButton();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,27 +67,27 @@
             this.panel1.Size = new System.Drawing.Size(628, 1);
             this.panel1.TabIndex = 8;
             // 
-            // btNuevo
+            // btReingreso
             // 
-            this.btNuevo.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btNuevo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btNuevo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btNuevo.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btNuevo.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btNuevo.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btNuevo.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btNuevo.IconColor = System.Drawing.Color.Gainsboro;
-            this.btNuevo.IconSize = 30;
-            this.btNuevo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btNuevo.Location = new System.Drawing.Point(0, 0);
-            this.btNuevo.Name = "btNuevo";
-            this.btNuevo.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btNuevo.Rotation = 0D;
-            this.btNuevo.Size = new System.Drawing.Size(140, 45);
-            this.btNuevo.TabIndex = 4;
-            this.btNuevo.Text = "Nuevo";
-            this.btNuevo.UseVisualStyleBackColor = false;
+            this.btReingreso.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btReingreso.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btReingreso.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btReingreso.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btReingreso.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btReingreso.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btReingreso.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btReingreso.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btReingreso.IconColor = System.Drawing.Color.Gainsboro;
+            this.btReingreso.IconSize = 30;
+            this.btReingreso.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btReingreso.Location = new System.Drawing.Point(280, 0);
+            this.btReingreso.Name = "btReingreso";
+            this.btReingreso.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.btReingreso.Rotation = 0D;
+            this.btReingreso.Size = new System.Drawing.Size(140, 45);
+            this.btReingreso.TabIndex = 10;
+            this.btReingreso.Text = "Reingreso";
+            this.btReingreso.UseVisualStyleBackColor = false;
             // 
             // btEntregar
             // 
@@ -110,28 +110,30 @@
             this.btEntregar.TabIndex = 9;
             this.btEntregar.Text = "Entregar";
             this.btEntregar.UseVisualStyleBackColor = false;
+            this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
             // 
-            // btReingreso
+            // btNuevo
             // 
-            this.btReingreso.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btReingreso.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btReingreso.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btReingreso.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btReingreso.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btReingreso.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btReingreso.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btReingreso.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btReingreso.IconColor = System.Drawing.Color.Gainsboro;
-            this.btReingreso.IconSize = 30;
-            this.btReingreso.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btReingreso.Location = new System.Drawing.Point(280, 0);
-            this.btReingreso.Name = "btReingreso";
-            this.btReingreso.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btReingreso.Rotation = 0D;
-            this.btReingreso.Size = new System.Drawing.Size(140, 45);
-            this.btReingreso.TabIndex = 10;
-            this.btReingreso.Text = "Reingreso";
-            this.btReingreso.UseVisualStyleBackColor = false;
+            this.btNuevo.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btNuevo.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btNuevo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btNuevo.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btNuevo.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btNuevo.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btNuevo.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btNuevo.IconColor = System.Drawing.Color.Gainsboro;
+            this.btNuevo.IconSize = 30;
+            this.btNuevo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btNuevo.Location = new System.Drawing.Point(0, 0);
+            this.btNuevo.Name = "btNuevo";
+            this.btNuevo.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.btNuevo.Rotation = 0D;
+            this.btNuevo.Size = new System.Drawing.Size(140, 45);
+            this.btNuevo.TabIndex = 4;
+            this.btNuevo.Text = "Nuevo";
+            this.btNuevo.UseVisualStyleBackColor = false;
+            this.btNuevo.Click += new System.EventHandler(this.btNuevo_Click);
             // 
             // LetrasSubMain
             // 

@@ -45,28 +45,29 @@ namespace SICA.Forms.Letras
         {
             try
             {
+                string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
                 if (!Conexion.conectar())
                     return;
 
                 string strSQL = "";
-                foreach (DataRow row in dgv.Rows)
+                foreach (DataGridViewRow row in dgv.Rows)
                 {
                     strSQL = "INSERT INTO LETRA (SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, F_GIRO, F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION, CONCATENADO) VALUES ";
-                    strSQL = strSQL + " ('" + row["SOCIO"] + "',";
-                    strSQL = strSQL + " '" + row["NOMBRE"] + "',";
-                    strSQL = strSQL + " '" + row["SOLICITUD"] + "',";
-                    strSQL = strSQL + " '" + row["N_LIQ"] + "',";
-                    strSQL = strSQL + " '" + row["NUMERO"] + "',";
-                    strSQL = strSQL + " #" + row["F_GIRO"] + "#,";
-                    strSQL = strSQL + " #" + row["F_VENCIMIENTO"] + "#,";
-                    strSQL = strSQL + " " + row["IMPORTE"] + ",";
-                    strSQL = strSQL + " '" + row["ACEPTANTE"] + "',";
-                    strSQL = strSQL + " '" + row["MD"] + "',";
-                    strSQL = strSQL + " '" + row["ESTADO"] + "',";
-                    strSQL = strSQL + " '" + row["UBICACION"] + "',";
-                    strSQL = strSQL + " #" + row["FECHA_ESTADO"] + "#,";
-                    strSQL = strSQL + " '" + row["OBSERVACION"] + "',";
-                    strSQL = strSQL + " '" + row["SOCIO"] + ";" + row["NOMBRE"] + ";" + row["SOLICITUD"] + ";" + row["N_LIQ"] + "')";
+                    strSQL = strSQL + " ('" + row.Cells["SOCIO"].Value.ToString() + "',";
+                    strSQL = strSQL + " '" + row.Cells["NOMBRE"].Value.ToString() + "',";
+                    strSQL = strSQL + " '" + row.Cells["SOLICITUD"].Value.ToString() + "',";
+                    strSQL = strSQL + " '" + row.Cells["N_LIQ"].Value.ToString() + "',";
+                    strSQL = strSQL + " '" + row.Cells["NUMERO"].Value.ToString() + "',";
+                    strSQL = strSQL + " #" + row.Cells["F_GIRO"].Value.ToString() + "#,";
+                    strSQL = strSQL + " #" + row.Cells["F_VENCIMIENTO"].Value.ToString() + "#,";
+                    strSQL = strSQL + " " + row.Cells["IMPORTE"].Value.ToString() + ",";
+                    strSQL = strSQL + " '" + row.Cells["ACEPTANTE"].Value.ToString() + "',";
+                    strSQL = strSQL + " '" + row.Cells["MD"].Value.ToString() + "',";
+                    strSQL = strSQL + " 'CUSTODIADO',";
+                    strSQL = strSQL + " 'SAN ISIDRO',";
+                    strSQL = strSQL + " #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#,";
+                    strSQL = strSQL + " '" + observacion + "',";
+                    strSQL = strSQL + " '" + row.Cells["SOCIO"].Value.ToString() + ";" + row.Cells["NOMBRE"].Value.ToString() + ";" + row.Cells["SOLICITUD"].Value.ToString() + ";" + row.Cells["ACEPTANTE"].Value.ToString() + "')";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return;

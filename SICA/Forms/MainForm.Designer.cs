@@ -31,31 +31,31 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.pnLeft = new System.Windows.Forms.Panel();
-            this.pnTop = new System.Windows.Forms.Panel();
-            this.lbEstado = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lbUsuario = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pnMain = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btActualizar = new FontAwesome.Sharp.IconButton();
-            this.btMinimizar = new FontAwesome.Sharp.IconButton();
-            this.btMaximizar = new FontAwesome.Sharp.IconButton();
-            this.btCerrar = new FontAwesome.Sharp.IconButton();
             this.btDocuClass = new FontAwesome.Sharp.IconButton();
             this.btImportar = new FontAwesome.Sharp.IconButton();
             this.btBoveda = new FontAwesome.Sharp.IconButton();
             this.btIronMountain = new FontAwesome.Sharp.IconButton();
+            this.btLetras = new FontAwesome.Sharp.IconButton();
             this.btRecibir = new FontAwesome.Sharp.IconButton();
             this.btEntregar = new FontAwesome.Sharp.IconButton();
             this.btBusqueda = new FontAwesome.Sharp.IconButton();
             this.icMain = new FontAwesome.Sharp.IconPictureBox();
-            this.btLetras = new FontAwesome.Sharp.IconButton();
+            this.pnTop = new System.Windows.Forms.Panel();
+            this.btActualizar = new FontAwesome.Sharp.IconButton();
+            this.lbEstado = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lbUsuario = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btMinimizar = new FontAwesome.Sharp.IconButton();
+            this.btMaximizar = new FontAwesome.Sharp.IconButton();
+            this.btCerrar = new FontAwesome.Sharp.IconButton();
+            this.pnMain = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pnLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.icMain)).BeginInit();
             this.pnTop.SuspendLayout();
             this.pnMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.icMain)).BeginInit();
             this.SuspendLayout();
             // 
             // pnLeft
@@ -74,163 +74,6 @@
             this.pnLeft.Name = "pnLeft";
             this.pnLeft.Size = new System.Drawing.Size(200, 681);
             this.pnLeft.TabIndex = 0;
-            // 
-            // pnTop
-            // 
-            this.pnTop.BackColor = System.Drawing.Color.MidnightBlue;
-            this.pnTop.Controls.Add(this.btActualizar);
-            this.pnTop.Controls.Add(this.lbEstado);
-            this.pnTop.Controls.Add(this.panel2);
-            this.pnTop.Controls.Add(this.lbUsuario);
-            this.pnTop.Controls.Add(this.label1);
-            this.pnTop.Controls.Add(this.btMinimizar);
-            this.pnTop.Controls.Add(this.btMaximizar);
-            this.pnTop.Controls.Add(this.btCerrar);
-            this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnTop.Location = new System.Drawing.Point(5, 0);
-            this.pnTop.Name = "pnTop";
-            this.pnTop.Size = new System.Drawing.Size(1059, 34);
-            this.pnTop.TabIndex = 1;
-            this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
-            // 
-            // lbEstado
-            // 
-            this.lbEstado.AutoSize = true;
-            this.lbEstado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbEstado.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lbEstado.Location = new System.Drawing.Point(48, 8);
-            this.lbEstado.Name = "lbEstado";
-            this.lbEstado.Size = new System.Drawing.Size(0, 18);
-            this.lbEstado.TabIndex = 9;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 29);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1059, 5);
-            this.panel2.TabIndex = 8;
-            // 
-            // lbUsuario
-            // 
-            this.lbUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbUsuario.AutoSize = true;
-            this.lbUsuario.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbUsuario.Location = new System.Drawing.Point(832, 10);
-            this.lbUsuario.Name = "lbUsuario";
-            this.lbUsuario.Size = new System.Drawing.Size(109, 13);
-            this.lbUsuario.TabIndex = 7;
-            this.lbUsuario.Text = "NOMBRE_USUARIO";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(780, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Usuario:";
-            // 
-            // pnMain
-            // 
-            this.pnMain.Controls.Add(this.pnTop);
-            this.pnMain.Controls.Add(this.panel1);
-            this.pnMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnMain.Location = new System.Drawing.Point(200, 0);
-            this.pnMain.Name = "pnMain";
-            this.pnMain.Size = new System.Drawing.Size(1064, 681);
-            this.pnMain.TabIndex = 2;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(5, 681);
-            this.panel1.TabIndex = 12;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 10000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // btActualizar
-            // 
-            this.btActualizar.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btActualizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btActualizar.IconChar = FontAwesome.Sharp.IconChar.SyncAlt;
-            this.btActualizar.IconColor = System.Drawing.Color.Gainsboro;
-            this.btActualizar.IconSize = 20;
-            this.btActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btActualizar.Location = new System.Drawing.Point(6, 3);
-            this.btActualizar.Name = "btActualizar";
-            this.btActualizar.Rotation = 0D;
-            this.btActualizar.Size = new System.Drawing.Size(36, 28);
-            this.btActualizar.TabIndex = 42;
-            this.btActualizar.UseVisualStyleBackColor = true;
-            this.btActualizar.Click += new System.EventHandler(this.btActualizar_Click);
-            // 
-            // btMinimizar
-            // 
-            this.btMinimizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMinimizar.FlatAppearance.BorderSize = 0;
-            this.btMinimizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btMinimizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btMinimizar.IconChar = FontAwesome.Sharp.IconChar.WindowMinimize;
-            this.btMinimizar.IconColor = System.Drawing.Color.White;
-            this.btMinimizar.IconSize = 24;
-            this.btMinimizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMinimizar.Location = new System.Drawing.Point(980, 0);
-            this.btMinimizar.Margin = new System.Windows.Forms.Padding(0);
-            this.btMinimizar.Name = "btMinimizar";
-            this.btMinimizar.Rotation = 0D;
-            this.btMinimizar.Size = new System.Drawing.Size(26, 23);
-            this.btMinimizar.TabIndex = 5;
-            this.btMinimizar.UseVisualStyleBackColor = true;
-            this.btMinimizar.Click += new System.EventHandler(this.btMinimizar_Click);
-            // 
-            // btMaximizar
-            // 
-            this.btMaximizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMaximizar.FlatAppearance.BorderSize = 0;
-            this.btMaximizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btMaximizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btMaximizar.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
-            this.btMaximizar.IconColor = System.Drawing.Color.White;
-            this.btMaximizar.IconSize = 24;
-            this.btMaximizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMaximizar.Location = new System.Drawing.Point(1006, 0);
-            this.btMaximizar.Margin = new System.Windows.Forms.Padding(0);
-            this.btMaximizar.Name = "btMaximizar";
-            this.btMaximizar.Rotation = 0D;
-            this.btMaximizar.Size = new System.Drawing.Size(26, 23);
-            this.btMaximizar.TabIndex = 4;
-            this.btMaximizar.UseVisualStyleBackColor = true;
-            this.btMaximizar.Click += new System.EventHandler(this.btMaximizar_Click);
-            // 
-            // btCerrar
-            // 
-            this.btCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCerrar.FlatAppearance.BorderSize = 0;
-            this.btCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btCerrar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btCerrar.IconChar = FontAwesome.Sharp.IconChar.WindowClose;
-            this.btCerrar.IconColor = System.Drawing.Color.White;
-            this.btCerrar.IconSize = 24;
-            this.btCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCerrar.Location = new System.Drawing.Point(1032, 0);
-            this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
-            this.btCerrar.Name = "btCerrar";
-            this.btCerrar.Rotation = 0D;
-            this.btCerrar.Size = new System.Drawing.Size(26, 23);
-            this.btCerrar.TabIndex = 3;
-            this.btCerrar.UseVisualStyleBackColor = true;
-            this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click);
             // 
             // btDocuClass
             // 
@@ -328,6 +171,30 @@
             this.btIronMountain.UseVisualStyleBackColor = true;
             this.btIronMountain.Click += new System.EventHandler(this.btIronMountain_Click);
             // 
+            // btLetras
+            // 
+            this.btLetras.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btLetras.FlatAppearance.BorderSize = 0;
+            this.btLetras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLetras.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btLetras.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btLetras.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btLetras.IconChar = FontAwesome.Sharp.IconChar.MoneyCheckAlt;
+            this.btLetras.IconColor = System.Drawing.Color.Gainsboro;
+            this.btLetras.IconSize = 30;
+            this.btLetras.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btLetras.Location = new System.Drawing.Point(0, 253);
+            this.btLetras.Name = "btLetras";
+            this.btLetras.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btLetras.Rotation = 0D;
+            this.btLetras.Size = new System.Drawing.Size(200, 61);
+            this.btLetras.TabIndex = 10;
+            this.btLetras.Text = "  Letras";
+            this.btLetras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btLetras.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btLetras.UseVisualStyleBackColor = true;
+            this.btLetras.Click += new System.EventHandler(this.btLetras_Click);
+            // 
             // btRecibir
             // 
             this.btRecibir.Dock = System.Windows.Forms.DockStyle.Top;
@@ -416,35 +283,169 @@
             this.icMain.TabStop = false;
             this.icMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.icMain_MouseDown);
             // 
-            // btLetras
+            // pnTop
             // 
-            this.btLetras.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btLetras.FlatAppearance.BorderSize = 0;
-            this.btLetras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLetras.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btLetras.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btLetras.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btLetras.IconChar = FontAwesome.Sharp.IconChar.Print;
-            this.btLetras.IconColor = System.Drawing.Color.Gainsboro;
-            this.btLetras.IconSize = 30;
-            this.btLetras.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btLetras.Location = new System.Drawing.Point(0, 253);
-            this.btLetras.Name = "btLetras";
-            this.btLetras.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btLetras.Rotation = 0D;
-            this.btLetras.Size = new System.Drawing.Size(200, 61);
-            this.btLetras.TabIndex = 10;
-            this.btLetras.Text = "  Letras";
-            this.btLetras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btLetras.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btLetras.UseVisualStyleBackColor = true;
+            this.pnTop.BackColor = System.Drawing.Color.MidnightBlue;
+            this.pnTop.Controls.Add(this.btActualizar);
+            this.pnTop.Controls.Add(this.lbEstado);
+            this.pnTop.Controls.Add(this.panel2);
+            this.pnTop.Controls.Add(this.lbUsuario);
+            this.pnTop.Controls.Add(this.label1);
+            this.pnTop.Controls.Add(this.btMinimizar);
+            this.pnTop.Controls.Add(this.btMaximizar);
+            this.pnTop.Controls.Add(this.btCerrar);
+            this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnTop.Location = new System.Drawing.Point(5, 0);
+            this.pnTop.Name = "pnTop";
+            this.pnTop.Size = new System.Drawing.Size(1079, 34);
+            this.pnTop.TabIndex = 1;
+            this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
+            // 
+            // btActualizar
+            // 
+            this.btActualizar.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btActualizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btActualizar.IconChar = FontAwesome.Sharp.IconChar.SyncAlt;
+            this.btActualizar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btActualizar.IconSize = 20;
+            this.btActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btActualizar.Location = new System.Drawing.Point(6, 3);
+            this.btActualizar.Name = "btActualizar";
+            this.btActualizar.Rotation = 0D;
+            this.btActualizar.Size = new System.Drawing.Size(36, 28);
+            this.btActualizar.TabIndex = 42;
+            this.btActualizar.UseVisualStyleBackColor = true;
+            this.btActualizar.Click += new System.EventHandler(this.btActualizar_Click);
+            // 
+            // lbEstado
+            // 
+            this.lbEstado.AutoSize = true;
+            this.lbEstado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbEstado.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lbEstado.Location = new System.Drawing.Point(48, 8);
+            this.lbEstado.Name = "lbEstado";
+            this.lbEstado.Size = new System.Drawing.Size(0, 18);
+            this.lbEstado.TabIndex = 9;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 29);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1079, 5);
+            this.panel2.TabIndex = 8;
+            // 
+            // lbUsuario
+            // 
+            this.lbUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbUsuario.AutoSize = true;
+            this.lbUsuario.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbUsuario.Location = new System.Drawing.Point(852, 10);
+            this.lbUsuario.Name = "lbUsuario";
+            this.lbUsuario.Size = new System.Drawing.Size(109, 13);
+            this.lbUsuario.TabIndex = 7;
+            this.lbUsuario.Text = "NOMBRE_USUARIO";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label1.Location = new System.Drawing.Point(800, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Usuario:";
+            // 
+            // btMinimizar
+            // 
+            this.btMinimizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMinimizar.FlatAppearance.BorderSize = 0;
+            this.btMinimizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btMinimizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btMinimizar.IconChar = FontAwesome.Sharp.IconChar.WindowMinimize;
+            this.btMinimizar.IconColor = System.Drawing.Color.White;
+            this.btMinimizar.IconSize = 24;
+            this.btMinimizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btMinimizar.Location = new System.Drawing.Point(1000, 0);
+            this.btMinimizar.Margin = new System.Windows.Forms.Padding(0);
+            this.btMinimizar.Name = "btMinimizar";
+            this.btMinimizar.Rotation = 0D;
+            this.btMinimizar.Size = new System.Drawing.Size(26, 23);
+            this.btMinimizar.TabIndex = 5;
+            this.btMinimizar.UseVisualStyleBackColor = true;
+            this.btMinimizar.Click += new System.EventHandler(this.btMinimizar_Click);
+            // 
+            // btMaximizar
+            // 
+            this.btMaximizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMaximizar.FlatAppearance.BorderSize = 0;
+            this.btMaximizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btMaximizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btMaximizar.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
+            this.btMaximizar.IconColor = System.Drawing.Color.White;
+            this.btMaximizar.IconSize = 24;
+            this.btMaximizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btMaximizar.Location = new System.Drawing.Point(1026, 0);
+            this.btMaximizar.Margin = new System.Windows.Forms.Padding(0);
+            this.btMaximizar.Name = "btMaximizar";
+            this.btMaximizar.Rotation = 0D;
+            this.btMaximizar.Size = new System.Drawing.Size(26, 23);
+            this.btMaximizar.TabIndex = 4;
+            this.btMaximizar.UseVisualStyleBackColor = true;
+            this.btMaximizar.Click += new System.EventHandler(this.btMaximizar_Click);
+            // 
+            // btCerrar
+            // 
+            this.btCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCerrar.FlatAppearance.BorderSize = 0;
+            this.btCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btCerrar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btCerrar.IconChar = FontAwesome.Sharp.IconChar.WindowClose;
+            this.btCerrar.IconColor = System.Drawing.Color.White;
+            this.btCerrar.IconSize = 24;
+            this.btCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btCerrar.Location = new System.Drawing.Point(1052, 0);
+            this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
+            this.btCerrar.Name = "btCerrar";
+            this.btCerrar.Rotation = 0D;
+            this.btCerrar.Size = new System.Drawing.Size(26, 23);
+            this.btCerrar.TabIndex = 3;
+            this.btCerrar.UseVisualStyleBackColor = true;
+            this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click);
+            // 
+            // pnMain
+            // 
+            this.pnMain.Controls.Add(this.pnTop);
+            this.pnMain.Controls.Add(this.panel1);
+            this.pnMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnMain.Location = new System.Drawing.Point(200, 0);
+            this.pnMain.Name = "pnMain";
+            this.pnMain.Size = new System.Drawing.Size(1084, 681);
+            this.pnMain.TabIndex = 2;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(5, 681);
+            this.panel1.TabIndex = 12;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 10000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(1284, 681);
             this.Controls.Add(this.pnMain);
             this.Controls.Add(this.pnLeft);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -452,10 +453,10 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.pnLeft.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.icMain)).EndInit();
             this.pnTop.ResumeLayout(false);
             this.pnTop.PerformLayout();
             this.pnMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.icMain)).EndInit();
             this.ResumeLayout(false);
 
         }

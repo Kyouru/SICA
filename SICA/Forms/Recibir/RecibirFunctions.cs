@@ -155,14 +155,14 @@ namespace SICA
             }
         }
 
-        public static bool RecibirPagare(string id_reporte_valorados)
+        public static bool RecibirPagare(string id_reporte_valorados, string observacion)
         {
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string strSQL = "";
             try
             {
-                strSQL = @"INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA)
-                            VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + id_reporte_valorados + ", #" + fecha + "#)";
+                strSQL = @"INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, FECHA, OBSERVACION_RECIBE)
+                            VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + id_reporte_valorados + ", #" + fecha + "#, '" + observacion + "')";
 
                 if (!Conexion.conectar())
                     return false;
@@ -189,12 +189,13 @@ namespace SICA
             }
         }
 
-        public static bool ConfirmarCarrito()
+        public static bool ConfirmarCarrito(string observacion)
         {
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string strSQL = "";
             try
             {
+
                 DataTable dt = new DataTable();
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strRecibirConfirmar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
@@ -213,7 +214,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = #" + fecha + "#, [RECIBIDO] = TRUE WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = FALSE AND ANULADO = FALSE";
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = #" + fecha + "#, [RECIBIDO] = TRUE, [OBSERVACION_RECIBE] = '" + observacion + "' WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = FALSE AND ANULADO = FALSE";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

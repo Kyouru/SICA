@@ -61,7 +61,8 @@ namespace SICA.Forms.Recibir
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
-                    RecibirFunctions.RecibirPagare(dgv.SelectedRows[0].Cells["ID"].Value.ToString());
+                    string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
+                    RecibirFunctions.RecibirPagare(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), observacion);
                     //btBuscar_Click(sender, e);
                     dgv.SelectedRows[0].Height = 0;
                 }
