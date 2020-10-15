@@ -23,7 +23,7 @@ namespace SICA
 
         private void BusquedaForm_Load(object sender, EventArgs e)
         {
-            tbUsuario.Text = Globals.Username;
+            //tbUsuario.Text = Globals.Username;
         }
 
         private void btBuscar_Click(object sender, EventArgs e)

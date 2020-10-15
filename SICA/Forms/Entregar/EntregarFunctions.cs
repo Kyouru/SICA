@@ -294,7 +294,7 @@ namespace SICA
             {
                 if (desembolsado == 1)
                 {
-                    strSQL = "SELECT TC.ID_REPORTE_VALORADOS_FK AS ID, '0' AS NRO, RV.CIP, RV.NOMBRE, RV.MONTOPRESTAMO, RV.SOLICITUD_SISGO AS SISGO";
+                    strSQL = "SELECT TC.ID_AUX_FK AS ID, '0' AS NRO, RV.CIP, RV.NOMBRE, RV.MONTOPRESTAMO, RV.SOLICITUD_SISGO AS SISGO";
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN REPORTE_VALORADOS RV ON TC.ID_AUX_FK = RV.ID_REPORTE_VALORADOS";
                     strSQL = strSQL + " WHERE TC.TIPO = '" + Globals.strEntregarPagare + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                 }

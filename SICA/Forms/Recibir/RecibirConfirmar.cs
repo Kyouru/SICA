@@ -86,9 +86,12 @@ namespace SICA.Forms.Recibir
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strRecibirConfirmar);
-                actualizarCantidad();
-                btActualizar_Click(sender, e);
+                if (dgv.SelectedRows.Count == 1)
+                {
+                    GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strRecibirConfirmar);
+                    actualizarCantidad();
+                    btActualizar_Click(sender, e);
+                }
             }
         }
 
