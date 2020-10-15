@@ -95,7 +95,7 @@ namespace SICA.Forms.Recibir
                     if (dt2 is null)
                         return;
 
-                    strSQL = "SELECT DISTINCT ID_EXPEDIENTE_SIN_DESEMBOLSAR, SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR WHERE DESEMBOLSADO = 0";
+                    strSQL = "SELECT DISTINCT ID_EXPEDIENTE_SIN_DESEMBOLSAR, SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR WHERE DESEMBOLSADO = FALSE";
                     if (!Conexion.iniciaCommand(strSQL))
                         return;
                     if (!Conexion.ejecutarQuery())
@@ -104,7 +104,7 @@ namespace SICA.Forms.Recibir
                     if (dt3 is null)
                         return;
 
-                    strSQL = "SELECT DISTINCT ID_PAGARE_SIN_DESEMBOLSAR, SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR WHERE DESEMBOLSADO = 0";
+                    strSQL = "SELECT DISTINCT ID_PAGARE_SIN_DESEMBOLSAR, SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR WHERE DESEMBOLSADO = FALSE";
                     if (!Conexion.iniciaCommand(strSQL))
                         return;
                     if (!Conexion.ejecutarQuery())

@@ -33,7 +33,7 @@ namespace SICA
         {
             DataTable dt = new DataTable("TABLA1");
 
-            using (var csvConnection = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OleDb.4.0;" + "Data Source=" + Path.GetDirectoryName(FileName) + ";Extended Properties=\"Text;HDR=Yes;FMT=Delimited;Format=Delimited(,)\""))
+            using (var csvConnection = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path.GetDirectoryName(FileName) + ";Extended Properties=\"Text;HDR=Yes;FMT=Delimited;Format=Delimited(,)\""))
             {
                 csvConnection.Open();
                 using (var csvAdapter = new System.Data.OleDb.OleDbDataAdapter("SELECT * FROM " + Path.GetFileName(FileName), csvConnection))
