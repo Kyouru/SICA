@@ -111,5 +111,11 @@ namespace SICA.Forms.Letras
             ActivateButton(sender, RGBColors.color4);
             OpenChildForm(new LetrasReingreso());
         }
+
+        private void btBuscar_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new LetrasBuscar());
+        }
     }
 }

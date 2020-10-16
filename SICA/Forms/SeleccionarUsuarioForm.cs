@@ -38,17 +38,6 @@ namespace SICA.Forms
 
                 Conexion.cerrar();
 
-                if (dt.Rows[0]["CUSTODIA"].ToString() == "True")
-                {
-                    Globals.EntregarConfirmacion = true;
-                    Globals.strEntregarEstado = "CUSTODIADO";
-                }
-                else
-                {
-                    Globals.EntregarConfirmacion = false;
-                    Globals.strEntregarEstado = "PRESTADO";
-                }
-
                 cmbUsuario.DataSource = dt;
                 cmbUsuario.ValueMember = "ID_USUARIO";
                 cmbUsuario.DisplayMember = "USERNAME";
@@ -67,9 +56,38 @@ namespace SICA.Forms
             {
                 Globals.IdUsernameSelect = Int32.Parse(cmbUsuario.SelectedValue.ToString());
                 Globals.UsernameSelect = cmbUsuario.Text;
+                string strSQL = "SELECT CUSTODIA FROM USUARIO WHERE ID_USUARIO = " + Globals.IdUsernameSelect;
+                try
+                {
+                    if (!Conexion.conectar())
+                        return;
 
-                LoadingScreen.cerrarLoading();
-                this.Close();
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return;
+                    if (!Conexion.ejecutarQuery())
+                        return;
+                    DataTable dt = Conexion.llenarDataTable();
+                    if (dt is null)
+                        return;
+                    Conexion.cerrar();
+
+                    if (dt.Rows[0][0].ToString() == "True")
+                    {
+                        Globals.EntregarConfirmacion = true;
+                        Globals.strEntregarEstado = "CUSTODIADO";
+                    }
+                    else
+                    {
+                        Globals.EntregarConfirmacion = false;
+                        Globals.strEntregarEstado = "PRESTADO";
+                    }
+                    LoadingScreen.cerrarLoading();
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    GlobalFunctions.casoError(ex, strSQL);
+                }
             }
             else
             {
@@ -77,23 +95,29 @@ namespace SICA.Forms
                 if (dialogResult == DialogResult.Yes)
                 {
                     string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', 0, 1, 0, 0)";
-                    
-                    if (!Conexion.conectar())
-                        return;
+                    try
+                    {
+                        if (!Conexion.conectar())
+                            return;
 
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
 
-                    if (!Conexion.ejecutarQuery())
-                        return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
 
-                    Conexion.cerrar();
-                    LoadingScreen.cerrarLoading();
+                        Conexion.cerrar();
+                        LoadingScreen.cerrarLoading();
 
-                    Globals.IdUsernameSelect = Conexion.lastIdInsert();
-                    Globals.UsernameSelect = cmbUsuario.Text;
-                    Globals.EntregarConfirmacion = false;
-                    this.Close();
+                        Globals.IdUsernameSelect = Conexion.lastIdInsert();
+                        Globals.UsernameSelect = cmbUsuario.Text;
+                        Globals.EntregarConfirmacion = false;
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalFunctions.casoError(ex, strSQL);
+                    }
                 }
             }
         }

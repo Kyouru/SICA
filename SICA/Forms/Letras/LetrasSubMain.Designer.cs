@@ -30,11 +30,11 @@
         {
             this.pnSubMain = new System.Windows.Forms.Panel();
             this.pnTop = new System.Windows.Forms.Panel();
+            this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btReingreso = new FontAwesome.Sharp.IconButton();
             this.btEntregar = new FontAwesome.Sharp.IconButton();
             this.btNuevo = new FontAwesome.Sharp.IconButton();
-            this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +59,29 @@
             this.pnTop.Name = "pnTop";
             this.pnTop.Size = new System.Drawing.Size(1048, 45);
             this.pnTop.TabIndex = 4;
+            // 
+            // btBuscar
+            // 
+            this.btBuscar.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btBuscar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btBuscar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBuscar.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconSize = 30;
+            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBuscar.Location = new System.Drawing.Point(420, 0);
+            this.btBuscar.Name = "btBuscar";
+            this.btBuscar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.btBuscar.Rotation = 0D;
+            this.btBuscar.Size = new System.Drawing.Size(140, 44);
+            this.btBuscar.TabIndex = 11;
+            this.btBuscar.Text = "Buscar";
+            this.btBuscar.UseVisualStyleBackColor = false;
+            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // panel1
             // 
@@ -137,28 +160,6 @@
             this.btNuevo.Text = "Nuevo";
             this.btNuevo.UseVisualStyleBackColor = false;
             this.btNuevo.Click += new System.EventHandler(this.btNuevo_Click);
-            // 
-            // btBuscar
-            // 
-            this.btBuscar.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btBuscar.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btBuscar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btBuscar.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
-            this.btBuscar.IconSize = 30;
-            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBuscar.Location = new System.Drawing.Point(420, 0);
-            this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btBuscar.Rotation = 0D;
-            this.btBuscar.Size = new System.Drawing.Size(140, 44);
-            this.btBuscar.TabIndex = 11;
-            this.btBuscar.Text = "Buscar";
-            this.btBuscar.UseVisualStyleBackColor = false;
             // 
             // LetrasSubMain
             // 

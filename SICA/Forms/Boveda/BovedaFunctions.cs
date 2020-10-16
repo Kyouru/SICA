@@ -14,16 +14,19 @@ namespace SICA.Forms.Boveda
                 DataTable dt = new DataTable();
 
                 string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
-                strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID, U.ID_USUARIO AS ID_BOVEDA";
-                strSQL = strSQL + " FROM (TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK) ";
-                strSQL = strSQL + " LEFT JOIN USUARIO U ON IG.USUARIO_POSEE = U.USERNAME ";
-                strSQL = strSQL + " WHERE TIPO = '" + Globals.strBovedaRetirarDOC + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID, ID_AUX_FK";
+                strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK ";
+                strSQL = strSQL + " WHERE TIPO = '" + Globals.strBovedaRetirarDOC + "'";
 
                 if (!Conexion.conectar())
                     return false;
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
                 if (!Conexion.ejecutarQuery())
+                    return false;
+
+                dt = Conexion.llenarDataTable();
+                if (dt is null)
                     return false;
 
                 foreach (DataRow row in dt.Rows)
@@ -34,7 +37,7 @@ namespace SICA.Forms.Boveda
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN) VALUES (" + row["ID"].ToString() + ", " + row["ID_BOVEDA"].ToString() + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ")";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + row["ID"].ToString() + ", " + row["ID_AUX_FK"].ToString() + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", TRUE)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -86,7 +89,7 @@ namespace SICA.Forms.Boveda
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ")";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", TRUE)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

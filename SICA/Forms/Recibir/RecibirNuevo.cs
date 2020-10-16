@@ -78,7 +78,6 @@ namespace SICA.Forms.Recibir
                         }
                         if (valido)
                         {
-                            btCargarValido.Visible = true;
                             row["STATUS"] = "OK";
                         }
                     }
@@ -115,6 +114,8 @@ namespace SICA.Forms.Recibir
 
                     Conexion.cerrar();
 
+
+
                     var result = from c1 in dt.AsEnumerable()
                                     join c2 in dt2.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c2.Field<string>("SOLICITUD_SISGO") into j
                                     join c3 in dt3.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c3.Field<string>("SOLICITUD_SISGO") into k
@@ -124,7 +125,7 @@ namespace SICA.Forms.Recibir
                                     from r in m.DefaultIfEmpty()
                                     select new
                                     {
-                                        ID_REPORTE = p is null ? 0 : p.Field<long>("ID_REPORTE_VALORADOS"),
+                                        ID_REPORTE = p is null ? 0 : p.Field<Int32>("ID_REPORTE_VALORADOS"),
                                         STATUS = c1.Field<string>("STATUS"),
                                         DESC_1 = c1.Field<string>("DESCRIPCION 1"),
                                         DESC_2 = c1.Field<string>("DESCRIPCION 2"),
@@ -144,6 +145,11 @@ namespace SICA.Forms.Recibir
                     dgv.DataSource = result.ToList();
                     dgv.Columns[0].Visible = false;
                     dgv.ClearSelection();
+
+                    if (valido)
+                    {
+                        btCargarValido.Visible = true;
+                    }
 
                     LoadingScreen.cerrarLoading();
                 }
@@ -168,7 +174,7 @@ namespace SICA.Forms.Recibir
 
                 string strSQL = "";
                 long lastinsertid = 0;
-                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-ss HH:mm:ss") + "'";
+                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 Boolean pagare;
                 Boolean expediente;
                 try
@@ -216,7 +222,7 @@ namespace SICA.Forms.Recibir
                             if (!Conexion.ejecutarQuery())
                                 return;
 
-                            strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE) VALUES (" + Conexion.lastIdInsert() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
+                            strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBE) VALUES (" + Conexion.lastIdInsert() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
                             
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;

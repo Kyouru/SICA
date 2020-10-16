@@ -117,7 +117,7 @@ namespace SICA
                         {
                             if (i == j || i == k || i == m || i == n)
                             {
-                                dr[i] = DateTime.FromOADate(Double.Parse(worksheet.Cells[rowIndex, i].Value.ToString()));
+                                dr[i] = DateTime.FromOADate(Double.Parse(worksheet.Cells[rowIndex, i].Value.ToString())).ToString("dd/MM/yyyy");
                             }
                             else
                             {
@@ -144,17 +144,6 @@ namespace SICA
         public static DataTable ConvertReporteValoradosToDataTable(string strSQL)
         {
             DataTable dt = new DataTable("REPORTE_VALORADOS");
-
-            dt.Columns.Add("ID_REPORTE_VALORADOS", System.Type.GetType("System.Int32"));
-            dt.Columns.Add("CIP", System.Type.GetType("System.String"));
-            dt.Columns.Add("NOMBRE", System.Type.GetType("System.String"));
-            dt.Columns.Add("MONTOPRESTAMO", System.Type.GetType("System.Double"));
-            dt.Columns.Add("PERIODO_SOLICITUD", System.Type.GetType("System.String"));
-            dt.Columns.Add("NUMERO_SOLICITUD", System.Type.GetType("System.String"));
-            dt.Columns.Add("MONEDA", System.Type.GetType("System.String"));
-            dt.Columns.Add("FECHA_OTORGADO", System.Type.GetType("System.String"));
-            dt.Columns.Add("FECHA_CANCELACION", System.Type.GetType("System.String"));
-            dt.Columns.Add("TIPO_PRESTAMO", System.Type.GetType("System.String"));
 
             try
             {

@@ -27,8 +27,8 @@ namespace SICA.Forms.Boveda
 
                 DataTable dt = new DataTable("BOVEDA");
 
-                strSQL = "SELECT DISTINCT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC";
-                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
+                strSQL = "SELECT DISTINCT NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC";
+                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT * FROM TMP_CARRITO WHERE TIPO = '" + Globals.strBovedaGuardarCAJA + "') TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
                 strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "' AND NUMERO_DE_CAJA <> ''";
 
                 if (tbCaja.Text != "")
@@ -51,7 +51,7 @@ namespace SICA.Forms.Boveda
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;
-                dgv.Columns[0].Visible = false;
+                //dgv.Columns[0].Visible = false;
                 dgv.ClearSelection();
 
                 LoadingScreen.cerrarLoading();
@@ -95,16 +95,16 @@ namespace SICA.Forms.Boveda
                 {
                     if (GlobalFunctions.verificarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.Username))
                     {
-                        GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardarCAJA);
+                        GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardarCAJA);
                         actualizarCantidad();
                         btBuscar_Click(sender, e);
                     }
                     else
                     {
                         DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea guardarlo de todas manera?", "Incompleto", MessageBoxButtons.YesNo);
-                        if (dialogResult != DialogResult.Yes)
+                        if (dialogResult == DialogResult.Yes)
                         {
-                            GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardarCAJA);
+                            GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardarCAJA);
                             actualizarCantidad();
                             btBuscar_Click(sender, e);
                         }

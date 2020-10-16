@@ -42,10 +42,10 @@
             this.lbCantidad = new System.Windows.Forms.Label();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.dgv = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnBottom = new System.Windows.Forms.Panel();
             this.pnTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.pnBottom.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnTop
@@ -242,14 +242,14 @@
             this.dgv.TabIndex = 25;
             this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
-            // panel1
+            // pnBottom
             // 
-            this.panel1.Controls.Add(this.dgv);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 47);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1048, 561);
-            this.panel1.TabIndex = 55;
+            this.pnBottom.Controls.Add(this.dgv);
+            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnBottom.Location = new System.Drawing.Point(0, 47);
+            this.pnBottom.Name = "pnBottom";
+            this.pnBottom.Size = new System.Drawing.Size(1048, 561);
+            this.pnBottom.TabIndex = 55;
             // 
             // EntregarPagare
             // 
@@ -257,14 +257,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1048, 608);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnBottom);
             this.Controls.Add(this.pnTop);
             this.Name = "EntregarPagare";
             this.Text = "EntregarPagare";
             this.pnTop.ResumeLayout(false);
             this.pnTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.pnBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -282,6 +282,6 @@
         private System.Windows.Forms.TextBox tbBusquedaLibre;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cbDesembolsado;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnBottom;
     }
 }

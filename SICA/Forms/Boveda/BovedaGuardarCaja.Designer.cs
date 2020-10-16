@@ -36,10 +36,10 @@
             this.pnTop = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.tbCaja = new System.Windows.Forms.TextBox();
-            this.lbCantidad = new System.Windows.Forms.Label();
             this.btLimpiarCarrito = new FontAwesome.Sharp.IconButton();
             this.btVerCarrito = new FontAwesome.Sharp.IconButton();
             this.btSiguiente = new FontAwesome.Sharp.IconButton();
+            this.lbCantidad = new System.Windows.Forms.Label();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.pnBottom.SuspendLayout();
@@ -51,10 +51,10 @@
             // 
             this.pnBottom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnBottom.Controls.Add(this.dgv);
-            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnBottom.Location = new System.Drawing.Point(0, 47);
             this.pnBottom.Name = "pnBottom";
-            this.pnBottom.Size = new System.Drawing.Size(1048, 569);
+            this.pnBottom.Size = new System.Drawing.Size(1048, 561);
             this.pnBottom.TabIndex = 52;
             // 
             // dgv
@@ -97,7 +97,7 @@
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgv.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1048, 569);
+            this.dgv.Size = new System.Drawing.Size(1048, 561);
             this.dgv.TabIndex = 25;
             this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
@@ -138,17 +138,6 @@
             this.tbCaja.Size = new System.Drawing.Size(321, 24);
             this.tbCaja.TabIndex = 38;
             this.tbCaja.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbCaja_KeyDown);
-            // 
-            // lbCantidad
-            // 
-            this.lbCantidad.AutoSize = true;
-            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
-            this.lbCantidad.Name = "lbCantidad";
-            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
-            this.lbCantidad.TabIndex = 40;
-            this.lbCantidad.Text = "(0)";
             // 
             // btLimpiarCarrito
             // 
@@ -203,6 +192,17 @@
             this.btSiguiente.TabIndex = 43;
             this.btSiguiente.UseVisualStyleBackColor = true;
             this.btSiguiente.Click += new System.EventHandler(this.btSiguiente_Click);
+            // 
+            // lbCantidad
+            // 
+            this.lbCantidad.AutoSize = true;
+            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
+            this.lbCantidad.Name = "lbCantidad";
+            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidad.TabIndex = 40;
+            this.lbCantidad.Text = "(0)";
             // 
             // btExcel
             // 

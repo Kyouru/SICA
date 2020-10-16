@@ -36,7 +36,7 @@ namespace SICA.Forms
                 }
                 else if (Globals.CarritoSeleccionado == Globals.strVerificarCAJA)
                 {
-                    strSQL = "SELECT NUMERO_CAJA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, USUARIO_POSEE, FECHA_POSEE AS FECHA FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + Globals.strnumeroCAJA + "' AND USUARIO_POSEE <> '" + Globals.Username + "'";
+                    strSQL = "SELECT NUMERO_DE_CAJA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, USUARIO_POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + Globals.strnumeroCAJA + "' AND USUARIO_POSEE <> '" + Globals.Username + "'";
                 }
                 else if (Globals.CarritoSeleccionado == Globals.strLetrasEntregar)
                 {
@@ -101,6 +101,9 @@ namespace SICA.Forms
 
                         if (!Conexion.ejecutarQuery())
                             return;
+                        LoadingScreen.cerrarLoading();
+
+                        CarritoForm_Load(sender, e);
                     }
                     catch (Exception ex)
                     {

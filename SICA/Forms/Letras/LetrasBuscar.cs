@@ -21,14 +21,13 @@ namespace SICA.Forms.Letras
         {
             string strSQL = "";
             LoadingScreen.iniciarLoading();
-            strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD FROM LETRA WHERE 1 = 1";
+            strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO FROM LETRA WHERE 1 = 1";
             if (tbBusquedaLibre.Text != "")
             {
                 strSQL = strSQL + " AND CONCATENADO LIKE @busqueda_libre";
             }
             strSQL = strSQL + " ORDER BY F_GIRO";
             
-
             try
             {
                 DataTable dt = new DataTable();
@@ -68,6 +67,13 @@ namespace SICA.Forms.Letras
         private void btExcel_Click(object sender, EventArgs e)
         {
             GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+        }
+        private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+            {
+                this.btBuscar_Click(sender, e);
+            }
         }
     }
 }

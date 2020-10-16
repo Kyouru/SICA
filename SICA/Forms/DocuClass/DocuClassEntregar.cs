@@ -22,7 +22,7 @@ namespace SICA.Forms.DocuClass
             LoadingScreen.iniciarLoading();
             strSQL = @"SELECT DISTINCT NUMERO_DE_CAJA, CAJA_CLIENTE, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO FROM INVENTARIO_GENERAL IG 
                         LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA
-                        WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = " + Globals.Username;
+                        WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = '" + Globals.Username + "' AND NUMERO_DE_CAJA <> ''";
             if (tbBusquedaLibre.Text != "")
             {
                 strSQL = strSQL + " AND NUMERO_DE_CAJA LIKE @busqueda_libre";
@@ -113,22 +113,22 @@ namespace SICA.Forms.DocuClass
                 {
                     if (GlobalFunctions.verificarCaja(dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(),Globals.Username))
                     {
-                        GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells[0].Value.ToString(), "", Globals.strDocuClassEntregar);
+                        GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(), Globals.strDocuClassEntregar);
                         actualizarCantidad();
                         btBuscar_Click(sender, e);
                     }
                     else
                     {
                         DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea guardarlo de todas manera?", "Incompleto", MessageBoxButtons.YesNo);
-                        if (dialogResult != DialogResult.Yes)
+                        if (dialogResult == DialogResult.Yes)
                         {
-                            GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells["ID"].Value.ToString(), "0", dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(), Globals.strDocuClassEntregar);
+                            GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(), Globals.strDocuClassEntregar);
                             actualizarCantidad();
                             btBuscar_Click(sender, e);
                         }
                         else
                         {
-                            Globals.CarritoSeleccionado = Globals.strDocuClassEntregar;
+                            Globals.CarritoSeleccionado = Globals.strVerificarCAJA;
                             Globals.strnumeroCAJA = dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString();
                             CarritoForm vCarrito = new CarritoForm();
                             vCarrito.Show();

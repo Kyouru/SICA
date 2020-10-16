@@ -96,6 +96,7 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1048, 561);
             this.dgv.TabIndex = 25;
+            this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
             // pnTop
             // 
@@ -130,6 +131,7 @@
             this.btLimpiarCarrito.Size = new System.Drawing.Size(48, 38);
             this.btLimpiarCarrito.TabIndex = 35;
             this.btLimpiarCarrito.UseVisualStyleBackColor = true;
+            this.btLimpiarCarrito.Click += new System.EventHandler(this.btLimpiarCarrito_Click);
             // 
             // label2
             // 
@@ -158,6 +160,7 @@
             this.btEntregar.Size = new System.Drawing.Size(48, 38);
             this.btEntregar.TabIndex = 34;
             this.btEntregar.UseVisualStyleBackColor = true;
+            this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
             // 
             // tbBusquedaLibre
             // 
@@ -167,6 +170,7 @@
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
             this.tbBusquedaLibre.Size = new System.Drawing.Size(237, 24);
             this.tbBusquedaLibre.TabIndex = 27;
+            this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
             // 
             // btExcel
             // 
@@ -183,6 +187,7 @@
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 33;
             this.btExcel.UseVisualStyleBackColor = true;
+            this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
             // 
             // btVerCarrito
             // 
@@ -200,6 +205,7 @@
             this.btVerCarrito.Size = new System.Drawing.Size(48, 38);
             this.btVerCarrito.TabIndex = 30;
             this.btVerCarrito.UseVisualStyleBackColor = true;
+            this.btVerCarrito.Click += new System.EventHandler(this.btVerCarrito_Click);
             // 
             // btBuscar
             // 
@@ -216,6 +222,7 @@
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 32;
             this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // lbCantidad
             // 

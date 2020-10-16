@@ -21,7 +21,7 @@ namespace SICA.Forms.Entregar
             strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC,
                         FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2,
                         DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
-                        FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT * FROM TMP_CARRITO WHERE TIPO = @tipo_carrit AND ID_USUARIO_FK = @id_usuario) TC" +
+                        FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC" +
                         " ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL" +
                         " AND DESCRIPCION_1 = 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = @username";
 
@@ -41,10 +41,6 @@ namespace SICA.Forms.Entregar
                 if (!Conexion.iniciaCommand(strSQL))
                     return;
 
-                if (!Conexion.agregarParametroCommand("@tipo_carrito", tipo_carrito))
-                    return;
-                if (!Conexion.agregarParametroCommand("@id_usuario", Globals.IdUsername.ToString()))
-                    return;
                 if (!Conexion.agregarParametroCommand("@username", Globals.Username))
                     return;
                 if (!Conexion.agregarParametroCommand("@busqueda_libre", "%" + tbBusquedaLibre.Text + "%"))

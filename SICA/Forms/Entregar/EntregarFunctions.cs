@@ -16,10 +16,9 @@ namespace SICA
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string strSQL = "";
             int j = 0;
-            strSQL = @"SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, IG.ID_REPORTE_VALORADOS_FK AS ID_REPORTE, '0' AS NRO, DESCRIPCION_1 AS DEFINICION
-                        , DESCRIPCION_2 AS SOLICITUD, DESCRIPCION_3 AS COD_PRESTAMO, DESCRIPCION_4 AS NOMBRE_SOCIO FROM TMP_CARRITO TC
-                        LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL
-                        WHERE TIPO = @tipo_carrito AND ID_USUARIO_FK = @id_usuario";
+            strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, '0' AS NRO, DESCRIPCION_1 AS DEFINICION, DESCRIPCION_2 AS SOLICITUD, DESCRIPCION_3 AS COD_PRESTAMO, DESCRIPCION_4 AS NOMBRE_SOCIO";
+            strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
+                        strSQL = strSQL + " WHERE TIPO = '" + Globals.strEntregarExpediente + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
             try
             {
 
@@ -27,11 +26,6 @@ namespace SICA
                     return false;
 
                 if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-
-                if (!Conexion.agregarParametroCommand("@tipo_carrito", Globals.strEntregarExpediente))
-                    return false;
-                if (!Conexion.agregarParametroCommand("@id_usuario", Globals.IdUsername.ToString()))
                     return false;
 
                 if (!Conexion.ejecutarQuery())
@@ -51,17 +45,17 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, RECIBIDO)
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_INICIO, RECIBIDO)
                             VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", #" + fecha + "#, '" + observacion + "',";
 
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL = strSQL + " TRUE)";
+                        strSQL = strSQL + fecha + ", TRUE)";
                     }
                     else
                     {
-                        strSQL = strSQL + " FALSE)";
+                        strSQL = strSQL + "'', FALSE)";
                     }
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -106,11 +100,11 @@ namespace SICA
 
                     if (row["ID_REPORTE"].ToString() != "" && Globals.EntregarConfirmacion)
                     {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'PRESTADO' WHERE ID_REPORTE_VALORADOS = @id_reporte";
+                        strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'PRESTADO' WHERE SOLICITUD_SISGO = @sisgo";
                         if (!Conexion.iniciaCommand(strSQL))
                             return false;
 
-                        if (!Conexion.agregarParametroCommand("@id_reporte", row["ID_REPORTE"].ToString()))
+                        if (!Conexion.agregarParametroCommand("@sisgo", row["DESCRIPCION_2"].ToString()))
                             return false;
 
                         if (!Conexion.ejecutarQuery())
@@ -139,13 +133,13 @@ namespace SICA
 
                 if (!Conexion.ejecutarQuery())
                     return false;
-                if (Globals.EntregarConfirmacion)
-                {
-                    MessageBox.Show("Pendiente por recibir: " + Globals.UsernameSelect + "\nNro de Expedientes: " + j);
-                    }
-                else
+                if (!Globals.EntregarConfirmacion)
                 {
                     GlobalFunctions.ArmarCargoExcel(dt, "CARGO DE EXPEDIENTES", Globals.CargoPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", true);
+                }
+                else
+                {
+                    MessageBox.Show("Pendiente por recibir: " + Globals.UsernameSelect + "\nNro de Expedientes: " + j);
                 }
 
                 Conexion.cerrar();
@@ -161,17 +155,15 @@ namespace SICA
         public static bool EntregarDocumentosCarrito(string observacion)
         {
 
-            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
             string strSQL = "";
             int j = 0;
             DataTable dt = new DataTable();
             try
             {
-                strSQL = @"SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, IG.ID_REPORTE_VALORADOS_FK AS ID_REPORTE, '0' AS NRO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE
-                            , FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3
-                            , DESCRIPCION_4 AS FROM TMP_CARRITO TC
-                            LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL
-                            WHERE TIPO = @tipo_carrito AND ID_USUARIO_FK = @id_usuario";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, '0' AS NRO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4";
+                strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
+                strSQL = strSQL + " WHERE TIPO = @tipo_carrito AND ID_USUARIO_FK = @id_usuario";
 
                 if (!Conexion.conectar())
                     return false;
@@ -194,34 +186,22 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO, OBSERVACION_ENTREGA) 
-                            VALUES (@id_usuario, @id_usuario_select, @id_inventario, @fecha_inicio, @fecha_fin, @recibido, @observacion_entrega)";
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO) 
+                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "', ";
+
+
+                    if (!Globals.EntregarConfirmacion)
+                    {
+                        strSQL = strSQL + fecha + ", TRUE)";
+                    }
+                    else
+                    {
+                        strSQL = strSQL + "'', FALSE)";
+                    }
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
 
-                    if (!Conexion.agregarParametroCommand("@id_usuario", Globals.IdUsername.ToString()))
-                        return false;
-                    if (!Conexion.agregarParametroCommand("@id_usuario_select", Globals.IdUsernameSelect.ToString()))
-                        return false;
-                    if (!Conexion.agregarParametroCommand("@fecha_inicio", fecha))
-                        return false;
-                    if (!Conexion.agregarParametroCommand("@fecha_fin", ""))
-                        return false;
-
-                    if (Globals.EntregarConfirmacion)
-                    {
-                        if (!Conexion.agregarParametroCommand("@recibido", "FALSE"))
-                            return false;
-                    }
-                    else
-                    {
-                        if (!Conexion.agregarParametroCommand("@recibido", "TRUE"))
-                            return false;
-                    }
-
-                    if (!Conexion.agregarParametroCommand("@observacion_entrega", observacion))
-                        return false;
                     if (!Conexion.ejecutarQuery())
                     return false;
 
@@ -237,7 +217,7 @@ namespace SICA
                             return false;
                         if (!Conexion.agregarParametroCommand("@fecha_posee", fecha))
                             return false;
-                        if (!Conexion.agregarParametroCommand("@id_inventario", Globals.IdUsernameSelect.ToString()))
+                        if (!Conexion.agregarParametroCommand("@id_inventario", row["ID"].ToString()))
                             return false;
 
                         if (!Conexion.ejecutarQuery())
@@ -247,7 +227,6 @@ namespace SICA
                 }
 
                 dt.Columns.Remove("ID");
-                dt.Columns.Remove("ID_REPORTE");
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {

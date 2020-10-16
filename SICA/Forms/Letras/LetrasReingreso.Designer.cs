@@ -31,26 +31,26 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnBottom = new System.Windows.Forms.Panel();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.pnTop = new System.Windows.Forms.Panel();
             this.tbBusquedaLibre = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
-            this.panel1.SuspendLayout();
+            this.pnBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnBottom
             // 
-            this.panel1.Controls.Add(this.dgv);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 47);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1048, 561);
-            this.panel1.TabIndex = 59;
+            this.pnBottom.Controls.Add(this.dgv);
+            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnBottom.Location = new System.Drawing.Point(0, 47);
+            this.pnBottom.Name = "pnBottom";
+            this.pnBottom.Size = new System.Drawing.Size(1048, 561);
+            this.pnBottom.TabIndex = 59;
             // 
             // dgv
             // 
@@ -114,6 +114,7 @@
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
             this.tbBusquedaLibre.Size = new System.Drawing.Size(316, 24);
             this.tbBusquedaLibre.TabIndex = 47;
+            this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
             // 
             // label2
             // 
@@ -157,6 +158,7 @@
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 50;
             this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // LetrasReingreso
             // 
@@ -164,11 +166,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1048, 608);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnBottom);
             this.Controls.Add(this.pnTop);
             this.Name = "LetrasReingreso";
             this.Text = "LetrasReingreso";
-            this.panel1.ResumeLayout(false);
+            this.pnBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.pnTop.ResumeLayout(false);
             this.pnTop.PerformLayout();
@@ -178,7 +180,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnBottom;
         private System.Windows.Forms.DataGridView dgv;
         private System.Windows.Forms.Panel pnTop;
         private System.Windows.Forms.TextBox tbBusquedaLibre;

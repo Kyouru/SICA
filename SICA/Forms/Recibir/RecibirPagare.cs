@@ -21,7 +21,7 @@ namespace SICA.Forms.Recibir
 
                 strSQL = "SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS CANCELACION, PAGARE ";
                 strSQL = strSQL + " FROM REPORTE_VALORADOS";
-                strSQL = strSQL + " WHERE (PAGARE = 'NO CUSTODIADO' OR PAGARE = 'PRESTADO' OR PAGARE = 'PROTESTO' OR PAGARE IS NULL)";
+                strSQL = strSQL + " WHERE (PAGARE = 'NO CUSTODIADO' OR PAGARE = 'PRESTADO' OR PAGARE = 'DEVUELTO' OR PAGARE = 'PROTESTO' OR PAGARE IS NULL)";
                 if (tbBusquedaLibre.Text != "")
                 {
                     strSQL = strSQL + " AND SOLICITUD_SISGO LIKE '%" + tbBusquedaLibre.Text + "%'";
@@ -74,7 +74,11 @@ namespace SICA.Forms.Recibir
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                btRecibir_Click(sender, e);
+                if (dgv.SelectedRows.Count == 1)
+                {
+                    btRecibir_Click(sender, e);
+                }
+                
             }
         }
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)

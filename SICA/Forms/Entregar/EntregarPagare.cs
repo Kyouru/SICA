@@ -21,7 +21,7 @@ namespace SICA.Forms.Entregar
             {
                 strSQL = @"SELECT ID_REPORTE_VALORADOS AS ID, CIP, NOMBRE, MONTOPRESTAMO AS MONTO, SOLICITUD_SISGO AS SISGO, SIP, TIPO_PRESTAMO AS TIPO
                             , FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS CANCELACION, PAGARE
-                            FROM REPORTE_VALORADOS RV LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX_FK = RV.ID_REPORTE_VALORADOS
+                            FROM REPORTE_VALORADOS RV LEFT JOIN (SELECT * FROM TMP_CARRITO WHERE TIPO = @tipo_carrit AND ID_USUARIO_FK = @id_usuario) TC ON TC.ID_AUX_FK = RV.ID_REPORTE_VALORADOS
                             WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
                 if (tbBusquedaLibre.Text != "")
                 {
@@ -54,7 +54,9 @@ namespace SICA.Forms.Entregar
 
                 if (!Conexion.agregarParametroCommand("@busqueda_libre", "%" + tbBusquedaLibre.Text + "%"))
                     return;
-
+                if (!Conexion.agregarParametroCommand("@id_usuario", Globals.IdUsername.ToString()))
+                    return;
+                
                 if (!Conexion.ejecutarQuery())
                     return;
 
@@ -83,7 +85,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE";
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE AND CUSTODIA = FALSE";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

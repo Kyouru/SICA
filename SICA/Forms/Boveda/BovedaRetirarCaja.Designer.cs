@@ -47,10 +47,10 @@
             // 
             this.pnBottom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnBottom.Controls.Add(this.dgv);
-            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnBottom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnBottom.Location = new System.Drawing.Point(0, 47);
             this.pnBottom.Name = "pnBottom";
-            this.pnBottom.Size = new System.Drawing.Size(1048, 569);
+            this.pnBottom.Size = new System.Drawing.Size(1048, 561);
             this.pnBottom.TabIndex = 54;
             // 
             // dgv
@@ -93,7 +93,7 @@
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgv.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1048, 569);
+            this.dgv.Size = new System.Drawing.Size(1048, 561);
             this.dgv.TabIndex = 25;
             this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
