@@ -69,7 +69,7 @@ namespace SICA
             {
                 DataTable dt = new DataTable("Password");
 
-                String strSQL = "SELECT PASSWORD, ID_USUARIO FROM USUARIO WHERE USERNAME = @username AND REAL = TRUE";
+                String strSQL = "SELECT PASSWORD, ID_USUARIO, CERRAR_SESION FROM USUARIO WHERE USERNAME = @username AND REAL = TRUE";
 
                 try
                 {
@@ -98,6 +98,12 @@ namespace SICA
                 if (dt.Rows.Count == 0)
                 {
                     MessageBox.Show("Usuario o Contraseña Errada");
+                    return;
+                }
+
+                if (dt.Rows[0]["CERRAR_SESION"].ToString() == "True")
+                {
+                    MessageBox.Show("Sesion Cerrada");
                     return;
                 }
 

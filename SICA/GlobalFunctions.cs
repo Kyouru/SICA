@@ -552,7 +552,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO'";
+                    strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'CUSTODIADO'";
                     strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
 
                     if (!Conexion.iniciaCommand(strSQL))
@@ -575,7 +575,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO'";
+                    strSQL = "UPDATE REPORTE_VALORADOS SET [PAGARE] = 'CUSTODIADO'";
                     strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -607,10 +607,16 @@ namespace SICA
             string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND USUARIO_POSEE <> '" + usuario + "'";
             int i = -1;
             if (!Conexion.conectar())
+            {
                 return false;
+            }
 
             if (!Conexion.iniciaCommand(strSQL))
+            {
+                Conexion.cerrar();
                 return false;
+            }
+
             i = Conexion.ejecutarQueryEscalar();
 
             Conexion.cerrar();
@@ -627,16 +633,26 @@ namespace SICA
 
         public static int pendienteConfirmarRecepcion()
         {
+            int n = -1;
             string strSQL = "";
             try
             {
                 strSQL = "SELECT COUNT(*) FROM INVENTARIO_HISTORICO WHERE RECIBIDO = FALSE AND ANULADO = FALSE AND ID_USUARIO_RECIBE_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
+                {
                     return -1;
+                }
 
                 if (!Conexion.iniciaCommand(strSQL))
+                {
+                    Conexion.cerrar();
                     return -1;
-                return Conexion.ejecutarQueryEscalar();
+                }
+
+                n = Conexion.ejecutarQueryEscalar();
+                Conexion.cerrar();
+                return n;
+
             }
             catch (Exception ex)
             {
@@ -651,13 +667,22 @@ namespace SICA
             try
             {
                 if (!Conexion.conectar())
+                {
+                    Conexion.cerrar();
                     return;
+                }
 
                 if (!Conexion.iniciaCommand(strSQL))
+                {
+                    Conexion.cerrar();
                     return;
+                }
 
                 if (!Conexion.ejecutarQuery())
+                {
+                    Conexion.cerrar();
                     return;
+                }
 
                 Conexion.cerrar();
 
@@ -678,16 +703,30 @@ namespace SICA
             {
                 strSQL = "SELECT CERRAR_SESION FROM USUARIO WHERE ID_USUARIO = " + id;
                 if (!Conexion.conectar())
-                    return true;
+                {
+                    Conexion.cerrar();
+                    return false;
+                }
 
                 if (!Conexion.iniciaCommand(strSQL))
-                    return true;
+                {
+                    Conexion.cerrar();
+                    return false;
+                }
                 if (!Conexion.ejecutarQuery())
-                    return true;
+                {
+                    Conexion.cerrar();
+                    return false;
+                }
 
                 dt = Conexion.llenarDataTable();
                 if (dt is null)
-                    return true;
+                {
+                    Conexion.cerrar();
+                    return false;
+                }
+
+                Conexion.cerrar();
 
                 if (dt.Rows[0]["CERRAR_SESION"].ToString() == "True")
                 {
@@ -701,7 +740,7 @@ namespace SICA
             catch (Exception ex)
             {
                 GlobalFunctions.casoError(ex, strSQL);
-                return false;
+                return true;
             }
         }
     }

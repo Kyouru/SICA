@@ -31,7 +31,7 @@ namespace SICA.Forms.Boveda
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -95,7 +95,7 @@ namespace SICA.Forms.Boveda
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.UsernameSelect + "', FECHA_POSEE = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

@@ -157,7 +157,7 @@ namespace SICA
             {
                 foreach (DataGridViewRow row in dgvCancelados.Rows)
                 {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET FECHA_CANCELACION = ";
+                    strSQL = "UPDATE REPORTE_VALORADOS SET [FECHA_CANCELACION] = ";
                     try
                     {
                         strSQL = strSQL + "'" + DateTime.ParseExact(row.Cells["CANCELACION"].Value.ToString(), "dd/mm/yy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + "' WHERE ID_REPORTE_VALORADOS = " + row.Cells["ID"].Value;

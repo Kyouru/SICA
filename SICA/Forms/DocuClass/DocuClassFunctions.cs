@@ -19,7 +19,7 @@ namespace SICA.Forms.DocuClass
             {
                 DataTable dt = new DataTable();
 
-                strSQL = "SELECT NUMERO_DE_CAJA FROM TMP_CARRITO TC";
+                strSQL = "SELECT NUMERO_CAJA FROM TMP_CARRITO TC";
                 strSQL = strSQL + " WHERE TIPO = '" + Globals.strDocuClassEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
 
                 if (!Conexion.conectar())
@@ -35,13 +35,13 @@ namespace SICA.Forms.DocuClass
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, NUMERO_CAJA, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdDC + ", '" + row["NUMERO_DE_CAJA"].ToString() + "', " + fecha + ", " + fecha + ", TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, NUMERO_CAJA, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdDC + ", '" + row["NUMERO_CAJA"].ToString() + "', " + fecha + ", " + fecha + ", TRUE)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = 'DOCUCLASS', [FECHA_POSEE] = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_DE_CAJA"].ToString() + "' AND USUARIO_POSEE = '" + Globals.Username + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = 'DOCUCLASS', [FECHA_POSEE] = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = '" + Globals.Username + "'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

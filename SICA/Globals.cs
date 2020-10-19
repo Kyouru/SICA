@@ -16,7 +16,6 @@ namespace SICA
         public static String configPathDB = Application.StartupPath + "\\config";
         public static String DBPath = Application.StartupPath + "\\BD\\DB_SICA.accdb"; //caso nulo
 
-
         public static String Provider = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=";
         //public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\DB_SICA.accdb";
 
@@ -24,7 +23,7 @@ namespace SICA
 
         public static String strQueryUser = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = TRUE";
 
-        public static String DBPasswod = "";
+        public static String DBPasswod = "Micaela";
 
         public static Int32 IdUsername = -1;
         public static String Username = "";

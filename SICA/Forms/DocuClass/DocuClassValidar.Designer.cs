@@ -31,30 +31,32 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.btBuscarCSV = new FontAwesome.Sharp.IconButton();
+            this.btValidarDatosCSV = new FontAwesome.Sharp.IconButton();
             this.pnBottom = new System.Windows.Forms.Panel();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.pnTop = new System.Windows.Forms.Panel();
+            this.cmbCaja = new System.Windows.Forms.ComboBox();
+            this.btValidarCaja = new FontAwesome.Sharp.IconButton();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.pnBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btBuscarCSV
+            // btValidarDatosCSV
             // 
-            this.btBuscarCSV.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btBuscarCSV.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btBuscarCSV.IconColor = System.Drawing.Color.Black;
-            this.btBuscarCSV.IconSize = 16;
-            this.btBuscarCSV.Location = new System.Drawing.Point(31, 7);
-            this.btBuscarCSV.Name = "btBuscarCSV";
-            this.btBuscarCSV.Rotation = 0D;
-            this.btBuscarCSV.Size = new System.Drawing.Size(150, 34);
-            this.btBuscarCSV.TabIndex = 0;
-            this.btBuscarCSV.Text = "Seleccionar .csv";
-            this.btBuscarCSV.UseVisualStyleBackColor = true;
-            this.btBuscarCSV.Click += new System.EventHandler(this.btBuscarCSV_Click);
+            this.btValidarDatosCSV.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btValidarDatosCSV.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btValidarDatosCSV.IconColor = System.Drawing.Color.Black;
+            this.btValidarDatosCSV.IconSize = 16;
+            this.btValidarDatosCSV.Location = new System.Drawing.Point(31, 7);
+            this.btValidarDatosCSV.Name = "btValidarDatosCSV";
+            this.btValidarDatosCSV.Rotation = 0D;
+            this.btValidarDatosCSV.Size = new System.Drawing.Size(150, 34);
+            this.btValidarDatosCSV.TabIndex = 0;
+            this.btValidarDatosCSV.Text = "Validar Datos .csv";
+            this.btValidarDatosCSV.UseVisualStyleBackColor = true;
+            this.btValidarDatosCSV.Click += new System.EventHandler(this.btValidarDatosCSV_Click);
             // 
             // pnBottom
             // 
@@ -109,13 +111,39 @@
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.pnTop.Controls.Add(this.btBuscarCSV);
+            this.pnTop.Controls.Add(this.cmbCaja);
+            this.pnTop.Controls.Add(this.btValidarCaja);
+            this.pnTop.Controls.Add(this.btValidarDatosCSV);
             this.pnTop.Controls.Add(this.btExcel);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnTop.Location = new System.Drawing.Point(0, 0);
             this.pnTop.Name = "pnTop";
             this.pnTop.Size = new System.Drawing.Size(1048, 47);
             this.pnTop.TabIndex = 40;
+            // 
+            // cmbCaja
+            // 
+            this.cmbCaja.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbCaja.FormattingEnabled = true;
+            this.cmbCaja.Location = new System.Drawing.Point(334, 10);
+            this.cmbCaja.Name = "cmbCaja";
+            this.cmbCaja.Size = new System.Drawing.Size(195, 28);
+            this.cmbCaja.TabIndex = 35;
+            // 
+            // btValidarCaja
+            // 
+            this.btValidarCaja.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btValidarCaja.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btValidarCaja.IconColor = System.Drawing.Color.Black;
+            this.btValidarCaja.IconSize = 16;
+            this.btValidarCaja.Location = new System.Drawing.Point(545, 7);
+            this.btValidarCaja.Name = "btValidarCaja";
+            this.btValidarCaja.Rotation = 0D;
+            this.btValidarCaja.Size = new System.Drawing.Size(150, 34);
+            this.btValidarCaja.TabIndex = 34;
+            this.btValidarCaja.Text = "Validar Caja";
+            this.btValidarCaja.UseVisualStyleBackColor = true;
+            this.btValidarCaja.Click += new System.EventHandler(this.btValidarCaja_Click);
             // 
             // btExcel
             // 
@@ -126,14 +154,15 @@
             this.btExcel.IconColor = System.Drawing.Color.Gainsboro;
             this.btExcel.IconSize = 30;
             this.btExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btExcel.Location = new System.Drawing.Point(382, 5);
+            this.btExcel.Location = new System.Drawing.Point(774, 5);
             this.btExcel.Name = "btExcel";
             this.btExcel.Rotation = 0D;
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 33;
             this.btExcel.UseVisualStyleBackColor = true;
+            this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
             // 
-            // DocuClassVerificar
+            // DocuClassValidar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -141,8 +170,9 @@
             this.ClientSize = new System.Drawing.Size(1048, 608);
             this.Controls.Add(this.pnBottom);
             this.Controls.Add(this.pnTop);
-            this.Name = "DocuClassVerificar";
+            this.Name = "DocuClassValidar";
             this.Text = "DocuClassValidar";
+            this.Load += new System.EventHandler(this.DocuClassValidar_Load);
             this.pnBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.pnTop.ResumeLayout(false);
@@ -152,10 +182,12 @@
 
         #endregion
 
-        private FontAwesome.Sharp.IconButton btBuscarCSV;
+        private FontAwesome.Sharp.IconButton btValidarDatosCSV;
         private System.Windows.Forms.Panel pnBottom;
         private System.Windows.Forms.DataGridView dgv;
         private System.Windows.Forms.Panel pnTop;
         private FontAwesome.Sharp.IconButton btExcel;
+        private FontAwesome.Sharp.IconButton btValidarCaja;
+        private System.Windows.Forms.ComboBox cmbCaja;
     }
 }
