@@ -69,7 +69,7 @@ namespace SICA
             {
                 DataTable dt = new DataTable("Password");
 
-                String strSQL = "SELECT PASSWORD, ID_USUARIO, CERRAR_SESION FROM USUARIO WHERE USERNAME = @username AND REAL = TRUE";
+                String strSQL = "SELECT PASSWORD, ID_USUARIO, CERRAR_SESION FROM USUARIO WHERE USERNAME = @username AND REAL2 = TRUE";
 
                 try
                 {

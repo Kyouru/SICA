@@ -94,7 +94,7 @@ namespace SICA.Forms
                 DialogResult dialogResult = MessageBox.Show("Usuario no existe.\nDesea Crear?", "Usuario no ingresado", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', 0, 1, 0, 0)";
+                    string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL2, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', FALSE, TRUE, FALSE, 0)";
                     try
                     {
                         if (!Conexion.conectar())
@@ -106,10 +106,11 @@ namespace SICA.Forms
                         if (!Conexion.ejecutarQuery())
                             return;
 
+                        Globals.IdUsernameSelect = Conexion.lastIdInsert();
+
                         Conexion.cerrar();
                         LoadingScreen.cerrarLoading();
 
-                        Globals.IdUsernameSelect = Conexion.lastIdInsert();
                         Globals.UsernameSelect = cmbUsuario.Text;
                         Globals.EntregarConfirmacion = false;
                         this.Close();

@@ -30,7 +30,7 @@ namespace SICA.Forms.DocuClass
                 LoadingScreen.iniciarLoading();
 
                 DataTable dt = new DataTable();
-                dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
+                dt = GlobalFunctions.ConvertCsvToDataTable2(ofd.FileName);
                 if (dt is null)
                     return;
 
@@ -38,7 +38,6 @@ namespace SICA.Forms.DocuClass
 
                 if (!Conexion.conectar())
                     return;
-
                 strSQL = "SELECT CIP, NOMBRE, NUMERO_DOCUMENTO, MONEDA, SOLICITUD_SISGO, LEFT(TIPO_PRESTAMO, 3) AS TIPO_PRESTAMO FROM REPORTE_VALORADOS";
 
                 if (!Conexion.iniciaCommand(strSQL))
@@ -56,6 +55,7 @@ namespace SICA.Forms.DocuClass
                              from p in j.DefaultIfEmpty()
                              select new
                              {
+                                 ID_DOCU = c1.Field<string>("ID"),
                                  SOCIO_DOCU = c1.Field<string>("Codigo de Socio"),
                                  SOCIO_BD = p is null ? "" : p.Field<string>("CIP"),
                                  NOMBRE_DOCU = c1.Field<string>("Nombre de Socio"),
@@ -152,7 +152,7 @@ namespace SICA.Forms.DocuClass
                     LoadingScreen.iniciarLoading();
 
                     DataTable dt = new DataTable();
-                    dt = GlobalFunctions.ConvertCsvToDataTable(ofd.FileName);
+                    dt = GlobalFunctions.ConvertCsvToDataTable2(ofd.FileName);
                     if (dt is null)
                         return;
 
@@ -161,7 +161,7 @@ namespace SICA.Forms.DocuClass
                     if (!Conexion.conectar())
                         return;
 
-                    strSQL = "SELECT NUMERO_DE_CAJA, DESCRIPCION_1, DESCRIPCION_2 FROM INVENTARIO_GENERAL WHERE USUARIO_POSEE = 'DOCUCLASS'";
+                    strSQL = "SELECT NUMERO_DE_CAJA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4 FROM INVENTARIO_GENERAL WHERE USUARIO_POSEE = 'DOCUCLASS'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return;
@@ -173,20 +173,32 @@ namespace SICA.Forms.DocuClass
                         return;
 
 
-                    /*var result = from c1 in dt2.AsEnumerable()
+                    var result = from c1 in dt2.AsEnumerable()
                                  join c2 in dt.AsEnumerable() on c1.Field<string>("DESCRIPCION_2") equals c2.Field<string>("Nro de Solicitud") into j
-                                 group c1 by new { c1.Field<string>("NUMERO_DE_CAJA"), c1.Field<string>("DESCRIPCION_1") } into q
+                                 from p in j.DefaultIfEmpty()
                                  select new
                                  {
-                                     DESC_1 = q.Field<string>("DESCRIPCION_1"),
+                                     DESC_1 = c1.Field<string>("DESCRIPCION_1"),
                                      DESC_2 = c1.Field<string>("DESCRIPCION_2"),
                                      DESC_3 = c1.Field<string>("DESCRIPCION_3"),
                                      DESC_4 = c1.Field<string>("DESCRIPCION_4"),
-                                     DOCU_SISGO = p is null ? "" : p.Field<string>("Nro de Solicitud"),
-                                     FECHA_SUBIDO = p is null ? "" : p.Field<string>("Archived Date")
+                                     DOCU_SISGO = p is null ? null : p.Field<string>("Nro de Solicitud"),
+                                     FECHA_SUBIDO = p is null ? null : p.Field<string>("Archived Date")
                                  };
 
-                    dgv.DataSource = result.ToList();*/
+                    var result2 = from c1 in result
+                                  group c1.DOCU_SISGO by new { X1 = c1.DESC_1, X2 = c1.DESC_2, X3 = c1.DESC_3, X4 = c1.DESC_4, X5 = c1.DOCU_SISGO } into j
+                                  from p in j.DefaultIfEmpty()
+                                  select new
+                                  {
+                                      DESC_1 = j.Key.X1,
+                                      DESC_2 = j.Key.X2,
+                                      DESC_3 = j.Key.X3,
+                                      DESC_4 = j.Key.X4,
+                                      N_DOCUMENTOS = j.Key.X5 is null? 0 : j.Count()
+                                  };
+
+                    dgv.DataSource = result2.Distinct().ToList();
 
                     LoadingScreen.cerrarLoading();
                 }

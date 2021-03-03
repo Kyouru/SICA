@@ -111,7 +111,7 @@ namespace SICA.Forms.DocuClass
             {
                 if (dgv.SelectedRows.Count == 1)
                 {
-                    GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells[0].Value.ToString(), "", Globals.strDocuClassRecibir);
+                    GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells[0].Value.ToString(), Globals.strDocuClassRecibir);
                     actualizarCantidad();
                     btBuscar_Click(sender, e);
                 }

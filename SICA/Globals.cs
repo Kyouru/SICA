@@ -21,7 +21,7 @@ namespace SICA
 
         public static String CargoPath = Application.StartupPath + "\\CARGO\\";
 
-        public static String strQueryUser = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = TRUE";
+        public static String strQueryUser = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL2 = TRUE";
 
         public static String DBPasswod = "Micaela";
 

@@ -31,14 +31,14 @@ namespace SICA.Forms.Entregar
             }
             else
             {
-                strSQL = @"SELECT ID_PAGARE_SIN_DESEMBOLSAR AS ID, SOLICITUD_SISGO AS SISGO, DESCRIPCION_1, DESCRIPCION_2, SDESCRIPCION_3, DESCRIPCION_4
+                strSQL = @"SELECT ID_PAGARE_SIN_DESEMBOLSAR AS ID, SOLICITUD_SISGO AS SISGO, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4
                             FROM PAGARE_SIN_DESEMBOLSAR PSD LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX_FK = PSD.ID_PAGARE_SIN_DESEMBOLSAR
-                            WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = 'CUSTODIADO'";
+                            WHERE TC.ID_TMP_CARRITO IS NULL AND PAGARE = TRUE";
                 if (tbBusquedaLibre.Text != "")
                 {
                     strSQL = strSQL + " AND CONCATENADO LIKE @busqueda_libre";
                 }
-                strSQL = strSQL + " AND DESEMBOLSADO = 0 ";
+                strSQL = strSQL + " AND DESEMBOLSADO = FALSE ";
                 strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
             }
 
@@ -85,7 +85,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL = TRUE AND CUSTODIA = FALSE";
+                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL2 = TRUE AND CUSTODIA = FALSE";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

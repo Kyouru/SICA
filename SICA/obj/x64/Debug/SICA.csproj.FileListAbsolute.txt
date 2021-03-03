@@ -51,3 +51,77 @@ C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasNuevo.
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasSubMain.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasBuscar.resources
 C:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasReingreso.resources
+Z:\Transfer\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csprojAssemblyReference.cache
+Z:\Transfer\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\Interop.MDACVer.dll
+Z:\Transfer\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csproj.ResolveComReference.cache
+Z:\Transfer\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.exe
+Z:\Transfer\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.pdb
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.csprojAssemblyReference.cache
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\Interop.MDACVer.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.csproj.ResolveComReference.cache
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaGuardarCaja.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaGuardarDoc.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetirarCaja.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaRetirarDoc.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaSubMain.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.BusquedaForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.CarritoForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassEntregar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassRecibir.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassSubMain.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.DocuClass.DocuClassValidar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.HistoricoForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.InfoForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainArmar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainCargo.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainEntregar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainEnviar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainRecibir.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainSolicitar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.IronMountain.IronMountainSubMain.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Entregar.EntregarDocumento.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Entregar.EntregarExpediente.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Entregar.EntregarPagare.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Entregar.EntregarSubMain.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasBuscar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasEntregar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasNuevo.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasReingreso.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Letras.LetrasSubMain.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.LoadingScreen.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.LoginForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.ImportarForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.MainForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirConfirmar.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirNuevo.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirPagare.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirReingreso.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirSubMain.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Forms.SeleccionarUsuarioForm.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.Properties.Resources.resources
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.csproj.GenerateResource.cache
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.csproj.CoreCompileInputs.cache
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.exe
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.pdb
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\SICA.exe.config
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\SICA.exe
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\SICA.pdb
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\CsvHelper.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\ExcelLibrary.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\FontAwesome.Sharp.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\Microsoft.Bcl.HashCode.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Buffers.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Memory.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Numerics.Vectors.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Threading.Tasks.Extensions.dll
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\CsvHelper.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\Microsoft.Bcl.HashCode.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Buffers.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Memory.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Numerics.Vectors.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\bin\x64\Debug\System.Threading.Tasks.Extensions.xml
+C:\Zona de Trabajo\Visual Studio\SICA\SICA\obj\x64\Debug\SICA.csproj.CopyComplete

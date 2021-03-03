@@ -11,6 +11,9 @@ using SimpleLogger;
 using ExcelLibrary.SpreadSheet;
 using System.Diagnostics;
 using System.Windows.Forms.VisualStyles;
+using CsvHelper;
+using System.Globalization;
+using System.Linq;
 
 namespace SICA
 {
@@ -58,6 +61,8 @@ namespace SICA
                     dt.Columns.Add("TIPO_PRESTAMO", System.Type.GetType("System.String"));
                     dt.Columns.Add("USUARIO_REGISTRO", System.Type.GetType("System.String"));
                     dt.Columns.Add("OBSERVACION", System.Type.GetType("System.String"));
+
+
                     try
                     {
                         csvAdapter.Fill(dt);
@@ -74,6 +79,31 @@ namespace SICA
             }
         }
 
+        public static DataTable ConvertCsvToDataTable2(string FileName)
+        {
+            DataTable dt = new DataTable("TABLA1");
+            try
+            {
+                using (var reader = new StreamReader(FileName))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        //csv.Configuration.Delimiter = ";";
+                        using (var dr = new CsvDataReader(csv))
+                        {
+                            dt.Load(dr);
+                            return dt;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "");
+                MessageBox.Show("a");
+                return null;
+            }
+        }
         public static DataTable ConvertExcelToDataTable(string FileName, int index)
         {
             try
@@ -390,12 +420,18 @@ namespace SICA
             }
         }
 
-        public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare)
+        public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare, long id_inventario_general)
         {
             string strSQL = "";
             try
             {
                 strSQL = "UPDATE REPORTE_VALORADOS SET";
+
+                if (id_inventario_general > 0)
+                {
+                    strSQL = strSQL + " [ID_INVENTARIO_GENERAL_FK] = " + id_inventario_general + ", ";
+                }
+
                 if (expediente)
                 {
                     strSQL = strSQL + " [EXPEDIENTE] = 'CUSTODIADO'";

@@ -13,7 +13,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
@@ -85,7 +85,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
 
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainRecibir + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
@@ -100,7 +100,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = 'EN TRANSITO A CP'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = 'EN TRANSITO A CP'";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -137,8 +137,8 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                strSQL = "UPDATE INVENTARIO_GENERAL SET [NUMERO_DE_CAJA] = '' WHERE NUMERO_DE_CAJA ='" + caja + "'";
+                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                strSQL = "UPDATE INVENTARIO_GENERAL SET [NUMERO_DE_CAJA] = '' WHERE NUMERO_DE_CAJA = '" + caja + "'";
                 if (!Conexion.conectar())
                     return false;
                 if (!Conexion.iniciaCommand(strSQL))
@@ -194,7 +194,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENVIAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
@@ -264,7 +264,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())

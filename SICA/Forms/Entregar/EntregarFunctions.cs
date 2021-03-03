@@ -13,7 +13,7 @@ namespace SICA
         {
             DataTable dt = new DataTable();
 
-            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
             string strSQL = "";
             int j = 0;
             strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, '0' AS NRO, DESCRIPCION_1 AS DEFINICION, DESCRIPCION_2 AS SOLICITUD, DESCRIPCION_3 AS COD_PRESTAMO, DESCRIPCION_4 AS NOMBRE_SOCIO";
@@ -45,8 +45,8 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_INICIO, RECIBIDO)
-                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", #" + fecha + "#, '" + observacion + "',";
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO)
+                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "',";
 
 
                     if (!Globals.EntregarConfirmacion)
@@ -55,7 +55,7 @@ namespace SICA
                     }
                     else
                     {
-                        strSQL = strSQL + "'', FALSE)";
+                        strSQL = strSQL + "NULL, FALSE)";
                     }
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -64,27 +64,11 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
                     
-                    strSQL = @"UPDATE INVENTARIO_GENERAL SET [CUSTODIADO] = @estado, [USUARIO_POSEE] = @username_select, [FECHA_POSEE] = @fecha_posee
-                            WHERE ID_INVENTARIO_GENERAL = @id_inventario";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [CUSTODIADO] = @estado, [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
 
-                    if (Globals.EntregarConfirmacion)
-                    {
-                        if (!Conexion.agregarParametroCommand("@username_select", Globals.UsernameSelect))
-                            //if (!Conexion.agregarParametroCommand("@username_select", "PARA " + Globals.UsernameSelect))
-                            return false;
-                    }
-                    else
-                    {
-                        if (!Conexion.agregarParametroCommand("@username_select", Globals.UsernameSelect))
-                            return false;
-                    }
-                    if (!Conexion.agregarParametroCommand("@fecha_posee", fecha))
-                        return false;
-                    if (!Conexion.agregarParametroCommand("@id_inventario", row["ID"].ToString()))
-                        return false;
                     if (Globals.EntregarConfirmacion)
                     {
                         if (!Conexion.agregarParametroCommand("@estado", "CUSTODIADO"))
@@ -98,23 +82,20 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    if (row["ID_REPORTE"].ToString() != "" && Globals.EntregarConfirmacion)
+                    if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'PRESTADO' WHERE SOLICITUD_SISGO = @sisgo";
+                        strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'PRESTADO' WHERE SOLICITUD_SISGO = '" + row["SOLICITUD"].ToString() + "'";
                         if (!Conexion.iniciaCommand(strSQL))
-                            return false;
-
-                        if (!Conexion.agregarParametroCommand("@sisgo", row["DESCRIPCION_2"].ToString()))
                             return false;
 
                         if (!Conexion.ejecutarQuery())
                             return false;
                     }
+
                     j++;
                 }
 
                 dt.Columns.Remove("ID");
-                dt.Columns.Remove("ID_REPORTE");
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -196,7 +177,7 @@ namespace SICA
                     }
                     else
                     {
-                        strSQL = strSQL + "'', FALSE)";
+                        strSQL = strSQL + " NULL, FALSE)";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))
@@ -207,17 +188,10 @@ namespace SICA
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL = @"UPDATE INVENTARIO_GENERAL SET CUSTODIADO = 'PRESTADO', USUARIO_POSEE = @usuario_posee, FECHA_POSEE = @fecha_posee
-                                WHERE ID_INVENTARIO_GENERAL = @id_inventario";
+                        strSQL = @"UPDATE INVENTARIO_GENERAL SET [CUSTODIADO] = 'PRESTADO', [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha
+                                + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
 
                         if (!Conexion.iniciaCommand(strSQL))
-                            return false;
-
-                        if (!Conexion.agregarParametroCommand("@usuario_posee", Globals.UsernameSelect))
-                            return false;
-                        if (!Conexion.agregarParametroCommand("@fecha_posee", fecha))
-                            return false;
-                        if (!Conexion.agregarParametroCommand("@id_inventario", row["ID"].ToString()))
                             return false;
 
                         if (!Conexion.ejecutarQuery())
@@ -266,7 +240,7 @@ namespace SICA
 
         public static bool EntregarPagaresCarrito(int desembolsado, string observacion)
         {
-            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
             string strSQL = "";
             DataTable dt = new DataTable();
             try
@@ -299,11 +273,11 @@ namespace SICA
                 {
                     if (desembolsado == 1)
                     {
-                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, SOLICITUD_SISGO, FECHA, OBSERVACION_ENTREGA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#, '" + observacion + "')";
+                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, SOLICITUD_SISGO, FECHA, OBSERVACION_ENTREGA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", '" + row["SISGO"].ToString() + "', " + fecha + ", '" + observacion + "')";
                     }
                     else
                     {
-                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, SOLICITUD_SISGO, FECHA, OBSERVACION_ENTREGA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#, '" + observacion + "')";
+                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, SOLICITUD_SISGO, FECHA, OBSERVACION_ENTREGA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', " + fecha + ", '" + observacion + "')";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))
@@ -317,7 +291,7 @@ namespace SICA
                     }
                     else
                     {
-                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', #" + fecha + "#)";
+                        strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AUX_FK, SOLICITUD_SISGO, FECHA) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["SISGO"].ToString() + "', " + fecha + ")";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))

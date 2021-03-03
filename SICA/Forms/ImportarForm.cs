@@ -102,6 +102,7 @@ namespace SICA
                                     TIPO = c1.Field<string>("TIPO_PRESTAMO"),
                                     SISGO = c1.Field<string>("PERIODO_SOLICITUD") + "-" + (("0000000" + c1.Field<string>("NUMERO_SOLICITUD")).Substring(("0000000" + c1.Field<string>("NUMERO_SOLICITUD")).Length - 7, 7)).Substring(0, 2) + "-" + c1.Field<string>("NUMERO_SOLICITUD").Substring(c1.Field<string>("NUMERO_SOLICITUD").Length - 5, 5)
                                 };
+                
                 if (result.ToList().Count > 0)
                 {
                     dgvCancelados.DataSource = result.ToList();
@@ -114,9 +115,10 @@ namespace SICA
                 else
                 {
                     DataTable dt3 = new DataTable("REPORTE_VALORADOS_VIGENTES");
-                    dt3 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS FECHA_OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS WHERE FECHA_CANCELACION = ''");
+                    dt3 = GlobalFunctions.ConvertReporteValoradosToDataTable("SELECT ID_REPORTE_VALORADOS, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA, FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS FECHA_OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS FECHA_CANCELACION, TIPO_PRESTAMO FROM REPORTE_VALORADOS WHERE FECHA_CANCELACION IS NULL");
                     if (dt3 is null)
                         return;
+
                     var result2 = from c1 in dt.AsEnumerable()
                                     join c2 in dt3.AsEnumerable() on new { X1 = c1.Field<string>("PERIODO_SOLICITUD"), X2 = c1.Field<string>("NUMERO_SOLICITUD") } equals new { X1 = c2.Field<string>("PERIODO_SOLICITUD"), X2 = c2.Field<string>("NUMERO_SOLICITUD") }
                                     where string.IsNullOrEmpty(c2.Field<string>("FECHA_CANCELACION"))
