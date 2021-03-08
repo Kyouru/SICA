@@ -19,9 +19,9 @@ namespace SICA.Forms.Entregar
         {
             string strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
                                 strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL";
-                                strSQL = strSQL + " AND DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND USUARIO_POSEE = @usuario_posee";
+                                strSQL = strSQL + " AND DESCRIPCION_1 <> 'EXPEDIENTES DE CREDITO' AND DESCRIPCION_1 <> 'EXPEDIENTE DE CRÉDITO' AND USUARIO_POSEE = @usuario_posee";
             if (tbBusquedaLibre.Text != "")
-                strSQL = strSQL + " AND DESC_CONCAT LIKE @busqueda_libre";
+                strSQL = strSQL + " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
             strSQL = strSQL + " ORDER BY DESCRIPCION_2";
             try
             {
@@ -118,12 +118,12 @@ namespace SICA.Forms.Entregar
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                if (dgv.SelectedRows.Count == 1)
+                foreach (DataGridViewRow element in dgv.SelectedRows)
                 {
-                    GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
-                    actualizarCantidad();
-                    btBuscar_Click(sender, e);
+                    GlobalFunctions.AgregarCarrito(element.Cells[0].Value.ToString(), "0", element.Cells["CAJA"].Value.ToString(), tipo_carrito);
                 }
+                actualizarCantidad();
+                btBuscar_Click(sender, e);
             }
         }
     }

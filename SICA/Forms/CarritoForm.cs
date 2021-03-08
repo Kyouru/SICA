@@ -17,12 +17,11 @@ namespace SICA.Forms
             string strSQL = "";
             DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
-            
             try
             {
                 LoadingScreen.iniciarLoading();
 
-                if (Globals.CarritoSeleccionado == Globals.strIronMountainArmar || Globals.CarritoSeleccionado == Globals.strEntregarExpediente || Globals.CarritoSeleccionado == Globals.strEntregarDocumento || Globals.CarritoSeleccionado == Globals.strRecibirReingreso || Globals.CarritoSeleccionado == Globals.strBovedaRetirarDOC || Globals.CarritoSeleccionado == Globals.strBovedaGuardarDOC)
+                if (Globals.CarritoSeleccionado == Globals.strIronMountainArmar || Globals.CarritoSeleccionado == Globals.strEntregarExpediente || Globals.CarritoSeleccionado == Globals.strEntregarDocumento || Globals.CarritoSeleccionado == Globals.strRecibirReingreso || Globals.CarritoSeleccionado == Globals.strBovedaRetirarDOC || Globals.CarritoSeleccionado == Globals.strBovedaGuardarDOC || Globals.CarritoSeleccionado == Globals.strDocuClassEntregar || Globals.CarritoSeleccionado == Globals.strDocuClassRecibir)
                 {
                     strSQL = "SELECT ID_TMP_CARRITO AS ID, NUMERO_CAJA, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;

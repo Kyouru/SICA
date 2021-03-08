@@ -12,6 +12,7 @@ namespace SICA.Forms.DocuClass
 {
     public partial class DocuClassEntregar : Form
     {
+        string tipo_carrito = Globals.strDocuClassEntregar;
         public DocuClassEntregar()
         {
             InitializeComponent();
@@ -20,14 +21,14 @@ namespace SICA.Forms.DocuClass
         {
             string strSQL = "";
             LoadingScreen.iniciarLoading();
-            strSQL = @"SELECT DISTINCT NUMERO_DE_CAJA, CAJA_CLIENTE, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO FROM INVENTARIO_GENERAL IG 
-                        LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA
-                        WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = '" + Globals.Username + "' AND NUMERO_DE_CAJA <> ''";
+            strSQL = @"SELECT ID_INVENTARIO_GENERAL, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4 FROM INVENTARIO_GENERAL IG 
+                        LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL
+                        WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = '" + Globals.Username + "'";
             if (tbBusquedaLibre.Text != "")
             {
-                strSQL = strSQL + " AND NUMERO_DE_CAJA LIKE @busqueda_libre";
+                strSQL = strSQL + " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
             }
-            strSQL = strSQL + " ORDER BY NUMERO_DE_CAJA";
+            strSQL = strSQL + " ORDER BY ID_INVENTARIO_GENERAL DESC";
             try
             {
                 DataTable dt = new DataTable();
@@ -109,32 +110,12 @@ namespace SICA.Forms.DocuClass
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                if (dgv.SelectedRows.Count == 1)
+                foreach (DataGridViewRow element in dgv.SelectedRows)
                 {
-                    if (GlobalFunctions.verificarCaja(dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(),Globals.Username))
-                    {
-                        GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(), Globals.strDocuClassEntregar);
-                        actualizarCantidad();
-                        btBuscar_Click(sender, e);
-                    }
-                    else
-                    {
-                        DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea guardarlo de todas manera?", "Incompleto", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString(), Globals.strDocuClassEntregar);
-                            actualizarCantidad();
-                            btBuscar_Click(sender, e);
-                        }
-                        else
-                        {
-                            Globals.CarritoSeleccionado = Globals.strVerificarCAJA;
-                            Globals.strnumeroCAJA = dgv.SelectedRows[0].Cells["NUMERO_DE_CAJA"].Value.ToString();
-                            CarritoForm vCarrito = new CarritoForm();
-                            vCarrito.Show();
-                        }
-                    }   
+                    GlobalFunctions.AgregarCarrito(element.Cells[0].Value.ToString(), "0", "0", tipo_carrito);
                 }
+                actualizarCantidad();
+                btBuscar_Click(sender, e);
             }
         }
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)

@@ -229,6 +229,11 @@ namespace SICA.Forms.Recibir
                                 if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
                                     return;
                             }
+                            else if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTE DE CRÉDITO" && expediente)
+                            {
+                                if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
+                                    return;
+                            }    
                         }
                         else if (row.Cells["DESEMBOLSADO"].Value.ToString() == "NO DESEMBOLSADO")
                         {
