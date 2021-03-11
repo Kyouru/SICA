@@ -61,7 +61,7 @@ namespace SICA.Forms.IronMountain
                 if (numero != "")
                 {
                     int n = 0;
-                    string check = "CONFIRMADO";
+                    string check = "REEMPLAZAR";
                     string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero + "'";
                     try
                     {
@@ -82,11 +82,18 @@ namespace SICA.Forms.IronMountain
                     }
                     if (n > 0)
                     {
-                        check = Microsoft.VisualBasic.Interaction.InputBox("La Caja no es nueva\nEscriba \"CONFIRMAR\" para reemplazar el contenido", "Ya registrado", "");
+                        check = "";
+                        check = Microsoft.VisualBasic.Interaction.InputBox("La Caja no es nueva\nEscriba \"AGREGAR\" para agregar el documento o \"REEMPLAZAR\" para reemplazar el contenido", "Ya registrado", "");
                     }
-                    if (check == "CONFIRMADO")
+                    if (check == "REEMPLAZAR")
                     {
-                        IronMountainFunctions.ArmarCajasCarrito(numero);
+                        IronMountainFunctions.ArmarCajasCarrito(numero, true);
+                        lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainArmar) + ")";
+                        btBuscar_Click(sender, e);
+                    }
+                    if (check == "AGREGAR")
+                    {
+                        IronMountainFunctions.ArmarCajasCarrito(numero, false);
                         lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainArmar) + ")";
                         btBuscar_Click(sender, e);
                     }

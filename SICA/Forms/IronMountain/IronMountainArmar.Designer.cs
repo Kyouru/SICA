@@ -189,7 +189,7 @@
             this.btSiguiente.Size = new System.Drawing.Size(48, 38);
             this.btSiguiente.TabIndex = 43;
             this.btSiguiente.UseVisualStyleBackColor = true;
-            this.btSiguiente.Click += new System.EventHandler(this.btBuscar_Click);
+            this.btSiguiente.Click += new System.EventHandler(this.btSiguiente_Click);
             // 
             // lbCantidad
             // 

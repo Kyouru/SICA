@@ -131,20 +131,25 @@ namespace SICA
             }
         }
 
-        public static bool ArmarCajasCarrito(string caja)
+        public static bool ArmarCajasCarrito(string caja, bool reemplazar)
         {
             string strSQL = "";
             try
             {
                 DataTable dt = new DataTable();
                 string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
-                strSQL = "UPDATE INVENTARIO_GENERAL SET [NUMERO_DE_CAJA] = '' WHERE NUMERO_DE_CAJA = '" + caja + "'";
+
                 if (!Conexion.conectar())
                     return false;
-                if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-                if (!Conexion.ejecutarQuery())
-                    return false;
+
+                if (reemplazar)
+                { 
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [NUMERO_DE_CAJA] = '' WHERE NUMERO_DE_CAJA = '" + caja + "'";
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
+                }
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainArmar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                 if (!Conexion.iniciaCommand(strSQL))
