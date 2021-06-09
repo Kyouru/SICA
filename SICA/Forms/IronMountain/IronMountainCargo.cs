@@ -40,7 +40,7 @@ namespace SICA.Forms.IronMountain
                 {
 
                     strSQL = "SELECT 'PY121' AS CODIGO_CLIENTE, NUMERO_DE_CAJA, CAJA_CLIENTE, 'MASTER' AS CODIGO_DIVISION, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS FECHA_DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3,";
-                    strSQL = strSQL + " DESCRIPCION_4 AS DESCRIPCION_4 FROM INVENTARIO_GENERAL";
+                    strSQL = strSQL + " DESCRIPCION_4 AS DESCRIPCION_4, DESCRIPCION_5 AS DESCRIPCION_5 FROM INVENTARIO_GENERAL";
 
                     if (!Conexion.conectar())
                         return;
@@ -70,7 +70,8 @@ namespace SICA.Forms.IronMountain
                                      DESCRIPCION_1 = c2.Field<string>("DESCRIPCION_1"),
                                      DESCRIPCION_2 = c2.Field<string>("DESCRIPCION_2"),
                                      DESCRIPCION_3 = c2.Field<string>("DESCRIPCION_3"),
-                                     DESCRIPCION_4 = GlobalFunctions.SinTildes(c2.Field<string>("DESCRIPCION_4"))
+                                     DESCRIPCION_4 = GlobalFunctions.SinTildes(c2.Field<string>("DESCRIPCION_4")),
+                                     DESCRIPCION_5 = c2.Field<string>("DESCRIPCION_5")
                                  };
                     DataTable dt3 = new DataTable("CARGO");
                     dt3 = GlobalFunctions.ToDataTable(result.ToList());

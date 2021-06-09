@@ -131,6 +131,7 @@ namespace SICA.Forms.Recibir
                                         DESC_2 = c1.Field<string>("DESCRIPCION 2"),
                                         DESC_3 = c1.Field<string>("DESCRIPCION 3"),
                                         DESC_4 = c1.Field<string>("DESCRIPCION 4"),
+                                        DESC_5 = c1.Field<string>("DESCRIPCION 5"),
                                         DESEMBOLSADO = p is null ? "NO DESEMBOLSADO" : "DESEMBOLSADO",
                                         CUST_EXPEDIENTE = q is null ? p is null ? "NO CUSTODIADO" : p.Field<string>("EXPEDIENTE") != "0" ? p.Field<string>("EXPEDIENTE") : "NO CUSTODIADO" : "CUSTODIADO",
                                         EXP_INGRESA = c1.Field<string>("EXPEDIENTE"),
@@ -242,7 +243,7 @@ namespace SICA.Forms.Recibir
 
                                 if (row.Cells["CUST_EXPEDIENTE"].Value.ToString() == "NO CUSTODIADO")
                                 {
-                                    strSQL = "INSERT INTO EXPEDIENTE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + "')";
+                                    strSQL = "INSERT INTO EXPEDIENTE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -252,7 +253,7 @@ namespace SICA.Forms.Recibir
                                 }
                                 if (pagare && row.Cells["CUST_PAGARE"].Value.ToString() == "NO CUSTODIADO")
                                 {
-                                    strSQL = "INSERT INTO PAGARE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + "')";
+                                    strSQL = "INSERT INTO PAGARE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -263,7 +264,7 @@ namespace SICA.Forms.Recibir
                             }
                             else if (pagare && row.Cells["CUST_PAGARE"].Value.ToString() == "NO CUSTODIADO")
                             {
-                                strSQL = "INSERT INTO PAGARE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, CUSTODIADO, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', 'CUSTODIADO', " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + "')";
+                                strSQL = "INSERT INTO PAGARE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, CUSTODIADO, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', 'CUSTODIADO', " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;

@@ -142,7 +142,7 @@ namespace SICA
             DataTable dt = new DataTable();
             try
             {
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, '0' AS NRO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, '0' AS NRO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5";
                 strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
                 strSQL = strSQL + " WHERE TIPO = @tipo_carrito AND ID_USUARIO_FK = @id_usuario";
 
@@ -253,7 +253,7 @@ namespace SICA
                 }
                 else
                 {
-                    strSQL = "SELECT TC.ID_PAGARE_SIN_DESEMBOLSAR AS ID, '0' AS NRO, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, PSD.SOLICITUD_SISGO AS SISGO";
+                    strSQL = "SELECT TC.ID_PAGARE_SIN_DESEMBOLSAR AS ID, '0' AS NRO, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, PSD.SOLICITUD_SISGO AS SISGO";
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN PAGARE_SIN_DESEMBOLSAR PSD ON TC.SOLICITUD_SISGO = PSD.SOLICITUD_SISGO";
                     strSQL = strSQL + " WHERE TC.TIPO = '" + Globals.strEntregarPagareSinDesembolsar + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                 }

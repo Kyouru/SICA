@@ -11,7 +11,7 @@ namespace SICA
         public static string ArmarStrNuevoIngreso(DataGridViewRow row)
         {
             string strSQL;
-            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, ID_REPORTE_VALORADOS_FK, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
+            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, ID_REPORTE_VALORADOS_FK, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
             strSQL = strSQL + "VALUES(";
             if (row.Cells["NUMERO_CAJA"].Value.ToString() != "")
             {
@@ -85,6 +85,14 @@ namespace SICA
             {
                 strSQL = strSQL + "NULL, ";
             }
+            if (row.Cells["DESC_5"].Value.ToString() != "")
+            {
+                strSQL = strSQL + "'" + row.Cells["DESC_5"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL = strSQL + "NULL, ";
+            }
 
             if (row.Cells["ID_REPORTE"].Value.ToString() != "")
             {
@@ -96,7 +104,7 @@ namespace SICA
             }
 
             //DESC_CONCAT
-            strSQL = strSQL + "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";', ";
+            strSQL = strSQL + "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + ";', ";
             strSQL = strSQL + "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
             strSQL = strSQL + "'" + Globals.Username + "', 'CUSTODIADO')";
             return strSQL;
