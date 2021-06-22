@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btBuscarCargo = new FontAwesome.Sharp.IconButton();
-            this.btCargarValido = new FontAwesome.Sharp.IconButton();
             this.btIngresoManual = new FontAwesome.Sharp.IconButton();
+            this.btCargarValido = new FontAwesome.Sharp.IconButton();
+            this.btBuscarCargoOld = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -48,23 +49,23 @@
             this.dgv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.EnableHeadersVisualStyles = false;
             this.dgv.GridColor = System.Drawing.Color.Gainsboro;
@@ -73,17 +74,19 @@
             this.dgv.ReadOnly = true;
             this.dgv.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgv.RowHeadersVisible = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.MidnightBlue;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgv.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.MidnightBlue;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgv.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1048, 555);
             this.dgv.TabIndex = 26;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btBuscarCargo);
             this.panel1.Controls.Add(this.btIngresoManual);
+            this.panel1.Controls.Add(this.btCargarValido);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -100,34 +103,14 @@
             this.btBuscarCargo.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btBuscarCargo.IconColor = System.Drawing.Color.Black;
             this.btBuscarCargo.IconSize = 16;
-            this.btBuscarCargo.Location = new System.Drawing.Point(12, 12);
+            this.btBuscarCargo.Location = new System.Drawing.Point(252, 12);
             this.btBuscarCargo.Name = "btBuscarCargo";
             this.btBuscarCargo.Rotation = 0D;
             this.btBuscarCargo.Size = new System.Drawing.Size(217, 32);
-            this.btBuscarCargo.TabIndex = 27;
-            this.btBuscarCargo.Text = "Buscar Cargo .xls";
+            this.btBuscarCargo.TabIndex = 30;
+            this.btBuscarCargo.Text = "Buscar Cargo Nuevo";
             this.btBuscarCargo.UseVisualStyleBackColor = true;
             this.btBuscarCargo.Click += new System.EventHandler(this.btBuscarCargo_Click);
-            // 
-            // btCargarValido
-            // 
-            this.btCargarValido.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
-            this.btCargarValido.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btCargarValido.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btCargarValido.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCargarValido.ForeColor = System.Drawing.Color.Gainsboro;
-            this.btCargarValido.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btCargarValido.IconColor = System.Drawing.Color.Black;
-            this.btCargarValido.IconSize = 16;
-            this.btCargarValido.Location = new System.Drawing.Point(256, 12);
-            this.btCargarValido.Name = "btCargarValido";
-            this.btCargarValido.Rotation = 0D;
-            this.btCargarValido.Size = new System.Drawing.Size(217, 32);
-            this.btCargarValido.TabIndex = 28;
-            this.btCargarValido.Text = "Cargar Información Valida";
-            this.btCargarValido.UseVisualStyleBackColor = true;
-            this.btCargarValido.Visible = false;
-            this.btCargarValido.Click += new System.EventHandler(this.btCargarValido_Click);
             // 
             // btIngresoManual
             // 
@@ -148,6 +131,45 @@
             this.btIngresoManual.UseVisualStyleBackColor = true;
             this.btIngresoManual.Click += new System.EventHandler(this.btIngresoManual_Click);
             // 
+            // btCargarValido
+            // 
+            this.btCargarValido.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
+            this.btCargarValido.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btCargarValido.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btCargarValido.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCargarValido.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btCargarValido.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btCargarValido.IconColor = System.Drawing.Color.Black;
+            this.btCargarValido.IconSize = 16;
+            this.btCargarValido.Location = new System.Drawing.Point(522, 12);
+            this.btCargarValido.Name = "btCargarValido";
+            this.btCargarValido.Rotation = 0D;
+            this.btCargarValido.Size = new System.Drawing.Size(217, 32);
+            this.btCargarValido.TabIndex = 28;
+            this.btCargarValido.Text = "Cargar Información Valida";
+            this.btCargarValido.UseVisualStyleBackColor = true;
+            this.btCargarValido.Visible = false;
+            this.btCargarValido.Click += new System.EventHandler(this.btCargarValido_Click);
+            // 
+            // btBuscarCargoOld
+            // 
+            this.btBuscarCargoOld.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
+            this.btBuscarCargoOld.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btBuscarCargoOld.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btBuscarCargoOld.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBuscarCargoOld.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btBuscarCargoOld.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btBuscarCargoOld.IconColor = System.Drawing.Color.Black;
+            this.btBuscarCargoOld.IconSize = 16;
+            this.btBuscarCargoOld.Location = new System.Drawing.Point(12, 12);
+            this.btBuscarCargoOld.Name = "btBuscarCargoOld";
+            this.btBuscarCargoOld.Rotation = 0D;
+            this.btBuscarCargoOld.Size = new System.Drawing.Size(217, 32);
+            this.btBuscarCargoOld.TabIndex = 27;
+            this.btBuscarCargoOld.Text = "Buscar Cargo .xls";
+            this.btBuscarCargoOld.UseVisualStyleBackColor = true;
+            this.btBuscarCargoOld.Click += new System.EventHandler(this.btBuscarCargoOld_Click);
+            // 
             // RecibirNuevo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,8 +177,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1048, 608);
             this.Controls.Add(this.dgv);
-            this.Controls.Add(this.btBuscarCargo);
-            this.Controls.Add(this.btCargarValido);
+            this.Controls.Add(this.btBuscarCargoOld);
             this.Controls.Add(this.panel1);
             this.Name = "RecibirNuevo";
             this.Text = "RecibirNuevo";
@@ -168,9 +189,10 @@
 
         #endregion
         private System.Windows.Forms.DataGridView dgv;
-        private FontAwesome.Sharp.IconButton btBuscarCargo;
+        private FontAwesome.Sharp.IconButton btBuscarCargoOld;
         private FontAwesome.Sharp.IconButton btCargarValido;
         private System.Windows.Forms.Panel panel1;
         private FontAwesome.Sharp.IconButton btIngresoManual;
+        private FontAwesome.Sharp.IconButton btBuscarCargo;
     }
 }

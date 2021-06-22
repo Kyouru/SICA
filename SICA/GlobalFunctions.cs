@@ -104,6 +104,72 @@ namespace SICA
                 return null;
             }
         }
+        public static DataTable ConvertExcelToDataTableOld(string FileName, int index)
+        {
+            try
+            {
+                Workbook workbook = Workbook.Load(FileName);
+                Worksheet worksheet = workbook.Worksheets[index];
+
+                DataTable dt = new DataTable();
+
+                int j = -1, k = -1, m = -1, n = -1;
+
+                for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
+                {
+                    dt.Columns.Add(worksheet.Cells[0, i].Value.ToString());
+                    if (worksheet.Cells[0, i].Value.ToString() == "F_GIRO")
+                    {
+                        j = i;
+                    }
+                    if (worksheet.Cells[0, i].Value.ToString() == "F_VENCIMIENTO")
+                    {
+                        k = i;
+                    }
+                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA DESDE")
+                    {
+                        m = i;
+                    }
+                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA HASTA")
+                    {
+                        n = i;
+                    }
+                }
+
+                DataRow dr;
+
+                for (int rowIndex = worksheet.Cells.FirstRowIndex + 1; rowIndex <= worksheet.Cells.LastRowIndex; rowIndex++)
+                {
+                    dr = dt.NewRow();
+                    for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
+                    {
+                        if (worksheet.Cells[rowIndex, i].Value != null)
+                        {
+                            if (i == j || i == k || i == m || i == n)
+                            {
+                                dr[i] = DateTime.FromOADate(Double.Parse(worksheet.Cells[rowIndex, i].Value.ToString())).ToString("dd/MM/yyyy");
+                            }
+                            else
+                            {
+                                dr[i] = worksheet.Cells[rowIndex, i].Value.ToString();
+                            }
+
+                        }
+                        else
+                        {
+                            dr[i] = "";
+                        }
+                    }
+                    dt.Rows.Add(dr);
+                }
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "");
+                return null;
+            }
+        }
         public static DataTable ConvertExcelToDataTable(string FileName, int index)
         {
             try

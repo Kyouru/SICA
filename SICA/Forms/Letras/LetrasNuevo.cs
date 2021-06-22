@@ -29,7 +29,7 @@ namespace SICA.Forms.Letras
                 LoadingScreen.iniciarLoading();
 
                 DataTable dt = new DataTable();
-                dt = GlobalFunctions.ConvertExcelToDataTable(ofd.FileName, 0);
+                dt = GlobalFunctions.ConvertExcelToDataTableOld(ofd.FileName, 0);
                 if (dt is null)
                     return;
 

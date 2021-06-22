@@ -227,5 +227,10 @@ namespace SICA
         {
             GlobalFunctions.actualizarNoDesembolsados();
         }
+
+        private void btPagare_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("HA! Funcion en proceso");
+        }
     }
 }
