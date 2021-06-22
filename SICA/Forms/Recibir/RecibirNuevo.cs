@@ -94,7 +94,7 @@ namespace SICA.Forms.Recibir
                     if (dt2 is null)
                         return;
 
-                    strSQL = "SELECT DISTINCT ID_EXPEDIENTE_SIN_DESEMBOLSAR, SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR WHERE DESEMBOLSADO = FALSE";
+                    strSQL = "SELECT DISTINCT ID_EXPEDIENTE_TRANSITO, SOLICITUD_SISGO FROM EXPEDIENTE_TRANSITO WHERE DESEMBOLSADO = FALSE";
                     if (!Conexion.iniciaCommand(strSQL))
                         return;
                     if (!Conexion.ejecutarQuery())
@@ -103,7 +103,7 @@ namespace SICA.Forms.Recibir
                     if (dt3 is null)
                         return;
 
-                    strSQL = "SELECT DISTINCT ID_PAGARE_SIN_DESEMBOLSAR, SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR WHERE DESEMBOLSADO = FALSE";
+                    strSQL = "SELECT DISTINCT ID_PAGARE_TRANSITO, SOLICITUD_SISGO FROM PAGARE_TRANSITO WHERE DESEMBOLSADO = FALSE";
                     if (!Conexion.iniciaCommand(strSQL))
                         return;
                     if (!Conexion.ejecutarQuery())
@@ -243,7 +243,7 @@ namespace SICA.Forms.Recibir
 
                                 if (row.Cells["CUST_EXPEDIENTE"].Value.ToString() == "NO CUSTODIADO")
                                 {
-                                    strSQL = "INSERT INTO EXPEDIENTE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
+                                    strSQL = "INSERT INTO EXPEDIENTE_TRANSITO (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + "')";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -253,7 +253,7 @@ namespace SICA.Forms.Recibir
                                 }
                                 if (pagare && row.Cells["CUST_PAGARE"].Value.ToString() == "NO CUSTODIADO")
                                 {
-                                    strSQL = "INSERT INTO PAGARE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
+                                    strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + "')";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -264,7 +264,7 @@ namespace SICA.Forms.Recibir
                             }
                             else if (pagare && row.Cells["CUST_PAGARE"].Value.ToString() == "NO CUSTODIADO")
                             {
-                                strSQL = "INSERT INTO PAGARE_SIN_DESEMBOLSAR (SOLICITUD_SISGO, CUSTODIADO, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', 'CUSTODIADO', " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
+                                strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, CUSTODIADO, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', 'CUSTODIADO', " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
@@ -285,6 +285,12 @@ namespace SICA.Forms.Recibir
                     return;
                 }
             }
+        }
+
+        private void btIngresoManual_Click(object sender, EventArgs e)
+        {
+            RecibirManual recibirManual = new RecibirManual();
+            recibirManual.ShowDialog();
         }
     }
 

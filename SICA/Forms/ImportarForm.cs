@@ -190,7 +190,6 @@ namespace SICA
 
         private void btCargarVigentes_Click(object sender, EventArgs e)
         {
-
             CargarReporteValorados(dgvDesembolsado);
         }
 
@@ -239,6 +238,7 @@ namespace SICA
                         return;
                 }
                 Conexion.cerrar();
+                GlobalFunctions.actualizarNoDesembolsados();
                 LoadingScreen.cerrarLoading();
                 MessageBox.Show("Carga Finalizada");
                 dgv.DataSource = null;

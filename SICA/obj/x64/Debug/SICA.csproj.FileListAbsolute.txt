@@ -220,7 +220,6 @@ D:\Zona Trabajo\Visual C#\SICA\SICA\bin\x64\Debug\System.Memory.xml
 D:\Zona Trabajo\Visual C#\SICA\SICA\bin\x64\Debug\System.Numerics.Vectors.xml
 D:\Zona Trabajo\Visual C#\SICA\SICA\bin\x64\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\Zona Trabajo\Visual C#\SICA\SICA\bin\x64\Debug\System.Threading.Tasks.Extensions.xml
-D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csprojAssemblyReference.cache
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\Interop.MDACVer.dll
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csproj.ResolveComReference.cache
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Boveda.BovedaGuardarCaja.resources
@@ -268,3 +267,5 @@ D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csproj.CoreCompileInputs.
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csproj.CopyComplete
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.exe
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.pdb
+D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.Forms.Recibir.RecibirManual.resources
+D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Debug\SICA.csprojAssemblyReference.cache

@@ -32,10 +32,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btBuscarCargo = new FontAwesome.Sharp.IconButton();
             this.btCargarValido = new FontAwesome.Sharp.IconButton();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.btIngresoManual = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv
@@ -79,6 +81,15 @@
             this.dgv.Size = new System.Drawing.Size(1048, 555);
             this.dgv.TabIndex = 26;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btIngresoManual);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1048, 53);
+            this.panel1.TabIndex = 29;
+            // 
             // btBuscarCargo
             // 
             this.btBuscarCargo.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
@@ -118,13 +129,24 @@
             this.btCargarValido.Visible = false;
             this.btCargarValido.Click += new System.EventHandler(this.btCargarValido_Click);
             // 
-            // panel1
+            // btIngresoManual
             // 
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1048, 53);
-            this.panel1.TabIndex = 29;
+            this.btIngresoManual.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
+            this.btIngresoManual.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btIngresoManual.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
+            this.btIngresoManual.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btIngresoManual.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btIngresoManual.IconChar = FontAwesome.Sharp.IconChar.None;
+            this.btIngresoManual.IconColor = System.Drawing.Color.Black;
+            this.btIngresoManual.IconSize = 16;
+            this.btIngresoManual.Location = new System.Drawing.Point(807, 12);
+            this.btIngresoManual.Name = "btIngresoManual";
+            this.btIngresoManual.Rotation = 0D;
+            this.btIngresoManual.Size = new System.Drawing.Size(217, 32);
+            this.btIngresoManual.TabIndex = 30;
+            this.btIngresoManual.Text = "Ingreso Manual";
+            this.btIngresoManual.UseVisualStyleBackColor = true;
+            this.btIngresoManual.Click += new System.EventHandler(this.btIngresoManual_Click);
             // 
             // RecibirNuevo
             // 
@@ -139,6 +161,7 @@
             this.Name = "RecibirNuevo";
             this.Text = "RecibirNuevo";
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -148,5 +171,6 @@
         private FontAwesome.Sharp.IconButton btBuscarCargo;
         private FontAwesome.Sharp.IconButton btCargarValido;
         private System.Windows.Forms.Panel panel1;
+        private FontAwesome.Sharp.IconButton btIngresoManual;
     }
 }

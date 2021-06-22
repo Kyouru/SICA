@@ -66,3 +66,5 @@ D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Release\SICA.csproj.CoreCompileInput
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Release\SICA.csproj.CopyComplete
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Release\SICA.exe
 D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Release\SICA.pdb
+D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Release\SICA.csprojAssemblyReference.cache
+D:\Zona Trabajo\Visual C#\SICA\SICA\obj\x64\Release\SICA.Forms.Recibir.RecibirManual.resources

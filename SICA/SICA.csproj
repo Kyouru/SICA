@@ -326,6 +326,12 @@
     <Compile Include="Forms\Recibir\RecibirConfirmar.Designer.cs">
       <DependentUpon>RecibirConfirmar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Recibir\RecibirManual.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Recibir\RecibirManual.Designer.cs">
+      <DependentUpon>RecibirManual.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Recibir\RecibirNuevo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -482,6 +488,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirConfirmar.resx">
       <DependentUpon>RecibirConfirmar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recibir\RecibirManual.resx">
+      <DependentUpon>RecibirManual.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirNuevo.resx">
       <DependentUpon>RecibirNuevo.cs</DependentUpon>

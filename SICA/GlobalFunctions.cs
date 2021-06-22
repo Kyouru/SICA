@@ -573,7 +573,7 @@ namespace SICA
             {
                 DataTable dt = new DataTable();
 
-                strSQL = "SELECT SOLICITUD_SISGO FROM EXPEDIENTE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON ESD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE ESD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
+                strSQL = "SELECT ID_EXPEDIENTE_TRANSITO, ESD.SOLICITUD_SISGO, ESD.ID_INVENTARIO_GENERAL_FK FROM EXPEDIENTE_TRANSITO ESD LEFT JOIN REPORTE_VALORADOS RV ON ESD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE ESD.DESEMBOLSADO = FALSE AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
                 if (!Conexion.conectar())
                     return false;
 
@@ -588,17 +588,24 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'CUSTODIADO'";
-                    strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
+                    strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'CUSTODIADO', ID_INVENTARIO_GENERAL_FK = " + row["ID_INVENTARIO_GENERAL_FK"].ToString();
+                    strSQL = strSQL + " WHERE SOLICITUD_SISGO = '" + row["SOLICITUD_SISGO"].ToString() + "'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
-                    if (!Conexion.ejecutarQuery())
-                        return false;
+                    if (Conexion.ejecutarQueryReturn() > 0)
+                    {
+                        strSQL = "UPDATE EXPEDIENTE_TRANSITO SET [DESEMBOLSADO] = TRUE, FECHA_SALIDA = #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                        strSQL = strSQL + " WHERE ID_EXPEDIENTE_TRANSITO = " + row["ID_EXPEDIENTE_TRANSITO"].ToString();
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return false;
+                        if (!Conexion.ejecutarQuery())
+                            return false;
+                    }
                 }
 
                 dt = new DataTable();
-                strSQL = "SELECT SOLICITUD_SISGO FROM PAGARE_SIN_DESEMBOLSAR ESD LEFT JOIN REPORTE_VALORADOS RV ON PSD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE PSD.DESEMBOLSADO IS NULL AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
+                strSQL = "SELECT ID_PAGARE_TRANSITO, PSD.SOLICITUD_SISGO, PSD.ID_INVENTARIO_GENERAL_FK FROM PAGARE_TRANSITO PSD LEFT JOIN REPORTE_VALORADOS RV ON PSD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE PSD.DESEMBOLSADO = FALSE AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
 
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
@@ -611,14 +618,20 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET [PAGARE] = 'CUSTODIADO'";
-                    strSQL = strSQL + "WHERE SOLICITUD_SISGO = '" + row[0].ToString() + "'";
+                    strSQL = "UPDATE REPORTE_VALORADOS SET [PAGARE] = 'CUSTODIADO', ID_INVENTARIO_GENERAL_FK = " + row["ID_INVENTARIO_GENERAL_FK"].ToString();
+                    strSQL = strSQL + " WHERE SOLICITUD_SISGO = '" + row["SOLICITUD_SISGO"].ToString() + "'";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
-                    if (!Conexion.ejecutarQuery())
-                        return false;
+                    if (Conexion.ejecutarQueryReturn() > 0)
+                    {
+                        strSQL = "UPDATE PAGARE_TRANSITO SET [DESEMBOLSADO] = TRUE, FECHA_SALIDA = #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                        strSQL = strSQL + " WHERE ID_PAGARE_TRANSITO = " + row["ID_PAGARE_TRANSITO"].ToString();
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return false;
+                        if (!Conexion.ejecutarQuery())
+                            return false;
+                    }
                 }
-
                 Conexion.cerrar();
                 return true;
             }
@@ -737,12 +750,26 @@ namespace SICA
             string strSQL = "";
             try
             {
-                strSQL = "SELECT CERRAR_SESION FROM USUARIO WHERE ID_USUARIO = " + id;
                 if (!Conexion.conectar())
                 {
                     Conexion.cerrar();
                     return false;
                 }
+
+                strSQL = "UPDATE USUARIO SET ULTIMA_ACTIVIDAD = #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "# WHERE ID_USUARIO = " + id;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                {
+                    Conexion.cerrar();
+                    return false;
+                }
+                if (!Conexion.ejecutarQuery())
+                {
+                    Conexion.cerrar();
+                    return false;
+                }
+
+                strSQL = "SELECT CERRAR_SESION FROM USUARIO WHERE ID_USUARIO = " + id;
 
                 if (!Conexion.iniciaCommand(strSQL))
                 {

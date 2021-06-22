@@ -71,6 +71,18 @@ namespace SICA
                 return false;
             }
         }
+        public static int ejecutarQueryReturn()
+        {
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, command.CommandText);
+                return 0;
+            }
+        }
         public static int ejecutarQueryEscalar()
         {
             try

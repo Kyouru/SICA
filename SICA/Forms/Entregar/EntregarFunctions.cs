@@ -253,8 +253,8 @@ namespace SICA
                 }
                 else
                 {
-                    strSQL = "SELECT TC.ID_PAGARE_SIN_DESEMBOLSAR AS ID, '0' AS NRO, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, PSD.SOLICITUD_SISGO AS SISGO";
-                    strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN PAGARE_SIN_DESEMBOLSAR PSD ON TC.SOLICITUD_SISGO = PSD.SOLICITUD_SISGO";
+                    strSQL = "SELECT TC.ID_PAGARE_TRANSITO AS ID, '0' AS NRO, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, PSD.SOLICITUD_SISGO AS SISGO";
+                    strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN PAGARE_TRANSITO PSD ON TC.SOLICITUD_SISGO = PSD.SOLICITUD_SISGO";
                     strSQL = strSQL + " WHERE TC.TIPO = '" + Globals.strEntregarPagareSinDesembolsar + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                 }
 
