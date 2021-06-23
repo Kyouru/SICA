@@ -82,6 +82,7 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
 
+                    /*
                     if (!Globals.EntregarConfirmacion)
                     {
                         strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'PRESTADO' WHERE SOLICITUD_SISGO = '" + row["SOLICITUD"].ToString() + "'";
@@ -91,7 +92,7 @@ namespace SICA
                         if (!Conexion.ejecutarQuery())
                             return false;
                     }
-
+                    */
                     j++;
                 }
 
@@ -238,6 +239,7 @@ namespace SICA
             }
         }
 
+        //no se usa
         public static bool EntregarPagaresCarrito(int desembolsado, string observacion)
         {
             string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
@@ -335,7 +337,7 @@ namespace SICA
                 return false;
             }
         }
-
+        
 
     }
 }

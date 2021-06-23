@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace SICA.Forms.Recibir
 {
-    public partial class RecibirPagare : Form
+    public partial class RecibirPagare_old : Form
     {
-        public RecibirPagare()
+        public RecibirPagare_old()
         {
             InitializeComponent();
         }

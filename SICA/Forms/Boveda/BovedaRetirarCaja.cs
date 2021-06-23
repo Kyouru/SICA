@@ -22,7 +22,7 @@ namespace SICA.Forms.Boveda
             try
             {
                 LoadingScreen.iniciarLoading();
-                DataTable dt = new DataTable("REPORTE_VALORADOS");
+                DataTable dt = new DataTable();
                 strSQL = "SELECT U.ID_USUARIO AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, USUARIO_POSEE AS BOVEDA";
                 strSQL = strSQL + " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.USERNAME = IG.USUARIO_POSEE)";
                 strSQL = strSQL + " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";

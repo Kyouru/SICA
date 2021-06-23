@@ -1,6 +1,6 @@
 ﻿namespace SICA.Forms.Recibir
 {
-    partial class RecibirPagare
+    partial class RecibirPagare_old
     {
         /// <summary>
         /// Required designer variable.

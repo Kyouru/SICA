@@ -237,6 +237,7 @@ namespace SICA
             }
         }
 
+        //no se usa
         public static DataTable ConvertReporteValoradosToDataTable(string strSQL)
         {
             DataTable dt = new DataTable("REPORTE_VALORADOS");
@@ -264,6 +265,7 @@ namespace SICA
                 return null;
             }
         }
+        
 
         public static void ExportarDataGridViewExcel(DataGridView dgv, string fileName)
         {
@@ -485,7 +487,8 @@ namespace SICA
                 return false;
             }
         }
-
+        
+        //no se usa
         public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare, long id_inventario_general)
         {
             string strSQL = "";
@@ -524,6 +527,7 @@ namespace SICA
             }
         }
         
+
         public static bool AgregarCarrito(string id_inventario, string id_aux, string caja, string tipo)
         {
             string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_aux + ", " + Globals.IdUsername + ", '" + tipo + "', '" + caja + "')";
@@ -632,6 +636,7 @@ namespace SICA
             }
         }
 
+        //no se usa
         public static bool actualizarNoDesembolsados()
         {
             string strSQL = "";
@@ -707,7 +712,8 @@ namespace SICA
                 return false;
             }
         }
-    
+        
+
         public static void casoError(Exception ex, string strSQL)
         {
             Conexion.cerrar();

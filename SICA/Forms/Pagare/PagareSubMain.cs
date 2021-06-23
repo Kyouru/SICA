@@ -9,19 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SICA.Forms.Entregar
+namespace SICA.Forms.Pagare
 {
-    public partial class EntregarSubMain : Form
+    public partial class PagareSubMain : Form
     {
         private IconButton currentBtn;
         private Panel topBorderBtn;
         private Form currentChildForm;
-        public EntregarSubMain()
+        public PagareSubMain()
         {
             InitializeComponent();
 
             topBorderBtn = new Panel();
-            topBorderBtn.Size = new Size(140, 3);
+            topBorderBtn.Size = new Size(250, 3);
             pnTop.Controls.Add(topBorderBtn);
         }
         private void OpenChildForm(Form childForm)
@@ -92,22 +92,11 @@ namespace SICA.Forms.Entregar
             public static Color color6 = Color.FromArgb(24, 161, 251);
         }
 
-        private void btBusqueda_Click(object sender, EventArgs e)
-        {
-            ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new EntregarExpediente());
-        }
 
-        private void btDocumento_Click(object sender, EventArgs e)
+        private void btBuscar_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new EntregarDocumento());
-        }
-
-        private void btPagare_Click(object sender, EventArgs e)
-        {
-            ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new EntregarPagare_Old());
+            //OpenChildForm(new PagareBuscar());
         }
     }
 }

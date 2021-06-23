@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace SICA
 {
+    //ya no se usa
     public partial class ImportarForm : Form
     {
         public ImportarForm()

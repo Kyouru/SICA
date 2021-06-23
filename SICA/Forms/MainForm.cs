@@ -4,6 +4,7 @@ using SICA.Forms.Boveda;
 using SICA.Forms.DocuClass;
 using SICA.Forms.Entregar;
 using SICA.Forms.Letras;
+using SICA.Forms.Pagare;
 using SICA.Forms.Recibir;
 using System;
 using System.Drawing;
@@ -230,7 +231,8 @@ namespace SICA
 
         private void btPagare_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("HA! Funcion en proceso");
+            ActivateButton(sender, RGBColors.color1);
+            OpenChildForm(new PagareSubMain());
         }
     }
 }

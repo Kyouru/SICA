@@ -30,7 +30,6 @@
         {
             this.pnTop = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btPagare = new FontAwesome.Sharp.IconButton();
             this.btDocumento = new FontAwesome.Sharp.IconButton();
             this.btExpediente = new FontAwesome.Sharp.IconButton();
             this.pnSubMain = new System.Windows.Forms.Panel();
@@ -41,7 +40,6 @@
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.pnTop.Controls.Add(this.panel1);
-            this.pnTop.Controls.Add(this.btPagare);
             this.pnTop.Controls.Add(this.btDocumento);
             this.pnTop.Controls.Add(this.btExpediente);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -54,33 +52,10 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(420, 44);
+            this.panel1.Location = new System.Drawing.Point(280, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(628, 1);
+            this.panel1.Size = new System.Drawing.Size(768, 1);
             this.panel1.TabIndex = 8;
-            // 
-            // btPagare
-            // 
-            this.btPagare.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btPagare.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btPagare.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btPagare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btPagare.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
-            this.btPagare.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btPagare.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btPagare.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.btPagare.IconColor = System.Drawing.Color.Gainsboro;
-            this.btPagare.IconSize = 30;
-            this.btPagare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btPagare.Location = new System.Drawing.Point(280, 0);
-            this.btPagare.Name = "btPagare";
-            this.btPagare.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btPagare.Rotation = 0D;
-            this.btPagare.Size = new System.Drawing.Size(140, 45);
-            this.btPagare.TabIndex = 6;
-            this.btPagare.Text = "Pagare";
-            this.btPagare.UseVisualStyleBackColor = false;
-            this.btPagare.Click += new System.EventHandler(this.btPagare_Click);
             // 
             // btDocumento
             // 
@@ -155,7 +130,6 @@
 
         private System.Windows.Forms.Panel pnTop;
         private FontAwesome.Sharp.IconButton btExpediente;
-        private FontAwesome.Sharp.IconButton btPagare;
         private FontAwesome.Sharp.IconButton btDocumento;
         private System.Windows.Forms.Panel pnSubMain;
         private System.Windows.Forms.Panel panel1;

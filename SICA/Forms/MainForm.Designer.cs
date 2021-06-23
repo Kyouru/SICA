@@ -97,6 +97,7 @@
             this.btDocuClass.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btDocuClass.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btDocuClass.UseVisualStyleBackColor = true;
+            this.btDocuClass.Click += new System.EventHandler(this.btDocuClass_Click);
             // 
             // btBoveda
             // 
@@ -120,6 +121,7 @@
             this.btBoveda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btBoveda.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btBoveda.UseVisualStyleBackColor = true;
+            this.btBoveda.Click += new System.EventHandler(this.btBoveda_Click);
             // 
             // btIronMountain
             // 
@@ -143,6 +145,7 @@
             this.btIronMountain.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btIronMountain.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btIronMountain.UseVisualStyleBackColor = true;
+            this.btIronMountain.Click += new System.EventHandler(this.btIronMountain_Click);
             // 
             // btLetras
             // 
@@ -166,6 +169,7 @@
             this.btLetras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btLetras.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btLetras.UseVisualStyleBackColor = true;
+            this.btLetras.Click += new System.EventHandler(this.btLetras_Click);
             // 
             // btPagare
             // 

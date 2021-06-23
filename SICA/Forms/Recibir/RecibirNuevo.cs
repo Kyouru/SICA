@@ -13,7 +13,7 @@ namespace SICA.Forms.Recibir
             InitializeComponent();
         }
 
-        private void btBuscarCargoOld_Click(object sender, EventArgs e)
+        private void btBuscarCargo_Click(object sender, EventArgs e)
         {
             Boolean valido = true;
             OpenFileDialog ofd = new OpenFileDialog();
@@ -82,6 +82,7 @@ namespace SICA.Forms.Recibir
                         }
                     }
 
+                    /*
                     if (!Conexion.conectar())
                         return;
 
@@ -146,6 +147,7 @@ namespace SICA.Forms.Recibir
                     dgv.DataSource = result.ToList();
                     dgv.Columns[0].Visible = false;
                     dgv.ClearSelection();
+                    */
 
                     if (valido)
                     {
@@ -178,6 +180,8 @@ namespace SICA.Forms.Recibir
                 string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 Boolean pagare;
                 Boolean expediente;
+
+                DataTable dt = new DataTable();
                 try
                 {
                     if (!Conexion.conectar())
@@ -201,70 +205,61 @@ namespace SICA.Forms.Recibir
                             expediente = false;
                         }
 
-                        if (!Conexion.iniciaCommand(RecibirFunctions.ArmarStrNuevoIngreso(row)))
-                            return;
-                        if (!Conexion.ejecutarQuery())
-                            return;
-                        lastinsertid = Conexion.lastIdInsert();
-
-                        strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
-
-                        if (!Conexion.iniciaCommand(strSQL))
-                            return;
-                        if (!Conexion.ejecutarQuery())
-                            return;
-
-                        if (row.Cells["DESEMBOLSADO"].Value.ToString() == "DESEMBOLSADO")
+                        if (expediente)
                         {
-                            if (pagare)
+                            if (!Conexion.iniciaCommand(RecibirFunctions.ArmarStrNuevoIngreso(row)))
+                                return;
+                            if (!Conexion.ejecutarQuery())
+                                return;
+                            lastinsertid = Conexion.lastIdInsert();
+
+                            strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
+
+                            if (!Conexion.iniciaCommand(strSQL))
+                                return;
+                            if (!Conexion.ejecutarQuery())
+                                return;
+                        }
+                            
+                        if (pagare)
+                        {
+                            strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + row.Cells["DESC_2"].Value.ToString() + "'";
+                            if (!Conexion.iniciaCommand(strSQL))
+                                return;
+                            if (Conexion.ejecutarQueryReturn() > 0)
                             {
-                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA, OBSERVACION_RECIBE) VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row.Cells["ID_REPORTE"].Value.ToString() + ", " + fecha + ", '" + observacion + "')";
+                                dt = Conexion.llenarDataTable();
+                                if (dt is null)
+                                    return;
+
+                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA, OBSERVACION_RECIBE) VALUES (";
+                                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", '" + observacion + "')";
+
+                                if (!Conexion.iniciaCommand(strSQL))
+                                    return;
+                                if (!Conexion.ejecutarQuery())
+                                    return;
+
+                                strSQL = "UPDATE PAGARE SET USUARIO_POSEE = '" + Globals.Username + "'";
+                                strSQL += " WHERE ID_PAGARE = " + dt.Rows[0]["ID_PAGARE"].ToString();
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
                                 if (!Conexion.ejecutarQuery())
                                     return;
                             }
-                            if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTES DE CREDITO" && expediente)
+                            else
                             {
-                                if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
+                                strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, USUARIO_POSEE, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCAT) VALUES (";
+                                strSQL += "'" + row.Cells["DESC_2"].Value.ToString() + "', '" + Globals.Username + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + "')";
+
+                                if (!Conexion.iniciaCommand(strSQL))
                                     return;
-                            }
-                            else if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTE DE CRÉDITO" && expediente)
-                            {
-                                if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
+                                if (!Conexion.ejecutarQuery())
                                     return;
-                            }    
-                        }
-                        else if (row.Cells["DESEMBOLSADO"].Value.ToString() == "NO DESEMBOLSADO")
-                        {
-                            if (expediente)
-                            {
 
-                                if (row.Cells["CUST_EXPEDIENTE"].Value.ToString() == "NO CUSTODIADO")
-                                {
-                                    strSQL = "INSERT INTO EXPEDIENTE_TRANSITO (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + "')";
-
-                                    if (!Conexion.iniciaCommand(strSQL))
-                                        return;
-                                    if (!Conexion.ejecutarQuery())
-                                        return;
-
-                                }
-                                if (pagare && row.Cells["CUST_PAGARE"].Value.ToString() == "NO CUSTODIADO")
-                                {
-                                    strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', TRUE, " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + "')";
-
-                                    if (!Conexion.iniciaCommand(strSQL))
-                                        return;
-                                    if (!Conexion.ejecutarQuery())
-                                        return;
-
-                                }
-                            }
-                            else if (pagare && row.Cells["CUST_PAGARE"].Value.ToString() == "NO CUSTODIADO")
-                            {
-                                strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, CUSTODIADO, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO) VALUES ('" + row.Cells["DESC_2"].Value.ToString() + "', 'CUSTODIADO', " + lastinsertid + ", '" + row.Cells["DESC_1"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["COD_DOC"].Value.ToString() + ";" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + row.Cells["DESC_5"].Value.ToString() + "')";
+                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA, OBSERVACION_RECIBE) VALUES (";
+                                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", '" + observacion + "')";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
@@ -272,6 +267,19 @@ namespace SICA.Forms.Recibir
                                     return;
                             }
                         }
+
+                        /*
+                        if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTES DE CREDITO" && expediente)
+                        {
+                            if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
+                                return;
+                        }
+                        else if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTE DE CRÉDITO" && expediente)
+                        {
+                            if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
+                                return;
+                        }   
+                        */
                     }
                     Conexion.cerrar();
                     LoadingScreen.cerrarLoading();
@@ -293,7 +301,7 @@ namespace SICA.Forms.Recibir
             recibirManual.ShowDialog();
         }
 
-        private void btBuscarCargo_Click(object sender, EventArgs e)
+        private void btBuscarCargoOld_Click(object sender, EventArgs e)
         {
             Boolean valido = true;
             OpenFileDialog ofd = new OpenFileDialog();

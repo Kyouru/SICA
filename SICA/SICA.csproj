@@ -105,6 +105,10 @@
       <HintPath>..\packages\Microsoft.Office.Interop.Access.Dao.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.Access.Dao.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -271,11 +275,11 @@
     <Compile Include="Forms\Entregar\EntregarExpediente.Designer.cs">
       <DependentUpon>EntregarExpediente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Entregar\EntregarPagare.cs">
+    <Compile Include="Forms\Entregar\EntregarPagare_Old.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Entregar\EntregarPagare.Designer.cs">
-      <DependentUpon>EntregarPagare.cs</DependentUpon>
+    <Compile Include="Forms\Entregar\EntregarPagare_Old.Designer.cs">
+      <DependentUpon>EntregarPagare_Old.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Entregar\EntregarSubMain.cs">
       <SubType>Form</SubType>
@@ -320,6 +324,12 @@
     <Compile Include="Forms\LoadingScreen.Designer.cs">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Pagare\PagareSubMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareSubMain.Designer.cs">
+      <DependentUpon>PagareSubMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Recibir\RecibirConfirmar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -338,11 +348,11 @@
     <Compile Include="Forms\Recibir\RecibirNuevo.Designer.cs">
       <DependentUpon>RecibirNuevo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Recibir\RecibirPagare.cs">
+    <Compile Include="Forms\Recibir\RecibirPagare_old.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Recibir\RecibirPagare.Designer.cs">
-      <DependentUpon>RecibirPagare.cs</DependentUpon>
+    <Compile Include="Forms\Recibir\RecibirPagare_old.Designer.cs">
+      <DependentUpon>RecibirPagare_old.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Recibir\RecibirReingreso.cs">
       <SubType>Form</SubType>
@@ -453,8 +463,8 @@
     <EmbeddedResource Include="Forms\Entregar\EntregarExpediente.resx">
       <DependentUpon>EntregarExpediente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Entregar\EntregarPagare.resx">
-      <DependentUpon>EntregarPagare.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Entregar\EntregarPagare_Old.resx">
+      <DependentUpon>EntregarPagare_Old.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
@@ -486,6 +496,9 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pagare\PagareSubMain.resx">
+      <DependentUpon>PagareSubMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirConfirmar.resx">
       <DependentUpon>RecibirConfirmar.cs</DependentUpon>
     </EmbeddedResource>
@@ -495,8 +508,8 @@
     <EmbeddedResource Include="Forms\Recibir\RecibirNuevo.resx">
       <DependentUpon>RecibirNuevo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Recibir\RecibirPagare.resx">
-      <DependentUpon>RecibirPagare.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Recibir\RecibirPagare_old.resx">
+      <DependentUpon>RecibirPagare_old.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirReingreso.resx">
       <DependentUpon>RecibirReingreso.cs</DependentUpon>

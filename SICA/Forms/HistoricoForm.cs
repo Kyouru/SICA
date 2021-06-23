@@ -20,7 +20,7 @@ namespace SICA.Forms
         private void HistoricoForm_Load(object sender, EventArgs e)
         {
             string strSQL = "";
-            DataTable dt = new DataTable("HISTORIAL");
+            DataTable dt = new DataTable();
 
             try
             {

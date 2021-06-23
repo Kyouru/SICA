@@ -27,12 +27,13 @@ namespace SICA.Forms
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                     strSQL = strSQL + " ORDER BY NUMERO_CAJA";
                 }
+                /*
                 else if (Globals.CarritoSeleccionado == Globals.strEntregarPagare)
                 {
                     strSQL = "SELECT ID_TMP_CARRITO AS ID, CIP, NOMBRE, MONTOPRESTAMO, PERIODO_SOLICITUD, NUMERO_SOLICITUD, MONEDA,FORMAT(FECHA_OTORGADO, 'dd/MM/yyyy') AS OTORGADO, FORMAT(FECHA_CANCELACION, 'dd/MM/yyyy') AS CANCELACION, LEFT(TIPO_PRESTAMO, 3) AS PROD, SIP";
                     strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN REPORTE_VALORADOS RV ON RV.ID_REPORTE_VALORADOS = TC.ID_REPORTE_VALORADOS_FK WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                     strSQL = strSQL + " ORDER BY FECHA_OTORGADO";
-                }
+                }*/
                 else if (Globals.CarritoSeleccionado == Globals.strVerificarCAJA)
                 {
                     strSQL = "SELECT NUMERO_DE_CAJA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, USUARIO_POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + Globals.strnumeroCAJA + "' AND USUARIO_POSEE <> '" + Globals.Username + "'";

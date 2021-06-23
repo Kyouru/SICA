@@ -19,6 +19,8 @@ namespace SICA.Forms.DocuClass
 
         private void btValidarDatosCSV_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Sin la alimentacion del ReporteValorados, esto ya no es posible. Ver posibilidad de crear usuario en SISGO para realizar la consulta directa");
+            /*
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Comma-Separated Values (*.csv)|*.csv|All files (*.*)|*.*";
             ofd.CheckFileExists = true;
@@ -85,6 +87,7 @@ namespace SICA.Forms.DocuClass
                     MessageBox.Show(cant + " documentos NO encontrados");
                 }
             }
+            */
         }
 
         private void btExcel_Click(object sender, EventArgs e)

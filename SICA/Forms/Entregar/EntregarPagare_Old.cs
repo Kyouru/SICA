@@ -5,10 +5,10 @@ using System.Windows.Forms;
 
 namespace SICA.Forms.Entregar
 {
-    public partial class EntregarPagare : Form
+    public partial class EntregarPagare_Old : Form
     {
 
-        public EntregarPagare()
+        public EntregarPagare_Old()
         {
             InitializeComponent();
             actualizarCantidad();
@@ -172,6 +172,5 @@ namespace SICA.Forms.Entregar
                 }
             }
         }
-
     }
 }
