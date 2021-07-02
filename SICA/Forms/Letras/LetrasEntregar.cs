@@ -12,6 +12,9 @@ namespace SICA.Forms.Letras
 {
     public partial class LetrasEntregar : Form
     {
+        int cantidadcarrito = 0;
+        readonly string tipo_carrito = Globals.strLetrasEntregar;
+
         public LetrasEntregar()
         {
             InitializeComponent();
@@ -28,14 +31,14 @@ namespace SICA.Forms.Letras
                 DataTable dt = new DataTable("LETRAS");
 
                 strSQL = "SELECT L.ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION";
-                strSQL = strSQL + " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK) ";
-                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = 'CUSTODIADO'";
+                strSQL += " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK) ";
+                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = 'CUSTODIADO'";
 
                 if (tbBusquedaLibre.Text != "")
                 {
-                    strSQL = strSQL + " AND CONCATENADO LIKE '%" + tbBusquedaLibre.Text + "%'";
+                    strSQL += " AND CONCATENADO LIKE '%" + tbBusquedaLibre.Text + "%'";
                 }
-                strSQL = strSQL + " ORDER BY F_VENCIMIENTO";
+                strSQL += " ORDER BY F_VENCIMIENTO";
 
                 if (!Conexion.conectar())
                     return;
@@ -82,7 +85,7 @@ namespace SICA.Forms.Letras
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strLetrasEntregar;
+                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
             }
@@ -91,9 +94,36 @@ namespace SICA.Forms.Letras
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells[0].Value.ToString(), "", Globals.strLetrasEntregar);
+                if (!Conexion.conectar())
+                    return;
+                foreach (DataGridViewRow row in dgv.SelectedRows)
+                {
+                    string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (";
+                    strSQL += 0 + ", " + row.Cells["ID_LETRA"].Value.ToString() + ", " + Globals.IdUsername + ", '" + tipo_carrito + "', '" + 0 + "')";
+                    try
+                    {
+
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalFunctions.casoError(ex, strSQL);
+                        return;
+                    }
+                    ++cantidadcarrito;
+                }
+                Conexion.cerrar();
+
+                foreach (DataGridViewRow row in dgv.SelectedRows)
+                {
+                    if (!row.IsNewRow)
+                        dgv.Rows.Remove(row);
+                }
                 actualizarCantidad();
-                btBuscar_Click(sender, e);
             }
         }
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
@@ -110,12 +140,12 @@ namespace SICA.Forms.Letras
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strLetrasEntregar) + ")";
+            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(tipo_carrito) + ")";
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.LimpiarCarrito(Globals.strLetrasEntregar);
+            GlobalFunctions.LimpiarCarrito(tipo_carrito);
             actualizarCantidad();
         }
     }

@@ -102,15 +102,14 @@ namespace SICA
             // 
             this.btMinimizar.FlatAppearance.BorderSize = 0;
             this.btMinimizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btMinimizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btMinimizar.IconChar = FontAwesome.Sharp.IconChar.WindowMinimize;
             this.btMinimizar.IconColor = System.Drawing.Color.White;
+            this.btMinimizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btMinimizar.IconSize = 24;
             this.btMinimizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btMinimizar.Location = new System.Drawing.Point(357, 0);
             this.btMinimizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMinimizar.Name = "btMinimizar";
-            this.btMinimizar.Rotation = 0D;
             this.btMinimizar.Size = new System.Drawing.Size(26, 23);
             this.btMinimizar.TabIndex = 2;
             this.btMinimizar.UseVisualStyleBackColor = true;
@@ -120,15 +119,14 @@ namespace SICA
             // 
             this.btMaximizar.FlatAppearance.BorderSize = 0;
             this.btMaximizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btMaximizar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btMaximizar.IconChar = FontAwesome.Sharp.IconChar.WindowMaximize;
             this.btMaximizar.IconColor = System.Drawing.Color.White;
+            this.btMaximizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btMaximizar.IconSize = 24;
             this.btMaximizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btMaximizar.Location = new System.Drawing.Point(383, 0);
             this.btMaximizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMaximizar.Name = "btMaximizar";
-            this.btMaximizar.Rotation = 0D;
             this.btMaximizar.Size = new System.Drawing.Size(26, 23);
             this.btMaximizar.TabIndex = 1;
             this.btMaximizar.UseVisualStyleBackColor = true;
@@ -138,15 +136,14 @@ namespace SICA
             // 
             this.btCerrar.FlatAppearance.BorderSize = 0;
             this.btCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btCerrar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btCerrar.IconChar = FontAwesome.Sharp.IconChar.WindowClose;
             this.btCerrar.IconColor = System.Drawing.Color.White;
+            this.btCerrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btCerrar.IconSize = 24;
             this.btCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btCerrar.Location = new System.Drawing.Point(409, 0);
             this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
             this.btCerrar.Name = "btCerrar";
-            this.btCerrar.Rotation = 0D;
             this.btCerrar.Size = new System.Drawing.Size(26, 23);
             this.btCerrar.TabIndex = 0;
             this.btCerrar.UseVisualStyleBackColor = true;
@@ -156,14 +153,13 @@ namespace SICA
             // 
             this.btEntrar.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
             this.btEntrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btEntrar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btEntrar.IconChar = FontAwesome.Sharp.IconChar.Dungeon;
             this.btEntrar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btEntrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btEntrar.IconSize = 50;
-            this.btEntrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btEntrar.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btEntrar.Location = new System.Drawing.Point(348, 430);
             this.btEntrar.Name = "btEntrar";
-            this.btEntrar.Rotation = 0D;
             this.btEntrar.Size = new System.Drawing.Size(74, 70);
             this.btEntrar.TabIndex = 6;
             this.btEntrar.UseVisualStyleBackColor = true;

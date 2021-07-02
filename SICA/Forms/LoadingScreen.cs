@@ -41,6 +41,7 @@ namespace SICA.Forms
                 this.Close();
             }
         }
+
         public static void iniciarLoading()
         {
             try

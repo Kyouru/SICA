@@ -40,7 +40,7 @@ namespace SICA.Forms.IronMountain
                 {
 
                     strSQL = "SELECT 'PY121' AS CODIGO_CLIENTE, NUMERO_DE_CAJA, CAJA_CLIENTE, 'MASTER' AS CODIGO_DIVISION, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS FECHA_DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3,";
-                    strSQL = strSQL + " DESCRIPCION_4 AS DESCRIPCION_4, DESCRIPCION_5 AS DESCRIPCION_5 FROM INVENTARIO_GENERAL";
+                    strSQL += " DESCRIPCION_4 AS DESCRIPCION_4, DESCRIPCION_5 AS DESCRIPCION_5 FROM INVENTARIO_GENERAL";
 
                     if (!Conexion.conectar())
                         return;
@@ -75,7 +75,7 @@ namespace SICA.Forms.IronMountain
                                  };
                     DataTable dt3 = new DataTable("CARGO");
                     dt3 = GlobalFunctions.ToDataTable(result.ToList());
-                    GlobalFunctions.ArmarCargoExcel(dt3, "", Globals.CargoPath + "CARGO_IM_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", false);
+                    GlobalFunctions.ArmarCargoExcel(dt3, "", Globals.ExportarPath + "CARGO_IM_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", false);
 
                     LoadingScreen.cerrarLoading();
                 }

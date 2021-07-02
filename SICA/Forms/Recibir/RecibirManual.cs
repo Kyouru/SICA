@@ -73,7 +73,7 @@ namespace SICA.Forms.Recibir
         {
             string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
             string strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO) ";
-            strSQL = strSQL + "VALUES (";
+            strSQL += "VALUES (";
 
             if (cmbCodDepartamento.Text != "")
             {
@@ -93,62 +93,62 @@ namespace SICA.Forms.Recibir
                             if (Globals.IdUsernameSelect > 0)
                             {
                                 string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
-                                strSQL = strSQL + "'" + tbNumeroCaja.Text + "', ";
+                                strSQL += "'" + tbNumeroCaja.Text + "', ";
 
-                                strSQL = strSQL + "'" + cmbCodDepartamento.Text + "', ";
-                                strSQL = strSQL + "'" + cmbCodDocumento.Text + "', ";
+                                strSQL += "'" + cmbCodDepartamento.Text + "', ";
+                                strSQL += "'" + cmbCodDocumento.Text + "', ";
                                 if (cbFecha.Checked)
                                 {
-                                    strSQL = strSQL + "'" + dtpDesde.Value.ToString("yyyy-MM-dd") + "', ";
-                                    strSQL = strSQL + "'" + dtpHasta.Value.ToString("yyyy-MM-dd") + "', ";
+                                    strSQL += "'" + dtpDesde.Value.ToString("yyyy-MM-dd") + "', ";
+                                    strSQL += "'" + dtpHasta.Value.ToString("yyyy-MM-dd") + "', ";
                                 }
                                 else
                                 {
-                                    strSQL = strSQL + "NULL, NULL, ";
+                                    strSQL += "NULL, NULL, ";
                                 }
 
-                                strSQL = strSQL + "'" + cmbDescripcion1.Text + "', ";
+                                strSQL += "'" + cmbDescripcion1.Text + "', ";
 
                                 if (cbDescripcion2.Checked)
                                 {
-                                    strSQL = strSQL + "'" + tbDescripcion2.Text + "', ";
+                                    strSQL += "'" + tbDescripcion2.Text + "', ";
                                 }
                                 else
                                 {
-                                    strSQL = strSQL + "NULL, ";
+                                    strSQL += "NULL, ";
                                 }
 
                                 if (cbDescripcion3.Checked)
                                 {
-                                    strSQL = strSQL + "'" + tbDescripcion3.Text + "', ";
+                                    strSQL += "'" + tbDescripcion3.Text + "', ";
                                 }
                                 else
                                 {
-                                    strSQL = strSQL + "NULL, ";
+                                    strSQL += "NULL, ";
                                 }
 
                                 if (cbDescripcion4.Checked)
                                 {
-                                    strSQL = strSQL + "'" + tbDescripcion4.Text + "', ";
+                                    strSQL += "'" + tbDescripcion4.Text + "', ";
                                 }
                                 else
                                 {
-                                    strSQL = strSQL + "NULL, ";
+                                    strSQL += "NULL, ";
                                 }
 
                                 if (cbDescripcion5.Checked)
                                 {
-                                    strSQL = strSQL + "'" + tbDescripcion5.Text + "', ";
+                                    strSQL += "'" + tbDescripcion5.Text + "', ";
                                 }
                                 else
                                 {
-                                    strSQL = strSQL + "NULL, ";
+                                    strSQL += "NULL, ";
                                 }
 
                                 //DESC_CONCAT
-                                strSQL = strSQL + "'" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + ";', ";
-                                strSQL = strSQL + "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
-                                strSQL = strSQL + "'" + Globals.Username + "', 'CUSTODIADO')";
+                                strSQL += "'" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + ";', ";
+                                strSQL += "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
+                                strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
 
                                 if (!Conexion.conectar())
                                     return;
@@ -171,7 +171,7 @@ namespace SICA.Forms.Recibir
                                 if (cmbExpediente.Visible && cmbExpediente.Text == "SI")
                                 {
                                     strSQL = "INSERT INTO EXPEDIENTE_TRANSITO (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO, FECHA_ENTRADA) VALUES ('";
-                                    strSQL = strSQL + tbDescripcion2.Text + "', TRUE, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
+                                    strSQL += tbDescripcion2.Text + "', TRUE, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -181,7 +181,7 @@ namespace SICA.Forms.Recibir
                                 if (cmbPagare.Visible && cmbPagare.Text == "SI")
                                 {
                                     strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO, FECHA_ENTRADA) VALUES ('";
-                                    strSQL = strSQL + tbDescripcion2.Text + "', TRUE, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
+                                    strSQL += tbDescripcion2.Text + "', TRUE, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -190,11 +190,6 @@ namespace SICA.Forms.Recibir
                                 }
 
                                 Conexion.cerrar();
-
-                                if (cmbPagare.Visible && cmbExpediente.Visible)
-                                {
-                                    GlobalFunctions.actualizarNoDesembolsados();
-                                }
 
                                 MessageBox.Show("Registro Completado");
                                 this.Close();

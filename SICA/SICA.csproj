@@ -86,20 +86,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=25.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.25.0.0\lib\net47\CsvHelper.dll</HintPath>
-    </Reference>
-    <Reference Include="ExcelLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelLibrary.1.2011.7.31\lib\ExcelLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="FontAwesome.Sharp, Version=5.14.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FontAwesome.Sharp.5.14.1\lib\net472\FontAwesome.Sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.0\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    <Reference Include="FontAwesome.Sharp, Version=5.15.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.Sharp.5.15.3\lib\net472\FontAwesome.Sharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Access.Dao, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Access.Dao.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.Access.Dao.dll</HintPath>
@@ -111,23 +99,8 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -209,6 +182,19 @@
     <Compile Include="Forms\CarritoForm.Designer.cs">
       <DependentUpon>CarritoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Pagare\PagareEntregar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareEntregar.Designer.cs">
+      <DependentUpon>PagareEntregar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareFunctions.cs" />
+    <Compile Include="Forms\Pagare\PagareManual.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareManual.Designer.cs">
+      <DependentUpon>PagareManual.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HistoricoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -275,12 +261,6 @@
     <Compile Include="Forms\Entregar\EntregarExpediente.Designer.cs">
       <DependentUpon>EntregarExpediente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Entregar\EntregarPagare_Old.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Entregar\EntregarPagare_Old.Designer.cs">
-      <DependentUpon>EntregarPagare_Old.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Entregar\EntregarSubMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -324,6 +304,18 @@
     <Compile Include="Forms\LoadingScreen.Designer.cs">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Pagare\PagareBuscar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareBuscar.Designer.cs">
+      <DependentUpon>PagareBuscar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareRecibir.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pagare\PagareRecibir.Designer.cs">
+      <DependentUpon>PagareRecibir.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Pagare\PagareSubMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -348,12 +340,6 @@
     <Compile Include="Forms\Recibir\RecibirNuevo.Designer.cs">
       <DependentUpon>RecibirNuevo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Recibir\RecibirPagare_old.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Recibir\RecibirPagare_old.Designer.cs">
-      <DependentUpon>RecibirPagare_old.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Recibir\RecibirReingreso.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -374,12 +360,6 @@
     </Compile>
     <Compile Include="GlobalFunctions.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Forms\ImportarForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ImportarForm.Designer.cs">
-      <DependentUpon>ImportarForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -430,6 +410,12 @@
     <EmbeddedResource Include="Forms\DocuClass\DocuClassValidar.resx">
       <DependentUpon>DocuClassValidar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pagare\PagareEntregar.resx">
+      <DependentUpon>PagareEntregar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pagare\PagareManual.resx">
+      <DependentUpon>PagareManual.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\HistoricoForm.resx">
       <DependentUpon>HistoricoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -463,9 +449,6 @@
     <EmbeddedResource Include="Forms\Entregar\EntregarExpediente.resx">
       <DependentUpon>EntregarExpediente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Entregar\EntregarPagare_Old.resx">
-      <DependentUpon>EntregarPagare_Old.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Entregar\EntregarSubMain.resx">
       <DependentUpon>EntregarSubMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -490,11 +473,14 @@
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ImportarForm.resx">
-      <DependentUpon>ImportarForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pagare\PagareBuscar.resx">
+      <DependentUpon>PagareBuscar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pagare\PagareRecibir.resx">
+      <DependentUpon>PagareRecibir.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Pagare\PagareSubMain.resx">
       <DependentUpon>PagareSubMain.cs</DependentUpon>
@@ -507,9 +493,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirNuevo.resx">
       <DependentUpon>RecibirNuevo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Recibir\RecibirPagare_old.resx">
-      <DependentUpon>RecibirPagare_old.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recibir\RecibirReingreso.resx">
       <DependentUpon>RecibirReingreso.cs</DependentUpon>

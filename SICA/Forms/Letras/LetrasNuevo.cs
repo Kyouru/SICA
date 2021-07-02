@@ -12,32 +12,49 @@ namespace SICA.Forms.Letras
 {
     public partial class LetrasNuevo : Form
     {
+        string[] arrCabecera = new string[] { "SOCIO", "NOMBRE", "SOLICITUD", "N_LIQ", "NUMERO", "F_GIRO", "F_VENCIMIENTO", "IMPORTE", "ACEPTANTE", "MD" };
+
         public LetrasNuevo()
         {
             InitializeComponent();
         }
 
-        private void btBuscarXLS_Click(object sender, EventArgs e)
+        private void btBuscarCargo_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Libro Excel 97-2003 (*.xls)|*.xls|All files (*.*)|*.*";
+            ofd.Filter = "Libro de Excel|*.xlsx;*.xls|All files (*.*)|*.*";
             ofd.CheckFileExists = true;
             ofd.CheckPathExists = true;
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                LoadingScreen.iniciarLoading();
-
-                DataTable dt = new DataTable();
-                dt = GlobalFunctions.ConvertExcelToDataTableOld(ofd.FileName, 0);
+                //LoadingScreen.iniciarLoading();
+                bool cabeceraValida = true;
+                DataTable dt;
+                dt = GlobalFunctions.ConvertExcelToDataTable(ofd.FileName, 1);
                 if (dt is null)
                     return;
 
-                dgv.DataSource = dt;
-
-                LoadingScreen.cerrarLoading();
-                btCargar.Visible = true;
-                //MessageBox.Show(dgv.Rows.Count + " documentos encontrados");
+                foreach (DataColumn col in dt.Columns)
+                {
+                    if (!arrCabecera.Contains(col.ColumnName))
+                    {
+                        MessageBox.Show(col.ColumnName);
+                        cabeceraValida = false;
+                    }
+                }
+                
+                if (cabeceraValida)
+                {
+                    dgv.DataSource = dt;
+                    btCargar.Visible = true;
+                    LoadingScreen.cerrarLoading();
+                }
+                else
+                {
+                    LoadingScreen.cerrarLoading();
+                    MessageBox.Show("Cabecera Incorrecta");
+                }
             }
         }
 
@@ -45,7 +62,7 @@ namespace SICA.Forms.Letras
         {
             try
             {
-                string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
+                string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observación (opcional):", "Observación", "");
                 if (!Conexion.conectar())
                     return;
 
@@ -53,21 +70,21 @@ namespace SICA.Forms.Letras
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
                     strSQL = "INSERT INTO LETRA (SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, F_GIRO, F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION, CONCATENADO) VALUES ";
-                    strSQL = strSQL + " ('" + row.Cells["SOCIO"].Value.ToString() + "',";
-                    strSQL = strSQL + " '" + row.Cells["NOMBRE"].Value.ToString() + "',";
-                    strSQL = strSQL + " '" + row.Cells["SOLICITUD"].Value.ToString() + "',";
-                    strSQL = strSQL + " '" + row.Cells["N_LIQ"].Value.ToString() + "',";
-                    strSQL = strSQL + " '" + row.Cells["NUMERO"].Value.ToString() + "',";
-                    strSQL = strSQL + " #" + row.Cells["F_GIRO"].Value.ToString() + "#,";
-                    strSQL = strSQL + " #" + row.Cells["F_VENCIMIENTO"].Value.ToString() + "#,";
-                    strSQL = strSQL + " " + row.Cells["IMPORTE"].Value.ToString() + ",";
-                    strSQL = strSQL + " '" + row.Cells["ACEPTANTE"].Value.ToString() + "',";
-                    strSQL = strSQL + " '" + row.Cells["MD"].Value.ToString() + "',";
-                    strSQL = strSQL + " 'CUSTODIADO',";
-                    strSQL = strSQL + " 'SAN ISIDRO',";
-                    strSQL = strSQL + " #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#,";
-                    strSQL = strSQL + " '" + observacion + "',";
-                    strSQL = strSQL + " '" + row.Cells["SOCIO"].Value.ToString() + ";" + row.Cells["NOMBRE"].Value.ToString() + ";" + row.Cells["SOLICITUD"].Value.ToString() + ";" + row.Cells["ACEPTANTE"].Value.ToString() + "')";
+                    strSQL += " ('" + row.Cells["SOCIO"].Value.ToString() + "',";
+                    strSQL += " '" + row.Cells["NOMBRE"].Value.ToString() + "',";
+                    strSQL += " '" + row.Cells["SOLICITUD"].Value.ToString() + "',";
+                    strSQL += " '" + row.Cells["N_LIQ"].Value.ToString() + "',";
+                    strSQL += " '" + row.Cells["NUMERO"].Value.ToString() + "',";
+                    strSQL += " #" + row.Cells["F_GIRO"].Value.ToString() + "#,";
+                    strSQL += " #" + row.Cells["F_VENCIMIENTO"].Value.ToString() + "#,";
+                    strSQL += " " + double.Parse(row.Cells["IMPORTE"].Value.ToString().Trim()) + ",";
+                    strSQL += " '" + row.Cells["ACEPTANTE"].Value.ToString() + "',";
+                    strSQL += " '" + row.Cells["MD"].Value.ToString() + "',";
+                    strSQL += " 'CUSTODIADO',";
+                    strSQL += " 'SAN ISIDRO',";
+                    strSQL += " #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#,";
+                    strSQL += " '" + observacion + "',";
+                    strSQL += " '" + row.Cells["SOCIO"].Value.ToString() + ";" + row.Cells["NOMBRE"].Value.ToString() + ";" + row.Cells["SOLICITUD"].Value.ToString() + ";" + row.Cells["ACEPTANTE"].Value.ToString() + "')";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return;
@@ -75,6 +92,7 @@ namespace SICA.Forms.Letras
                         return;
                 }
                 Conexion.cerrar();
+                MessageBox.Show("Proceso Completado");
             }
             catch (Exception ex)
             {

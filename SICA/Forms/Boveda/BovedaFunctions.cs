@@ -15,8 +15,8 @@ namespace SICA.Forms.Boveda
 
                 string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID, ID_AUX_FK";
-                strSQL = strSQL + " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK ";
-                strSQL = strSQL + " WHERE TIPO = '" + Globals.strBovedaRetirarDOC + "'";
+                strSQL += " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK ";
+                strSQL += " WHERE TIPO = '" + Globals.strBovedaRetirarDOC + "'";
 
                 if (!Conexion.conectar())
                     return false;
@@ -72,8 +72,8 @@ namespace SICA.Forms.Boveda
                 DataTable dt = new DataTable();
 
                 strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, '0' AS NRO, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5 FROM TMP_CARRITO TC";
-                strSQL = strSQL + " LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
-                strSQL = strSQL + " WHERE TIPO = '" + Globals.strBovedaGuardarDOC + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                strSQL += " LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
+                strSQL += " WHERE TIPO = '" + Globals.strBovedaGuardarDOC + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
                     return false;
@@ -132,8 +132,8 @@ namespace SICA.Forms.Boveda
                 DataTable dt = new DataTable();
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5 FROM TMP_CARRITO TC";
-                strSQL = strSQL + " LEFT JOIN INVENTARIO_GENERAL IG ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
-                strSQL = strSQL + " WHERE TIPO = '" + Globals.strBovedaGuardarCAJA + "' AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
+                strSQL += " LEFT JOIN INVENTARIO_GENERAL IG ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
+                strSQL += " WHERE TIPO = '" + Globals.strBovedaGuardarCAJA + "' AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
 
                 if (!Conexion.conectar())
                     return false;
@@ -154,7 +154,7 @@ namespace SICA.Forms.Boveda
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_DE_CAJA"].ToString() + "' AND USUARIO_POSEE = '" + Globals.Username + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.UsernameSelect + "', FECHA_POSEE = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_DE_CAJA"].ToString() + "' AND USUARIO_POSEE = '" + Globals.Username + "'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

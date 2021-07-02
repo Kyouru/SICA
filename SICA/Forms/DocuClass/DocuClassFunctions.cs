@@ -20,7 +20,7 @@ namespace SICA.Forms.DocuClass
                 DataTable dt = new DataTable();
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK FROM TMP_CARRITO TC";
-                strSQL = strSQL + " WHERE TIPO = '" + Globals.strDocuClassEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
+                strSQL += " WHERE TIPO = '" + Globals.strDocuClassEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
 
                 if (!Conexion.conectar())
                     return false;
@@ -78,7 +78,7 @@ namespace SICA.Forms.DocuClass
                 DataTable dt = new DataTable();
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK FROM TMP_CARRITO TC";
-                strSQL = strSQL + " WHERE TIPO = '" + Globals.strDocuClassRecibir + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
+                strSQL += " WHERE TIPO = '" + Globals.strDocuClassRecibir + "' AND ID_USUARIO_FK = " + Globals.IdUsername + "";
 
                 if (!Conexion.conectar())
                     return false;

@@ -92,11 +92,21 @@ namespace SICA.Forms.Pagare
             public static Color color6 = Color.FromArgb(24, 161, 251);
         }
 
-
         private void btBuscar_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color4);
-            //OpenChildForm(new PagareBuscar());
+            OpenChildForm(new PagareBuscar());
+        }
+        private void btRecibir_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new PagareRecibir());
+        }
+
+        private void btEntregar_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color4);
+            OpenChildForm(new PagareEntregar());
         }
     }
 }

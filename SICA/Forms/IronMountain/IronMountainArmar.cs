@@ -6,6 +6,9 @@ namespace SICA.Forms.IronMountain
 {
     public partial class IronMountainArmar : Form
     {
+        int cantidadcarrito = 0;
+        readonly string tipo_carrito = Globals.strIronMountainArmar;
+
         public IronMountainArmar()
         {
             InitializeComponent();
@@ -20,13 +23,13 @@ namespace SICA.Forms.IronMountain
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
-                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
+                strSQL += " FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
 
                 if (tbBusquedaLibre.Text != "")
                 {
-                    strSQL = strSQL + " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
+                    strSQL += " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
                 }
-                strSQL = strSQL + " ORDER BY CODIGO_DOCUMENTO";
+                strSQL += " ORDER BY CODIGO_DOCUMENTO";
 
                 if (!Conexion.conectar())
                     return;
@@ -60,7 +63,7 @@ namespace SICA.Forms.IronMountain
                 string numero = Microsoft.VisualBasic.Interaction.InputBox("Escriba el numero de caja:", "Numero de Caja", "");
                 if (numero != "")
                 {
-                    int n = 0;
+                    int n;
                     string check = "REEMPLAZAR";
                     string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero + "'";
                     try
@@ -82,25 +85,28 @@ namespace SICA.Forms.IronMountain
                     }
                     if (n > 0)
                     {
-                        check = "";
                         check = Microsoft.VisualBasic.Interaction.InputBox("La Caja no es nueva\nEscriba \"AGREGAR\" para agregar el documento o \"REEMPLAZAR\" para reemplazar el contenido", "Ya registrado", "");
                     }
                     if (check == "REEMPLAZAR")
                     {
                         IronMountainFunctions.ArmarCajasCarrito(numero, true);
-                        lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainArmar) + ")";
+                        cantidadcarrito = 0;
+                        actualizarCantidad();
                         btBuscar_Click(sender, e);
                     }
                     if (check == "AGREGAR")
                     {
                         IronMountainFunctions.ArmarCajasCarrito(numero, false);
-                        lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainArmar) + ")";
+                        cantidadcarrito = 0;
+                        actualizarCantidad();
                         btBuscar_Click(sender, e);
                     }
 
                 }
             }
         }
+
+
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
@@ -113,15 +119,40 @@ namespace SICA.Forms.IronMountain
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strIronMountainArmar);
+                if (!Conexion.conectar())
+                    return;
+                foreach (DataGridViewRow row in dgv.SelectedRows)
+                {
+                    string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (";
+                    strSQL += row.Cells["ID"].Value.ToString() + ", " + dgv.SelectedRows[0].Cells["ID_BOVEDA"].Value.ToString() + ", " + Globals.IdUsername + ", '" + tipo_carrito + "', '" + row.Cells["CAJA"].Value.ToString() + "')";
+                    try
+                    {
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalFunctions.casoError(ex, strSQL);
+                        return;
+                    }
+                    ++cantidadcarrito;
+                }
+                Conexion.cerrar();
+
+                foreach (DataGridViewRow row in dgv.SelectedRows)
+                {
+                    if (!row.IsNewRow)
+                        dgv.Rows.Remove(row);
+                }
                 actualizarCantidad();
-                btBuscar_Click(sender, e);
             }
         }
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strIronMountainArmar) + ")";
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void btExcel_Click(object sender, EventArgs e)
@@ -131,7 +162,8 @@ namespace SICA.Forms.IronMountain
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.LimpiarCarrito(Globals.strIronMountainArmar);
+            GlobalFunctions.LimpiarCarrito(tipo_carrito);
+            cantidadcarrito = 0;
             actualizarCantidad();
         }
 
@@ -139,7 +171,7 @@ namespace SICA.Forms.IronMountain
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strIronMountainArmar;
+                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
             }

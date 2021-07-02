@@ -12,6 +12,8 @@ namespace SICA.Forms.Boveda
 {
     public partial class BovedaGuardarCaja : Form
     {
+        int cantidadcarrito = 0;
+        readonly string tipo_carrito = Globals.strBovedaGuardarCAJA;
         public BovedaGuardarCaja()
         {
             InitializeComponent();
@@ -28,14 +30,14 @@ namespace SICA.Forms.Boveda
                 DataTable dt = new DataTable("BOVEDA");
 
                 strSQL = "SELECT DISTINCT NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC";
-                strSQL = strSQL + " FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT * FROM TMP_CARRITO WHERE TIPO = '" + Globals.strBovedaGuardarCAJA + "') TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
-                strSQL = strSQL + " WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "' AND NUMERO_DE_CAJA <> ''";
+                strSQL += " FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT * FROM TMP_CARRITO WHERE TIPO = '" + tipo_carrito + "') TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
+                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND IG.USUARIO_POSEE = '" + Globals.Username + "' AND NUMERO_DE_CAJA <> ''";
 
                 if (tbCaja.Text != "")
                 {
-                    strSQL = strSQL + " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
+                    strSQL += " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
                 }
-                strSQL = strSQL + " ORDER BY NUMERO_DE_CAJA";
+                strSQL += " ORDER BY NUMERO_DE_CAJA";
 
                 if (!Conexion.conectar())
                     return;
@@ -71,11 +73,10 @@ namespace SICA.Forms.Boveda
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
-
                     BovedaFunctions.GuardarCajaCarrito();
+                    cantidadcarrito = 0;
                     actualizarCantidad();
-
-                    btBuscar_Click(sender, e);
+                    //btBuscar_Click(sender, e);
                 }
             }
         }
@@ -95,18 +96,34 @@ namespace SICA.Forms.Boveda
                 {
                     if (GlobalFunctions.verificarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.Username))
                     {
-                        GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardarCAJA);
+                        GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
+                        cantidadcarrito++;
                         actualizarCantidad();
-                        btBuscar_Click(sender, e);
+                        foreach (DataGridViewRow row in dgv.SelectedRows)
+                        {
+                            if (!row.IsNewRow)
+                            {
+                                dgv.Rows.Remove(row);
+                                return;
+                            }
+                        }
                     }
                     else
                     {
                         DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea guardarlo de todas manera?", "Incompleto", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes)
                         {
-                            GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Globals.strBovedaGuardarCAJA);
+                            GlobalFunctions.AgregarCarrito("0", "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
+                            cantidadcarrito++;
                             actualizarCantidad();
-                            btBuscar_Click(sender, e);
+                            foreach (DataGridViewRow row in dgv.SelectedRows)
+                            {
+                                if (!row.IsNewRow)
+                                {
+                                    dgv.Rows.Remove(row);
+                                    return;
+                                }
+                            }
                         }
                         else
                         {
@@ -122,7 +139,8 @@ namespace SICA.Forms.Boveda
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strBovedaGuardarCAJA) + ")";
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
+            //lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(tipo_carrito) + ")";
         }
 
         private void btExcel_Click(object sender, EventArgs e)
@@ -132,7 +150,8 @@ namespace SICA.Forms.Boveda
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.LimpiarCarrito(Globals.strBovedaGuardarCAJA);
+            GlobalFunctions.LimpiarCarrito(tipo_carrito);
+            cantidadcarrito = 0;
             actualizarCantidad();
         }
 
@@ -140,7 +159,7 @@ namespace SICA.Forms.Boveda
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strBovedaGuardarCAJA;
+                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
                 vCarrito.Show();
             }

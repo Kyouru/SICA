@@ -37,7 +37,7 @@ namespace SICA
 
                 dt = new DataTable();
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM INVENTARIO_GENERAL IG LEFT JOIN (SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername + ") CAJAS";
-                strSQL = strSQL + " ON IG.NUMERO_DE_CAJA = CAJAS.NUMERO_CAJA WHERE CAJAS.NUMERO_CAJA IS NOT NULL";
+                strSQL += " ON IG.NUMERO_DE_CAJA = CAJAS.NUMERO_CAJA WHERE CAJAS.NUMERO_CAJA IS NOT NULL";
 
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
@@ -50,10 +50,10 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
                     strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION) VALUES (";
-                    strSQL = strSQL + Globals.IdIM;
-                    strSQL = strSQL + ", " + fecha + "";
-                    strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
-                    strSQL = strSQL + ", '" + Globals.Username + "')";
+                    strSQL += Globals.IdIM;
+                    strSQL += ", " + fecha + "";
+                    strSQL += ", '" + row["NUMERO_CAJA"].ToString() + "'";
+                    strSQL += ", '" + Globals.Username + "')";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -235,10 +235,10 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
                     strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_RECIBE_FK, NUMERO_CAJA, FECHA_INICIO, OBSERVACION) VALUES (";
-                    strSQL = strSQL + "" + Globals.IdIM;
-                    strSQL = strSQL + ", '" + row["NUMERO_CAJA"].ToString() + "'";
-                    strSQL = strSQL + ", " + fecha + "";
-                    strSQL = strSQL + ", '" + Globals.Username + "')";
+                    strSQL += "" + Globals.IdIM;
+                    strSQL += ", '" + row["NUMERO_CAJA"].ToString() + "'";
+                    strSQL += ", " + fecha + "";
+                    strSQL += ", '" + Globals.Username + "')";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

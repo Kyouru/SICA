@@ -131,31 +131,29 @@
             // 
             this.btExcel.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btExcel.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btExcel.IconChar = FontAwesome.Sharp.IconChar.FileExcel;
             this.btExcel.IconColor = System.Drawing.Color.Gainsboro;
+            this.btExcel.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btExcel.IconSize = 30;
-            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btExcel.Location = new System.Drawing.Point(510, 4);
             this.btExcel.Name = "btExcel";
-            this.btExcel.Rotation = 0D;
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 51;
             this.btExcel.UseVisualStyleBackColor = true;
-            this.btExcel.Click += new System.EventHandler(this.btBuscar_Click);
+            this.btExcel.Click += new System.EventHandler(this.btExcel_Click);
             // 
             // btBuscar
             // 
             this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.Search;
             this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btBuscar.IconSize = 30;
-            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btBuscar.Location = new System.Drawing.Point(456, 4);
             this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Rotation = 0D;
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 50;
             this.btBuscar.UseVisualStyleBackColor = true;

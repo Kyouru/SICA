@@ -26,9 +26,9 @@ namespace SICA.Forms.DocuClass
                         WHERE TC.ID_TMP_CARRITO IS NULL AND USUARIO_POSEE = '" + Globals.Username + "'";
             if (tbBusquedaLibre.Text != "")
             {
-                strSQL = strSQL + " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
+                strSQL += " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
             }
-            strSQL = strSQL + " ORDER BY ID_INVENTARIO_GENERAL DESC";
+            strSQL += " ORDER BY ID_INVENTARIO_GENERAL DESC";
             try
             {
                 DataTable dt = new DataTable();

@@ -1,7 +1,8 @@
 ﻿
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Data;
-using System.Linq;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SICA.Forms.Recibir
@@ -17,150 +18,269 @@ namespace SICA.Forms.Recibir
         {
             Boolean valido = true;
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Libro de Excel 97 - 2003 (*.xls)|*.xls|All files (*.*)|*.*";
+            ofd.Filter = "Libro de Excel|*.xlsx;*.xls|All files (*.*)|*.*";
             ofd.CheckFileExists = true;
             ofd.CheckPathExists = true;
-
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 LoadingScreen.iniciarLoading();
 
-                string strSQL = "";
-                DataTable dt = new DataTable();
-                DataTable dt2 = new DataTable();
-                DataTable dt3 = new DataTable();
-                DataTable dt4 = new DataTable();
-
-                try
-                {
-                    dt = GlobalFunctions.ConvertExcelToDataTableOld(ofd.FileName, 0);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-
-                dt.Columns.Add("STATUS");
-                dt.Columns.Add("ID REPORTE");
-                try
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        if (row["CODIGO DEPARTAMENTO"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Codigo Departamento Vacío;";
-                        }
-                        if (row["CODIGO DOCUMENTO"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Codigo Documento Vacío;";
-                        }
-                        if (row["FECHA DESDE"].ToString() != "" && !GlobalFunctions.IsDate(row["FECHA DESDE"].ToString()))
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Fecha Desde Invalida;";
-                        }
-                        if (row["FECHA HASTA"].ToString() != "" && !GlobalFunctions.IsDate(row["FECHA HASTA"].ToString()))
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Fecha Hasta Invalida;";
-                        }
-                        if (row["DESCRIPCION 1"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Descripcion 1 Vacío;";
-                        }
-                        if (row["DESCRIPCION 2"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Descripcion 2 Vacío;";
-                        }
-                        if (valido)
-                        {
-                            row["STATUS"] = "OK";
-                        }
-                    }
-
-                    /*
-                    if (!Conexion.conectar())
-                        return;
-
-                    strSQL = "SELECT SOLICITUD_SISGO, ID_REPORTE_VALORADOS, EXPEDIENTE, PAGARE FROM REPORTE_VALORADOS";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
-                    if (!Conexion.ejecutarQuery())
-                        return;
-                    dt2 = Conexion.llenarDataTable();
-                    if (dt2 is null)
-                        return;
-
-                    strSQL = "SELECT DISTINCT ID_EXPEDIENTE_TRANSITO, SOLICITUD_SISGO FROM EXPEDIENTE_TRANSITO WHERE DESEMBOLSADO = FALSE";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
-                    if (!Conexion.ejecutarQuery())
-                        return;
-                    dt3 = Conexion.llenarDataTable();
-                    if (dt3 is null)
-                        return;
-
-                    strSQL = "SELECT DISTINCT ID_PAGARE_TRANSITO, SOLICITUD_SISGO FROM PAGARE_TRANSITO WHERE DESEMBOLSADO = FALSE";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
-                    if (!Conexion.ejecutarQuery())
-                        return;
-                    dt4 = Conexion.llenarDataTable();
-                    if (dt4 is null)
-                        return;
-
-                    Conexion.cerrar();
-
-
-
-                    var result = from c1 in dt.AsEnumerable()
-                                    join c2 in dt2.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c2.Field<string>("SOLICITUD_SISGO") into j
-                                    join c3 in dt3.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c3.Field<string>("SOLICITUD_SISGO") into k
-                                    join c4 in dt4.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c4.Field<string>("SOLICITUD_SISGO") into m
-                                    from p in j.DefaultIfEmpty()
-                                    from q in k.DefaultIfEmpty()
-                                    from r in m.DefaultIfEmpty()
-                                    select new
-                                    {
-                                        ID_REPORTE = p is null ? 0 : p.Field<Int32>("ID_REPORTE_VALORADOS"),
-                                        STATUS = c1.Field<string>("STATUS"),
-                                        DESC_1 = c1.Field<string>("DESCRIPCION 1"),
-                                        DESC_2 = c1.Field<string>("DESCRIPCION 2"),
-                                        DESC_3 = c1.Field<string>("DESCRIPCION 3"),
-                                        DESC_4 = c1.Field<string>("DESCRIPCION 4"),
-                                        DESC_5 = c1.Field<string>("DESCRIPCION 5"),
-                                        DESEMBOLSADO = p is null ? "NO DESEMBOLSADO" : "DESEMBOLSADO",
-                                        CUST_EXPEDIENTE = q is null ? p is null ? "NO CUSTODIADO" : p.Field<string>("EXPEDIENTE") != "0" ? p.Field<string>("EXPEDIENTE") : "NO CUSTODIADO" : "CUSTODIADO",
-                                        EXP_INGRESA = c1.Field<string>("EXPEDIENTE"),
-                                        CUST_PAGARE = r is null ? p is null ? "NO CUSTODIADO" : p.Field<string>("PAGARE") != "0" ? p.Field<string>("PAGARE") : "NO CUSTODIADO" : "CUSTODIADO",
-                                        PAG_INGRESA = c1.Field<string>("PAGARE"),
-                                        DESDE = c1.Field<string>("FECHA DESDE"),
-                                        HASTA = c1.Field<string>("FECHA HASTA"),
-                                        NUMERO_CAJA = c1.Field<string>("NUMERO DE CAJA IRON MOUNTAIN"),
-                                        COD_DEP = c1.Field<string>("CODIGO DEPARTAMENTO"),                                      
-                                        COD_DOC = c1.Field<string>("CODIGO DOCUMENTO")
-                                    };
-                    dgv.DataSource = result.ToList();
-                    dgv.Columns[0].Visible = false;
-                    dgv.ClearSelection();
-                    */
-
-                    if (valido)
-                    {
-                        btCargarValido.Visible = true;
-                    }
-
-                    LoadingScreen.cerrarLoading();
-                }
-                catch (Exception ex)
-                {
-                    GlobalFunctions.casoError(ex, strSQL);
+                if (!File.Exists(ofd.FileName))
                     return;
+
+                FileInfo fi = new FileInfo(ofd.FileName);
+                long filesize = fi.Length;
+
+                Microsoft.Office.Interop.Excel.Application xlApp;
+                Workbook xlWorkBook;
+                Worksheet xlWorkSheet;
+                Range range;
+                var misValue = Type.Missing;
+
+                // abrir el documento 
+                xlApp = new Microsoft.Office.Interop.Excel.Application();
+                xlWorkBook = xlApp.Workbooks.Open(ofd.FileName, misValue, misValue,
+                    misValue, misValue, misValue, misValue, misValue, misValue,
+                    misValue, misValue, misValue, misValue, misValue, misValue);
+
+                // seleccion de la hoja de calculo
+                // get_item() devuelve object y numera las hojas a partir de 1
+                xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+                // seleccion rango activo
+                range = xlWorkSheet.UsedRange;
+
+                int rows = range.Rows.Count;
+                //int cols = range.Columns.Count;
+                int cols = 12;
+
+                System.Data.DataTable dt = new System.Data.DataTable();
+                dt.Columns.Add("STATUS");
+                dt.Columns.Add("NUMERO CAJA");
+                dt.Columns.Add("CODIGO DEPARTAMENTO");
+                dt.Columns.Add("CODIGO DOCUMENTO");
+                dt.Columns.Add("FECHA DESDE");
+                dt.Columns.Add("FECHA HASTA");
+                dt.Columns.Add("DESCRIPCION 1");
+                dt.Columns.Add("DESCRIPCION 2");
+                dt.Columns.Add("DESCRIPCION 3");
+                dt.Columns.Add("DESCRIPCION 4");
+                dt.Columns.Add("DESCRIPCION 5");
+                dt.Columns.Add("EXPEDIENTE");
+                dt.Columns.Add("PAGARE");
+
+                for (int row = 1; row <= rows; row++)
+                {
+                    DataRow newrow = dt.NewRow();
+                    for (int col = 1; col <= cols; col++)
+                    {
+                        // lectura como cadena
+                        string cellText = xlWorkSheet.Cells[row, col].Text;
+                        //cellText = Convert.ToString(cellText);
+                        //cellText = cellText.Replace("'", ""); // Comillas simples no pueden pasar en el Texto
+
+                        if (row == 1)
+                        {
+                            switch (col)
+                            {
+                                case 1:
+                                    if (!cellText.Equals("NUMERO DE CAJA IRON MOUNTAIN"))
+                                    {
+
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rNUMERO DE CAJA IRON MOUNTAIN");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 2:
+                                    if (!cellText.Equals("CODIGO DEPARTAMENTO"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rCODIGO DEPARTAMENTO");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 3:
+                                    if (!cellText.Equals("CODIGO DOCUMENTO"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rCODIGO DOCUMENTO");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 4:
+                                    if (!cellText.Equals("FECHA DESDE"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rFECHA DESDE");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 5:
+                                    if (!cellText.Equals("FECHA HASTA"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rFECHA HASTA");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 6:
+                                    if (!cellText.Equals("DESCRIPCION 1"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rDESCRIPCION 1");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 7:
+                                    if (!cellText.Equals("DESCRIPCION 2"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rDESCRIPCION 2");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 8:
+                                    if (!cellText.Equals("DESCRIPCION 3"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rDESCRIPCION 3");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 9:
+                                    if (!cellText.Equals("DESCRIPCION 4"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rDESCRIPCION 4");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 10:
+                                    if (!cellText.Equals("DESCRIPCION 5"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rDESCRIPCION 5");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 11:
+                                    if (!cellText.Equals("EXPEDIENTE"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rEXPEDIENTE");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                                case 12:
+                                    if (!cellText.Equals("PAGARE"))
+                                    {
+                                        GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                                        MessageBox.Show("Error Cabecera de la Plantilla\rColumna: " + col + "\rPAGARE");
+                                        row = 100000;
+                                        col = 100000;
+                                        valido = false;
+                                    }
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            //newrow[0] es para el status
+                            newrow[col] = cellText;
+
+                            switch (col)
+                            {
+                                case 2:
+                                    if (cellText == "")
+                                    {
+                                        valido = false;
+                                        newrow["STATUS"] = newrow["STATUS"].ToString() + "Codigo Departamento Vacío;";
+                                    }
+                                    break;
+                                case 3:
+                                    if (cellText == "")
+                                    {
+                                        valido = false;
+                                        newrow["STATUS"] = newrow["STATUS"].ToString() + "Codigo Documento Vacío;";
+                                    }
+                                    break;
+                                case 4:
+                                    if (cellText != "" && !GlobalFunctions.IsDate(newrow["FECHA DESDE"].ToString()))
+                                    {
+                                        valido = false;
+                                        newrow["STATUS"] = newrow["STATUS"].ToString() + "Fecha Desde Invalida;";
+                                    }
+                                    break;
+                                case 5:
+                                    if (cellText != "" && !GlobalFunctions.IsDate(newrow["FECHA HASTA"].ToString()))
+                                    {
+                                        valido = false;
+                                        newrow["STATUS"] = newrow["STATUS"].ToString() + "Fecha Hasta Invalida;";
+                                    }
+                                    break;
+                                case 6:
+                                    if (cellText == "")
+                                    {
+                                        valido = false;
+                                        newrow["STATUS"] = newrow["STATUS"].ToString() + "Descripcion 1 Vacío;";
+                                    }
+                                    break;
+                                case 7:
+                                    if (cellText == "")
+                                    {
+                                        valido = false;
+                                        newrow["STATUS"] = newrow["STATUS"].ToString() + "Descripcion 2 Vacío;";
+                                    }
+                                    break;
+                            }
+
+                            if (valido)
+                            {
+                                newrow["STATUS"] = "OK";
+                            }
+                        }
+                    }
+
+                    if (row > 1)
+                        dt.Rows.Add(newrow);
                 }
+
+                GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+
+                dgv.DataSource = dt;
+
+                //dgv.Columns[0].Visible = false;
+                dgv.ClearSelection();
+
+                if (valido)
+                {
+                    btCargarValido.Visible = true;
+                }
+
+                LoadingScreen.cerrarLoading();
             }
         }
 
@@ -176,19 +296,19 @@ namespace SICA.Forms.Recibir
                 LoadingScreen.iniciarLoading();
 
                 string strSQL = "";
-                long lastinsertid = 0;
+                long lastinsertid;
                 string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 Boolean pagare;
                 Boolean expediente;
 
-                DataTable dt = new DataTable();
+                System.Data.DataTable dt;
                 try
                 {
                     if (!Conexion.conectar())
                         return;
                     foreach (DataGridViewRow row in dgv.Rows)
                     {
-                        if (row.Cells["PAG_INGRESA"].Value.ToString() == "SI")
+                        if (row.Cells["PAGARE"].Value.ToString() == "SI")
                         {
                             pagare = true;
                         }
@@ -196,7 +316,7 @@ namespace SICA.Forms.Recibir
                         {
                             pagare = false;
                         }
-                        if (row.Cells["EXP_INGRESA"].Value.ToString() == "SI")
+                        if (row.Cells["EXPEDIENTE"].Value.ToString() == "SI")
                         {
                             expediente = true;
                         }
@@ -204,6 +324,7 @@ namespace SICA.Forms.Recibir
                         {
                             expediente = false;
                         }
+
 
                         if (expediente)
                         {
@@ -223,17 +344,17 @@ namespace SICA.Forms.Recibir
                             
                         if (pagare)
                         {
-                            strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + row.Cells["DESC_2"].Value.ToString() + "'";
+                            strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + row.Cells["DESCRIPCION 2"].Value.ToString() + "'";
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;
-                            if (Conexion.ejecutarQueryReturn() > 0)
-                            {
-                                dt = Conexion.llenarDataTable();
-                                if (dt is null)
-                                    return;
+                            if (!Conexion.ejecutarQuery())
+                                return;
+                            dt = Conexion.llenarDataTable();
 
-                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA, OBSERVACION_RECIBE) VALUES (";
-                                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", '" + observacion + "')";
+                            if (dt.Rows.Count > 0)
+                            {
+                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
+                                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
@@ -250,16 +371,17 @@ namespace SICA.Forms.Recibir
                             }
                             else
                             {
-                                strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, USUARIO_POSEE, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCAT) VALUES (";
-                                strSQL += "'" + row.Cells["DESC_2"].Value.ToString() + "', '" + Globals.Username + "', '" + row.Cells["DESC_3"].Value.ToString() + "', '" + row.Cells["DESC_4"].Value.ToString() + "', '" + row.Cells["DESC_5"].Value.ToString() + "', '" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + "')";
+                                strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, CODIGO_SOCIO, USUARIO_POSEE, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCAT) VALUES (";
+                                strSQL += "'" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 3"].Value.ToString().Split('-')[0] + "', '" + Globals.Username + "', '" + row.Cells["DESCRIPCION 3"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 4"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 5"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";" + row.Cells["DESCRIPCION 5"].Value.ToString() + "')";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
                                 if (!Conexion.ejecutarQuery())
                                     return;
-
-                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA, OBSERVACION_RECIBE) VALUES (";
-                                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", '" + observacion + "')";
+                                lastinsertid = Conexion.lastIdInsert();
+                                
+                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE) VALUES (";
+                                strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
@@ -267,19 +389,6 @@ namespace SICA.Forms.Recibir
                                     return;
                             }
                         }
-
-                        /*
-                        if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTES DE CREDITO" && expediente)
-                        {
-                            if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
-                                return;
-                        }
-                        else if (row.Cells["DESC_1"].Value.ToString() == "EXPEDIENTE DE CRÉDITO" && expediente)
-                        {
-                            if (!GlobalFunctions.EstadoCustodiaReporte(row.Cells["DESC_2"].Value.ToString(), expediente, pagare, lastinsertid))
-                                return;
-                        }   
-                        */
                     }
                     Conexion.cerrar();
                     LoadingScreen.cerrarLoading();
@@ -301,154 +410,24 @@ namespace SICA.Forms.Recibir
             recibirManual.ShowDialog();
         }
 
-        private void btBuscarCargoOld_Click(object sender, EventArgs e)
+        public static void ReleaseObject(object obj)
         {
-            Boolean valido = true;
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Libro de Excel 97 - 2003 (*.xls)|*.xls|All files (*.*)|*.*";
-            ofd.CheckFileExists = true;
-            ofd.CheckPathExists = true;
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            try
             {
-                LoadingScreen.iniciarLoading();
-
-                string strSQL = "";
-                DataTable dt = new DataTable();
-                DataTable dt2 = new DataTable();
-                DataTable dt3 = new DataTable();
-                DataTable dt4 = new DataTable();
-
-                try
-                {
-                    dt = GlobalFunctions.ConvertExcelToDataTableOld(ofd.FileName, 0);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-
-                dt.Columns.Add("STATUS");
-                dt.Columns.Add("ID REPORTE");
-                try
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        if (row["CODIGO DEPARTAMENTO"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Codigo Departamento Vacío;";
-                        }
-                        if (row["CODIGO DOCUMENTO"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Codigo Documento Vacío;";
-                        }
-                        if (row["FECHA DESDE"].ToString() != "" && !GlobalFunctions.IsDate(row["FECHA DESDE"].ToString()))
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Fecha Desde Invalida;";
-                        }
-                        if (row["FECHA HASTA"].ToString() != "" && !GlobalFunctions.IsDate(row["FECHA HASTA"].ToString()))
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Fecha Hasta Invalida;";
-                        }
-                        if (row["DESCRIPCION 1"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Descripcion 1 Vacío;";
-                        }
-                        if (row["DESCRIPCION 2"].ToString() == "")
-                        {
-                            valido = false;
-                            row["STATUS"] = row["STATUS"].ToString() + "Descripcion 2 Vacío;";
-                        }
-                        if (valido)
-                        {
-                            row["STATUS"] = "OK";
-                        }
-                    }
-
-                    if (!Conexion.conectar())
-                        return;
-
-                    strSQL = "SELECT SOLICITUD_SISGO, ID_REPORTE_VALORADOS, EXPEDIENTE, PAGARE FROM REPORTE_VALORADOS";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
-                    if (!Conexion.ejecutarQuery())
-                        return;
-                    dt2 = Conexion.llenarDataTable();
-                    if (dt2 is null)
-                        return;
-
-                    strSQL = "SELECT DISTINCT ID_EXPEDIENTE_TRANSITO, SOLICITUD_SISGO FROM EXPEDIENTE_TRANSITO WHERE DESEMBOLSADO = FALSE";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
-                    if (!Conexion.ejecutarQuery())
-                        return;
-                    dt3 = Conexion.llenarDataTable();
-                    if (dt3 is null)
-                        return;
-
-                    strSQL = "SELECT DISTINCT ID_PAGARE_TRANSITO, SOLICITUD_SISGO FROM PAGARE_TRANSITO WHERE DESEMBOLSADO = FALSE";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return;
-                    if (!Conexion.ejecutarQuery())
-                        return;
-                    dt4 = Conexion.llenarDataTable();
-                    if (dt4 is null)
-                        return;
-
-                    Conexion.cerrar();
-
-
-
-                    var result = from c1 in dt.AsEnumerable()
-                                 join c2 in dt2.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c2.Field<string>("SOLICITUD_SISGO") into j
-                                 join c3 in dt3.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c3.Field<string>("SOLICITUD_SISGO") into k
-                                 join c4 in dt4.AsEnumerable() on c1.Field<string>("DESCRIPCION 2") equals c4.Field<string>("SOLICITUD_SISGO") into m
-                                 from p in j.DefaultIfEmpty()
-                                 from q in k.DefaultIfEmpty()
-                                 from r in m.DefaultIfEmpty()
-                                 select new
-                                 {
-                                     ID_REPORTE = p is null ? 0 : p.Field<Int32>("ID_REPORTE_VALORADOS"),
-                                     STATUS = c1.Field<string>("STATUS"),
-                                     DESC_1 = c1.Field<string>("DESCRIPCION 1"),
-                                     DESC_2 = c1.Field<string>("DESCRIPCION 2"),
-                                     DESC_3 = c1.Field<string>("DESCRIPCION 3"),
-                                     DESC_4 = c1.Field<string>("DESCRIPCION 4"),
-                                     DESC_5 = c1.Field<string>("DESCRIPCION 5"),
-                                     DESEMBOLSADO = p is null ? "NO DESEMBOLSADO" : "DESEMBOLSADO",
-                                     CUST_EXPEDIENTE = q is null ? p is null ? "NO CUSTODIADO" : p.Field<string>("EXPEDIENTE") != "0" ? p.Field<string>("EXPEDIENTE") : "NO CUSTODIADO" : "CUSTODIADO",
-                                     EXP_INGRESA = c1.Field<string>("EXPEDIENTE"),
-                                     CUST_PAGARE = r is null ? p is null ? "NO CUSTODIADO" : p.Field<string>("PAGARE") != "0" ? p.Field<string>("PAGARE") : "NO CUSTODIADO" : "CUSTODIADO",
-                                     PAG_INGRESA = c1.Field<string>("PAGARE"),
-                                     DESDE = c1.Field<string>("FECHA DESDE"),
-                                     HASTA = c1.Field<string>("FECHA HASTA"),
-                                     NUMERO_CAJA = c1.Field<string>("NUMERO DE CAJA IRON MOUNTAIN"),
-                                     COD_DEP = c1.Field<string>("CODIGO DEPARTAMENTO"),
-                                     COD_DOC = c1.Field<string>("CODIGO DOCUMENTO")
-                                 };
-                    dgv.DataSource = result.ToList();
-                    dgv.Columns[0].Visible = false;
-                    dgv.ClearSelection();
-
-                    if (valido)
-                    {
-                        btCargarValido.Visible = true;
-                    }
-
-                    LoadingScreen.cerrarLoading();
-                }
-                catch (Exception ex)
-                {
-                    GlobalFunctions.casoError(ex, strSQL);
-                    return;
-                }
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unable to release the object(object:{0})\n" + ex.Message, obj.ToString());
+            }
+            finally
+            {
+                GC.Collect();
             }
         }
+
+
     }
 
 }

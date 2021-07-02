@@ -104,10 +104,5 @@ namespace SICA.Forms.Entregar
             OpenChildForm(new EntregarDocumento());
         }
 
-        private void btPagare_Click(object sender, EventArgs e)
-        {
-            ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new EntregarPagare_Old());
-        }
     }
 }

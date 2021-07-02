@@ -12,103 +12,208 @@ namespace SICA
         {
             string strSQL;
             strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
-            strSQL = strSQL + "VALUES(";
-            if (row.Cells["NUMERO_CAJA"].Value.ToString() != "")
+            strSQL += "VALUES(";
+            if (row.Cells["NUMERO CAJA"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + row.Cells["NUMERO_CAJA"].Value.ToString() + "', ";
+                strSQL += "'" + row.Cells["NUMERO CAJA"].Value.ToString() + "', ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
             }
-            if (row.Cells["COD_DEP"].Value.ToString() != "")
+            if (row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + row.Cells["COD_DEP"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL = strSQL + "NULL, ";
-            }
-            if (row.Cells["COD_DOC"].Value.ToString() != "")
-            {
-                strSQL = strSQL + "'" + row.Cells["COD_DOC"].Value.ToString() + "', ";
+                strSQL += "'" + row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() + "', ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
             }
-            if (row.Cells["DESDE"].Value.ToString() != "")
+            if (row.Cells["CODIGO DOCUMENTO"].Value.ToString() != "")
             {
-                strSQL = strSQL + "#" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
-            }
-            else
-            {
-                strSQL = strSQL + "NULL, ";
-            }
-            if (row.Cells["HASTA"].Value.ToString() != "")
-            {
-                strSQL = strSQL + "#" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+                strSQL += "'" + row.Cells["CODIGO DOCUMENTO"].Value.ToString() + "', ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
             }
-            if (row.Cells["DESC_1"].Value.ToString() != "")
+            if (row.Cells["FECHA DESDE"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + row.Cells["DESC_1"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL = strSQL + "NULL, ";
-            }
-            if (row.Cells["DESC_2"].Value.ToString() != "")
-            {
-                strSQL = strSQL + "'" + row.Cells["DESC_2"].Value.ToString() + "', ";
+                strSQL += "#" + DateTime.ParseExact(row.Cells["FECHA DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
             }
-            if (row.Cells["DESC_3"].Value.ToString() != "")
+            if (row.Cells["FECHA HASTA"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + row.Cells["DESC_3"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL = strSQL + "NULL, ";
-            }
-            if (row.Cells["DESC_4"].Value.ToString() != "")
-            {
-                strSQL = strSQL + "'" + row.Cells["DESC_4"].Value.ToString() + "', ";
+                strSQL += "#" + DateTime.ParseExact(row.Cells["FECHA HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
             }
-            if (row.Cells["DESC_5"].Value.ToString() != "")
+            if (row.Cells["DESCRIPCION 1"].Value.ToString() != "")
             {
-                strSQL = strSQL + "'" + row.Cells["DESC_5"].Value.ToString() + "', ";
+                strSQL += "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + "', ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 2"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 3"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESCRIPCION 3"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 4"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESCRIPCION 4"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESCRIPCION 5"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESCRIPCION 5"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
             }
 
             /*
             if (row.Cells["ID_REPORTE"].Value.ToString() != "")
             {
-                strSQL = strSQL + "" + row.Cells["ID_REPORTE"].Value.ToString() + ", ";
+                strSQL += "" + row.Cells["ID_REPORTE"].Value.ToString() + ", ";
             }
             else
             {
-                strSQL = strSQL + "NULL, ";
+                strSQL += "NULL, ";
             }
             */
 
             //DESC_CONCAT
-            strSQL = strSQL + "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + ";', ";
-            strSQL = strSQL + "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
-            strSQL = strSQL + "'" + Globals.Username + "', 'CUSTODIADO')";
+            strSQL += "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + ";" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";" + row.Cells["DESCRIPCION 5"].Value.ToString() + ";', ";
+            strSQL += "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
+            strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
+            return strSQL;
+
+        }
+
+        public static string ArmarStrNuevoIngresoOld(DataGridViewRow row)
+        {
+            string strSQL;
+            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
+            strSQL += "VALUES(";
+            if (row.Cells["NUMERO_CAJA"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["NUMERO_CAJA"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["COD_DEP"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["COD_DEP"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["COD_DOC"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["COD_DOC"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESDE"].Value.ToString() != "")
+            {
+                strSQL += "#" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["HASTA"].Value.ToString() != "")
+            {
+                strSQL += "#" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESC_1"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESC_1"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESC_2"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESC_2"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESC_3"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESC_3"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESC_4"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESC_4"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            if (row.Cells["DESC_5"].Value.ToString() != "")
+            {
+                strSQL += "'" + row.Cells["DESC_5"].Value.ToString() + "', ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+
+            /*
+            if (row.Cells["ID_REPORTE"].Value.ToString() != "")
+            {
+                strSQL += "" + row.Cells["ID_REPORTE"].Value.ToString() + ", ";
+            }
+            else
+            {
+                strSQL += "NULL, ";
+            }
+            */
+
+            //DESC_CONCAT
+            strSQL += "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + ";', ";
+            strSQL += "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
+            strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
             return strSQL;
 
         }
@@ -119,7 +224,6 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                int esExpediente = 0;
 
                 string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strRecibirReingreso + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
@@ -149,21 +253,6 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "SELECT * FROM INVENTARIO_GENERAL WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + " AND DESCRIPCION_1 = 'EXPEDIENTES DE CREDITO'";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return false;
-
-                    esExpediente = Conexion.ejecutarQueryEscalar();
-
-                    if (esExpediente > 0)
-                    {
-                        strSQL = "UPDATE REPORTE_VALORADOS SET EXPEDIENTE = 'CUSTODIADO', USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = " + fecha + " WHERE ID_INVENTARIO_GENERAL_FK = " + row[0].ToString() + "";
-                        if (!Conexion.iniciaCommand(strSQL))
-                            return false;
-                        if (!Conexion.ejecutarQuery())
-                            return false;
-                    }
-
                 }
 
                 strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strRecibirReingreso + "'";
@@ -184,39 +273,6 @@ namespace SICA
             }
         }
 
-        public static bool RecibirPagare(string id_reporte_valorados, string observacion)
-        {
-            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string strSQL = "";
-            try
-            {
-                strSQL = @"INSERT INTO PAGARE_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_REPORTE_VALORADOS_FK, FECHA, OBSERVACION_RECIBE)
-                            VALUES (" + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + id_reporte_valorados + ", #" + fecha + "#, '" + observacion + "')";
-
-                if (!Conexion.conectar())
-                    return false;
-                if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-                if (!Conexion.ejecutarQuery())
-                    return false;
-
-                strSQL = "UPDATE REPORTE_VALORADOS SET PAGARE = 'CUSTODIADO' WHERE ID_REPORTE_VALORADOS = " + id_reporte_valorados;
-                if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-                if (!Conexion.ejecutarQuery())
-                    return false;
-
-                Conexion.cerrar();
-
-                MessageBox.Show("Registrado");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, strSQL);
-                return false;
-            }
-        }
 
         public static bool ConfirmarCarrito(string observacion)
         {

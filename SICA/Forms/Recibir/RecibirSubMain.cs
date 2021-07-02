@@ -104,12 +104,6 @@ namespace SICA.Forms.Recibir
             OpenChildForm(new RecibirReingreso());
         }
 
-        private void btPagare_Click(object sender, EventArgs e)
-        {
-            ActivateButton(sender, RGBColors.color4);
-            OpenChildForm(new RecibirPagare_old());
-        }
-
         private void btConfirmar_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color4);

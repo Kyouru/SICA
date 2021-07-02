@@ -6,7 +6,8 @@ namespace SICA.Forms.Entregar
 {
     public partial class EntregarExpediente : Form
     {
-        string tipo_carrito = Globals.strEntregarExpediente;
+        int cantidadcarrito = 0;
+        readonly string tipo_carrito = Globals.strEntregarExpediente;
         
         public EntregarExpediente()
         {
@@ -26,8 +27,8 @@ namespace SICA.Forms.Entregar
                         " AND (DESCRIPCION_1 = 'EXPEDIENTES DE CREDITO' OR DESCRIPCION_1 = 'EXPEDIENTE DE CRÉDITO') AND USUARIO_POSEE = @username";
 
             if (tbBusquedaLibre.Text != "")
-                strSQL = strSQL + " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
-            strSQL = strSQL + " ORDER BY DESCRIPCION_2";
+                strSQL += " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
+            strSQL += " ORDER BY DESCRIPCION_2";
 
             try
             {
@@ -82,8 +83,14 @@ namespace SICA.Forms.Entregar
             if (dgv.SelectedRows.Count == 1)
             {
                 GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
+                ++cantidadcarrito;
                 actualizarCantidad();
-                btBuscar_Click(sender, e);
+                foreach (DataGridViewRow row in dgv.SelectedRows)
+                {
+                    if (!row.IsNewRow)
+                        dgv.Rows.Remove(row);
+                }
+                //btBuscar_Click(sender, e);
             }
         }
 
@@ -98,9 +105,9 @@ namespace SICA.Forms.Entregar
                 {
                     string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
                     EntregarFunctions.EntregarExpedientesCarrito(observacion);
+                    cantidadcarrito = 0;
                     actualizarCantidad();
-
-                    btBuscar_Click(sender, e);
+                    //btBuscar_Click(sender, e);
                 }
             }
         }
@@ -123,24 +130,48 @@ namespace SICA.Forms.Entregar
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
+            cantidadcarrito = 0;
             actualizarCantidad();
+            btBuscar_Click(sender, e);
         }
 
         private void actualizarCantidad()
         {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(tipo_carrito) + ")";
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void dgv_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
-                foreach (DataGridViewRow element in dgv.SelectedRows)
+                if (!Conexion.conectar())
+                    return;
+                foreach (DataGridViewRow row in dgv.SelectedRows)
                 {
-                    GlobalFunctions.AgregarCarrito(element.Cells[0].Value.ToString(), "0", element.Cells["CAJA"].Value.ToString(), tipo_carrito);
+                    string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (";
+                    strSQL += row.Cells["ID"].Value.ToString() + ", " + 0 + ", " + Globals.IdUsername + ", '" + tipo_carrito + "', '" + row.Cells["CAJA"].Value.ToString() + "')";
+                    try
+                    {
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalFunctions.casoError(ex, strSQL);
+                        return;
+                    }
+                    ++cantidadcarrito;
+                }
+                Conexion.cerrar();
+
+                foreach (DataGridViewRow row in dgv.SelectedRows)
+                {
+                    if (!row.IsNewRow)
+                        dgv.Rows.Remove(row);
                 }
                 actualizarCantidad();
-                btBuscar_Click(sender, e);
             }
         }
     }

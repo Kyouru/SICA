@@ -168,5 +168,34 @@ namespace SICA
                 SimpleLog.Log(ex);
             }
         }
+
+        public static bool existePagare(string solicitud, bool conectar)
+        {
+            DataTable dt;
+            string strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + solicitud + "'";
+
+            if (conectar)
+            {
+                Conexion.conectar();
+            }
+
+            Conexion.iniciaCommand(strSQL);
+            Conexion.ejecutarQuery();
+            dt = Conexion.llenarDataTable();
+
+            if (conectar)
+            {
+                Conexion.cerrar();
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

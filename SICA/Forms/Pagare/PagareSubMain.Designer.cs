@@ -79,6 +79,7 @@
             this.btEntregar.TabIndex = 4;
             this.btEntregar.Text = "Entregar";
             this.btEntregar.UseVisualStyleBackColor = false;
+            this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
             // 
             // panel1
             // 
@@ -110,6 +111,7 @@
             this.btRecibir.TabIndex = 9;
             this.btRecibir.Text = "Recibir";
             this.btRecibir.UseVisualStyleBackColor = false;
+            this.btRecibir.Click += new System.EventHandler(this.btRecibir_Click);
             // 
             // btBuscar
             // 

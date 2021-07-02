@@ -8,12 +8,9 @@ using System.Data;
 using System.Reflection;
 using SICA.Forms;
 using SimpleLogger;
-using ExcelLibrary.SpreadSheet;
 using System.Diagnostics;
-using System.Windows.Forms.VisualStyles;
-using CsvHelper;
 using System.Globalization;
-using System.Linq;
+using Microsoft.Office.Interop.Excel;
 
 namespace SICA
 {
@@ -32,136 +29,72 @@ namespace SICA
             return hash;
         }
 
-        public static DataTable ConvertCsvToDataTable(string FileName)
-        {
-            DataTable dt = new DataTable("TABLA1");
-
-            using (var csvConnection = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path.GetDirectoryName(FileName) + ";Extended Properties=\"Text;HDR=Yes;FMT=Delimited;Format=Delimited(,)\""))
-            {
-                csvConnection.Open();
-                using (var csvAdapter = new System.Data.OleDb.OleDbDataAdapter("SELECT * FROM " + Path.GetFileName(FileName), csvConnection))
-                {
-                    dt.Columns.Add("CIP", System.Type.GetType("System.String"));
-                    dt.Columns.Add("NOMBRE", System.Type.GetType("System.String"));
-                    dt.Columns.Add("FECHAPROGRAMACION", System.Type.GetType("System.String"));
-                    dt.Columns.Add("MONTOPRESTAMO", System.Type.GetType("System.Double"));
-                    dt.Columns.Add("NUMERO_DOCUMENTO", System.Type.GetType("System.String"));
-                    dt.Columns.Add("PERIODO_SOLICITUD", System.Type.GetType("System.String"));
-                    dt.Columns.Add("NUMERO_SOLICITUD", System.Type.GetType("System.String"));
-                    dt.Columns.Add("NUMERO_CUENTA", System.Type.GetType("System.String"));
-                    dt.Columns.Add("MONEDA", System.Type.GetType("System.String"));
-                    dt.Columns.Add("MONTO_PRESTAMO", System.Type.GetType("System.String"));
-                    dt.Columns.Add("SECTORISTA", System.Type.GetType("System.String"));
-                    dt.Columns.Add("FECHA_OTORGADO", System.Type.GetType("System.String"));
-                    dt.Columns.Add("FECHA_CANCELACION", System.Type.GetType("System.String"));
-                    dt.Columns.Add("PAGARE", System.Type.GetType("System.String"));
-                    dt.Columns.Add("EXPEDIENTE", System.Type.GetType("System.String"));
-                    dt.Columns.Add("FECHA_ENTREGA", System.Type.GetType("System.String"));
-                    dt.Columns.Add("FECHA_DEVOLUCION", System.Type.GetType("System.String"));
-                    dt.Columns.Add("TIPO_PRESTAMO", System.Type.GetType("System.String"));
-                    dt.Columns.Add("USUARIO_REGISTRO", System.Type.GetType("System.String"));
-                    dt.Columns.Add("OBSERVACION", System.Type.GetType("System.String"));
-
-
-                    try
-                    {
-                        csvAdapter.Fill(dt);
-                        csvConnection.Close();
-                        return dt;
-                    }
-                    catch (Exception ex)
-                    {
-                        csvConnection.Close();
-                        GlobalFunctions.casoError(ex, "");
-                        return null;
-                    }
-                }
-            }
-        }
-
-        public static DataTable ConvertCsvToDataTable2(string FileName)
-        {
-            DataTable dt = new DataTable("TABLA1");
-            try
-            {
-                using (var reader = new StreamReader(FileName))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        //csv.Configuration.Delimiter = ";";
-                        using (var dr = new CsvDataReader(csv))
-                        {
-                            dt.Load(dr);
-                            return dt;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, "");
-                MessageBox.Show("a");
-                return null;
-            }
-        }
-        public static DataTable ConvertExcelToDataTableOld(string FileName, int index)
+        public static System.Data.DataTable ConvertExcelToDataTable(string FileName, int index)
         {
             try
             {
-                Workbook workbook = Workbook.Load(FileName);
-                Worksheet worksheet = workbook.Worksheets[index];
+                if (!File.Exists(FileName))
+                    return null;
 
-                DataTable dt = new DataTable();
+                FileInfo fi = new FileInfo(FileName);
+                long filesize = fi.Length;
 
-                int j = -1, k = -1, m = -1, n = -1;
+                Microsoft.Office.Interop.Excel.Application xlApp;
+                Workbook xlWorkBook;
+                Worksheet xlWorkSheet;
+                Range range;
+                var misValue = Type.Missing;
 
-                for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
+                // abrir el documento 
+                xlApp = new Microsoft.Office.Interop.Excel.Application();
+                xlWorkBook = xlApp.Workbooks.Open(FileName, misValue, misValue,
+                    misValue, misValue, misValue, misValue, misValue, misValue,
+                    misValue, misValue, misValue, misValue, misValue, misValue);
+
+                // seleccion de la hoja de calculo
+                // get_item() devuelve object y numera las hojas a partir de 1
+                xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(index);
+
+                // seleccion rango activo
+                range = xlWorkSheet.UsedRange;
+
+                int rows = range.Rows.Count;
+
+                System.Data.DataTable dt = new System.Data.DataTable();
+
+                int i = 1;
+
+                //no mas de 50 columnas
+                while (i < 50 && xlWorkSheet.Cells[1, i].Text != "")
                 {
-                    dt.Columns.Add(worksheet.Cells[0, i].Value.ToString());
-                    if (worksheet.Cells[0, i].Value.ToString() == "F_GIRO")
+                    dt.Columns.Add(Convert.ToString(xlWorkSheet.Cells[1, i].Text));
+                    ++i;
+                }
+                --i;
+
+                for (int row = 2; row <= rows; row++)
+                {
+                    DataRow newrow = dt.NewRow();
+                    for (int col = 1; col <= i; col++)
                     {
-                        j = i;
+                        // lectura como cadena
+                        string cellText = xlWorkSheet.Cells[row, col].Text;
+                        cellText = Convert.ToString(cellText);
+                        //cellText = cellText.Replace("'", ""); // Comillas simples no pueden pasar en el Texto
+
+                        newrow[col - 1] = cellText;
                     }
-                    if (worksheet.Cells[0, i].Value.ToString() == "F_VENCIMIENTO")
-                    {
-                        k = i;
-                    }
-                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA DESDE")
-                    {
-                        m = i;
-                    }
-                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA HASTA")
-                    {
-                        n = i;
-                    }
+                    dt.Rows.Add(newrow);
                 }
 
-                DataRow dr;
+                xlWorkBook.Close(false, Type.Missing, Type.Missing);
+                xlApp.Quit();
 
-                for (int rowIndex = worksheet.Cells.FirstRowIndex + 1; rowIndex <= worksheet.Cells.LastRowIndex; rowIndex++)
-                {
-                    dr = dt.NewRow();
-                    for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
-                    {
-                        if (worksheet.Cells[rowIndex, i].Value != null)
-                        {
-                            if (i == j || i == k || i == m || i == n)
-                            {
-                                dr[i] = DateTime.FromOADate(Double.Parse(worksheet.Cells[rowIndex, i].Value.ToString())).ToString("dd/MM/yyyy");
-                            }
-                            else
-                            {
-                                dr[i] = worksheet.Cells[rowIndex, i].Value.ToString();
-                            }
+                // liberar
+                ReleaseObject(xlWorkSheet);
+                ReleaseObject(xlWorkBook);
+                ReleaseObject(xlApp);
 
-                        }
-                        else
-                        {
-                            dr[i] = "";
-                        }
-                    }
-                    dt.Rows.Add(dr);
-                }
                 return dt;
             }
             catch (Exception ex)
@@ -170,106 +103,78 @@ namespace SICA
                 return null;
             }
         }
-        public static DataTable ConvertExcelToDataTable(string FileName, int index)
-        {
-            try
-            {
-                Workbook workbook = Workbook.Load(FileName);
-                Worksheet worksheet = workbook.Worksheets[index];
-
-                DataTable dt = new DataTable();
-
-                int j = -1, k = -1, m = -1, n = -1;
-
-                for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
-                {
-                    dt.Columns.Add(worksheet.Cells[0, i].Value.ToString());
-                    if (worksheet.Cells[0, i].Value.ToString() == "F_GIRO")
-                    {
-                        j = i;
-                    }
-                    if (worksheet.Cells[0, i].Value.ToString() == "F_VENCIMIENTO")
-                    {
-                        k = i;
-                    }
-                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA DESDE")
-                    {
-                        m = i;
-                    }
-                    if (worksheet.Cells[0, i].Value.ToString() == "FECHA HASTA")
-                    {
-                        n = i;
-                    }
-                }
-
-                DataRow dr;
-
-                for (int rowIndex = worksheet.Cells.FirstRowIndex + 1; rowIndex <= worksheet.Cells.LastRowIndex; rowIndex++)
-                {
-                    dr = dt.NewRow();
-                    for (int i = 0; i <= worksheet.Cells.LastColIndex; i++)
-                    {
-                        if (worksheet.Cells[rowIndex, i].Value != null)
-                        {
-                            if (i == j || i == k || i == m || i == n)
-                            {
-                                dr[i] = DateTime.FromOADate(Double.Parse(worksheet.Cells[rowIndex, i].Value.ToString())).ToString("dd/MM/yyyy");
-                            }
-                            else
-                            {
-                                dr[i] = worksheet.Cells[rowIndex, i].Value.ToString();
-                            }
-
-                        }
-                        else
-                        {
-                            dr[i] = "";
-                        }
-                    }
-                    dt.Rows.Add(dr);
-                }
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, "");
-                return null;
-            }
-        }
-
-        //no se usa
-        public static DataTable ConvertReporteValoradosToDataTable(string strSQL)
-        {
-            DataTable dt = new DataTable("REPORTE_VALORADOS");
-
-            try
-            {
-                if (!Conexion.conectar())
-                    return null;
-                if (!Conexion.iniciaCommand(strSQL))
-                    return null;
-                if (!Conexion.ejecutarQuery())
-                    return null;
-
-                dt = Conexion.llenarDataTable();
-                if (dt is null)
-                    return null;
-
-                Conexion.cerrar();
-
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, strSQL);
-                return null;
-            }
-        }
-        
 
         public static void ExportarDataGridViewExcel(DataGridView dgv, string fileName)
         {
-            if (dgv.Rows.Count > 200)
+            
+            if (dgv.Rows.Count > 3000)
+            {
+                DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 3000 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
+                if (dialogResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            LoadingScreen.iniciarLoading();
+            if (!Directory.Exists(Globals.ExportarPath))
+            {
+                Directory.CreateDirectory(Globals.ExportarPath);
+            }
+            if (fileName is null)
+            {
+                fileName = Globals.ExportarPath + "EXPORTAR_" + Globals.Username + "_" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            }
+            else
+            {
+                fileName = Globals.ExportarPath + fileName;
+            }
+
+            try
+            {
+                Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                Workbook xlWorkBook = xlApp.Workbooks.Add(Type.Missing);
+                Worksheet xlWorkSheet = null;
+
+                xlApp.ScreenUpdating = false;
+                xlApp.Calculation = XlCalculation.xlCalculationManual;
+
+                xlWorkSheet = xlWorkBook.Sheets[1];
+                //xlWorkSheet = xlWorkBook.ActiveSheet;
+
+                xlWorkSheet.Name = "Mica1";
+
+                for (int i = 1; i < dgv.Columns.Count + 1; i++)
+                {
+                    xlWorkSheet.Cells[1, i] = dgv.Columns[i - 1].HeaderText;
+                }
+                // storing Each row and column value to excel sheet  
+                for (int i = 0; i < dgv.Rows.Count - 1; i++)
+                {
+                    for (int j = 0; j < dgv.Columns.Count; j++)
+                    {
+                        xlWorkSheet.Cells[i + 2, j + 1] = dgv.Rows[i].Cells[j].Value.ToString();
+                    }
+                }
+                // save the application  
+                xlWorkBook.SaveAs(fileName, XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+                xlApp.ScreenUpdating = true;
+                xlApp.Calculation = XlCalculation.xlCalculationAutomatic;
+                xlApp.Visible = true;
+                LoadingScreen.cerrarLoading();
+
+            }
+            catch (Exception ex)
+            {
+                GlobalFunctions.casoError(ex, "");
+                return;
+            }
+
+        }
+        public static void ExportarDataGridViewCSV(DataGridView dgv, string fileName)
+        {
+            if (dgv.Rows.Count > 500)
             {
                 DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 500 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
                 if (dialogResult != DialogResult.Yes)
@@ -278,11 +183,16 @@ namespace SICA
                 }
             }
 
+            LoadingScreen.iniciarLoading();
+
+            if (Directory.Exists(Globals.ExportarPath))
+            {
+                Directory.CreateDirectory(Globals.ExportarPath);
+            }
             if (fileName is null)
             {
-                fileName = Globals.CargoPath + "EXPORTAR_" + Globals.Username + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".csv";
-            }    
-            LoadingScreen.iniciarLoading();
+                fileName = Globals.ExportarPath + "EXPORTAR_" + Globals.Username + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".csv";
+            }
 
             int cols;
 
@@ -337,77 +247,7 @@ namespace SICA
 
         }
 
-        public static void ExportarDataGridViewExcelXLS(DataGridView dgv, string fileName, Int32 inicio_row, Int32 inicio_col, Boolean cabecera)
-        {
-            if (dgv.Rows.Count > 200)
-            {
-                DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 200 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
-                if (dialogResult != DialogResult.Yes)
-                {
-                    return;
-                }
-            }
-
-            try
-            {
-                LoadingScreen.iniciarLoading();
-
-                Workbook workbook = new Workbook();
-                Worksheet worksheet = new Worksheet("Cargo");
-
-                workbook.Worksheets.Add(worksheet);
-
-                if (cabecera)
-                {
-                    for (int j = 0; j < dgv.Columns.Count; j++)
-                    {
-                        worksheet.Cells[inicio_row, j + inicio_col] = new Cell(dgv.Columns[j].Name);
-                    }
-                }
-
-                //Recorremos el DataTable rellenando la hoja de trabajo
-                for (int i = 0; i < dgv.Rows.Count; i++)
-                {
-                    for (int j = 0; j < dgv.Columns.Count; j++)
-                    {
-                        if (dgv.Rows[i].Cells[j] != null)
-                        {
-                            if (GlobalFunctions.IsDate(dgv.Rows[i].Cells[j].Value.ToString()))
-                            {
-                                try
-                                {
-                                    worksheet.Cells[i + inicio_row + 1, j + inicio_col] = new Cell(DateTime.Parse(dgv.Rows[i].Cells[j].Value.ToString()).ToString("yyyy-MM-dd"));
-                                }
-                                catch
-                                {
-                                    worksheet.Cells[i + inicio_row + 1, j + inicio_col] = new Cell("'" + dgv.Rows[i].Cells[j].Value.ToString());
-                                }
-                            }
-                            else
-                            {
-                                worksheet.Cells[i + inicio_row + 1, j + inicio_col] = new Cell(dgv.Rows[i].Cells[j].Value.ToString());
-                            }
-                        }
-                    }
-                }
-
-                workbook.Save(fileName);
-
-                workbook = Workbook.Load(fileName);
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, "");
-                return;
-            }
-
-            LoadingScreen.cerrarLoading();
-
-            //libros_trabajo.Close(true);
-            //aplicacion.Quit();
-        }
-
-        public static void ArmarCargoExcel(DataTable dt, string nombre_cargo, string fileName, Boolean cabecera)
+        public static void ArmarCargoExcel(System.Data.DataTable dt, string nombre_cargo, string fileName, Boolean cabecera)
         {
             LoadingScreen.iniciarLoading();
             int cols;
@@ -488,46 +328,6 @@ namespace SICA
             }
         }
         
-        //no se usa
-        public static bool EstadoCustodiaReporte(string sisgo, bool expediente, bool pagare, long id_inventario_general)
-        {
-            string strSQL = "";
-            try
-            {
-                strSQL = "UPDATE REPORTE_VALORADOS SET";
-
-                if (id_inventario_general > 0)
-                {
-                    strSQL = strSQL + " [ID_INVENTARIO_GENERAL_FK] = " + id_inventario_general + ", ";
-                }
-
-                if (expediente)
-                {
-                    strSQL = strSQL + " [EXPEDIENTE] = 'CUSTODIADO'";
-                    if (pagare)
-                    {
-                        strSQL = strSQL + ", [PAGARE] = 'CUSTODIADO'";
-                    }
-                }
-                else if (pagare)
-                {
-                    strSQL = strSQL + " [PAGARE] = 'CUSTODIADO'";
-                }
-                strSQL = strSQL + " WHERE SOLICITUD_SISGO = '" + sisgo + "'";
-                if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-                if (!Conexion.ejecutarQuery())
-                    return false;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, strSQL);
-                return false;
-            }
-        }
-        
-
         public static bool AgregarCarrito(string id_inventario, string id_aux, string caja, string tipo)
         {
             string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_aux + ", " + Globals.IdUsername + ", '" + tipo + "', '" + caja + "')";
@@ -576,9 +376,9 @@ namespace SICA
             }
         }
 
-        public static DataTable ToDataTable<T>(List<T> items)
+        public static System.Data.DataTable ToDataTable<T>(List<T> items)
         {
-            DataTable dataTable = new DataTable(typeof(T).Name);
+            System.Data.DataTable dataTable = new System.Data.DataTable(typeof(T).Name);
 
             //Get all the properties
             PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -636,86 +436,19 @@ namespace SICA
             }
         }
 
-        //no se usa
-        public static bool actualizarNoDesembolsados()
-        {
-            string strSQL = "";
-            try
-            {
-                DataTable dt = new DataTable();
-
-                strSQL = "SELECT ID_EXPEDIENTE_TRANSITO, ESD.SOLICITUD_SISGO, ESD.ID_INVENTARIO_GENERAL_FK FROM EXPEDIENTE_TRANSITO ESD LEFT JOIN REPORTE_VALORADOS RV ON ESD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE ESD.DESEMBOLSADO = FALSE AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
-                if (!Conexion.conectar())
-                    return false;
-
-                if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-                if (!Conexion.ejecutarQuery())
-                    return false;
-
-                dt = Conexion.llenarDataTable();
-                if (dt is null)
-                    return false;
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET [EXPEDIENTE] = 'CUSTODIADO', ID_INVENTARIO_GENERAL_FK = " + row["ID_INVENTARIO_GENERAL_FK"].ToString();
-                    strSQL = strSQL + " WHERE SOLICITUD_SISGO = '" + row["SOLICITUD_SISGO"].ToString() + "'";
-
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return false;
-                    if (Conexion.ejecutarQueryReturn() > 0)
-                    {
-                        strSQL = "UPDATE EXPEDIENTE_TRANSITO SET [DESEMBOLSADO] = TRUE, FECHA_SALIDA = #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
-                        strSQL = strSQL + " WHERE ID_EXPEDIENTE_TRANSITO = " + row["ID_EXPEDIENTE_TRANSITO"].ToString();
-                        if (!Conexion.iniciaCommand(strSQL))
-                            return false;
-                        if (!Conexion.ejecutarQuery())
-                            return false;
-                    }
-                }
-
-                dt = new DataTable();
-                strSQL = "SELECT ID_PAGARE_TRANSITO, PSD.SOLICITUD_SISGO, PSD.ID_INVENTARIO_GENERAL_FK FROM PAGARE_TRANSITO PSD LEFT JOIN REPORTE_VALORADOS RV ON PSD.SOLICITUD_SISGO = RV.SOLICITUD_SISGO WHERE PSD.DESEMBOLSADO = FALSE AND RV.ID_REPORTE_VALORADOS IS NOT NULL";
-
-                if (!Conexion.iniciaCommand(strSQL))
-                    return false;
-                if (!Conexion.ejecutarQuery())
-                    return false;
-
-                dt = Conexion.llenarDataTable();
-                if (dt is null)
-                    return false;
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    strSQL = "UPDATE REPORTE_VALORADOS SET [PAGARE] = 'CUSTODIADO', ID_INVENTARIO_GENERAL_FK = " + row["ID_INVENTARIO_GENERAL_FK"].ToString();
-                    strSQL = strSQL + " WHERE SOLICITUD_SISGO = '" + row["SOLICITUD_SISGO"].ToString() + "'";
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return false;
-                    if (Conexion.ejecutarQueryReturn() > 0)
-                    {
-                        strSQL = "UPDATE PAGARE_TRANSITO SET [DESEMBOLSADO] = TRUE, FECHA_SALIDA = #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
-                        strSQL = strSQL + " WHERE ID_PAGARE_TRANSITO = " + row["ID_PAGARE_TRANSITO"].ToString();
-                        if (!Conexion.iniciaCommand(strSQL))
-                            return false;
-                        if (!Conexion.ejecutarQuery())
-                            return false;
-                    }
-                }
-                Conexion.cerrar();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, strSQL);
-                return false;
-            }
-        }
-        
 
         public static void casoError(Exception ex, string strSQL)
         {
+            try
+            {
+                string limpiarCarrito = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername;
+                Conexion.iniciaCommand(strSQL);
+                Conexion.ejecutarQuery();
+            }
+            catch
+            {
+
+            }
             Conexion.cerrar();
             Globals.lastSQL = strSQL;
             SimpleLog.Log(ex);
@@ -816,9 +549,11 @@ namespace SICA
             }
         }
 
+
+
         public static bool verificarSesion(int id)
         {
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt;
             string strSQL = "";
             try
             {
@@ -877,6 +612,34 @@ namespace SICA
                 GlobalFunctions.casoError(ex, strSQL);
                 return true;
             }
+        }
+        private static void ReleaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unable to release the object(object:{0})\n" + ex.Message, obj.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+        public static void cerrarExcel(Workbook xlWorkBook, Worksheet xlWorkSheet, Microsoft.Office.Interop.Excel.Application xlApp)
+        {
+            // cerrar
+            xlWorkBook.Close(false, Type.Missing, Type.Missing);
+            xlApp.Quit();
+
+            // liberar
+            ReleaseObject(xlWorkSheet);
+            ReleaseObject(xlWorkBook);
+            ReleaseObject(xlApp);
         }
     }
 }

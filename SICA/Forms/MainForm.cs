@@ -136,11 +136,6 @@ namespace SICA
         }
 
 
-        private void btImportar_Click(object sender, EventArgs e)
-        {
-            ActivateButton(sender, RGBColors.color1);
-            OpenChildForm(new ImportarForm());
-        }
         private void btBusqueda_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color1);
@@ -222,11 +217,6 @@ namespace SICA
         {
             ActivateButton(sender, RGBColors.color1);
             OpenChildForm(new LetrasSubMain());
-        }
-
-        private void iconButton1_Click(object sender, EventArgs e)
-        {
-            GlobalFunctions.actualizarNoDesembolsados();
         }
 
         private void btPagare_Click(object sender, EventArgs e)

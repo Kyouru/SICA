@@ -19,7 +19,7 @@ namespace SICA.Forms
             string strSQL = Globals.strQueryUser;
             DataTable dt = new DataTable("USUARIO");
 
-            strSQL = strSQL + " AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
+            strSQL += " AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
 
             try
             {

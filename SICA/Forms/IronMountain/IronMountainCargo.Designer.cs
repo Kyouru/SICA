@@ -56,14 +56,14 @@
             // 
             this.btGenerar.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
             this.btGenerar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btGenerar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btGenerar.IconChar = FontAwesome.Sharp.IconChar.FileSignature;
             this.btGenerar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btGenerar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btGenerar.IconSize = 40;
+            this.btGenerar.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btGenerar.Location = new System.Drawing.Point(312, 71);
             this.btGenerar.Name = "btGenerar";
-            this.btGenerar.Rotation = 0D;
-            this.btGenerar.Size = new System.Drawing.Size(70, 56);
+            this.btGenerar.Size = new System.Drawing.Size(69, 56);
             this.btGenerar.TabIndex = 28;
             this.btGenerar.UseVisualStyleBackColor = true;
             this.btGenerar.Click += new System.EventHandler(this.btGenerar_Click);

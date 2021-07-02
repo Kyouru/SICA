@@ -155,7 +155,7 @@ namespace SICA.Forms.DocuClass
                     LoadingScreen.iniciarLoading();
 
                     DataTable dt = new DataTable();
-                    dt = GlobalFunctions.ConvertCsvToDataTable2(ofd.FileName);
+                    //dt = GlobalFunctions.ConvertCsvToDataTable2(ofd.FileName);
                     if (dt is null)
                         return;
 

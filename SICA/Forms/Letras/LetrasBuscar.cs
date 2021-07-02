@@ -24,9 +24,9 @@ namespace SICA.Forms.Letras
             strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO FROM LETRA WHERE 1 = 1";
             if (tbBusquedaLibre.Text != "")
             {
-                strSQL = strSQL + " AND CONCATENADO LIKE @busqueda_libre";
+                strSQL += " AND CONCATENADO LIKE @busqueda_libre";
             }
-            strSQL = strSQL + " ORDER BY F_GIRO";
+            strSQL += " ORDER BY F_GIRO";
             
             try
             {
@@ -51,7 +51,7 @@ namespace SICA.Forms.Letras
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;
-                dgv.Columns[0].Visible = false;
+                //dgv.Columns[0].Visible = false;
                 dgv.ClearSelection();
 
 
@@ -68,6 +68,7 @@ namespace SICA.Forms.Letras
         {
             GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
+
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
@@ -75,5 +76,6 @@ namespace SICA.Forms.Letras
                 this.btBuscar_Click(sender, e);
             }
         }
+
     }
 }

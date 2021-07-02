@@ -89,15 +89,14 @@
             // 
             this.btLimpiarCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btLimpiarCarrito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLimpiarCarrito.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btLimpiarCarrito.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btLimpiarCarrito.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
             this.btLimpiarCarrito.IconColor = System.Drawing.Color.Gainsboro;
+            this.btLimpiarCarrito.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btLimpiarCarrito.IconSize = 30;
-            this.btLimpiarCarrito.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btLimpiarCarrito.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btLimpiarCarrito.Location = new System.Drawing.Point(781, 5);
             this.btLimpiarCarrito.Name = "btLimpiarCarrito";
-            this.btLimpiarCarrito.Rotation = 0D;
             this.btLimpiarCarrito.Size = new System.Drawing.Size(48, 38);
             this.btLimpiarCarrito.TabIndex = 44;
             this.btLimpiarCarrito.UseVisualStyleBackColor = true;
@@ -107,15 +106,14 @@
             // 
             this.btVerCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btVerCarrito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btVerCarrito.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btVerCarrito.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btVerCarrito.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
             this.btVerCarrito.IconColor = System.Drawing.Color.Gainsboro;
+            this.btVerCarrito.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btVerCarrito.IconSize = 30;
-            this.btVerCarrito.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btVerCarrito.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btVerCarrito.Location = new System.Drawing.Point(662, 5);
             this.btVerCarrito.Name = "btVerCarrito";
-            this.btVerCarrito.Rotation = 0D;
             this.btVerCarrito.Size = new System.Drawing.Size(48, 38);
             this.btVerCarrito.TabIndex = 39;
             this.btVerCarrito.UseVisualStyleBackColor = true;
@@ -125,15 +123,14 @@
             // 
             this.btEntregar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btEntregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btEntregar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btEntregar.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btEntregar.IconChar = FontAwesome.Sharp.IconChar.ArrowRight;
             this.btEntregar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btEntregar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btEntregar.IconSize = 30;
-            this.btEntregar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btEntregar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btEntregar.Location = new System.Drawing.Point(890, 5);
             this.btEntregar.Name = "btEntregar";
-            this.btEntregar.Rotation = 0D;
             this.btEntregar.Size = new System.Drawing.Size(48, 38);
             this.btEntregar.TabIndex = 43;
             this.btEntregar.UseVisualStyleBackColor = true;
@@ -154,14 +151,13 @@
             // 
             this.btExcel.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btExcel.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btExcel.IconChar = FontAwesome.Sharp.IconChar.FileExcel;
             this.btExcel.IconColor = System.Drawing.Color.Gainsboro;
+            this.btExcel.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btExcel.IconSize = 30;
-            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btExcel.Location = new System.Drawing.Point(510, 4);
             this.btExcel.Name = "btExcel";
-            this.btExcel.Rotation = 0D;
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 42;
             this.btExcel.UseVisualStyleBackColor = true;
@@ -171,14 +167,13 @@
             // 
             this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.Search;
             this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btBuscar.IconSize = 30;
-            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btBuscar.Location = new System.Drawing.Point(456, 4);
             this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Rotation = 0D;
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 41;
             this.btBuscar.UseVisualStyleBackColor = true;

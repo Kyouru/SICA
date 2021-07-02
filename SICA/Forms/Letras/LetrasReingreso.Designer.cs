@@ -34,8 +34,12 @@
             this.pnBottom = new System.Windows.Forms.Panel();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.pnTop = new System.Windows.Forms.Panel();
+            this.btLimpiarCarrito = new FontAwesome.Sharp.IconButton();
             this.tbBusquedaLibre = new System.Windows.Forms.TextBox();
+            this.btVerCarrito = new FontAwesome.Sharp.IconButton();
             this.label2 = new System.Windows.Forms.Label();
+            this.btRecibir = new FontAwesome.Sharp.IconButton();
+            this.lbCantidad = new System.Windows.Forms.Label();
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.pnBottom.SuspendLayout();
@@ -92,12 +96,17 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1048, 561);
             this.dgv.TabIndex = 25;
+            this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             // 
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.pnTop.Controls.Add(this.btLimpiarCarrito);
             this.pnTop.Controls.Add(this.tbBusquedaLibre);
+            this.pnTop.Controls.Add(this.btVerCarrito);
             this.pnTop.Controls.Add(this.label2);
+            this.pnTop.Controls.Add(this.btRecibir);
+            this.pnTop.Controls.Add(this.lbCantidad);
             this.pnTop.Controls.Add(this.btExcel);
             this.pnTop.Controls.Add(this.btBuscar);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -105,6 +114,23 @@
             this.pnTop.Name = "pnTop";
             this.pnTop.Size = new System.Drawing.Size(1048, 47);
             this.pnTop.TabIndex = 58;
+            // 
+            // btLimpiarCarrito
+            // 
+            this.btLimpiarCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btLimpiarCarrito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLimpiarCarrito.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btLimpiarCarrito.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
+            this.btLimpiarCarrito.IconColor = System.Drawing.Color.Gainsboro;
+            this.btLimpiarCarrito.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btLimpiarCarrito.IconSize = 30;
+            this.btLimpiarCarrito.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btLimpiarCarrito.Location = new System.Drawing.Point(781, 5);
+            this.btLimpiarCarrito.Name = "btLimpiarCarrito";
+            this.btLimpiarCarrito.Size = new System.Drawing.Size(48, 38);
+            this.btLimpiarCarrito.TabIndex = 63;
+            this.btLimpiarCarrito.UseVisualStyleBackColor = true;
+            this.btLimpiarCarrito.Click += new System.EventHandler(this.btLimpiarCarrito_Click);
             // 
             // tbBusquedaLibre
             // 
@@ -115,6 +141,23 @@
             this.tbBusquedaLibre.Size = new System.Drawing.Size(316, 24);
             this.tbBusquedaLibre.TabIndex = 47;
             this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
+            // 
+            // btVerCarrito
+            // 
+            this.btVerCarrito.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btVerCarrito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btVerCarrito.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btVerCarrito.IconChar = FontAwesome.Sharp.IconChar.ShoppingCart;
+            this.btVerCarrito.IconColor = System.Drawing.Color.Gainsboro;
+            this.btVerCarrito.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btVerCarrito.IconSize = 30;
+            this.btVerCarrito.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btVerCarrito.Location = new System.Drawing.Point(662, 5);
+            this.btVerCarrito.Name = "btVerCarrito";
+            this.btVerCarrito.Size = new System.Drawing.Size(48, 38);
+            this.btVerCarrito.TabIndex = 60;
+            this.btVerCarrito.UseVisualStyleBackColor = true;
+            this.btVerCarrito.Click += new System.EventHandler(this.btVerCarrito_Click);
             // 
             // label2
             // 
@@ -127,18 +170,45 @@
             this.label2.TabIndex = 46;
             this.label2.Text = "Busqueda:";
             // 
+            // btRecibir
+            // 
+            this.btRecibir.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btRecibir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btRecibir.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btRecibir.IconChar = FontAwesome.Sharp.IconChar.ArrowRight;
+            this.btRecibir.IconColor = System.Drawing.Color.Gainsboro;
+            this.btRecibir.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btRecibir.IconSize = 30;
+            this.btRecibir.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btRecibir.Location = new System.Drawing.Point(890, 5);
+            this.btRecibir.Name = "btRecibir";
+            this.btRecibir.Size = new System.Drawing.Size(48, 38);
+            this.btRecibir.TabIndex = 62;
+            this.btRecibir.UseVisualStyleBackColor = true;
+            this.btRecibir.Click += new System.EventHandler(this.btRecibir_Click);
+            // 
+            // lbCantidad
+            // 
+            this.lbCantidad.AutoSize = true;
+            this.lbCantidad.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCantidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbCantidad.Location = new System.Drawing.Point(716, 12);
+            this.lbCantidad.Name = "lbCantidad";
+            this.lbCantidad.Size = new System.Drawing.Size(33, 22);
+            this.lbCantidad.TabIndex = 61;
+            this.lbCantidad.Text = "(0)";
+            // 
             // btExcel
             // 
             this.btExcel.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btExcel.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btExcel.IconChar = FontAwesome.Sharp.IconChar.FileExcel;
             this.btExcel.IconColor = System.Drawing.Color.Gainsboro;
+            this.btExcel.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btExcel.IconSize = 30;
-            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btExcel.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btExcel.Location = new System.Drawing.Point(510, 4);
             this.btExcel.Name = "btExcel";
-            this.btExcel.Rotation = 0D;
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 51;
             this.btExcel.UseVisualStyleBackColor = true;
@@ -147,14 +217,13 @@
             // 
             this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.Search;
             this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btBuscar.IconSize = 30;
-            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btBuscar.Location = new System.Drawing.Point(456, 4);
             this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Rotation = 0D;
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 50;
             this.btBuscar.UseVisualStyleBackColor = true;
@@ -187,5 +256,9 @@
         private System.Windows.Forms.Label label2;
         private FontAwesome.Sharp.IconButton btExcel;
         private FontAwesome.Sharp.IconButton btBuscar;
+        private FontAwesome.Sharp.IconButton btLimpiarCarrito;
+        private FontAwesome.Sharp.IconButton btVerCarrito;
+        private FontAwesome.Sharp.IconButton btRecibir;
+        private System.Windows.Forms.Label lbCantidad;
     }
 }
