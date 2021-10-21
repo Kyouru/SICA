@@ -12,7 +12,7 @@ namespace SICA.Forms.Letras
     {
         public static bool EntregarCarrito(string observacion)
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
             try
             {
@@ -74,7 +74,7 @@ namespace SICA.Forms.Letras
             {
                 DataTable dt = new DataTable();
 
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 strSQL = "SELECT ID_AUX_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strLetrasReingreso + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
                     return false;

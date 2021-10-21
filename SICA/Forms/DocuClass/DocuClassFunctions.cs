@@ -12,7 +12,7 @@ namespace SICA.Forms.DocuClass
     {
         public static bool EntregarCarrito()
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
 
             try
@@ -70,7 +70,7 @@ namespace SICA.Forms.DocuClass
 
         public static bool RecibirCarrito()
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
 
             try

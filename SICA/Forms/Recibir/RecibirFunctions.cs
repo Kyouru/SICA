@@ -39,7 +39,7 @@ namespace SICA
             }
             if (row.Cells["FECHA DESDE"].Value.ToString() != "")
             {
-                strSQL += "#" + DateTime.ParseExact(row.Cells["FECHA DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+                strSQL += "'" + DateTime.ParseExact(row.Cells["FECHA DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
             }
             else
             {
@@ -47,7 +47,7 @@ namespace SICA
             }
             if (row.Cells["FECHA HASTA"].Value.ToString() != "")
             {
-                strSQL += "#" + DateTime.ParseExact(row.Cells["FECHA HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+                strSQL += "'" + DateTime.ParseExact(row.Cells["FECHA HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
             }
             else
             {
@@ -107,7 +107,7 @@ namespace SICA
 
             //DESC_CONCAT
             strSQL += "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + ";" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";" + row.Cells["DESCRIPCION 5"].Value.ToString() + ";', ";
-            strSQL += "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
+            strSQL += "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
             strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
             return strSQL;
 
@@ -144,7 +144,7 @@ namespace SICA
             }
             if (row.Cells["DESDE"].Value.ToString() != "")
             {
-                strSQL += "#" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+                strSQL += "'" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
             }
             else
             {
@@ -152,7 +152,7 @@ namespace SICA
             }
             if (row.Cells["HASTA"].Value.ToString() != "")
             {
-                strSQL += "#" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "#, ";
+                strSQL += "'" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
             }
             else
             {
@@ -212,7 +212,7 @@ namespace SICA
 
             //DESC_CONCAT
             strSQL += "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + ";', ";
-            strSQL += "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#, ";
+            strSQL += "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
             strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
             return strSQL;
 
@@ -225,7 +225,7 @@ namespace SICA
             {
                 DataTable dt = new DataTable();
 
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID FROM TMP_CARRITO WHERE TIPO = '" + Globals.strRecibirReingreso + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
                     return false;
@@ -276,7 +276,7 @@ namespace SICA
 
         public static bool ConfirmarCarrito(string observacion)
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
             try
             {

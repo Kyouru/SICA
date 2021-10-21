@@ -117,7 +117,7 @@ namespace SICA.Forms.Boveda
 
         private bool RetirarCaja (string numero_caja, string boveda, int id_boveda)
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
             DataTable dt;
             try

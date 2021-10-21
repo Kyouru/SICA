@@ -13,7 +13,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainSolicitar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
@@ -85,7 +85,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainRecibir + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
@@ -137,7 +137,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                 if (!Conexion.conectar())
                     return false;
@@ -199,7 +199,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENVIAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
@@ -269,7 +269,7 @@ namespace SICA
             try
             {
                 DataTable dt = new DataTable();
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())

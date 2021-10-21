@@ -13,7 +13,7 @@ namespace SICA
         {
             DataTable dt = new DataTable();
 
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
             int j = 0;
             strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, '0' AS NRO, DESCRIPCION_1 AS DEFINICION, DESCRIPCION_2 AS SOLICITUD, DESCRIPCION_3 AS COD_PRESTAMO, DESCRIPCION_4 AS NOMBRE_SOCIO";
@@ -126,7 +126,7 @@ namespace SICA
         public static bool EntregarDocumentosCarrito(string observacion)
         {
 
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
             int j = 0;
             DataTable dt = new DataTable();

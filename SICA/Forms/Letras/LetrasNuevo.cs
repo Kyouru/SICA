@@ -75,14 +75,14 @@ namespace SICA.Forms.Letras
                     strSQL += " '" + row.Cells["SOLICITUD"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["N_LIQ"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["NUMERO"].Value.ToString() + "',";
-                    strSQL += " #" + row.Cells["F_GIRO"].Value.ToString() + "#,";
-                    strSQL += " #" + row.Cells["F_VENCIMIENTO"].Value.ToString() + "#,";
+                    strSQL += " '" + row.Cells["F_GIRO"].Value.ToString() + "',";
+                    strSQL += " '" + row.Cells["F_VENCIMIENTO"].Value.ToString() + "',";
                     strSQL += " " + double.Parse(row.Cells["IMPORTE"].Value.ToString().Trim()) + ",";
                     strSQL += " '" + row.Cells["ACEPTANTE"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["MD"].Value.ToString() + "',";
                     strSQL += " 'CUSTODIADO',";
                     strSQL += " 'SAN ISIDRO',";
-                    strSQL += " #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#,";
+                    strSQL += " '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',";
                     strSQL += " '" + observacion + "',";
                     strSQL += " '" + row.Cells["SOCIO"].Value.ToString() + ";" + row.Cells["NOMBRE"].Value.ToString() + ";" + row.Cells["SOLICITUD"].Value.ToString() + ";" + row.Cells["ACEPTANTE"].Value.ToString() + "')";
 

@@ -12,7 +12,7 @@ namespace SICA.Forms.Pagare
     {
         public static bool RecibirPagareCarrito()
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
 
             try
@@ -71,7 +71,7 @@ namespace SICA.Forms.Pagare
         }
         public static bool EntregarPagareCarrito()
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
 
             try

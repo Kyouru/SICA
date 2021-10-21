@@ -297,7 +297,7 @@ namespace SICA.Forms.Recibir
 
                 string strSQL = "";
                 long lastinsertid;
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 Boolean pagare;
                 Boolean expediente;
 

@@ -13,7 +13,7 @@ namespace SICA.Forms.Boveda
             {
                 DataTable dt = new DataTable();
 
-                string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 strSQL = "SELECT ID_INVENTARIO_GENERAL_FK AS ID, ID_AUX_FK";
                 strSQL += " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK ";
                 strSQL += " WHERE TIPO = '" + Globals.strBovedaRetirarDOC + "'";
@@ -64,7 +64,7 @@ namespace SICA.Forms.Boveda
 
         public static bool GuardarDocCarrito()
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
 
             try
@@ -124,7 +124,7 @@ namespace SICA.Forms.Boveda
 
         public static bool GuardarCajaCarrito()
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
 
             try

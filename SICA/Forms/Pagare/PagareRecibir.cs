@@ -312,7 +312,7 @@ namespace SICA.Forms.Pagare
                                 return;
 
                             int lastinsertid = Conexion.lastIdInsert();
-                            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+                            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                             strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
                             strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + row["OBSERVACION ENTREGA"] + "', '" + row["OBSERVACION RECIBE"] + "', 1)";

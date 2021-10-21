@@ -19,7 +19,7 @@ namespace SICA.Forms.Pagare
 
         private void btRegistrar_Click(object sender, EventArgs e)
         {
-            string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, CODIGO_SOCIO, DESCRIPCION_3, DESCRIPCION_4, USUARIO_POSEE, CONCAT) ";
             strSQL += "VALUES (";
 
