@@ -13,15 +13,8 @@ namespace SICA
     {
         public static string lastSQL = "";
 
-        public static String configPathDB = Application.StartupPath + "\\config";
-        public static String DBPath = Application.StartupPath + "\\BD\\DB_SICA.accdb"; //caso nulo
-
-        public static String Provider = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=";
-        //public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\DB_SICA.accdb";
-
         public static String ExportarPath = Application.StartupPath + "\\Exportar\\";
         public static String strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
-        public static String DBPasswod = "Micaela";
 
         public static String mostrarSQL = "";
 

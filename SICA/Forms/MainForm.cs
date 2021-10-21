@@ -168,7 +168,6 @@ namespace SICA
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
             timer1_Tick(sender, e);
             GlobalFunctions.limpiarTodoCarrito();
         }

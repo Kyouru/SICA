@@ -34,6 +34,14 @@ namespace SICA.Forms
                     if (!Conexion.ejecutarQuery())
                         return;
 
+                    strSQL = "UPDATE USUARIO SET CAMBIAR_PASSWORD = 0 WHERE NOMBRE_USUARIO = '" + Globals.user + "'";
+
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return;
+
+                    if (!Conexion.ejecutarQuery())
+                        return;
+
                     Conexion.cerrar();
 
                     MessageBox.Show("Nueva Contraseña Establecida");

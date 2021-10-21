@@ -107,21 +107,23 @@ namespace SICA
                         tbPassword.Text = "";
                         Globals.pass = "";
                     }
-
-                    //Acceso Permitido
-                    if (Boolean.Parse(dt.Rows[0]["ACCESO_PERMITIDO"].ToString()) == true)
-                    {
-                        SimpleLog.Info(tbUsername.Text + " inicio Session Exitosamente");
-
-                        this.Hide();
-                        MainForm mf = new MainForm();
-                        mf.Closed += (s, args) => this.Close();
-                        mf.Show();
-                    }
                     else
                     {
-                        MessageBox.Show("Acceso no permitido\nContactarse con el Administrador");
-                        this.Close();
+                        //Acceso Permitido
+                        if (Boolean.Parse(dt.Rows[0]["ACCESO_PERMITIDO"].ToString()) == true)
+                        {
+                            SimpleLog.Info(tbUsername.Text + " inicio Session Exitosamente");
+
+                            this.Hide();
+                            MainForm mf = new MainForm();
+                            mf.Closed += (s, args) => this.Close();
+                            mf.Show();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Acceso no permitido\nContactarse con el Administrador");
+                            this.Close();
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -129,7 +131,6 @@ namespace SICA
                     GlobalFunctions.casoError(ex, "Error Login");
                     return;
                 }
-
             }
             else
             {
@@ -139,11 +140,6 @@ namespace SICA
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            string text = File.ReadAllText(Globals.configPathDB);
-            if (text != null)
-            {
-                Globals.DBPath = text;
-            }
             
         }
     }

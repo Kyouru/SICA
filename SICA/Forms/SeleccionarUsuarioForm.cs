@@ -101,7 +101,7 @@ namespace SICA.Forms
         {
             if (cmbArea.SelectedIndex >= 0)
             {
-                string strSQL = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = 1";
+                string strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
                 strSQL += " AND ID_USUARIO <> " + Globals.IdUsername;
                 strSQL += " AND ID_AREA_FK = " + cmbArea.SelectedValue + " ORDER BY ORDEN";
 
@@ -126,7 +126,7 @@ namespace SICA.Forms
 
                     cmbUsuario.DataSource = dt;
                     cmbUsuario.ValueMember = "ID_USUARIO";
-                    cmbUsuario.DisplayMember = "USERNAME";
+                    cmbUsuario.DisplayMember = "NOMBRE_USUARIO";
                 }
                 catch (Exception ex)
                 {

@@ -439,17 +439,6 @@ namespace SICA
 
         public static void casoError(Exception ex, string strSQL)
         {
-            try
-            {
-                string limpiarCarrito = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername;
-                Conexion.iniciaCommand(strSQL);
-                Conexion.ejecutarQuery();
-            }
-            catch
-            {
-
-            }
-            Conexion.cerrar();
             Globals.lastSQL = strSQL;
             SimpleLog.Log(ex);
             LoadingScreen.cerrarLoading();
@@ -563,7 +552,7 @@ namespace SICA
                     return false;
                 }
 
-                strSQL = "UPDATE USUARIO SET ULTIMA_ACTIVIDAD = #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "# WHERE ID_USUARIO = " + id;
+                strSQL = "UPDATE USUARIO SET ULTIMA_ACTIVIDAD = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE ID_USUARIO = " + id;
 
                 if (!Conexion.iniciaCommand(strSQL))
                 {
@@ -598,7 +587,7 @@ namespace SICA
 
                 Conexion.cerrar();
 
-                if (dt.Rows[0]["CERRAR_SESION"].ToString() == "True")
+                if (dt.Rows[0]["CERRAR_SESION"].ToString() == "1")
                 {
                     return true;
                 }
