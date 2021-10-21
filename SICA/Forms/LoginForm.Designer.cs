@@ -29,19 +29,74 @@ namespace SICA
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.btEntrar = new FontAwesome.Sharp.IconButton();
+            this.btCerrar = new FontAwesome.Sharp.IconButton();
+            this.pnTop = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbUsername = new System.Windows.Forms.TextBox();
-            this.tbPassword = new System.Windows.Forms.TextBox();
-            this.pnTop = new System.Windows.Forms.Panel();
             this.btMinimizar = new FontAwesome.Sharp.IconButton();
             this.btMaximizar = new FontAwesome.Sharp.IconButton();
-            this.btCerrar = new FontAwesome.Sharp.IconButton();
-            this.btEntrar = new FontAwesome.Sharp.IconButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPassword.Location = new System.Drawing.Point(117, 472);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '•';
+            this.tbPassword.Size = new System.Drawing.Size(223, 26);
+            this.tbPassword.TabIndex = 3;
+            this.tbPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassword_KeyDown);
+            // 
+            // btEntrar
+            // 
+            this.btEntrar.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
+            this.btEntrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btEntrar.IconChar = FontAwesome.Sharp.IconChar.Dungeon;
+            this.btEntrar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btEntrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btEntrar.IconSize = 50;
+            this.btEntrar.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btEntrar.Location = new System.Drawing.Point(348, 430);
+            this.btEntrar.Name = "btEntrar";
+            this.btEntrar.Size = new System.Drawing.Size(74, 70);
+            this.btEntrar.TabIndex = 6;
+            this.btEntrar.UseVisualStyleBackColor = true;
+            this.btEntrar.Click += new System.EventHandler(this.btEntrar_Click);
+            // 
+            // btCerrar
+            // 
+            this.btCerrar.FlatAppearance.BorderSize = 0;
+            this.btCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btCerrar.IconChar = FontAwesome.Sharp.IconChar.WindowClose;
+            this.btCerrar.IconColor = System.Drawing.Color.White;
+            this.btCerrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btCerrar.IconSize = 24;
+            this.btCerrar.Location = new System.Drawing.Point(409, 0);
+            this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
+            this.btCerrar.Name = "btCerrar";
+            this.btCerrar.Size = new System.Drawing.Size(26, 23);
+            this.btCerrar.TabIndex = 0;
+            this.btCerrar.UseVisualStyleBackColor = true;
+            this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click);
+            // 
+            // pnTop
+            // 
+            this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.pnTop.Controls.Add(this.btMinimizar);
+            this.pnTop.Controls.Add(this.btMaximizar);
+            this.pnTop.Controls.Add(this.btCerrar);
+            this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnTop.Location = new System.Drawing.Point(0, 0);
+            this.pnTop.Name = "pnTop";
+            this.pnTop.Size = new System.Drawing.Size(435, 27);
+            this.pnTop.TabIndex = 4;
+            this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             // 
             // label1
             // 
@@ -75,29 +130,6 @@ namespace SICA
             this.tbUsername.TabIndex = 2;
             this.tbUsername.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassword_KeyDown);
             // 
-            // tbPassword
-            // 
-            this.tbPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbPassword.Location = new System.Drawing.Point(117, 472);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.PasswordChar = '•';
-            this.tbPassword.Size = new System.Drawing.Size(223, 26);
-            this.tbPassword.TabIndex = 3;
-            this.tbPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassword_KeyDown);
-            // 
-            // pnTop
-            // 
-            this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.pnTop.Controls.Add(this.btMinimizar);
-            this.pnTop.Controls.Add(this.btMaximizar);
-            this.pnTop.Controls.Add(this.btCerrar);
-            this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnTop.Location = new System.Drawing.Point(0, 0);
-            this.pnTop.Name = "pnTop";
-            this.pnTop.Size = new System.Drawing.Size(435, 27);
-            this.pnTop.TabIndex = 4;
-            this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
-            // 
             // btMinimizar
             // 
             this.btMinimizar.FlatAppearance.BorderSize = 0;
@@ -106,7 +138,6 @@ namespace SICA
             this.btMinimizar.IconColor = System.Drawing.Color.White;
             this.btMinimizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btMinimizar.IconSize = 24;
-            this.btMinimizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btMinimizar.Location = new System.Drawing.Point(357, 0);
             this.btMinimizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMinimizar.Name = "btMinimizar";
@@ -123,7 +154,6 @@ namespace SICA
             this.btMaximizar.IconColor = System.Drawing.Color.White;
             this.btMaximizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btMaximizar.IconSize = 24;
-            this.btMaximizar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btMaximizar.Location = new System.Drawing.Point(383, 0);
             this.btMaximizar.Margin = new System.Windows.Forms.Padding(0);
             this.btMaximizar.Name = "btMaximizar";
@@ -131,39 +161,6 @@ namespace SICA
             this.btMaximizar.TabIndex = 1;
             this.btMaximizar.UseVisualStyleBackColor = true;
             this.btMaximizar.Click += new System.EventHandler(this.btMaximizar_Click);
-            // 
-            // btCerrar
-            // 
-            this.btCerrar.FlatAppearance.BorderSize = 0;
-            this.btCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btCerrar.IconChar = FontAwesome.Sharp.IconChar.WindowClose;
-            this.btCerrar.IconColor = System.Drawing.Color.White;
-            this.btCerrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btCerrar.IconSize = 24;
-            this.btCerrar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCerrar.Location = new System.Drawing.Point(409, 0);
-            this.btCerrar.Margin = new System.Windows.Forms.Padding(0);
-            this.btCerrar.Name = "btCerrar";
-            this.btCerrar.Size = new System.Drawing.Size(26, 23);
-            this.btCerrar.TabIndex = 0;
-            this.btCerrar.UseVisualStyleBackColor = true;
-            this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click);
-            // 
-            // btEntrar
-            // 
-            this.btEntrar.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
-            this.btEntrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btEntrar.IconChar = FontAwesome.Sharp.IconChar.Dungeon;
-            this.btEntrar.IconColor = System.Drawing.Color.Gainsboro;
-            this.btEntrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btEntrar.IconSize = 50;
-            this.btEntrar.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btEntrar.Location = new System.Drawing.Point(348, 430);
-            this.btEntrar.Name = "btEntrar";
-            this.btEntrar.Size = new System.Drawing.Size(74, 70);
-            this.btEntrar.TabIndex = 6;
-            this.btEntrar.UseVisualStyleBackColor = true;
-            this.btEntrar.Click += new System.EventHandler(this.btEntrar_Click);
             // 
             // pictureBox1
             // 
@@ -201,16 +198,15 @@ namespace SICA
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbUsername;
         private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Panel pnTop;
+        private FontAwesome.Sharp.IconButton btEntrar;
         private FontAwesome.Sharp.IconButton btCerrar;
+        private System.Windows.Forms.Panel pnTop;
+        private System.Windows.Forms.Label label1;
         private FontAwesome.Sharp.IconButton btMinimizar;
         private FontAwesome.Sharp.IconButton btMaximizar;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbUsername;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private FontAwesome.Sharp.IconButton btEntrar;
     }
 }

@@ -98,8 +98,8 @@ namespace SICA.Forms.IronMountain
                 strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IH.NUMERO_CAJA";
 
                 strSQL += " WHERE IH.ID_USUARIO_ENTREGA_FK = " + Globals.IdIM;
-                strSQL += " AND IH.ANULADO = FALSE";
-                strSQL += " AND IH.RECIBIDO = FALSE";
+                strSQL += " AND IH.ANULADO = 0";
+                strSQL += " AND IH.RECIBIDO = 0";
                 strSQL += " AND IH.FECHA_FIN IS NULL";
                 strSQL += " AND TC.ID_TMP_CARRITO IS NULL";
 

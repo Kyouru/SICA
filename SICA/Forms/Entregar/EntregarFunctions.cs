@@ -51,11 +51,11 @@ namespace SICA
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL += fecha + ", TRUE)";
+                        strSQL += fecha + ", 1)";
                     }
                     else
                     {
-                        strSQL += "NULL, FALSE)";
+                        strSQL += "NULL, 0)";
                     }
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -163,11 +163,11 @@ namespace SICA
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL += fecha + ", TRUE)";
+                        strSQL += fecha + ", 1)";
                     }
                     else
                     {
-                        strSQL += " NULL, FALSE)";
+                        strSQL += " NULL, 0)";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))

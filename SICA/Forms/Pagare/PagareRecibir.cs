@@ -35,7 +35,7 @@ namespace SICA.Forms.Pagare
                 System.Data.DataTable dt;
 
                 strSQL = @"SELECT ID_PAGARE, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, FORMAT(FECHA_INICIO, 'dd/MM/yyyy hh:mm:ss') AS FECHA_INICIO
-                        FROM PAGARE PA LEFT JOIN PAGARE_HISTORICO PH ON PA.ID_PAGARE = PH.ID_PAGARE_FK WHERE PH.ANULADO = FALSE AND PH.RECIBIDO = FALSE AND PH.ID_USUARIO_RECIBE_FK = " + Globals.IdUsername;
+                        FROM PAGARE PA LEFT JOIN PAGARE_HISTORICO PH ON PA.ID_PAGARE = PH.ID_PAGARE_FK WHERE PH.ANULADO = 0 AND PH.RECIBIDO = 0 AND PH.ID_USUARIO_RECIBE_FK = " + Globals.IdUsername;
 
                 strSQL += " ORDER BY SOLICITUD_SISGO DESC";
 
@@ -109,7 +109,7 @@ namespace SICA.Forms.Pagare
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL2 = TRUE";
+                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
@@ -134,7 +134,7 @@ namespace SICA.Forms.Pagare
             if (ofd.ShowDialog() == DialogResult.OK)
             {
 
-                Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL2 = TRUE AND CUSTODIA = FALSE";
+                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
@@ -315,7 +315,7 @@ namespace SICA.Forms.Pagare
                             string fecha = "#" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#";
 
                             strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + row["OBSERVACION ENTREGA"] + "', '" + row["OBSERVACION RECIBE"] + "', TRUE)";
+                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + row["OBSERVACION ENTREGA"] + "', '" + row["OBSERVACION RECIBE"] + "', 1)";
 
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;

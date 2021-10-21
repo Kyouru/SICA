@@ -16,13 +16,14 @@ namespace SICA.Forms
         private void SeleccionarUsuarioForm_Load(object sender, EventArgs e)
         {
             Globals.IdUsernameSelect = -1;
-            string strSQL = Globals.strQueryUser;
-            DataTable dt = new DataTable("USUARIO");
 
-            strSQL += " AND ID_USUARIO <> " + Globals.IdUsername + " ORDER BY ORDEN";
+            string strSQL = "SELECT ID_AREA, NOMBRE_AREA FROM AREA WHERE ANULADO = 0";
+            strSQL += " ORDER BY ORDEN";
 
             try
             {
+                DataTable dt = new DataTable("AREA");
+
                 if (!Conexion.conectar())
                     return;
 
@@ -38,16 +39,15 @@ namespace SICA.Forms
 
                 Conexion.cerrar();
 
-                cmbUsuario.DataSource = dt;
-                cmbUsuario.ValueMember = "ID_USUARIO";
-                cmbUsuario.DisplayMember = "USERNAME";
-                LoadingScreen.cerrarLoading();
+                cmbArea.DataSource = dt;
+                cmbArea.ValueMember = "ID_AREA";
+                cmbArea.DisplayMember = "NOMBRE_AREA";
             }
             catch (Exception ex)
             {
                 GlobalFunctions.casoError(ex, strSQL);
             }
-            
+
         }
 
         private void btSeleccionar_Click(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace SICA.Forms
             {
                 Globals.IdUsernameSelect = Int32.Parse(cmbUsuario.SelectedValue.ToString());
                 Globals.UsernameSelect = cmbUsuario.Text;
-                string strSQL = "SELECT CUSTODIA FROM USUARIO WHERE ID_USUARIO = " + Globals.IdUsernameSelect;
+                string strSQL = "SELECT ID_AREA_FK FROM USUARIO WHERE ID_USUARIO = " + Globals.IdUsernameSelect;
                 try
                 {
                     if (!Conexion.conectar())
@@ -71,7 +71,7 @@ namespace SICA.Forms
                         return;
                     Conexion.cerrar();
 
-                    if (dt.Rows[0][0].ToString() == "True")
+                    if (dt.Rows[0][0].ToString() == "1")
                     {
                         Globals.EntregarConfirmacion = true;
                         Globals.strEntregarEstado = "CUSTODIADO";
@@ -89,44 +89,54 @@ namespace SICA.Forms
                     GlobalFunctions.casoError(ex, strSQL);
                 }
             }
-            else
-            {
-                DialogResult dialogResult = MessageBox.Show("Usuario no existe.\nDesea Crear?", "Usuario no ingresado", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    string strSQL = "INSERT INTO USUARIO (USERNAME, ADMIN, REAL2, CUSTODIA, BOVEDA) VALUES ('" + cmbUsuario.Text + "', FALSE, TRUE, FALSE, 0)";
-                    try
-                    {
-                        if (!Conexion.conectar())
-                            return;
-
-                        if (!Conexion.iniciaCommand(strSQL))
-                            return;
-
-                        if (!Conexion.ejecutarQuery())
-                            return;
-
-                        Globals.IdUsernameSelect = Conexion.lastIdInsert();
-
-                        Conexion.cerrar();
-                        LoadingScreen.cerrarLoading();
-
-                        Globals.UsernameSelect = cmbUsuario.Text;
-                        Globals.EntregarConfirmacion = false;
-                        this.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        GlobalFunctions.casoError(ex, strSQL);
-                    }
-                }
-            }
         }
 
         private void cmbUsuario_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar >= 'a' && e.KeyChar <= 'z')
                 e.KeyChar -= (char)32;
+        }
+
+        private void cmbArea_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbArea.SelectedIndex >= 0)
+            {
+                string strSQL = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL = 1";
+                strSQL += " AND ID_USUARIO <> " + Globals.IdUsername;
+                strSQL += " AND ID_AREA_FK = " + cmbArea.SelectedValue + " ORDER BY ORDEN";
+
+                DataTable dt = new DataTable("USUARIO");
+
+                try
+                {
+                    if (!Conexion.conectar())
+                        return;
+
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return;
+
+                    if (!Conexion.ejecutarQuery())
+                        return;
+
+                    dt = Conexion.llenarDataTable();
+                    if (dt is null)
+                        return;
+
+                    Conexion.cerrar();
+
+                    cmbUsuario.DataSource = dt;
+                    cmbUsuario.ValueMember = "ID_USUARIO";
+                    cmbUsuario.DisplayMember = "USERNAME";
+                }
+                catch (Exception ex)
+                {
+                    GlobalFunctions.casoError(ex, strSQL);
+                }
+            }
+            else
+            {
+                cmbUsuario.DataSource = null;
+            }
         }
     }
 }

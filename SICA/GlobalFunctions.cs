@@ -491,7 +491,7 @@ namespace SICA
             string strSQL = "";
             try
             {
-                strSQL = "SELECT COUNT(*) FROM INVENTARIO_HISTORICO WHERE RECIBIDO = FALSE AND ANULADO = FALSE AND ID_USUARIO_RECIBE_FK = " + Globals.IdUsername;
+                strSQL = "SELECT COUNT(*) FROM INVENTARIO_HISTORICO WHERE RECIBIDO = 0 AND ANULADO = 0 AND ID_USUARIO_RECIBE_FK = " + Globals.IdUsername;
                 if (!Conexion.conectar())
                 {
                     return -1;

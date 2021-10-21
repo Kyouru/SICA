@@ -29,7 +29,7 @@ namespace SICA.Forms.Pagare
                 {
                     if (tbNombre.Text != "")
                     {
-                        Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL2 = TRUE AND CUSTODIA = FALSE";
+                        Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                         SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                         suf.ShowDialog();
                         if (Globals.IdUsernameSelect > 0)
@@ -57,7 +57,7 @@ namespace SICA.Forms.Pagare
                             int lastinsertid = Conexion.lastIdInsert();
 
                             strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
+                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
 
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;

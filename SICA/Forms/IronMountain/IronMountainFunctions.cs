@@ -106,7 +106,7 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [ID_USUARIO_RECIBE_FK] = " + Globals.IdUsername + ", [FECHA_FIN] = " + fecha + ", [RECIBIDO] = TRUE WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND RECIBIDO = FALSE AND FECHA_FIN IS NULL AND ID_USUARIO_ENTREGA_FK = " + Globals.IdIM;
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [ID_USUARIO_RECIBE_FK] = " + Globals.IdUsername + ", [FECHA_FIN] = " + fecha + ", [RECIBIDO] = 1 WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND RECIBIDO = 0 AND FECHA_FIN IS NULL AND ID_USUARIO_ENTREGA_FK = " + Globals.IdIM;
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -283,7 +283,7 @@ namespace SICA
                     return false;
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [ID_USUARIO_ENTREGA_FK] = " + Globals.IdUsername + ", [FECHA_FIN] = " + fecha + ", [RECIBIDO] = TRUE WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND RECIBIDO = FALSE AND FECHA_FIN IS NULL AND ID_USUARIO_RECIBE_FK = " + Globals.IdIM;
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [ID_USUARIO_ENTREGA_FK] = " + Globals.IdUsername + ", [FECHA_FIN] = " + fecha + ", [RECIBIDO] = 1 WHERE NUMERO_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND RECIBIDO = 0 AND FECHA_FIN IS NULL AND ID_USUARIO_RECIBE_FK = " + Globals.IdIM;
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

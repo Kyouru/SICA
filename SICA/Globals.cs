@@ -20,12 +20,15 @@ namespace SICA
         //public static String DBconnectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=\\\\pacifico-4\\E\\digitalizacion\\CUSTODIA\\SICA\\BD\\DB_SICA.accdb";
 
         public static String ExportarPath = Application.StartupPath + "\\Exportar\\";
-
-        public static String strQueryUser = "SELECT ID_USUARIO, USERNAME FROM USUARIO WHERE REAL2 = TRUE";
-
+        public static String strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
         public static String DBPasswod = "Micaela";
 
         public static String mostrarSQL = "";
+
+        public static String user = "";
+        public static String pass = "";
+
+        public static Int32 IdArea = -1;
 
         public static Int32 IdUsername = -1;
         public static String Username = "";

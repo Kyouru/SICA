@@ -241,7 +241,7 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION, RECIBIDO) VALUES (" + row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION, RECIBIDO) VALUES (" + row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -299,7 +299,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = " + fecha + ", [RECIBIDO] = TRUE, [OBSERVACION_RECIBE] = '" + observacion + "' WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = FALSE AND ANULADO = FALSE";
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = " + fecha + ", [RECIBIDO] = 1, [OBSERVACION_RECIBE] = '" + observacion + "' WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = 0 AND ANULADO = 0";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using SimpleLogger;
 using System.IO;
+using SICA.Forms;
 
 namespace SICA
 {
@@ -65,14 +66,16 @@ namespace SICA
 
         private void entrar()
         {
-            if (tbPassword.Text != "")
+            if (tbPassword.Text != "" && tbUsername.Text != "")
             {
-                DataTable dt = new DataTable("Password");
-
-                String strSQL = "SELECT PASSWORD, ID_USUARIO, CERRAR_SESION FROM USUARIO WHERE USERNAME = @username AND REAL2 = TRUE";
+                Globals.user = tbUsername.Text;
+                Globals.pass = tbPassword.Text;
 
                 try
                 {
+                    DataTable dt = new DataTable("Password");
+                    String strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO, ID_AREA_FK, CAMBIAR_PASSWORD, ACCESO_PERMITIDO FROM USUARIO WHERE NOMBRE_USUARIO = @username AND REAL = 1";
+
                     if (!Conexion.conectar())
                         return;
 
@@ -87,79 +90,50 @@ namespace SICA
                     dt = Conexion.llenarDataTable();
                     if (dt is null)
                         return;
+
                     Conexion.cerrar();
-                }
-                catch (Exception ex)
-                {
-                    GlobalFunctions.casoError(ex, strSQL);
-                    return;
-                }
 
-                if (dt.Rows.Count == 0)
-                {
-                    MessageBox.Show("Usuario o Contraseña Errada");
-                    return;
-                }
 
-                if (dt.Rows[0]["CERRAR_SESION"].ToString() == "True")
-                {
-                    MessageBox.Show("Sesion Cerrada");
-                    return;
-                }
+                    Globals.Username = tbUsername.Text;
+                    Globals.IdUsername = Int32.Parse(dt.Rows[0]["ID_USUARIO"].ToString());
+                    Globals.IdArea = Int32.Parse(dt.Rows[0]["ID_AREA_FK"].ToString());
 
-                if (dt.Rows[0][0].ToString() != "")
-                {
-                    if (dt.Rows[0][0].ToString() == GlobalFunctions.sha256(tbPassword.Text).ToUpper())
+                    //Cambiar Password
+                    if (Boolean.Parse(dt.Rows[0]["CAMBIAR_PASSWORD"].ToString()) == true)
+                    {
+                        CambiarPasswordForm vCambiar = new CambiarPasswordForm();
+                        vCambiar.ShowDialog();
+                        SimpleLog.Info(tbUsername.Text + " cambió su contraseña");
+                        tbPassword.Text = "";
+                        Globals.pass = "";
+                    }
+
+                    //Acceso Permitido
+                    if (Boolean.Parse(dt.Rows[0]["ACCESO_PERMITIDO"].ToString()) == true)
                     {
                         SimpleLog.Info(tbUsername.Text + " inicio Session Exitosamente");
+
                         this.Hide();
-                        Globals.Username = tbUsername.Text;
-                        Globals.IdUsername = Int32.Parse(dt.Rows[0][1].ToString());
                         MainForm mf = new MainForm();
                         mf.Closed += (s, args) => this.Close();
                         mf.Show();
                     }
                     else
                     {
-                        MessageBox.Show("Usuario o Contraseña Errada");
-                        return;
+                        MessageBox.Show("Acceso no permitido\nContactarse con el Administrador");
+                        this.Close();
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    DialogResult dialogResult = MessageBox.Show("Usuario no tiene contraseña\nDesea Considerar esta contraseña?", "Usuario no tiene contraseña", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        try
-                        {
-                            if (!Conexion.conectar())
-                                return;
-
-                            strSQL = "UPDATE USUARIO SET [PASSWORD] = @password WHERE [USERNAME] = @username";
-                            if (!Conexion.iniciaCommand(strSQL))
-                                return;
-
-                            if (!Conexion.agregarParametroCommand("@password", GlobalFunctions.sha256(tbPassword.Text).ToUpper()))
-                                return;
-                            if (!Conexion.agregarParametroCommand("@username", tbUsername.Text))
-                                return;
-
-                            if (!Conexion.ejecutarQuery())
-                                return;
-
-                            Conexion.cerrar();
-                            MessageBox.Show("Contraseña actualizada");
-                        }
-                        catch (Exception ex)
-                        {
-                            GlobalFunctions.casoError(ex, strSQL);
-                        }
-                    }
+                    GlobalFunctions.casoError(ex, "Error Login");
+                    return;
                 }
+
             }
             else
             {
-                MessageBox.Show("Contraseña vacia\nEn caso no tenga, escriba una.");
+                MessageBox.Show("Usuario/Contraseña vacio");
             }
         }
 

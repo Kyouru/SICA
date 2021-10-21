@@ -3,8 +3,10 @@ using SICA.Forms;
 using SimpleLogger;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -13,15 +15,26 @@ namespace SICA
 {
     class Conexion
     {
-        public static OleDbConnection connection;
-        public static OleDbCommand command;
-        public static OleDbDataAdapter adapter;
-
+        public static SqlConnection connection;
+        public static SqlCommand command;
+        public static SqlDataReader reader;
         public static bool conectar()
         {
             try
             {
-                connection = new OleDbConnection(Globals.Provider + Globals.DBPath);
+                ConnString connString = new ConnString();
+                string conexion;
+                if (ConfigurationManager.AppSettings["customConnection"].ToString() != "")
+                {
+                    conexion = ConfigurationManager.AppSettings["customConnection"].ToString();
+                }
+                else
+                {
+                    conexion = connString.GetString(ConfigurationManager.AppSettings["ambiente"].ToString());
+                }
+                conexion = conexion.Replace("@USER@", Globals.user);
+                conexion = conexion.Replace("@PASS@", Globals.pass);
+                connection = new SqlConnection(conexion);
                 connection.Open();
                 return true;
             }
@@ -31,11 +44,12 @@ namespace SICA
                 return false;
             }
         }
+
         public static bool iniciaCommand(string strSQL)
         {
             try
             {
-                command = new OleDbCommand(strSQL, connection);
+                command = new SqlCommand(strSQL, connection);
                 return true;
             }
             catch (Exception ex)
@@ -44,6 +58,7 @@ namespace SICA
                 return false;
             }
         }
+
         public static bool agregarParametroCommand(string nombre, string valor)
         {
             try
@@ -71,6 +86,7 @@ namespace SICA
                 return false;
             }
         }
+
         public static int ejecutarQueryReturn()
         {
             try
@@ -101,8 +117,8 @@ namespace SICA
             DataTable dt = new DataTable();
             try
             {
-                adapter = new OleDbDataAdapter(command);
-                adapter.Fill(dt);
+                reader = command.ExecuteReader();
+                dt.Load(reader);
                 return dt;
             }
             catch (Exception ex)
@@ -111,9 +127,10 @@ namespace SICA
                 return null;
             }
         }
+
         public static int lastIdInsert()
         {
-            OleDbCommand cmd2 = new OleDbCommand("SELECT @@IDENTITY", connection);
+            SqlCommand cmd2 = new SqlCommand("SELECT @@IDENTITY", connection);
             try
             {
                 return Convert.ToInt32(cmd2.ExecuteScalar());
@@ -124,7 +141,6 @@ namespace SICA
                 return -1;
             }
         }
-        
 
         public static void cerrar()
         {
@@ -150,8 +166,8 @@ namespace SICA
 
             try
             {
-                if (adapter != null)
-                    adapter.Dispose();
+                if (reader != null)
+                    reader.Dispose();
             }
             catch (Exception ex)
             {
@@ -166,35 +182,6 @@ namespace SICA
             catch (Exception ex)
             {
                 SimpleLog.Log(ex);
-            }
-        }
-
-        public static bool existePagare(string solicitud, bool conectar)
-        {
-            DataTable dt;
-            string strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + solicitud + "'";
-
-            if (conectar)
-            {
-                Conexion.conectar();
-            }
-
-            Conexion.iniciaCommand(strSQL);
-            Conexion.ejecutarQuery();
-            dt = Conexion.llenarDataTable();
-
-            if (conectar)
-            {
-                Conexion.cerrar();
-            }
-
-            if (dt.Rows.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }

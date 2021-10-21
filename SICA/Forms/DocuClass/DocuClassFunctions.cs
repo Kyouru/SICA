@@ -35,7 +35,7 @@ namespace SICA.Forms.DocuClass
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdDC + ", '" + row["ID_INVENTARIO_GENERAL_FK"].ToString() + "', " + fecha + ", " + fecha + ", TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdDC + ", '" + row["ID_INVENTARIO_GENERAL_FK"].ToString() + "', " + fecha + ", " + fecha + ", 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -93,7 +93,7 @@ namespace SICA.Forms.DocuClass
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdDC + ", " + Globals.IdUsername + ", '" + row["ID_INVENTARIO_GENERAL_FK"].ToString() + "', " + fecha + ", " + fecha + ", TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdDC + ", " + Globals.IdUsername + ", '" + row["ID_INVENTARIO_GENERAL_FK"].ToString() + "', " + fecha + ", " + fecha + ", 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

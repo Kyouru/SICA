@@ -37,7 +37,7 @@ namespace SICA.Forms.Boveda
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + row["ID"].ToString() + ", " + row["ID_AUX_FK"].ToString() + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + row["ID"].ToString() + ", " + row["ID_AUX_FK"].ToString() + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -89,7 +89,7 @@ namespace SICA.Forms.Boveda
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -148,7 +148,7 @@ namespace SICA.Forms.Boveda
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, NUMERO_CAJA, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["NUMERO_DE_CAJA"].ToString() + "', " + fecha + ", " + fecha + ", TRUE)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, NUMERO_CAJA, FECHA_INICIO, FECHA_FIN, RECIBIDO) VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", '" + row["NUMERO_DE_CAJA"].ToString() + "', " + fecha + ", " + fecha + ", 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

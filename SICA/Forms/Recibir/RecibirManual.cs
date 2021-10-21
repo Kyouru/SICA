@@ -87,7 +87,7 @@ namespace SICA.Forms.Recibir
                         }
                         else
                         {
-                            Globals.strQueryUser = "SELECT ID_USUARIO, USERNAME, CUSTODIA FROM USUARIO WHERE REAL2 = TRUE AND CUSTODIA = FALSE";
+                            Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                             suf.ShowDialog();
                             if (Globals.IdUsernameSelect > 0)
@@ -161,7 +161,7 @@ namespace SICA.Forms.Recibir
 
                                 int lastinsertid = Conexion.lastIdInsert();
 
-                                strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
+                                strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
 
                                 if (!Conexion.iniciaCommand(strSQL))
                                     return;
@@ -171,7 +171,7 @@ namespace SICA.Forms.Recibir
                                 if (cmbExpediente.Visible && cmbExpediente.Text == "SI")
                                 {
                                     strSQL = "INSERT INTO EXPEDIENTE_TRANSITO (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO, FECHA_ENTRADA) VALUES ('";
-                                    strSQL += tbDescripcion2.Text + "', TRUE, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
+                                    strSQL += tbDescripcion2.Text + "', 1, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
@@ -181,7 +181,7 @@ namespace SICA.Forms.Recibir
                                 if (cmbPagare.Visible && cmbPagare.Text == "SI")
                                 {
                                     strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO, FECHA_ENTRADA) VALUES ('";
-                                    strSQL += tbDescripcion2.Text + "', TRUE, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
+                                    strSQL += tbDescripcion2.Text + "', 1, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', #" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "#)";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;

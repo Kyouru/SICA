@@ -38,7 +38,7 @@ namespace SICA.Forms.Pagare
                 foreach (DataRow row in dt.Rows)
                 {
                     strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + observacion + "', TRUE)";
+                    strSQL += Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -94,7 +94,7 @@ namespace SICA.Forms.Pagare
                 if (dt is null)
                     return false;
 
-                strSQL = "SELECT * FROM USUARIO WHERE CUSTODIA = TRUE AND ID_USUARIO = " + Globals.IdUsernameSelect;
+                strSQL = "SELECT * FROM USUARIO WHERE CUSTODIA = 1 AND ID_USUARIO = " + Globals.IdUsernameSelect;
 
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
@@ -102,11 +102,11 @@ namespace SICA.Forms.Pagare
                 string recibido;
                 if (Conexion.ejecutarQueryReturn() > 0)
                 {
-                    recibido = "FALSE";
+                    recibido = "0";
                 }
                 else
                 {
-                    recibido = "TRUE";
+                    recibido = "1";
                 }
 
                 foreach (DataRow row in dt.Rows)
