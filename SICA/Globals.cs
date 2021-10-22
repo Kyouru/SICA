@@ -11,6 +11,7 @@ namespace SICA
 {
     public static class Globals
     {
+        public static Int32 loginsuccess = 0;
         public static string lastSQL = "";
 
         public static String ExportarPath = Application.StartupPath + "\\Exportar\\";

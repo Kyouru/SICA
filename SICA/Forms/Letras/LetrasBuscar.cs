@@ -66,7 +66,7 @@ namespace SICA.Forms.Letras
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)

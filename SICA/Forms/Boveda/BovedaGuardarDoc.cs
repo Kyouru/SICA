@@ -126,7 +126,7 @@ namespace SICA.Forms.Boveda
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)

@@ -123,8 +123,8 @@ namespace SICA.Forms.IronMountain
                     return;
                 foreach (DataGridViewRow row in dgv.SelectedRows)
                 {
-                    string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (";
-                    strSQL += row.Cells["ID"].Value.ToString() + ", " + dgv.SelectedRows[0].Cells["ID_BOVEDA"].Value.ToString() + ", " + Globals.IdUsername + ", '" + tipo_carrito + "', '" + row.Cells["CAJA"].Value.ToString() + "')";
+                    string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (";
+                    strSQL += row.Cells["ID"].Value.ToString() + ", " + Globals.IdUsername + ", '" + tipo_carrito + "', '" + row.Cells["CAJA"].Value.ToString() + "')";
                     try
                     {
                         if (!Conexion.iniciaCommand(strSQL))
@@ -157,7 +157,7 @@ namespace SICA.Forms.IronMountain
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)

@@ -17,6 +17,10 @@ namespace SICA
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LoginForm());
+            if (Globals.loginsuccess == 1)
+            {
+                Application.Run(new MainForm());
+            }
         }
     }
 }

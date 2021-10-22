@@ -85,7 +85,7 @@ namespace SICA.Forms.Boveda
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private bool validarCaja(string numero_caja, string boveda)
@@ -135,7 +135,7 @@ namespace SICA.Forms.Boveda
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO, NUMERO_CAJA) VALUES (" + id_boveda + ", " + Globals.IdUsername + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", 1, '" + numero_caja + "')";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, FECHA_FIN, RECIBIDO, NUMERO_CAJA, ANULADO) VALUES (" + id_boveda + ", " + Globals.IdUsername + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", 1, '" + numero_caja + "', 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

@@ -49,11 +49,13 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION) VALUES (";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, FECHA_INICIO, NUMERO_CAJA, OBSERVACION, RECIBIDO, ANULADO) VALUES (";
                     strSQL += Globals.IdIM;
                     strSQL += ", " + fecha + "";
                     strSQL += ", '" + row["NUMERO_CAJA"].ToString() + "'";
-                    strSQL += ", '" + Globals.Username + "')";
+                    strSQL += ", '" + Globals.Username + "'";
+                    strSQL += ", 0";
+                    strSQL += ", 0)";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -234,11 +236,13 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_RECIBE_FK, NUMERO_CAJA, FECHA_INICIO, OBSERVACION) VALUES (";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_RECIBE_FK, NUMERO_CAJA, FECHA_INICIO, OBSERVACION, RECIBIDO, ANULADO) VALUES (";
                     strSQL += "" + Globals.IdIM;
                     strSQL += ", '" + row["NUMERO_CAJA"].ToString() + "'";
                     strSQL += ", " + fecha + "";
-                    strSQL += ", '" + Globals.Username + "')";
+                    strSQL += ", '" + Globals.Username + "'";
+                    strSQL += ", 0";
+                    strSQL += ", 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

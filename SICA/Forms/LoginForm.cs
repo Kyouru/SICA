@@ -106,6 +106,7 @@ namespace SICA
                         SimpleLog.Info(tbUsername.Text + " cambió su contraseña");
                         tbPassword.Text = "";
                         Globals.pass = "";
+                        Globals.loginsuccess = 0;
                     }
                     else
                     {
@@ -113,14 +114,12 @@ namespace SICA
                         if (Boolean.Parse(dt.Rows[0]["ACCESO_PERMITIDO"].ToString()) == true)
                         {
                             SimpleLog.Info(tbUsername.Text + " inicio Session Exitosamente");
-
-                            this.Hide();
-                            MainForm mf = new MainForm();
-                            mf.Closed += (s, args) => this.Close();
-                            mf.Show();
+                            Globals.loginsuccess = 1;
+                            this.Close();
                         }
                         else
                         {
+                            Globals.loginsuccess = 0;
                             MessageBox.Show("Acceso no permitido\nContactarse con el Administrador");
                             this.Close();
                         }

@@ -136,6 +136,8 @@ namespace SICA
                 Workbook xlWorkBook = xlApp.Workbooks.Add(Type.Missing);
                 Worksheet xlWorkSheet = null;
 
+                xlWorkSheet.EnableCalculation = false;
+
                 xlApp.ScreenUpdating = false;
                 xlApp.Calculation = XlCalculation.xlCalculationManual;
 
@@ -156,6 +158,7 @@ namespace SICA
                         xlWorkSheet.Cells[i + 2, j + 1] = dgv.Rows[i].Cells[j].Value.ToString();
                     }
                 }
+                xlWorkSheet.EnableCalculation = true;
                 // save the application  
                 xlWorkBook.SaveAs(fileName, XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
@@ -174,15 +177,6 @@ namespace SICA
         }
         public static void ExportarDataGridViewCSV(DataGridView dgv, string fileName)
         {
-            if (dgv.Rows.Count > 500)
-            {
-                DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 500 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
-                if (dialogResult != DialogResult.Yes)
-                {
-                    return;
-                }
-            }
-
             LoadingScreen.iniciarLoading();
 
             if (Directory.Exists(Globals.ExportarPath))
@@ -194,45 +188,29 @@ namespace SICA
                 fileName = Globals.ExportarPath + "EXPORTAR_" + Globals.Username + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".csv";
             }
 
-            int cols;
-
             try
             {
-                StreamWriter wr = new StreamWriter(fileName);
-                cols = dgv.Columns.Count;
-                for (int j = 0; j < dgv.Columns.Count; j++)
+                string[] outputCsv = new string[dgv.Rows.Count + 1];
+                string columnNames = "";
+
+                for (int i = 0; i < dgv.Columns.Count; i++)
                 {
-                    wr.Write(dgv.Columns[j].Name + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                    columnNames += dgv.Columns[i].HeaderText.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
                 }
-                wr.WriteLine();
+                outputCsv[0] += columnNames;
 
                 //Recorremos el DataTable rellenando la hoja de trabajo
-                for (int i = 0; i < dgv.Rows.Count; i++)
+                for (int i = 1; (i - 1) < dgv.Rows.Count - 1; i++)
                 {
                     for (int j = 0; j < dgv.Columns.Count; j++)
                     {
                         if (dgv.Rows[i].Cells[j] != null)
                         {
-                            if (GlobalFunctions.IsDate(dgv.Rows[i].Cells[j].Value.ToString()))
-                            {
-                                try
-                                {
-                                    wr.Write(DateTime.Parse(dgv.Rows[i].Cells[j].Value.ToString()).ToString("yyyy-MM-dd") + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-                                }
-                                catch
-                                {
-                                    wr.Write("'" + dgv.Rows[i].Cells[j].Value.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-                                }
-                            }
-                            else
-                            {
-                                wr.Write(dgv.Rows[i].Cells[j].Value.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-                            }
+                            outputCsv[i] += dgv.Rows[i - 1].Cells[j].Value.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
                         }
                     }
-                    wr.WriteLine();
                 }
-                wr.Close();
+                File.WriteAllLines(fileName, outputCsv, Encoding.UTF8);
 
                 Process.Start(fileName);
 
@@ -629,6 +607,26 @@ namespace SICA
             ReleaseObject(xlWorkSheet);
             ReleaseObject(xlWorkBook);
             ReleaseObject(xlApp);
+        }
+
+        public static string actualizarCantidad(string tipocarrito)
+        {
+            string vRet;
+            string strSQL = "SELECT COUNT(*) FROM TMP_CARRITO WHERE TIPO = '" + tipocarrito + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+            try
+            {
+                Conexion.conectar();
+                Conexion.iniciaCommand(strSQL);
+
+                vRet = "(" + Conexion.ejecutarQueryEscalar() + ")";
+
+                Conexion.cerrar();
+                return vRet;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

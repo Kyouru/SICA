@@ -157,17 +157,17 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO) 
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO, ANULADO) 
                             VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "', ";
 
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL += fecha + ", 1)";
+                        strSQL += fecha + ", 1, 0)";
                     }
                     else
                     {
-                        strSQL += " NULL, 0)";
+                        strSQL += " NULL, 0, 0)";
                     }
 
                     if (!Conexion.iniciaCommand(strSQL))

@@ -98,7 +98,7 @@ namespace SICA
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgvBusqueda, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgvBusqueda, null);
         }
 
         private void dgvBusqueda_KeyDown(object sender, KeyEventArgs e)

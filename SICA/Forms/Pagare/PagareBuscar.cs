@@ -19,7 +19,7 @@ namespace SICA.Forms.Pagare
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void btBuscar_Click(object sender, EventArgs e)

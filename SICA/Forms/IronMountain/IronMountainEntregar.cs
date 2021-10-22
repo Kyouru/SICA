@@ -12,7 +12,7 @@ namespace SICA.Forms.IronMountain
         public IronMountainEntregar()
         {
             InitializeComponent();
-            actualizarCantidad();
+            lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
         }
 
 
@@ -22,7 +22,7 @@ namespace SICA.Forms.IronMountain
             {
                 IronMountainFunctions.EntregarCajasCarrito();
                 cantidadcarrito = 0;
-                actualizarCantidad();
+                lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
                 btActualizar_Click(sender, e);
             }
         }
@@ -53,30 +53,21 @@ namespace SICA.Forms.IronMountain
                 }
                 Conexion.cerrar();
 
-                foreach (DataGridViewRow row in dgv.SelectedRows)
-                {
-                    if (!row.IsNewRow)
-                        dgv.Rows.Remove(row);
-                }
-                actualizarCantidad();
+                lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
             }
         }
 
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + cantidadcarrito + ")";
-        }
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
             cantidadcarrito = 0;
-            actualizarCantidad();
+            lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
         }
 
         private void btVerCarrito_Click(object sender, EventArgs e)

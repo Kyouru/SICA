@@ -11,7 +11,7 @@ namespace SICA.Forms.IronMountain
         public IronMountainRecibir()
         {
             InitializeComponent();
-            actualizarCantidad();
+            lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
         }
 
         private void btSiguiente_Click(object sender, EventArgs e)
@@ -20,7 +20,7 @@ namespace SICA.Forms.IronMountain
             {
                 IronMountainFunctions.RecibirCajasCarrito();
                 cantidadcarrito = 0;
-                actualizarCantidad();
+                btActualizar_Click(sender, e);
             }
         }
 
@@ -49,30 +49,19 @@ namespace SICA.Forms.IronMountain
                     ++cantidadcarrito;
                 }
                 Conexion.cerrar();
-
-                foreach (DataGridViewRow row in dgv.SelectedRows)
-                {
-                    if (!row.IsNewRow)
-                        dgv.Rows.Remove(row);
-                }
-                actualizarCantidad();
+                btActualizar_Click(sender, e);
             }
-        }
-
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
-            actualizarCantidad();
+            lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
         }
 
         private void btVerCarrito_Click(object sender, EventArgs e)
@@ -90,7 +79,7 @@ namespace SICA.Forms.IronMountain
             string strSQL = "";
             try
             {
-                LoadingScreen.iniciarLoading();
+                lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
 
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
@@ -121,8 +110,6 @@ namespace SICA.Forms.IronMountain
                 dgv.Columns[1].Width = 400;
                 dgv.Columns[2].Width = 200;
                 dgv.ClearSelection();
-
-                LoadingScreen.cerrarLoading();
             }
             catch (Exception ex)
             {

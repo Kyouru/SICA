@@ -128,7 +128,7 @@ namespace SICA.Forms.Boveda
                 MessageBox.Show("Algunos Documentos se encuentra en Carrito de otro usuario");
                 DataGridView dgvrepetidos = new DataGridView();
                 dgvrepetidos.DataSource = dtrepetidos;
-                GlobalFunctions.ExportarDataGridViewExcel(dgvrepetidos, null);
+                GlobalFunctions.ExportarDataGridViewCSV(dgvrepetidos, null);
             }
         }
 
@@ -168,7 +168,7 @@ namespace SICA.Forms.Boveda
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
+            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
