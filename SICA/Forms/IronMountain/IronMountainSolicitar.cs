@@ -55,6 +55,8 @@ namespace SICA.Forms.IronMountain
                 dgv.Columns[0].Visible = false;
                 dgv.ClearSelection();
 
+                lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
+
                 LoadingScreen.cerrarLoading();
             }
             catch (Exception ex)

@@ -75,7 +75,8 @@ namespace SICA.Forms.IronMountain
                                  };
                     DataTable dt3 = new DataTable("CARGO");
                     dt3 = GlobalFunctions.ToDataTable(result.ToList());
-                    GlobalFunctions.ArmarCargoExcel(dt3, "", Globals.ExportarPath + "CARGO_IM_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", false);
+
+                    GlobalFunctions.ExportarDataTableCSV(dt3, Globals.ExportarPath + "CARGO_IM_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv");
 
                     LoadingScreen.cerrarLoading();
                 }

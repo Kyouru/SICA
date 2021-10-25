@@ -25,7 +25,7 @@ namespace SICA.Forms.Letras
             LoadingScreen.iniciarLoading();
             strSQL = "SELECT ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO";
             strSQL += " FROM LETRA LE LEFT JOIN TMP_CARRITO TC ON LE.ID_LETRA = TC.ID_AUX_FK";
-            strSQL += " WHERE ESTADO = 'DEVUELTO' AND TC.ID_TMP_CARRITO IS NULL";
+            strSQL += " WHERE ESTADO <> 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL";
             if (tbBusquedaLibre.Text != "")
             {
                 strSQL += " AND CONCATENADO LIKE @busqueda_libre";

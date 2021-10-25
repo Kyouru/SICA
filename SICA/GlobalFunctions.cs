@@ -192,6 +192,7 @@ namespace SICA
             {
                 string[] outputCsv = new string[dgv.Rows.Count + 1];
                 string columnNames = "";
+                outputCsv = new string[dgv.Rows.Count + 1];
 
                 for (int i = 0; i < dgv.Columns.Count; i++)
                 {
@@ -225,57 +226,54 @@ namespace SICA
 
         }
 
-        public static void ArmarCargoExcel(System.Data.DataTable dt, string nombre_cargo, string fileName, Boolean cabecera)
+        public static void ExportarDataTableCSV(System.Data.DataTable dt, string fileName, string nombre_cargo = "", Boolean cabecera = false)
         {
             LoadingScreen.iniciarLoading();
-            int cols;
+
+            if (Directory.Exists(Globals.ExportarPath))
+            {
+                Directory.CreateDirectory(Globals.ExportarPath);
+            }
+            if (fileName is null)
+            {
+                fileName = Globals.ExportarPath + "EXPORTAR_" + Globals.Username + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".csv";
+            }
 
             try
             {
-                StreamWriter wr = new StreamWriter(fileName);
-                cols = dt.Columns.Count;
-                if (cabecera)
+                string[] outputCsv = new string[dt.Rows.Count + 1];
+                string columnNames = "";
+                int offset = 0;
+                if (nombre_cargo != "" && cabecera)
                 {
-
-                    wr.WriteLine();
-                    wr.Write(nombre_cargo +",,,FECHA," + DateTime.Now.ToString("yyyy-MM-dd") + ",");
-                    wr.WriteLine();
-                    wr.WriteLine();
+                    outputCsv = new string[dt.Rows.Count + 4];
+                    outputCsv[0] = "";
+                    outputCsv[1] = nombre_cargo + ",,,FECHA," + DateTime.Now.ToString("yyyy-MM-dd") + ",";
+                    outputCsv[2] = "";
+                    offset = 3;
                 }
-
-                for (int j = 0; j < dt.Columns.Count; j++)
+                else
                 {
-                    wr.Write(dt.Columns[j].ColumnName + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+                    outputCsv = new string[dt.Rows.Count + 1];
                 }
-                wr.WriteLine();
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    columnNames += dt.Columns[i].ColumnName + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+                }
+                outputCsv[0 + offset] += columnNames;
 
                 //Recorremos el DataTable rellenando la hoja de trabajo
-                for (int i = 0; i < dt.Rows.Count; i++)
+                for (int i = 1; (i - 1) < dt.Rows.Count - 1; i++)
                 {
                     for (int j = 0; j < dt.Columns.Count; j++)
                     {
                         if (dt.Rows[i][j] != null)
                         {
-                            if (GlobalFunctions.IsDate(dt.Rows[i][j].ToString()))
-                            {
-                                try
-                                {
-                                    wr.Write(DateTime.Parse(dt.Rows[i][j].ToString()).ToString("yyyy-MM-dd") + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-                                }
-                                catch
-                                {
-                                    wr.Write("'" + dt.Rows[i][j].ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-                                }
-                            }
-                            else
-                            {
-                                wr.Write(dt.Rows[i][j].ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-                            }
+                            outputCsv[i + offset] += dt.Rows[i - 1][j].ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
                         }
                     }
-                    wr.WriteLine();
                 }
-                wr.Close();
+                File.WriteAllLines(fileName, outputCsv, Encoding.UTF8);
 
                 Process.Start(fileName);
 

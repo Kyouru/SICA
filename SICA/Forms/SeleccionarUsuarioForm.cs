@@ -1,5 +1,6 @@
 ﻿using SimpleLogger;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
@@ -23,7 +24,7 @@ namespace SICA.Forms
             try
             {
                 DataTable dt = new DataTable("AREA");
-
+                Dictionary<int, string> test = new Dictionary<int, string>();
                 if (!Conexion.conectar())
                     return;
 
@@ -54,8 +55,9 @@ namespace SICA.Forms
         {
             if (cmbUsuario.SelectedIndex != -1)
             {
-                Globals.IdUsernameSelect = Int32.Parse(cmbUsuario.SelectedValue.ToString());
-                Globals.UsernameSelect = cmbUsuario.Text;
+                Globals.IdUsernameSelect = Int32.Parse((cmbUsuario.SelectedItem as DataRowView)["ID_USUARIO"].ToString());
+                Globals.UsernameSelect = cmbUsuario.Text.Trim();
+                Globals.IdAreaSelect = Int32.Parse((cmbArea.SelectedItem as DataRowView)["ID_AREA"].ToString());
                 string strSQL = "SELECT ID_AREA_FK FROM USUARIO WHERE ID_USUARIO = " + Globals.IdUsernameSelect;
                 try
                 {
@@ -78,7 +80,8 @@ namespace SICA.Forms
                     }
                     else
                     {
-                        Globals.EntregarConfirmacion = false;
+                        //Globals.EntregarConfirmacion = false;
+                        Globals.EntregarConfirmacion = true;
                         Globals.strEntregarEstado = "PRESTADO";
                     }
                     LoadingScreen.cerrarLoading();
@@ -103,7 +106,7 @@ namespace SICA.Forms
             {
                 string strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
                 strSQL += " AND ID_USUARIO <> " + Globals.IdUsername;
-                strSQL += " AND ID_AREA_FK = " + cmbArea.SelectedValue + " ORDER BY ORDEN";
+                strSQL += " AND ID_AREA_FK = " + (cmbArea.SelectedItem as DataRowView)["ID_AREA"].ToString() + " ORDER BY ORDEN";
 
                 DataTable dt = new DataTable("USUARIO");
 

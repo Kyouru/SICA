@@ -16,7 +16,7 @@ namespace SICA
             string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
             int j = 0;
-            strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, '0' AS NRO, DESCRIPCION_1 AS DEFINICION, DESCRIPCION_2 AS SOLICITUD, DESCRIPCION_3 AS COD_PRESTAMO, DESCRIPCION_4 AS NOMBRE_SOCIO";
+            strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, ROW_NUMBER() OVER(ORDER BY ID_INVENTARIO_GENERAL) AS NRO, DESCRIPCION_1 AS DEFINICION, DESCRIPCION_2 AS SOLICITUD, DESCRIPCION_3 AS COD_PRESTAMO, DESCRIPCION_4 AS NOMBRE_SOCIO";
             strSQL += " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
                         strSQL += " WHERE TIPO = '" + Globals.strEntregarExpediente + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
             try
@@ -45,17 +45,17 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO)
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO, ANULADO)
                             VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "',";
 
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL += fecha + ", 1)";
+                        strSQL += fecha + ", 1, 0)";
                     }
                     else
                     {
-                        strSQL += "NULL, 0)";
+                        strSQL += "NULL, 0, 0)";
                     }
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -87,11 +87,6 @@ namespace SICA
 
                 dt.Columns.Remove("ID");
 
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    dt.Rows[i][0] = i + 1;
-                }
-
                 strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = @username_select AND TIPO = @tipo_carrito";
 
                 if (!Conexion.iniciaCommand(strSQL))
@@ -104,14 +99,8 @@ namespace SICA
 
                 if (!Conexion.ejecutarQuery())
                     return false;
-                if (!Globals.EntregarConfirmacion)
-                {
-                    GlobalFunctions.ArmarCargoExcel(dt, "CARGO DE EXPEDIENTES", Globals.ExportarPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", true);
-                }
-                else
-                {
-                    MessageBox.Show("Pendiente por recibir: " + Globals.UsernameSelect + "\nNro de Expedientes: " + j);
-                }
+
+                GlobalFunctions.ExportarDataTableCSV(dt, Globals.ExportarPath + "CARGO_EXP_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", "CARGO DE EXPEDIENTES", true);
 
                 Conexion.cerrar();
                 return true;
@@ -132,7 +121,7 @@ namespace SICA
             DataTable dt = new DataTable();
             try
             {
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, '0' AS NRO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, ROW_NUMBER() OVER(ORDER BY ID_INVENTARIO_GENERAL) AS NRO, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5";
                 strSQL += " FROM TMP_CARRITO TC LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
                 strSQL += " WHERE TIPO = @tipo_carrito AND ID_USUARIO_FK = @id_usuario";
 
@@ -157,8 +146,8 @@ namespace SICA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO, ANULADO) 
-                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "', ";
+                    strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_ENTREGA_FK, ID_AREA_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO, ANULADO) 
+                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + Globals.IdArea.ToString() + ", " + Globals.IdAreaSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "', ";
 
 
                     if (!Globals.EntregarConfirmacion)
@@ -192,11 +181,6 @@ namespace SICA
 
                 dt.Columns.Remove("ID");
 
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    dt.Rows[i][0] = i + 1;
-                }
-
                 strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = @username_select AND TIPO = @tipo_carrito";
 
                 if (!Conexion.iniciaCommand(strSQL))
@@ -209,14 +193,8 @@ namespace SICA
 
                 if (!Conexion.ejecutarQuery())
                     return false;
-                if (!Globals.EntregarConfirmacion)
-                {
-                    GlobalFunctions.ArmarCargoExcel(dt, "CARGO DE DOCUMENTOS", Globals.ExportarPath + "CARGO_DOC_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", true);
-                }
-                else
-                {
-                    MessageBox.Show("Pendiente por recibir: " + Globals.UsernameSelect + "\nNro de Documentos: " + j);
-                }
+
+                GlobalFunctions.ExportarDataTableCSV(dt, Globals.ExportarPath + "CARGO_DOC_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", "CARGO DE DOCUMENTOS", true);
 
                 Conexion.cerrar();
                 return true;

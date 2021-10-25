@@ -24,6 +24,7 @@ namespace SICA
         private void BusquedaForm_Load(object sender, EventArgs e)
         {
             //tbUsuario.Text = Globals.Username;
+            //dtpFecha.Value = DateTime.Now;
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
@@ -35,8 +36,8 @@ namespace SICA
             {
                 LoadingScreen.iniciarLoading();
 
-                if (tbFecha.Text != "")
-                    fecha = DateTime.ParseExact(tbFecha.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+                if (cbFecha.Enabled)
+                    fecha = dtpFecha.Value.ToString("yyyy-MM-dd");
                 else
                     fecha = "";
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
@@ -50,7 +51,7 @@ namespace SICA
                     strSQL += " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
                 if (tbCaja.Text != "")
                     strSQL += " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
-                if (tbFecha.Text != "")
+                if (fecha != "")
                     strSQL += " AND FECHA_DESDE <= @fecha_desde AND FECHA_HASTA >= @fecha_hasta";
                 if (tbUsuario.Text != "")
                     strSQL += " AND USUARIO_POSEE LIKE '%" + tbUsuario.Text + "%'";
@@ -119,6 +120,18 @@ namespace SICA
         private void dgvBusqueda_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             
+        }
+
+        private void cbFecha_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbFecha.Checked)
+            {
+                dtpFecha.Enabled = true;
+            }
+            else
+            {
+                dtpFecha.Enabled = false;
+            }
         }
     }
 }

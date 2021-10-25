@@ -39,7 +39,7 @@ namespace SICA.Forms.IronMountain
                     else
                     {
                         DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea enviar la caja de todas manera?", "Incompleto", MessageBoxButtons.YesNo);
-                        if (dialogResult != DialogResult.Yes)
+                        if (dialogResult == DialogResult.Yes)
                         {
                             GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
                             ++cantidadcarrito;

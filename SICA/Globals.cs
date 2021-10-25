@@ -27,6 +27,7 @@ namespace SICA
         public static Int32 IdUsername = -1;
         public static String Username = "";
 
+        public static Int32 IdAreaSelect = -1;
         public static Int32 IdUsernameSelect = -1;
         public static String UsernameSelect = "";
         public static bool EntregarConfirmacion = false;
@@ -34,6 +35,7 @@ namespace SICA
         public static Int32 CantidadCarrito = 0;
         public static String CarritoSeleccionado = "";
 
+        public static Int32 IdCUSTODIA = 1;
         public static Int32 IdIM = 2;
         public static Int32 IdDC = 10;
 

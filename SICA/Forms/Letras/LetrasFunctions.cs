@@ -34,15 +34,15 @@ namespace SICA.Forms.Letras
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE LETRA SET ESTADO = 'DEVUELTO', UBICACION = 'DEVUELTO' WHERE ID_LETRA = " + row["ID"].ToString();
+                    strSQL = "UPDATE LETRA SET ESTADO = 'RECEPCION PENDIENTE', UBICACION = 'RECEPCION PENDIENTE' WHERE ID_LETRA = " + row["ID"].ToString();
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA)";
-                    strSQL += " VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
+                    strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_AREA_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, RECIBIDO, ANULADO)";
+                    strSQL += " VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", " + Globals.IdArea + ", " + Globals.IdUsernameSelect + ", " + Globals.IdAreaSelect + ", " + fecha + ", " + fecha + ", '" + observacion + "', 0, 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

@@ -33,11 +33,11 @@ namespace SICA
             this.btEntrar = new FontAwesome.Sharp.IconButton();
             this.btCerrar = new FontAwesome.Sharp.IconButton();
             this.pnTop = new System.Windows.Forms.Panel();
+            this.btMinimizar = new FontAwesome.Sharp.IconButton();
+            this.btMaximizar = new FontAwesome.Sharp.IconButton();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbUsername = new System.Windows.Forms.TextBox();
-            this.btMinimizar = new FontAwesome.Sharp.IconButton();
-            this.btMaximizar = new FontAwesome.Sharp.IconButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -51,6 +51,7 @@ namespace SICA
             this.tbPassword.PasswordChar = '•';
             this.tbPassword.Size = new System.Drawing.Size(223, 26);
             this.tbPassword.TabIndex = 3;
+            this.tbPassword.Text = "09911990a";
             this.tbPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassword_KeyDown);
             // 
             // btEntrar
@@ -98,38 +99,6 @@ namespace SICA
             this.pnTop.TabIndex = 4;
             this.pnTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(14, 430);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 22);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Username";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(17, 473);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(94, 22);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Password";
-            // 
-            // tbUsername
-            // 
-            this.tbUsername.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tbUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUsername.Location = new System.Drawing.Point(117, 429);
-            this.tbUsername.Name = "tbUsername";
-            this.tbUsername.Size = new System.Drawing.Size(223, 26);
-            this.tbUsername.TabIndex = 2;
-            this.tbUsername.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassword_KeyDown);
-            // 
             // btMinimizar
             // 
             this.btMinimizar.FlatAppearance.BorderSize = 0;
@@ -161,6 +130,39 @@ namespace SICA
             this.btMaximizar.TabIndex = 1;
             this.btMaximizar.UseVisualStyleBackColor = true;
             this.btMaximizar.Click += new System.EventHandler(this.btMaximizar_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label1.Location = new System.Drawing.Point(14, 430);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 22);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Username";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label2.Location = new System.Drawing.Point(17, 473);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(94, 22);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Password";
+            // 
+            // tbUsername
+            // 
+            this.tbUsername.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbUsername.Location = new System.Drawing.Point(117, 429);
+            this.tbUsername.Name = "tbUsername";
+            this.tbUsername.Size = new System.Drawing.Size(223, 26);
+            this.tbUsername.TabIndex = 2;
+            this.tbUsername.Text = "DJHONCON";
+            this.tbUsername.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPassword_KeyDown);
             // 
             // pictureBox1
             // 
