@@ -36,7 +36,7 @@ namespace SICA
             {
                 LoadingScreen.iniciarLoading();
 
-                if (cbFecha.Enabled)
+                if (cbFecha.Checked)
                     fecha = dtpFecha.Value.ToString("yyyy-MM-dd");
                 else
                     fecha = "";
@@ -56,17 +56,20 @@ namespace SICA
                 if (tbUsuario.Text != "")
                     strSQL += " AND USUARIO_POSEE LIKE '%" + tbUsuario.Text + "%'";
                 strSQL += " ORDER BY CODIGO_DOCUMENTO";
-
+                
                 if (!Conexion.conectar())
                     return;
 
                 if (!Conexion.iniciaCommand(strSQL))
                     return;
 
-                if (!Conexion.agregarParametroCommand("@fecha_desde", fecha))
-                    return;
-                if (!Conexion.agregarParametroCommand("@fecha_hasta", fecha))
-                    return;
+                if (fecha != "")
+                {
+                    if (!Conexion.agregarParametroCommand("@fecha_desde", fecha))
+                        return;
+                    if (!Conexion.agregarParametroCommand("@fecha_hasta", fecha))
+                        return;
+                }
 
                 if (!Conexion.ejecutarQuery())
                     return;
