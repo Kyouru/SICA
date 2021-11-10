@@ -64,19 +64,21 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
                     
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [CUSTODIADO] = @estado, [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = @estado, [ID_USUARIO_POSEE] = '" + Globals.IdUsername.ToString() + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
 
                     if (Globals.EntregarConfirmacion)
                     {
-                        if (!Conexion.agregarParametroCommand("@estado", "CUSTODIADO"))
+                        //CUSTODIADO
+                        if (!Conexion.agregarParametroCommand("@estado", "1"))
                             return false;
                     }
                     else
                     {
-                        if (!Conexion.agregarParametroCommand("@estado", "PRESTADO"))
+                        //PRESTADO
+                        if (!Conexion.agregarParametroCommand("@estado", "2"))
                             return false;
                     }
                     if (!Conexion.ejecutarQuery())
@@ -167,7 +169,8 @@ namespace SICA
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        strSQL = @"UPDATE INVENTARIO_GENERAL SET [CUSTODIADO] = 'PRESTADO', [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha
+                        //PRESTADO
+                        strSQL = @"UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = 2, [ID_USUARIO_POSEE] = '" + Globals.IdUsername + "', [FECHA_POSEE] = " + fecha
                                 + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
 
                         if (!Conexion.iniciaCommand(strSQL))

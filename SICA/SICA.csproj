@@ -146,6 +146,12 @@
     <Compile Include="Forms\Boveda\BovedaSubMain.Designer.cs">
       <DependentUpon>BovedaSubMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Busqueda\EditarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Busqueda\EditarForm.Designer.cs">
+      <DependentUpon>EditarForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DocuClass\DocuClassEntregar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,10 +178,10 @@
       <DependentUpon>DocuClassValidar.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Entregar\EntregarFunctions.cs" />
-    <Compile Include="Forms\BusquedaForm.cs">
+    <Compile Include="Forms\Busqueda\BusquedaForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\BusquedaForm.Designer.cs">
+    <Compile Include="Forms\Busqueda\BusquedaForm.Designer.cs">
       <DependentUpon>BusquedaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CarritoForm.cs">
@@ -197,10 +203,10 @@
     <Compile Include="Forms\Pagare\PagareManual.Designer.cs">
       <DependentUpon>PagareManual.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\HistoricoForm.cs">
+    <Compile Include="Forms\Busqueda\HistoricoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\HistoricoForm.Designer.cs">
+    <Compile Include="Forms\Busqueda\HistoricoForm.Designer.cs">
       <DependentUpon>HistoricoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InfoForm.cs">
@@ -400,8 +406,11 @@
     <EmbeddedResource Include="Forms\Boveda\BovedaSubMain.resx">
       <DependentUpon>BovedaSubMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BusquedaForm.resx">
+    <EmbeddedResource Include="Forms\Busqueda\BusquedaForm.resx">
       <DependentUpon>BusquedaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Busqueda\EditarForm.resx">
+      <DependentUpon>EditarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CarritoForm.resx">
       <DependentUpon>CarritoForm.cs</DependentUpon>
@@ -424,7 +433,7 @@
     <EmbeddedResource Include="Forms\Pagare\PagareManual.resx">
       <DependentUpon>PagareManual.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\HistoricoForm.resx">
+    <EmbeddedResource Include="Forms\Busqueda\HistoricoForm.resx">
       <DependentUpon>HistoricoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InfoForm.resx">

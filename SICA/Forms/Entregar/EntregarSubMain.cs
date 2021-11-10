@@ -23,6 +23,9 @@ namespace SICA.Forms.Entregar
             topBorderBtn = new Panel();
             topBorderBtn.Size = new Size(140, 3);
             pnTop.Controls.Add(topBorderBtn);
+
+            btExpediente.Visible = Globals.auEntregarExpediente;
+            btDocumento.Visible = Globals.auEntregarDocumento;
         }
         private void OpenChildForm(Form childForm)
         {

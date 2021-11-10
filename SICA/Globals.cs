@@ -23,7 +23,7 @@ namespace SICA
         public static String pass = "";
 
         public static Int32 IdArea = -1;
-
+        public static Int32 IdInventario = -1;
         public static Int32 IdUsername = -1;
         public static String Username = "";
 
@@ -73,5 +73,39 @@ namespace SICA
 
         public static String strSeleccionarUsuario = "";
 
+
+        //Permisos
+
+        public static bool auBusqueda = false;
+        public static bool auBusquedaHistorico = false;
+        public static bool auBusquedaEditar = false;
+        public static bool auEntregar = false;
+        public static bool auEntregarExpediente = false;
+        public static bool auEntregarDocumento = false;
+        public static bool auRecibir = false;
+        public static bool auRecibirNuevo = false;
+        public static bool auRecibirReingreso = false;
+        public static bool auRecibirConfirmar = false;
+        public static bool auPagare = false;
+        public static bool auPagareBuscar = false;
+        public static bool auPagareRecibir = false;
+        public static bool auPagareEntregar = false;
+        public static bool auLetra = false;
+        public static bool auLetraNuevo = false;
+        public static bool auLetraEntregar = false;
+        public static bool auLetraReingreso = false;
+        public static bool auLetraBuscar = false;
+        public static bool auIronMountain = false;
+        public static bool auIronMountainSolicitar = false;
+        public static bool auIronMountainRecibir = false;
+        public static bool auIronMountainArmar = false;
+        public static bool auIronMountainEnviar = false;
+        public static bool auIronMountainEntregar = false;
+        public static bool auIronMountainCargo = false;
+        public static bool auBoveda = false;
+        public static bool auBovedaCajaRetirar = false;
+        public static bool auBovedaCajaGuardar = false;
+        public static bool auBovedaDocumentoRetirar = false;
+        public static bool auBovedaDocumentoGuardar = false;
     }
 }

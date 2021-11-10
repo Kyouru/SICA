@@ -34,7 +34,7 @@
             this.btDocuClass = new FontAwesome.Sharp.IconButton();
             this.btBoveda = new FontAwesome.Sharp.IconButton();
             this.btIronMountain = new FontAwesome.Sharp.IconButton();
-            this.btLetras = new FontAwesome.Sharp.IconButton();
+            this.btLetra = new FontAwesome.Sharp.IconButton();
             this.btPagare = new FontAwesome.Sharp.IconButton();
             this.btRecibir = new FontAwesome.Sharp.IconButton();
             this.btEntregar = new FontAwesome.Sharp.IconButton();
@@ -63,7 +63,7 @@
             this.pnLeft.Controls.Add(this.btDocuClass);
             this.pnLeft.Controls.Add(this.btBoveda);
             this.pnLeft.Controls.Add(this.btIronMountain);
-            this.pnLeft.Controls.Add(this.btLetras);
+            this.pnLeft.Controls.Add(this.btLetra);
             this.pnLeft.Controls.Add(this.btPagare);
             this.pnLeft.Controls.Add(this.btRecibir);
             this.pnLeft.Controls.Add(this.btEntregar);
@@ -96,6 +96,7 @@
             this.btDocuClass.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btDocuClass.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btDocuClass.UseVisualStyleBackColor = true;
+            this.btDocuClass.Visible = false;
             this.btDocuClass.Click += new System.EventHandler(this.btDocuClass_Click);
             // 
             // btBoveda
@@ -144,28 +145,28 @@
             this.btIronMountain.UseVisualStyleBackColor = true;
             this.btIronMountain.Click += new System.EventHandler(this.btIronMountain_Click);
             // 
-            // btLetras
+            // btLetra
             // 
-            this.btLetras.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btLetras.FlatAppearance.BorderSize = 0;
-            this.btLetras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLetras.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btLetras.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btLetras.IconChar = FontAwesome.Sharp.IconChar.MoneyCheckAlt;
-            this.btLetras.IconColor = System.Drawing.Color.Gainsboro;
-            this.btLetras.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btLetras.IconSize = 30;
-            this.btLetras.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btLetras.Location = new System.Drawing.Point(0, 314);
-            this.btLetras.Name = "btLetras";
-            this.btLetras.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btLetras.Size = new System.Drawing.Size(200, 61);
-            this.btLetras.TabIndex = 12;
-            this.btLetras.Text = "  Letras";
-            this.btLetras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btLetras.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btLetras.UseVisualStyleBackColor = true;
-            this.btLetras.Click += new System.EventHandler(this.btLetras_Click);
+            this.btLetra.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btLetra.FlatAppearance.BorderSize = 0;
+            this.btLetra.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLetra.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btLetra.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btLetra.IconChar = FontAwesome.Sharp.IconChar.MoneyCheckAlt;
+            this.btLetra.IconColor = System.Drawing.Color.Gainsboro;
+            this.btLetra.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btLetra.IconSize = 30;
+            this.btLetra.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btLetra.Location = new System.Drawing.Point(0, 314);
+            this.btLetra.Name = "btLetra";
+            this.btLetra.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btLetra.Size = new System.Drawing.Size(200, 61);
+            this.btLetra.TabIndex = 12;
+            this.btLetra.Text = "  Letra";
+            this.btLetra.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btLetra.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btLetra.UseVisualStyleBackColor = true;
+            this.btLetra.Click += new System.EventHandler(this.btLetras_Click);
             // 
             // btPagare
             // 
@@ -319,6 +320,7 @@
             this.lbEstado.Name = "lbEstado";
             this.lbEstado.Size = new System.Drawing.Size(0, 18);
             this.lbEstado.TabIndex = 9;
+            this.lbEstado.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbEstado_MouseDown);
             // 
             // panel2
             // 
@@ -339,6 +341,7 @@
             this.lbUsuario.Size = new System.Drawing.Size(109, 13);
             this.lbUsuario.TabIndex = 7;
             this.lbUsuario.Text = "NOMBRE_USUARIO";
+            this.lbUsuario.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbUsuario_MouseDown);
             // 
             // label1
             // 
@@ -350,6 +353,7 @@
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Usuario:";
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
             // 
             // btMinimizar
             // 
@@ -474,7 +478,7 @@
         private FontAwesome.Sharp.IconButton btDocuClass;
         private FontAwesome.Sharp.IconButton btBoveda;
         private FontAwesome.Sharp.IconButton btIronMountain;
-        private FontAwesome.Sharp.IconButton btLetras;
+        private FontAwesome.Sharp.IconButton btLetra;
         private FontAwesome.Sharp.IconButton btPagare;
     }
 }

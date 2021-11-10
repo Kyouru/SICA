@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SICA.Forms.Busqueda;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +20,8 @@ namespace SICA.Forms
 
         private void HistoricoForm_Load(object sender, EventArgs e)
         {
+            btEditar.Visible = Globals.auBusquedaEditar;
+
             string strSQL = "";
             DataTable dt = new DataTable();
 
@@ -51,6 +54,16 @@ namespace SICA.Forms
             catch (Exception ex)
             {
                 GlobalFunctions.casoError(ex, strSQL);
+            }
+        }
+
+        private void btEditar_Click(object sender, EventArgs e)
+        {
+            if (dgv.Rows.Count > 0)
+            {
+                Globals.IdInventario = Int32.Parse(dgv.Rows[0].Cells[0].Value.ToString());
+                EditarForm ef = new EditarForm();
+                ef.ShowDialog();
             }
         }
     }

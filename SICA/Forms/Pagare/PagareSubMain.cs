@@ -23,6 +23,11 @@ namespace SICA.Forms.Pagare
             topBorderBtn = new Panel();
             topBorderBtn.Size = new Size(250, 3);
             pnTop.Controls.Add(topBorderBtn);
+
+            btBuscar.Visible = Globals.auPagareBuscar;
+            btEntregar.Visible = Globals.auPagareEntregar;
+            btRecibir.Visible = Globals.auPagareRecibir;
+
         }
         private void OpenChildForm(Form childForm)
         {

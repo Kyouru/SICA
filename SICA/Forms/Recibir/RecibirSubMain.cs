@@ -23,6 +23,10 @@ namespace SICA.Forms.Recibir
             topBorderBtn = new Panel();
             topBorderBtn.Size = new Size(140, 3);
             pnTop.Controls.Add(topBorderBtn);
+
+            btNuevo.Visible = Globals.auRecibirNuevo;
+            btReingreso.Visible = Globals.auRecibirReingreso;
+            btConfirmar.Visible = Globals.auRecibirConfirmar;
         }
         private void OpenChildForm(Form childForm)
         {

@@ -106,7 +106,7 @@ namespace SICA
 
         public static void ExportarDataGridViewExcel(DataGridView dgv, string fileName)
         {
-            
+
             if (dgv.Rows.Count > 3000)
             {
                 DialogResult dialogResult = MessageBox.Show("Tabla tiene mas de 3000 filas\nDesea Continuar", "Muchas Filas", MessageBoxButtons.YesNo);
@@ -179,7 +179,7 @@ namespace SICA
         {
             LoadingScreen.iniciarLoading();
 
-            if (Directory.Exists(Globals.ExportarPath))
+            if (!Directory.Exists(Globals.ExportarPath))
             {
                 Directory.CreateDirectory(Globals.ExportarPath);
             }
@@ -230,7 +230,7 @@ namespace SICA
         {
             LoadingScreen.iniciarLoading();
 
-            if (Directory.Exists(Globals.ExportarPath))
+            if (!Directory.Exists(Globals.ExportarPath))
             {
                 Directory.CreateDirectory(Globals.ExportarPath);
             }
@@ -303,7 +303,7 @@ namespace SICA
                 return false;
             }
         }
-        
+
         public static bool AgregarCarrito(string id_inventario, string id_aux, string caja, string tipo)
         {
             string strSQL = "INSERT INTO TMP_CARRITO (ID_INVENTARIO_GENERAL_FK, ID_AUX_FK, ID_USUARIO_FK, TIPO, NUMERO_CAJA) VALUES (" + id_inventario + ", " + id_aux + ", " + Globals.IdUsername + ", '" + tipo + "', '" + caja + "')";
@@ -421,7 +421,7 @@ namespace SICA
             MessageBox.Show(ex.Message + "\n" + strSQL);
         }
 
-        public static bool verificarCaja (string numero_caja, string usuario)
+        public static bool verificarCaja(string numero_caja, string usuario)
         {
             string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND USUARIO_POSEE <> '" + usuario + "'";
             int i = -1;
@@ -625,6 +625,76 @@ namespace SICA
             {
                 return null;
             }
+        }
+
+        public static string lCadena(string input)
+        {
+            return input.Replace("'", "''").Trim().TrimEnd('\r', '\n');
+        }
+
+        public static void leerPermisos()
+        {
+            string strSQL = "SELECT * FROM PERMISO WHERE ID_USUARIO_FK = " + Globals.IdUsername;
+            System.Data.DataTable dt;
+            try
+            {
+                Conexion.conectar();
+
+                if (!Conexion.iniciaCommand(strSQL))
+                {
+                    Conexion.cerrar();
+                }
+                if (!Conexion.ejecutarQuery())
+                {
+                    Conexion.cerrar();
+                }
+
+                dt = Conexion.llenarDataTable();
+
+                Conexion.cerrar();
+
+                if (!(dt is null))
+                {
+                    Globals.auBusqueda = bool.Parse(dt.Rows[0]["BUSQUEDA"].ToString());
+                    Globals.auBusquedaHistorico = bool.Parse(dt.Rows[0]["BUSQUEDA_HISTORICO"].ToString());
+                    Globals.auBusquedaEditar = bool.Parse(dt.Rows[0]["BUSQUEDA_EDITAR"].ToString());
+                    Globals.auEntregar = bool.Parse(dt.Rows[0]["ENTREGAR"].ToString());
+                    Globals.auEntregarExpediente = bool.Parse(dt.Rows[0]["ENTREGAR_EXPEDIENTE"].ToString());
+                    Globals.auEntregarDocumento = bool.Parse(dt.Rows[0]["ENTRAGAR_DOCUMENTO"].ToString());
+                    Globals.auRecibir = bool.Parse(dt.Rows[0]["RECIBIR"].ToString());
+                    Globals.auRecibirNuevo = bool.Parse(dt.Rows[0]["RECIBIR_NUEVO"].ToString());
+                    Globals.auRecibirReingreso = bool.Parse(dt.Rows[0]["RECIBIR_REINGRESO"].ToString());
+                    Globals.auRecibirConfirmar = bool.Parse(dt.Rows[0]["RECIBIR_CONFIRMAR"].ToString());
+                    Globals.auPagare = bool.Parse(dt.Rows[0]["RECIBIR_CONFIRMAR"].ToString());
+                    Globals.auPagareBuscar = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
+                    Globals.auPagareRecibir = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
+                    Globals.auPagareEntregar = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
+                    Globals.auLetra = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
+                    Globals.auLetraNuevo = bool.Parse(dt.Rows[0]["LETRA_NUEVO"].ToString());
+                    Globals.auLetraEntregar = bool.Parse(dt.Rows[0]["LETRA_ENTREGAR"].ToString());
+                    Globals.auLetraReingreso = bool.Parse(dt.Rows[0]["LETRA_REINGRESO"].ToString());
+                    Globals.auLetraBuscar = bool.Parse(dt.Rows[0]["LETRA_BUSCAR"].ToString());
+                    Globals.auIronMountain = bool.Parse(dt.Rows[0]["IRONMOUNTAIN"].ToString());
+                    Globals.auIronMountainSolicitar = bool.Parse(dt.Rows[0]["IRONMOUNTAIN_SOLICITAR"].ToString());
+                    Globals.auIronMountainRecibir = bool.Parse(dt.Rows[0]["IRONMOUNTAIN_RECIBIR"].ToString());
+                    Globals.auIronMountainArmar = bool.Parse(dt.Rows[0]["IRONMOUNTAIN_ARMAR"].ToString());
+                    Globals.auIronMountainEnviar = bool.Parse(dt.Rows[0]["IRONMOUNTAIN_ENVIAR"].ToString());
+                    Globals.auIronMountainEntregar = bool.Parse(dt.Rows[0]["IRONMOUNTAIN_ENTREGAR"].ToString());
+                    Globals.auIronMountainCargo = bool.Parse(dt.Rows[0]["IRONMOUNTAIN_CARGO"].ToString());
+                    Globals.auBoveda = bool.Parse(dt.Rows[0]["BOVEDA"].ToString());
+                    Globals.auBovedaCajaRetirar = bool.Parse(dt.Rows[0]["BOVEDA_CAJA_RETIRAR"].ToString());
+                    Globals.auBovedaCajaGuardar = bool.Parse(dt.Rows[0]["BOVEDA_CAJA_GUARDAR"].ToString());
+                    Globals.auBovedaDocumentoRetirar = bool.Parse(dt.Rows[0]["BOVEDA_DOCUMENTO_RETIRAR"].ToString());
+                    Globals.auBovedaDocumentoGuardar = bool.Parse(dt.Rows[0]["BOVEDA_DOCUMENTO_GUARDAR"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Globals.loginsuccess = 0;
+                SimpleLog.Info("Error Permisos " + Globals.Username);
+                GlobalFunctions.casoError(ex, strSQL);
+            }
+
         }
     }
 }

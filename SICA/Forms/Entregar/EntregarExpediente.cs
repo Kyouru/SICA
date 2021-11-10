@@ -19,16 +19,19 @@ namespace SICA.Forms.Entregar
         {
             string strSQL;
 
-            strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC,
+            strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC,
                         FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2,
-                        DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
-                        FROM INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC" +
-                        " ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK WHERE TC.ID_TMP_CARRITO IS NULL" +
-                        " AND (DESCRIPCION_1 = 'EXPEDIENTES DE CREDITO' OR DESCRIPCION_1 = 'EXPEDIENTE DE CRÉDITO') AND USUARIO_POSEE = @username";
+                        DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, CUSTODIADO, U.NOMBRE_USUARIO AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
+            strSQL += " FROM ((INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK)";
+            strSQL += " LEFT JOIN DEPARTAMENTO DEP ON DEP.ID_DEPARTAMENTO = IG.ID_DEPARTAMENTO_FK)";
+            strSQL += " LEFT JOIN DOCUMENTO DOC ON DOC.ID_DOCUMENTO = IG.ID_DOCUMENTO_FK)";
+            strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE";
+            strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL";
+            strSQL += " AND IG.EXPEDIENTE = TRUE AND ID_USUARIO_POSEE = @username";
 
             if (tbBusquedaLibre.Text != "")
                 strSQL += " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
-            strSQL += " ORDER BY DESCRIPCION_2";
+            //strSQL += " ORDER BY DESCRIPCION_2";
 
             try
             {
@@ -42,7 +45,7 @@ namespace SICA.Forms.Entregar
                 if (!Conexion.iniciaCommand(strSQL))
                     return;
 
-                if (!Conexion.agregarParametroCommand("@username", Globals.Username))
+                if (!Conexion.agregarParametroCommand("@username", Globals.IdUsername.ToString()))
                     return;
                 if (!Conexion.agregarParametroCommand("@busqueda_libre", "%" + tbBusquedaLibre.Text + "%"))
                     return;

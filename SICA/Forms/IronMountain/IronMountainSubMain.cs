@@ -24,6 +24,14 @@ namespace SICA.Forms.IronMountain
             topBorderBtn = new Panel();
             topBorderBtn.Size = new Size(140, 3);
             pnTop.Controls.Add(topBorderBtn);
+
+            btArmar.Visible = Globals.auIronMountainArmar;
+            btCargo.Visible = Globals.auIronMountainCargo;
+            btEntregar.Visible = Globals.auIronMountainEntregar;
+            btEnviar.Visible = Globals.auIronMountainEnviar;
+            btRecibir.Visible = Globals.auIronMountainRecibir;
+            btSolicitar.Visible = Globals.auIronMountainSolicitar;
+
         }
         private void OpenChildForm(Form childForm)
         {

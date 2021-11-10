@@ -42,11 +42,15 @@ namespace SICA
                     fecha = "";
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
-                strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, 
-                        FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2,
-                        DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
-                        FROM INVENTARIO_GENERAL WHERE 1 = 1";
-
+                strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, TRIM(NUMERO_DE_CAJA) AS CAJA, TRIM(DEP.NOMBRE_DEPARTAMENTO) AS DEPART, TRIM(DOC.NOMBRE_DOCUMENTO) AS DOC, 
+                        FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, TRIM(DESCRIPCION_1) AS DESC_1, TRIM(DESCRIPCION_2) AS DESC_2,
+                        TRIM(DESCRIPCION_3) AS DESC_3, TRIM(DESCRIPCION_4) AS DESC_4, TRIM(DESCRIPCION_5) AS DESC_5, TRIM(LE.NOMBRE_ESTADO) AS CUSTODIADO, TRIM(U.NOMBRE_USUARIO) AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
+                        FROM (((INVENTARIO_GENERAL IG
+                        LEFT JOIN DEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)
+                        LEFT JOIN DOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO)
+                        LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)
+                        LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK";
+                strSQL += " WHERE 1 = 1";
                 if (tbBusquedaLibre.Text != "")
                     strSQL += " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
                 if (tbCaja.Text != "")
@@ -54,8 +58,8 @@ namespace SICA
                 if (fecha != "")
                     strSQL += " AND FECHA_DESDE <= @fecha_desde AND FECHA_HASTA >= @fecha_hasta";
                 if (tbUsuario.Text != "")
-                    strSQL += " AND USUARIO_POSEE LIKE '%" + tbUsuario.Text + "%'";
-                strSQL += " ORDER BY CODIGO_DOCUMENTO";
+                    strSQL += " AND U.NOMBRE_USUARIO LIKE '%" + tbUsuario.Text + "%'";
+                //strSQL += " ORDER BY CODIGO_DOCUMENTO";
                 
                 if (!Conexion.conectar())
                     return;

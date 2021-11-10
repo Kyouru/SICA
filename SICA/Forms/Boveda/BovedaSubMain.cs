@@ -23,6 +23,11 @@ namespace SICA.Forms.Boveda
             topBorderBtn = new Panel();
             topBorderBtn.Size = new Size(250, 3);
             pnTop.Controls.Add(topBorderBtn);
+
+            btGuardarCaja.Visible = Globals.auBovedaCajaGuardar;
+            btGuardarDoc.Visible = Globals.auBovedaDocumentoGuardar;
+            btRetirarCaja.Visible = Globals.auBovedaCajaRetirar;
+            btRetirarDoc.Visible = Globals.auBovedaDocumentoRetirar;
         }
         private void OpenChildForm(Form childForm)
         {

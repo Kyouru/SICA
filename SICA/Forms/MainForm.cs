@@ -3,6 +3,7 @@ using SICA.Forms;
 using SICA.Forms.Boveda;
 using SICA.Forms.DocuClass;
 using SICA.Forms.Entregar;
+using SICA.Forms.IronMountain;
 using SICA.Forms.Letras;
 using SICA.Forms.Pagare;
 using SICA.Forms.Recibir;
@@ -109,10 +110,26 @@ namespace SICA
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
         private void pnTop_MouseDown(object sender, MouseEventArgs e)
         {
-            ReleaseCapture();
-            SendMessage(this.Handle, 0x112, 0xf012, 0);
+            moverVentana();
         }
         private void icMain_MouseDown(object sender, MouseEventArgs e)
+        {
+            moverVentana();
+        }
+        private void lbEstado_MouseDown(object sender, MouseEventArgs e)
+        {
+            moverVentana();
+        }
+        private void label1_MouseDown(object sender, MouseEventArgs e)
+        {
+            moverVentana();
+        }
+        private void lbUsuario_MouseDown(object sender, MouseEventArgs e)
+        {
+            moverVentana();
+        }
+
+        private void moverVentana()
         {
             ReleaseCapture();
             SendMessage(this.Handle, 0x112, 0xf012, 0);
@@ -157,7 +174,7 @@ namespace SICA
         private void btIronMountain_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color1);
-            OpenChildForm(new Forms.IronMountain.IronMountainSubMain());
+            OpenChildForm(new IronMountainSubMain());
         }
 
         private void btBoveda_Click(object sender, EventArgs e)
@@ -170,6 +187,14 @@ namespace SICA
         {
             timer1_Tick(sender, e);
             GlobalFunctions.limpiarTodoCarrito();
+            btBusqueda.Visible = Globals.auBusqueda;
+            btBoveda.Visible = Globals.auBoveda;
+            btEntregar.Visible = Globals.auEntregar;
+            btRecibir.Visible = Globals.auRecibir;
+            btPagare.Visible = Globals.auPagare;
+            btLetra.Visible = Globals.auLetra;
+            btIronMountain.Visible = Globals.auIronMountain;
+            //btDocuClass.Visible = false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -223,5 +248,6 @@ namespace SICA
             ActivateButton(sender, RGBColors.color1);
             OpenChildForm(new PagareSubMain());
         }
+
     }
 }

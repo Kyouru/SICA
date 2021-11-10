@@ -115,6 +115,8 @@ namespace SICA
                         {
                             SimpleLog.Info(tbUsername.Text + " inicio Session Exitosamente");
                             Globals.loginsuccess = 1;
+                            GlobalFunctions.leerPermisos();
+
                             this.Close();
                         }
                         else

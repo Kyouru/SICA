@@ -32,6 +32,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
+            this.btEditar = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,10 +62,10 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgv.EnableHeadersVisualStyles = false;
             this.dgv.GridColor = System.Drawing.Color.Gainsboro;
-            this.dgv.Location = new System.Drawing.Point(0, 0);
+            this.dgv.Location = new System.Drawing.Point(0, 43);
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
             this.dgv.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -73,8 +75,29 @@
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgv.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1111, 605);
+            this.dgv.Size = new System.Drawing.Size(1111, 562);
             this.dgv.TabIndex = 31;
+            // 
+            // btEditar
+            // 
+            this.btEditar.Location = new System.Drawing.Point(985, 5);
+            this.btEditar.Name = "btEditar";
+            this.btEditar.Size = new System.Drawing.Size(114, 35);
+            this.btEditar.TabIndex = 32;
+            this.btEditar.Text = "Editar";
+            this.btEditar.UseVisualStyleBackColor = true;
+            this.btEditar.Click += new System.EventHandler(this.btEditar_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label1.Location = new System.Drawing.Point(24, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(185, 22);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "Historico Movimiento";
             // 
             // HistoricoForm
             // 
@@ -82,17 +105,22 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1111, 605);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btEditar);
             this.Controls.Add(this.dgv);
             this.Name = "HistoricoForm";
             this.Text = "HistoricoForm";
             this.Load += new System.EventHandler(this.HistoricoForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.DataGridView dgv;
+        private System.Windows.Forms.Button btEditar;
+        private System.Windows.Forms.Label label1;
     }
 }

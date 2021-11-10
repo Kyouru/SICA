@@ -24,6 +24,11 @@ namespace SICA.Forms.Letras
             topBorderBtn = new Panel();
             topBorderBtn.Size = new Size(140, 3);
             pnTop.Controls.Add(topBorderBtn);
+
+            btBuscar.Visible = Globals.auLetraBuscar;
+            btNuevo.Visible = Globals.auLetraNuevo;
+            btReingreso.Visible = Globals.auLetraReingreso;
+            btEntregar.Visible = Globals.auLetraEntregar;
         }
 
         private void OpenChildForm(Form childForm)
