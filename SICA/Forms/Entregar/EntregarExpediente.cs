@@ -12,7 +12,20 @@ namespace SICA.Forms.Entregar
         public EntregarExpediente()
         {
             InitializeComponent();
+            Globals.CarritoSeleccionado = tipo_carrito;
             actualizarCantidad();
+        }
+        public void actualizarCantidad(int cantidad = -1)
+        {
+            if (cantidad >= 0)
+            {
+                cantidadcarrito = cantidad;
+            }
+            else
+            {
+                cantidadcarrito = GlobalFunctions.CantidadCarrito(tipo_carrito);
+            }
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
@@ -21,13 +34,14 @@ namespace SICA.Forms.Entregar
 
             strSQL = @"SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC,
                         FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2,
-                        DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, CUSTODIADO, U.NOMBRE_USUARIO AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
-            strSQL += " FROM ((INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK)";
-            strSQL += " LEFT JOIN DEPARTAMENTO DEP ON DEP.ID_DEPARTAMENTO = IG.ID_DEPARTAMENTO_FK)";
-            strSQL += " LEFT JOIN DOCUMENTO DOC ON DOC.ID_DOCUMENTO = IG.ID_DOCUMENTO_FK)";
-            strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE";
+                        DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, LE.NOMBRE_ESTADO AS CUSTODIADO, U.NOMBRE_USUARIO AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
+            strSQL += " FROM ((((INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK)";
+            strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON DEP.ID_DEPARTAMENTO = IG.ID_DEPARTAMENTO_FK)";
+            strSQL += " LEFT JOIN LDOCUMENTO DOC ON DOC.ID_DOCUMENTO = IG.ID_DOCUMENTO_FK)";
+            strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)";
+            strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK";
             strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL";
-            strSQL += " AND IG.EXPEDIENTE = TRUE AND ID_USUARIO_POSEE = @username";
+            strSQL += " AND IG.EXPEDIENTE = 1 AND ID_USUARIO_POSEE = @username";
 
             if (tbBusquedaLibre.Text != "")
                 strSQL += " AND NUMERO_DE_CAJA+DESC_CONCAT LIKE @busqueda_libre";
@@ -56,6 +70,8 @@ namespace SICA.Forms.Entregar
                 dt = Conexion.llenarDataTable();
                 if (dt is null)
                     return;
+
+                actualizarCantidad();
 
                 Conexion.cerrar();
 
@@ -86,8 +102,7 @@ namespace SICA.Forms.Entregar
             if (dgv.SelectedRows.Count == 1)
             {
                 GlobalFunctions.AgregarCarrito(dgv.SelectedRows[0].Cells[0].Value.ToString(), "0", dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), tipo_carrito);
-                ++cantidadcarrito;
-                actualizarCantidad();
+                actualizarCantidad(cantidadcarrito + 1);
                 foreach (DataGridViewRow row in dgv.SelectedRows)
                 {
                     if (!row.IsNewRow)
@@ -101,6 +116,7 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryArea = "";
                 Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO, CUSTODIA FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
@@ -108,9 +124,7 @@ namespace SICA.Forms.Entregar
                 {
                     string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
                     EntregarFunctions.EntregarExpedientesCarrito(observacion);
-                    cantidadcarrito = 0;
-                    actualizarCantidad();
-                    //btBuscar_Click(sender, e);
+                    actualizarCantidad(0);
                 }
             }
         }
@@ -119,28 +133,22 @@ namespace SICA.Forms.Entregar
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
-                vCarrito.Show();
+                vCarrito.ShowDialog(this);
+                btBuscar_Click(sender, e);
             }
         }
 
         private void btExcel_Click(object sender, EventArgs e)
         {
-            GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
+            //GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
+            GlobalFunctions.ExportarDataGridViewExcel(dgv, null);
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
-            cantidadcarrito = 0;
-            actualizarCantidad();
             btBuscar_Click(sender, e);
-        }
-
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void dgv_KeyDown(object sender, KeyEventArgs e)
@@ -174,7 +182,7 @@ namespace SICA.Forms.Entregar
                     if (!row.IsNewRow)
                         dgv.Rows.Remove(row);
                 }
-                actualizarCantidad();
+                actualizarCantidad(cantidadcarrito);
             }
         }
     }

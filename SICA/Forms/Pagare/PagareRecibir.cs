@@ -14,9 +14,26 @@ namespace SICA.Forms.Pagare
 {
     public partial class PagareRecibir : Form
     {
+        int cantidadcarrito = 0;
+        readonly string tipo_carrito = Globals.strPagareRecibir;
+
         public PagareRecibir()
         {
             InitializeComponent();
+            Globals.CarritoSeleccionado = tipo_carrito;
+            actualizarCantidad();
+        }
+        public void actualizarCantidad(int cantidad = -1)
+        {
+            if (cantidad >= 0)
+            {
+                cantidadcarrito = cantidad;
+            }
+            else
+            {
+                cantidadcarrito = GlobalFunctions.CantidadCarrito(tipo_carrito);
+            }
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void btExcel_Click(object sender, EventArgs e)
@@ -52,6 +69,7 @@ namespace SICA.Forms.Pagare
                 if (dt is null)
                     return;
 
+                actualizarCantidad();
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;
@@ -73,14 +91,9 @@ namespace SICA.Forms.Pagare
                 if (dgv.SelectedRows.Count == 1)
                 {
                     GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells["ID_PAGARE"].Value.ToString(), dgv.SelectedRows[0].Cells["SOLICITUD_SISGO"].Value.ToString(), Globals.strPagareRecibir);
-                    actualizarCantidad();
+                    btActualizar_Click(sender, e);
                 }
             }
-        }
-
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strPagareRecibir) + ")";
         }
 
         private void btIngresoManual_Click(object sender, EventArgs e)
@@ -93,16 +106,16 @@ namespace SICA.Forms.Pagare
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strPagareRecibir;
                 CarritoForm vCarrito = new CarritoForm();
-                vCarrito.Show();
+                vCarrito.ShowDialog();
+                btActualizar_Click(sender, e);
             }
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(Globals.strPagareRecibir);
-            actualizarCantidad();
+            btActualizar_Click(sender, e);
         }
 
         private void btSiguiente_Click(object sender, EventArgs e)
@@ -116,9 +129,7 @@ namespace SICA.Forms.Pagare
                 {
 
                     PagareFunctions.RecibirPagareCarrito();
-                    actualizarCantidad();
-
-                    //btActualizar_Click(sender, e);
+                    btActualizar_Click(sender, e);
                 }
             }
         }
@@ -304,7 +315,7 @@ namespace SICA.Forms.Pagare
                             strSQL += "'" + Globals.Username + "', ";
                             strSQL += "'" + row["CODIGO SOCIO"] + "', ";
                             strSQL += "'" + row["NOMBRE"] + "', ";
-                            strSQL += "'" + row["SOLICITUD SISGO"] + ";" + row["CODIGO SOCIO"] + ";" + row["NOMBRE"] + ";" + row["OBSERVACION ENTREGA"] + ";" + row["OBSERVACION RECIBE"] + "')";
+                            strSQL += "'" + row["SOLICITUD SISGO"] + ";" + row["CODIGO SOCIO"] + ";" + GlobalFunctions.lCadena(row["NOMBRE"].ToString()) + ";" + GlobalFunctions.lCadena(row["OBSERVACION ENTREGA"].ToString()) + ";" + GlobalFunctions.lCadena(row["OBSERVACION RECIBE"].ToString()) + "')";
 
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;
@@ -315,7 +326,7 @@ namespace SICA.Forms.Pagare
                             string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
                             strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + row["OBSERVACION ENTREGA"] + "', '" + row["OBSERVACION RECIBE"] + "', 1)";
+                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(row["OBSERVACION ENTREGA"].ToString()) + "', '" + GlobalFunctions.lCadena(row["OBSERVACION RECIBE"].ToString()) + "', 1)";
 
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;

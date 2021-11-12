@@ -11,8 +11,22 @@ namespace SICA.Forms.Boveda
         public BovedaRetirarDoc()
         {
             InitializeComponent();
+            Globals.CarritoSeleccionado = tipo_carrito;
             actualizarCantidad();
         }
+        public void actualizarCantidad(int cantidad = -1)
+        {
+            if (cantidad >= 0)
+            {
+                cantidadcarrito = cantidad;
+            }
+            else
+            {
+                cantidadcarrito = GlobalFunctions.CantidadCarrito(tipo_carrito);
+            }
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
+        }
+
         private void btBuscar_Click(object sender, EventArgs e)
         {
             string strSQL = "";
@@ -20,10 +34,13 @@ namespace SICA.Forms.Boveda
             {
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable();
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, U.ID_USUARIO AS ID_BOVEDA, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, CUSTODIADO, USUARIO_POSEE AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
-                strSQL += " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.NOMBRE_USUARIO = IG.USUARIO_POSEE)";
-                strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
-                strSQL += " WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, U.ID_USUARIO AS ID_BOVEDA, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, LE.NOMBRE_ESTADO AS CUSTODIADO, U.NOMBRE_USUARIO AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
+                strSQL += " FROM ((((INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)";
+                strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL)";
+                strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)";
+                strSQL += " LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO)";
+                strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK";
+                strSQL += " WHERE U.BOVEDA = 1 AND IG.ID_ESTADO_FK = " + Globals.IdCustodiado + " AND TC.ID_TMP_CARRITO IS NULL";
                 if (tbBusquedaLibre.Text != "")
                 {
                     strSQL += " AND DESC_CONCAT LIKE '%" + tbBusquedaLibre.Text + "%'";
@@ -40,6 +57,7 @@ namespace SICA.Forms.Boveda
                 if (dt is null)
                     return;
 
+                actualizarCantidad();
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;
@@ -113,6 +131,7 @@ namespace SICA.Forms.Boveda
                     ++cantidadcarrito;
                 }
             }
+            actualizarCantidad(cantidadcarrito);
             Conexion.cerrar();
 
             foreach (DataGridViewRow row in dgv.SelectedRows)
@@ -120,8 +139,6 @@ namespace SICA.Forms.Boveda
                 if (!row.IsNewRow)
                     dgv.Rows.Remove(row);
             }
-
-            actualizarCantidad();
 
             if (dtrepetidos.Rows.Count > 0)
             {
@@ -145,8 +162,6 @@ namespace SICA.Forms.Boveda
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
                 agregar();
-                ++cantidadcarrito;
-                actualizarCantidad();
             }
         }
 
@@ -155,16 +170,9 @@ namespace SICA.Forms.Boveda
             if (lbCantidad.Text != "(0)")
             {
                 BovedaFunctions.RetirarDocCarrito();
-                lbCantidad.Text = "(" + 0 + ")";
-                btBuscar_Click(sender, e);
+                actualizarCantidad(0);
             }
         }
-
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + cantidadcarrito + ")";
-        }
-
 
         private void btExcel_Click(object sender, EventArgs e)
         {
@@ -174,17 +182,16 @@ namespace SICA.Forms.Boveda
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
-            cantidadcarrito = 0;
-            actualizarCantidad();
+            btBuscar_Click(sender, e);
         }
 
         private void btVerCarrito_Click(object sender, EventArgs e)
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
-                vCarrito.Show();
+                vCarrito.ShowDialog();
+                btBuscar_Click(sender, e);
             }
         }
     }

@@ -23,15 +23,17 @@ namespace SICA.Forms.Boveda
             {
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable();
-                strSQL = "SELECT U.ID_USUARIO AS ID, NUMERO_DE_CAJA AS CAJA, CODIGO_DEPARTAMENTO AS DEPART, CODIGO_DOCUMENTO AS DOC, USUARIO_POSEE AS BOVEDA";
-                strSQL += " FROM (INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.NOMBRE_USUARIO = IG.USUARIO_POSEE)";
-                strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
-                strSQL += " WHERE U.BOVEDA = 1 AND CUSTODIADO = 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL";
+                strSQL = "SELECT U.ID_USUARIO AS ID_BOVEDA, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, U.NOMBRE_USUARIO AS BOVEDA";
+                strSQL += " FROM (((INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)";
+                strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA)";
+                strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)";
+                strSQL += " LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO";
+                strSQL += " WHERE U.BOVEDA = 1 AND IG.ID_ESTADO_FK = " + Globals.IdCustodiado + " AND TC.ID_TMP_CARRITO IS NULL";
                 if (tbCaja.Text != "")
                 {
                     strSQL += " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
                 }
-                strSQL += " ORDER BY USUARIO_POSEE, NUMERO_DE_CAJA";
+                //strSQL += " ORDER BY USUARIO_POSEE, NUMERO_DE_CAJA";
 
                 if (!Conexion.conectar())
                     return;
@@ -73,9 +75,9 @@ namespace SICA.Forms.Boveda
             {
                 if (dgv.SelectedRows.Count == 1)
                 {
-                    if (!validarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), dgv.SelectedRows[0].Cells["BOVEDA"].Value.ToString()))
+                    if (!validarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Int32.Parse(dgv.SelectedRows[0].Cells["ID_BOVEDA"].Value.ToString())))
                         return;
-                    if (!RetirarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), dgv.SelectedRows[0].Cells["BOVEDA"].Value.ToString(), Int32.Parse(dgv.SelectedRows[0].Cells["ID"].Value.ToString())))
+                    if (!RetirarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Int32.Parse(dgv.SelectedRows[0].Cells["ID_BOVEDA"].Value.ToString())))
                         return;
                     btBuscar_Click(sender, e);
                 }
@@ -88,11 +90,11 @@ namespace SICA.Forms.Boveda
             GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
-        private bool validarCaja(string numero_caja, string boveda)
+        private bool validarCaja(string numero_caja, int id_boveda)
         {
             if (dgv.SelectedRows.Count == 1)
             {
-                if (!GlobalFunctions.verificarCaja(numero_caja, boveda))
+                if (!GlobalFunctions.verificarCaja(numero_caja, id_boveda))
                 {
                     DialogResult dialogResult = MessageBox.Show("Hay documentos de esta caja que lo posee otro usuario\nDesea Retirarlo de todas manera?", "Caja Incompleta", MessageBoxButtons.YesNo);
                     if (dialogResult != DialogResult.Yes)
@@ -115,7 +117,7 @@ namespace SICA.Forms.Boveda
             }
         }
 
-        private bool RetirarCaja (string numero_caja, string boveda, int id_boveda)
+        private bool RetirarCaja (string numero_caja, int id_boveda)
         {
             string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             string strSQL = "";
@@ -124,7 +126,7 @@ namespace SICA.Forms.Boveda
             {
                 if (!Conexion.conectar())
                     return false;
-                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND USUARIO_POSEE = '" + boveda + "'";
+                strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND ID_USUARIO_POSEE = " + id_boveda + "";
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
                 if (!Conexion.ejecutarQuery())
@@ -144,7 +146,7 @@ namespace SICA.Forms.Boveda
 
                 if (dt.Rows.Count > 0)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = " + fecha + " WHERE USUARIO_POSEE = '" + boveda + "' AND NUMERO_DE_CAJA = '" + numero_caja + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = " + Globals.IdUsername + ", FECHA_POSEE = " + fecha + " WHERE ID_USUARIO_POSEE = " + id_boveda + " AND NUMERO_DE_CAJA = '" + numero_caja + "'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

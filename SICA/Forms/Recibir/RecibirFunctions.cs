@@ -8,86 +8,88 @@ namespace SICA
 {
     class RecibirFunctions
     {
-        public static string ArmarStrNuevoIngreso(DataGridViewRow row)
+
+        //PENDIENTE ArmarStrNuevoIngreso
+        public static string ArmarStrNuevoIngreso(DataRow row)
         {
             string strSQL;
-            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
-            strSQL += "VALUES(";
-            if (row.Cells["NUMERO CAJA"].Value.ToString() != "")
+            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, ID_DEPARTAMENTO_FK, ID_DOCUMENTO_FK, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, ID_USUARIO_POSEE, ID_ESTADO_FK, EXPEDIENTE)";
+            strSQL += "VALUES (";
+            if (row["NUMERO CAJA"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["NUMERO CAJA"].Value.ToString() + "', ";
+                strSQL += "'" + row["NUMERO CAJA"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() != "")
+            if (row["ID DEPARTAMENTO"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["CODIGO DEPARTAMENTO"].Value.ToString() + "', ";
+                strSQL += "'" + row["ID DEPARTAMENTO"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["CODIGO DOCUMENTO"].Value.ToString() != "")
+            if (row["ID DOCUMENTO"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["CODIGO DOCUMENTO"].Value.ToString() + "', ";
+                strSQL += "'" + row["ID DOCUMENTO"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["FECHA DESDE"].Value.ToString() != "")
+            if (row["FECHA DESDE"].ToString() != "")
             {
-                strSQL += "'" + DateTime.ParseExact(row.Cells["FECHA DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
+                strSQL += "'" + DateTime.ParseExact(row["FECHA DESDE"].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["FECHA HASTA"].Value.ToString() != "")
+            if (row["FECHA HASTA"].ToString() != "")
             {
-                strSQL += "'" + DateTime.ParseExact(row.Cells["FECHA HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
+                strSQL += "'" + DateTime.ParseExact(row["FECHA HASTA"].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["DESCRIPCION 1"].Value.ToString() != "")
+            if (row["DESCRIPCION 1"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + "', ";
+                strSQL += "'" + row["DESCRIPCION 1"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["DESCRIPCION 2"].Value.ToString() != "")
+            if (row["DESCRIPCION 2"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', ";
+                strSQL += "'" + row["DESCRIPCION 2"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["DESCRIPCION 3"].Value.ToString() != "")
+            if (row["DESCRIPCION 3"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["DESCRIPCION 3"].Value.ToString() + "', ";
+                strSQL += "'" + row["DESCRIPCION 3"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["DESCRIPCION 4"].Value.ToString() != "")
+            if (row["DESCRIPCION 4"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["DESCRIPCION 4"].Value.ToString() + "', ";
+                strSQL += "'" + row["DESCRIPCION 4"].ToString() + "', ";
             }
             else
             {
                 strSQL += "NULL, ";
             }
-            if (row.Cells["DESCRIPCION 5"].Value.ToString() != "")
+            if (row["DESCRIPCION 5"].ToString() != "")
             {
-                strSQL += "'" + row.Cells["DESCRIPCION 5"].Value.ToString() + "', ";
+                strSQL += "'" + row["DESCRIPCION 5"].ToString() + "', ";
             }
             else
             {
@@ -106,116 +108,75 @@ namespace SICA
             */
 
             //DESC_CONCAT
-            strSQL += "'" + row.Cells["DESCRIPCION 1"].Value.ToString() + ";" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";" + row.Cells["DESCRIPCION 5"].Value.ToString() + ";', ";
+            strSQL += "'" + GlobalFunctions.lCadena(row["CODIGO DEPARTAMENTO"].ToString() + ";" + row["CODIGO DOCUMENTO"].ToString() + ";" + row["FECHA DESDE"].ToString() + ";" + row["FECHA HASTA"].ToString() + ";" + row["DESCRIPCION 1"].ToString() + ";" + row["DESCRIPCION 2"].ToString() + ";" + row["DESCRIPCION 3"].ToString() + ";" + row["DESCRIPCION 4"].ToString() + ";" + row["DESCRIPCION 5"].ToString()) + ";', ";
             strSQL += "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
-            strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
+            strSQL += "" + Globals.IdUsername + ", " + Globals.IdCustodiado + ", ";
+            if (row["EXPEDIENTE"].ToString() == "SI")
+            {
+                strSQL += "1)";
+            }
+            else
+            {
+                strSQL += "0)";
+            }
             return strSQL;
 
         }
 
-        public static string ArmarStrNuevoIngresoOld(DataGridViewRow row)
+        public static bool RecibirPagare(DataRow row, string observacion)
         {
-            string strSQL;
-            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO)";
-            strSQL += "VALUES(";
-            if (row.Cells["NUMERO_CAJA"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["NUMERO_CAJA"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["COD_DEP"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["COD_DEP"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["COD_DOC"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["COD_DOC"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["DESDE"].Value.ToString() != "")
-            {
-                strSQL += "'" + DateTime.ParseExact(row.Cells["DESDE"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["HASTA"].Value.ToString() != "")
-            {
-                strSQL += "'" + DateTime.ParseExact(row.Cells["HASTA"].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture) + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["DESC_1"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["DESC_1"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["DESC_2"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["DESC_2"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["DESC_3"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["DESC_3"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["DESC_4"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["DESC_4"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
-            if (row.Cells["DESC_5"].Value.ToString() != "")
-            {
-                strSQL += "'" + row.Cells["DESC_5"].Value.ToString() + "', ";
-            }
-            else
-            {
-                strSQL += "NULL, ";
-            }
+            string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-            /*
-            if (row.Cells["ID_REPORTE"].Value.ToString() != "")
+            string strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + row["DESCRIPCION 2"].ToString() + "'";
+
+            if (!Conexion.conectar())
+                return false;
+            if (!Conexion.iniciaCommand(strSQL))
+                return false;
+            if (!Conexion.ejecutarQuery())
+                return false;
+            DataTable dt = Conexion.llenarDataTable();
+
+            if (dt.Rows.Count > 0)
             {
-                strSQL += "" + row.Cells["ID_REPORTE"].Value.ToString() + ", ";
+                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (";
+                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
+
+                strSQL = "UPDATE PAGARE SET ID_USUARIO_POSEE = " + Globals.IdUsername + "";
+                strSQL += " WHERE ID_PAGARE = " + dt.Rows[0]["ID_PAGARE"].ToString();
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
             }
             else
             {
-                strSQL += "NULL, ";
+                strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, CODIGO_SOCIO, ID_USUARIO_POSEE, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCAT) VALUES (";
+                strSQL += "'" + row["DESCRIPCION 2"].ToString() + "', '" + row["DESCRIPCION 3"].ToString().Split('-')[0] + "', " + Globals.IdUsername + ", '" + row["DESCRIPCION 3"].ToString() + "', '" + row["DESCRIPCION 4"].ToString() + "', '" + row["DESCRIPCION 5"].ToString() + "', '" + row["DESCRIPCION 2"].ToString() + ";" + row["DESCRIPCION 3"].ToString() + ";" + row["DESCRIPCION 4"].ToString() + ";" + row["DESCRIPCION 5"].ToString() + "')";
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+
+                    return false;
+                long lastinsertid = Conexion.lastIdInsert();
+
+                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, ANULADO) VALUES (";
+                strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 0)";
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return false;
+                if (!Conexion.ejecutarQuery())
+                    return false;
             }
-            */
-
-            //DESC_CONCAT
-            strSQL += "'" + row.Cells["DESC_1"].Value.ToString() + ";" + row.Cells["DESC_2"].Value.ToString() + ";" + row.Cells["DESC_3"].Value.ToString() + ";" + row.Cells["DESC_4"].Value.ToString() + ";" + row.Cells["DESC_5"].Value.ToString() + ";', ";
-            strSQL += "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
-            strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
-            return strSQL;
-
+            Conexion.cerrar();
+            return true;
         }
 
         public static bool ReingresoCarrito(int entrega, string observacion)
@@ -246,8 +207,7 @@ namespace SICA
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
-
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET CUSTODIADO = 'CUSTODIADO', USUARIO_POSEE = '" + Globals.Username + "', FECHA_POSEE = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row[0].ToString() + "";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET ID_ESTADO_FK = " + Globals.IdCustodiado + ", ID_USUARIO_POSEE = " + Globals.IdUsername + ", FECHA_POSEE = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row[0].ToString() + "";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -299,14 +259,14 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = " + fecha + ", [RECIBIDO] = 1, [OBSERVACION_RECIBE] = '" + observacion + "' WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = 0 AND ANULADO = 0";
+                    strSQL = "UPDATE INVENTARIO_HISTORICO SET [FECHA_FIN] = " + fecha + ", [RECIBIDO] = 1, [OBSERVACION_RECIBE] = '" + GlobalFunctions.lCadena(observacion) + "' WHERE ID_INVENTARIO_GENERAL_FK = " + row["ID"].ToString() + " AND FECHA_FIN IS NULL AND RECIBIDO = 0 AND ANULADO = 0";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_USUARIO_POSEE] = " + Globals.IdUsername + ", [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -331,7 +291,5 @@ namespace SICA
                 return false;
             }
         }
-
-
     }
 }

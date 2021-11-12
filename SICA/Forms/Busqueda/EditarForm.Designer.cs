@@ -29,19 +29,17 @@ namespace SICA.Forms.Busqueda
         /// </summary>
         private void InitializeComponent()
         {
-            this.cbFechaDesde = new System.Windows.Forms.CheckBox();
+            this.cbFecha = new System.Windows.Forms.CheckBox();
             this.dtpFechaDesde = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.tbCaja = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.cbFechaHasta = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.dtpFechaHasta = new System.Windows.Forms.DateTimePicker();
-            this.tbDescripcion1 = new System.Windows.Forms.TextBox();
             this.tbDescripcion2 = new System.Windows.Forms.TextBox();
             this.tbDescripcion3 = new System.Windows.Forms.TextBox();
             this.tbDescripcion4 = new System.Windows.Forms.TextBox();
@@ -50,20 +48,25 @@ namespace SICA.Forms.Busqueda
             this.btGuardar = new System.Windows.Forms.Button();
             this.tbDescripcion5 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.lbDesde = new System.Windows.Forms.Label();
+            this.lbHasta = new System.Windows.Forms.Label();
+            this.cmbDescripcion1 = new System.Windows.Forms.ComboBox();
+            this.cmbExpediente = new System.Windows.Forms.ComboBox();
+            this.lbExpediente = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // cbFechaDesde
+            // cbFecha
             // 
-            this.cbFechaDesde.AutoSize = true;
-            this.cbFechaDesde.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbFechaDesde.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.cbFechaDesde.Location = new System.Drawing.Point(31, 114);
-            this.cbFechaDesde.Name = "cbFechaDesde";
-            this.cbFechaDesde.Size = new System.Drawing.Size(149, 26);
-            this.cbFechaDesde.TabIndex = 22;
-            this.cbFechaDesde.Text = "Fecha Desde:";
-            this.cbFechaDesde.UseVisualStyleBackColor = true;
-            this.cbFechaDesde.CheckedChanged += new System.EventHandler(this.cbFechaDesde_CheckedChanged);
+            this.cbFecha.AutoSize = true;
+            this.cbFecha.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbFecha.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.cbFecha.Location = new System.Drawing.Point(31, 129);
+            this.cbFecha.Name = "cbFecha";
+            this.cbFecha.Size = new System.Drawing.Size(82, 26);
+            this.cbFecha.TabIndex = 22;
+            this.cbFecha.Text = "Fecha";
+            this.cbFecha.UseVisualStyleBackColor = true;
+            this.cbFecha.CheckedChanged += new System.EventHandler(this.cbFecha_CheckedChanged);
             // 
             // dtpFechaDesde
             // 
@@ -117,19 +120,6 @@ namespace SICA.Forms.Busqueda
             this.label3.Size = new System.Drawing.Size(159, 22);
             this.label3.TabIndex = 26;
             this.label3.Text = "Cod. Documento:";
-            // 
-            // cbFechaHasta
-            // 
-            this.cbFechaHasta.AutoSize = true;
-            this.cbFechaHasta.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbFechaHasta.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.cbFechaHasta.Location = new System.Drawing.Point(31, 144);
-            this.cbFechaHasta.Name = "cbFechaHasta";
-            this.cbFechaHasta.Size = new System.Drawing.Size(140, 26);
-            this.cbFechaHasta.TabIndex = 27;
-            this.cbFechaHasta.Text = "Fecha Hasta:";
-            this.cbFechaHasta.UseVisualStyleBackColor = true;
-            this.cbFechaHasta.CheckedChanged += new System.EventHandler(this.cbFechaHasta_CheckedChanged);
             // 
             // label4
             // 
@@ -187,14 +177,6 @@ namespace SICA.Forms.Busqueda
             this.dtpFechaHasta.TabIndex = 32;
             this.dtpFechaHasta.Visible = false;
             // 
-            // tbDescripcion1
-            // 
-            this.tbDescripcion1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbDescripcion1.Location = new System.Drawing.Point(229, 176);
-            this.tbDescripcion1.Name = "tbDescripcion1";
-            this.tbDescripcion1.Size = new System.Drawing.Size(397, 24);
-            this.tbDescripcion1.TabIndex = 33;
-            // 
             // tbDescripcion2
             // 
             this.tbDescripcion2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -221,6 +203,7 @@ namespace SICA.Forms.Busqueda
             // 
             // cmbDepartamento
             // 
+            this.cmbDepartamento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDepartamento.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.cmbDepartamento.FormattingEnabled = true;
             this.cmbDepartamento.Location = new System.Drawing.Point(229, 52);
@@ -230,6 +213,7 @@ namespace SICA.Forms.Busqueda
             // 
             // cmbDocumento
             // 
+            this.cmbDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDocumento.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.cmbDocumento.FormattingEnabled = true;
             this.cmbDocumento.Location = new System.Drawing.Point(229, 84);
@@ -239,7 +223,7 @@ namespace SICA.Forms.Busqueda
             // 
             // btGuardar
             // 
-            this.btGuardar.Location = new System.Drawing.Point(270, 347);
+            this.btGuardar.Location = new System.Drawing.Point(273, 378);
             this.btGuardar.Name = "btGuardar";
             this.btGuardar.Size = new System.Drawing.Size(114, 35);
             this.btGuardar.TabIndex = 39;
@@ -266,12 +250,72 @@ namespace SICA.Forms.Busqueda
             this.label8.TabIndex = 40;
             this.label8.Text = "Descripcion 5:";
             // 
+            // lbDesde
+            // 
+            this.lbDesde.AutoSize = true;
+            this.lbDesde.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbDesde.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbDesde.Location = new System.Drawing.Point(137, 118);
+            this.lbDesde.Name = "lbDesde";
+            this.lbDesde.Size = new System.Drawing.Size(72, 22);
+            this.lbDesde.TabIndex = 42;
+            this.lbDesde.Text = "Desde:";
+            // 
+            // lbHasta
+            // 
+            this.lbHasta.AutoSize = true;
+            this.lbHasta.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbHasta.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbHasta.Location = new System.Drawing.Point(137, 148);
+            this.lbHasta.Name = "lbHasta";
+            this.lbHasta.Size = new System.Drawing.Size(63, 22);
+            this.lbHasta.TabIndex = 43;
+            this.lbHasta.Text = "Hasta:";
+            // 
+            // cmbDescripcion1
+            // 
+            this.cmbDescripcion1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbDescripcion1.FormattingEnabled = true;
+            this.cmbDescripcion1.Location = new System.Drawing.Point(229, 176);
+            this.cmbDescripcion1.Name = "cmbDescripcion1";
+            this.cmbDescripcion1.Size = new System.Drawing.Size(397, 26);
+            this.cmbDescripcion1.TabIndex = 44;
+            // 
+            // cmbExpediente
+            // 
+            this.cmbExpediente.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbExpediente.FormattingEnabled = true;
+            this.cmbExpediente.Items.AddRange(new object[] {
+            "SI",
+            "NO"});
+            this.cmbExpediente.Location = new System.Drawing.Point(229, 335);
+            this.cmbExpediente.Name = "cmbExpediente";
+            this.cmbExpediente.Size = new System.Drawing.Size(68, 26);
+            this.cmbExpediente.TabIndex = 89;
+            this.cmbExpediente.Text = "NO";
+            // 
+            // lbExpediente
+            // 
+            this.lbExpediente.AutoSize = true;
+            this.lbExpediente.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbExpediente.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbExpediente.Location = new System.Drawing.Point(49, 335);
+            this.lbExpediente.Name = "lbExpediente";
+            this.lbExpediente.Size = new System.Drawing.Size(111, 22);
+            this.lbExpediente.TabIndex = 90;
+            this.lbExpediente.Text = "Expediente:";
+            // 
             // EditarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(659, 394);
+            this.ClientSize = new System.Drawing.Size(659, 425);
+            this.Controls.Add(this.cmbExpediente);
+            this.Controls.Add(this.lbExpediente);
+            this.Controls.Add(this.cmbDescripcion1);
+            this.Controls.Add(this.lbHasta);
+            this.Controls.Add(this.lbDesde);
             this.Controls.Add(this.tbDescripcion5);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.btGuardar);
@@ -280,16 +324,14 @@ namespace SICA.Forms.Busqueda
             this.Controls.Add(this.tbDescripcion4);
             this.Controls.Add(this.tbDescripcion3);
             this.Controls.Add(this.tbDescripcion2);
-            this.Controls.Add(this.tbDescripcion1);
             this.Controls.Add(this.dtpFechaHasta);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.cbFechaHasta);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.cbFechaDesde);
+            this.Controls.Add(this.cbFecha);
             this.Controls.Add(this.dtpFechaDesde);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbCaja);
@@ -303,19 +345,17 @@ namespace SICA.Forms.Busqueda
 
         #endregion
 
-        private System.Windows.Forms.CheckBox cbFechaDesde;
+        private System.Windows.Forms.CheckBox cbFecha;
         private System.Windows.Forms.DateTimePicker dtpFechaDesde;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbCaja;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox cbFechaHasta;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DateTimePicker dtpFechaHasta;
-        private System.Windows.Forms.TextBox tbDescripcion1;
         private System.Windows.Forms.TextBox tbDescripcion2;
         private System.Windows.Forms.TextBox tbDescripcion3;
         private System.Windows.Forms.TextBox tbDescripcion4;
@@ -324,5 +364,10 @@ namespace SICA.Forms.Busqueda
         private System.Windows.Forms.Button btGuardar;
         private System.Windows.Forms.TextBox tbDescripcion5;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lbDesde;
+        private System.Windows.Forms.Label lbHasta;
+        private System.Windows.Forms.ComboBox cmbDescripcion1;
+        private System.Windows.Forms.ComboBox cmbExpediente;
+        private System.Windows.Forms.Label lbExpediente;
     }
 }

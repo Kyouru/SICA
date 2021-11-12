@@ -20,7 +20,7 @@ namespace SICA.Forms.Pagare
         private void btRegistrar_Click(object sender, EventArgs e)
         {
             string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-            string strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, CODIGO_SOCIO, DESCRIPCION_3, DESCRIPCION_4, USUARIO_POSEE, CONCAT) ";
+            string strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, CODIGO_SOCIO, DESCRIPCION_3, DESCRIPCION_4, ID_USUARIO_POSEE, CONCAT) ";
             strSQL += "VALUES (";
 
             if (tbSolicitudSISGO.Text != "")
@@ -29,6 +29,7 @@ namespace SICA.Forms.Pagare
                 {
                     if (tbNombre.Text != "")
                     {
+                        Globals.strQueryArea = "";
                         Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                         SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                         suf.ShowDialog();
@@ -40,7 +41,7 @@ namespace SICA.Forms.Pagare
                             strSQL += "'" + tbCodigoSocio.Text + "', ";
                             strSQL += "'" + tbCodigoSocio.Text + "', ";
                             strSQL += "'" + tbNombre.Text + "', ";
-                            strSQL += "'" + Globals.Username + "', ";
+                            strSQL += "" + Globals.IdUsername + ", ";
 
                             //DESC_CONCAT
                             strSQL += "'" + tbSolicitudSISGO.Text + ";" + tbCodigoSocio.Text + ";" + tbNombre.Text + ";')";
@@ -57,7 +58,7 @@ namespace SICA.Forms.Pagare
                             int lastinsertid = Conexion.lastIdInsert();
 
                             strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
+                            strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 1)";
 
                             if (!Conexion.iniciaCommand(strSQL))
                                 return;

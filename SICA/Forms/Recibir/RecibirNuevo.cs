@@ -12,6 +12,8 @@ namespace SICA.Forms.Recibir
         public RecibirNuevo()
         {
             InitializeComponent();
+
+            btIngresoManual.Visible = Globals.auRecibirManual;
         }
 
         private void btBuscarCargo_Click(object sender, EventArgs e)
@@ -68,6 +70,42 @@ namespace SICA.Forms.Recibir
                 dt.Columns.Add("DESCRIPCION 5");
                 dt.Columns.Add("EXPEDIENTE");
                 dt.Columns.Add("PAGARE");
+                dt.Columns.Add("ID DEPARTAMENTO");
+                dt.Columns.Add("ID DOCUMENTO");
+
+                //Lista Departamento
+                string strSQL = "SELECT ID_DEPARTAMENTO, NOMBRE_DEPARTAMENTO FROM LDEPARTAMENTO ORDER BY ORDEN ASC";
+                System.Data.DataTable dtdep = new System.Data.DataTable("Departamento");
+                if (!Conexion.conectar())
+                    return;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dtdep = Conexion.llenarDataTable();
+                if (dtdep is null)
+                    return;
+
+                //Lista Documento
+                strSQL = "SELECT ID_DOCUMENTO, NOMBRE_DOCUMENTO FROM LDOCUMENTO ORDER BY ORDEN ASC";
+                System.Data.DataTable dtdoc = new System.Data.DataTable("Documento");
+                if (!Conexion.conectar())
+                    return;
+
+                if (!Conexion.iniciaCommand(strSQL))
+                    return;
+
+                if (!Conexion.ejecutarQuery())
+                    return;
+
+                dtdoc = Conexion.llenarDataTable();
+                if (dtdoc is null)
+                    return;
+
+                Conexion.cerrar();
 
                 for (int row = 1; row <= rows; row++)
                 {
@@ -219,12 +257,48 @@ namespace SICA.Forms.Recibir
                                         valido = false;
                                         newrow["STATUS"] = newrow["STATUS"].ToString() + "Codigo Departamento Vacío;";
                                     }
+                                    else
+                                    {
+                                        bool existe = false;
+                                        foreach(DataRow dtrow in dtdep.Rows)
+                                        {
+                                            if (dtrow["NOMBRE_DEPARTAMENTO"].ToString() == cellText)
+                                            {
+                                                existe = true;
+                                                newrow[13] = dtrow["ID_DEPARTAMENTO"].ToString();
+                                                break;
+                                            }
+                                        }
+                                        if (!existe)
+                                        {
+                                            valido = false;
+                                            newrow["STATUS"] = newrow["STATUS"].ToString() + "Codigo Departamento No es Valido;";
+                                        }
+                                    }
                                     break;
                                 case 3:
                                     if (cellText == "")
                                     {
                                         valido = false;
                                         newrow["STATUS"] = newrow["STATUS"].ToString() + "Codigo Documento Vacío;";
+                                    }
+                                    else
+                                    {
+                                        bool existe = false;
+                                        foreach (DataRow dtrow in dtdoc.Rows)
+                                        {
+                                            if (dtrow["NOMBRE_DOCUMENTO"].ToString() == cellText)
+                                            {
+                                                existe = true;
+                                                newrow[14] = dtrow["ID_DOCUMENTO"].ToString();
+                                                break;
+                                            }
+                                        }
+                                        if (!existe)
+                                        {
+                                            valido = false;
+                                            newrow["STATUS"] = newrow["STATUS"].ToString() + "Codigo Documento No es Valido;";
+                                        }
                                     }
                                     break;
                                 case 4:
@@ -286,6 +360,7 @@ namespace SICA.Forms.Recibir
 
         private void btCargarValido_Click(object sender, EventArgs e)
         {
+            Globals.strQueryArea = "";
             Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
             suf.ShowDialog();
@@ -299,9 +374,7 @@ namespace SICA.Forms.Recibir
                 long lastinsertid;
                 string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
                 Boolean pagare;
-                Boolean expediente;
 
-                System.Data.DataTable dt;
                 try
                 {
                     if (!Conexion.conectar())
@@ -316,78 +389,24 @@ namespace SICA.Forms.Recibir
                         {
                             pagare = false;
                         }
-                        if (row.Cells["EXPEDIENTE"].Value.ToString() == "SI")
-                        {
-                            expediente = true;
-                        }
-                        else
-                        {
-                            expediente = false;
-                        }
 
+                        if (!Conexion.iniciaCommand(RecibirFunctions.ArmarStrNuevoIngreso(((DataRowView)row.DataBoundItem).Row)))
+                            return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
+                        lastinsertid = Conexion.lastIdInsert();
 
-                        if (expediente)
-                        {
-                            if (!Conexion.iniciaCommand(RecibirFunctions.ArmarStrNuevoIngreso(row)))
-                                return;
-                            if (!Conexion.ejecutarQuery())
-                                return;
-                            lastinsertid = Conexion.lastIdInsert();
+                        strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
 
-                            strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
-
-                            if (!Conexion.iniciaCommand(strSQL))
-                                return;
-                            if (!Conexion.ejecutarQuery())
-                                return;
-                        }
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
+                        if (!Conexion.ejecutarQuery())
+                            return;
                             
                         if (pagare)
                         {
-                            strSQL = "SELECT * FROM PAGARE WHERE SOLICITUD_SISGO = '" + row.Cells["DESCRIPCION 2"].Value.ToString() + "'";
-                            if (!Conexion.iniciaCommand(strSQL))
+                            if (!RecibirFunctions.RecibirPagare(((DataRowView)row.DataBoundItem).Row, observacion))
                                 return;
-                            if (!Conexion.ejecutarQuery())
-                                return;
-                            dt = Conexion.llenarDataTable();
-
-                            if (dt.Rows.Count > 0)
-                            {
-                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                                strSQL += dt.Rows[0]["ID_PAGARE"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
-
-                                if (!Conexion.iniciaCommand(strSQL))
-                                    return;
-                                if (!Conexion.ejecutarQuery())
-                                    return;
-
-                                strSQL = "UPDATE PAGARE SET USUARIO_POSEE = '" + Globals.Username + "'";
-                                strSQL += " WHERE ID_PAGARE = " + dt.Rows[0]["ID_PAGARE"].ToString();
-
-                                if (!Conexion.iniciaCommand(strSQL))
-                                    return;
-                                if (!Conexion.ejecutarQuery())
-                                    return;
-                            }
-                            else
-                            {
-                                strSQL = "INSERT INTO PAGARE (SOLICITUD_SISGO, CODIGO_SOCIO, USUARIO_POSEE, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCAT) VALUES (";
-                                strSQL += "'" + row.Cells["DESCRIPCION 2"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 3"].Value.ToString().Split('-')[0] + "', '" + Globals.Username + "', '" + row.Cells["DESCRIPCION 3"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 4"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 5"].Value.ToString() + "', '" + row.Cells["DESCRIPCION 2"].Value.ToString() + ";" + row.Cells["DESCRIPCION 3"].Value.ToString() + ";" + row.Cells["DESCRIPCION 4"].Value.ToString() + ";" + row.Cells["DESCRIPCION 5"].Value.ToString() + "')";
-
-                                if (!Conexion.iniciaCommand(strSQL))
-                                    return;
-                                if (!Conexion.ejecutarQuery())
-                                    return;
-                                lastinsertid = Conexion.lastIdInsert();
-                                
-                                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE) VALUES (";
-                                strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "')";
-
-                                if (!Conexion.iniciaCommand(strSQL))
-                                    return;
-                                if (!Conexion.ejecutarQuery())
-                                    return;
-                            }
                         }
                     }
                     Conexion.cerrar();

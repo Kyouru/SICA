@@ -263,20 +263,22 @@ namespace SICA.Forms.Recibir
             // 
             // cmbCodDocumento
             // 
+            this.cmbCodDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCodDocumento.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCodDocumento.FormattingEnabled = true;
             this.cmbCodDocumento.Location = new System.Drawing.Point(258, 68);
             this.cmbCodDocumento.Name = "cmbCodDocumento";
-            this.cmbCodDocumento.Size = new System.Drawing.Size(179, 26);
+            this.cmbCodDocumento.Size = new System.Drawing.Size(296, 26);
             this.cmbCodDocumento.TabIndex = 4;
             // 
             // cmbCodDepartamento
             // 
+            this.cmbCodDepartamento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCodDepartamento.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCodDepartamento.FormattingEnabled = true;
             this.cmbCodDepartamento.Location = new System.Drawing.Point(258, 38);
             this.cmbCodDepartamento.Name = "cmbCodDepartamento";
-            this.cmbCodDepartamento.Size = new System.Drawing.Size(179, 26);
+            this.cmbCodDepartamento.Size = new System.Drawing.Size(296, 26);
             this.cmbCodDepartamento.TabIndex = 3;
             // 
             // dtpDesde
@@ -377,15 +379,14 @@ namespace SICA.Forms.Recibir
             // 
             this.btRegistrar.FlatAppearance.BorderColor = System.Drawing.Color.Gainsboro;
             this.btRegistrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btRegistrar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btRegistrar.ForeColor = System.Drawing.Color.Gainsboro;
             this.btRegistrar.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btRegistrar.IconColor = System.Drawing.Color.Black;
+            this.btRegistrar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btRegistrar.IconSize = 16;
             this.btRegistrar.Location = new System.Drawing.Point(224, 346);
             this.btRegistrar.Name = "btRegistrar";
-            this.btRegistrar.Rotation = 0D;
             this.btRegistrar.Size = new System.Drawing.Size(217, 32);
             this.btRegistrar.TabIndex = 14;
             this.btRegistrar.Text = "Registrar";
@@ -397,12 +398,11 @@ namespace SICA.Forms.Recibir
             this.lbPagare.AutoSize = true;
             this.lbPagare.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbPagare.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbPagare.Location = new System.Drawing.Point(40, 309);
+            this.lbPagare.Location = new System.Drawing.Point(327, 309);
             this.lbPagare.Name = "lbPagare";
             this.lbPagare.Size = new System.Drawing.Size(76, 22);
             this.lbPagare.TabIndex = 86;
             this.lbPagare.Text = "Pagaré:";
-            this.lbPagare.Visible = false;
             // 
             // cmbPagare
             // 
@@ -411,12 +411,11 @@ namespace SICA.Forms.Recibir
             this.cmbPagare.Items.AddRange(new object[] {
             "SI",
             "NO"});
-            this.cmbPagare.Location = new System.Drawing.Point(133, 309);
+            this.cmbPagare.Location = new System.Drawing.Point(420, 309);
             this.cmbPagare.Name = "cmbPagare";
             this.cmbPagare.Size = new System.Drawing.Size(68, 26);
             this.cmbPagare.TabIndex = 12;
-            this.cmbPagare.Text = "SI";
-            this.cmbPagare.Visible = false;
+            this.cmbPagare.Text = "NO";
             // 
             // cmbExpediente
             // 
@@ -425,24 +424,22 @@ namespace SICA.Forms.Recibir
             this.cmbExpediente.Items.AddRange(new object[] {
             "SI",
             "NO"});
-            this.cmbExpediente.Location = new System.Drawing.Point(369, 309);
+            this.cmbExpediente.Location = new System.Drawing.Point(241, 309);
             this.cmbExpediente.Name = "cmbExpediente";
             this.cmbExpediente.Size = new System.Drawing.Size(68, 26);
             this.cmbExpediente.TabIndex = 13;
-            this.cmbExpediente.Text = "SI";
-            this.cmbExpediente.Visible = false;
+            this.cmbExpediente.Text = "NO";
             // 
             // lbExpediente
             // 
             this.lbExpediente.AutoSize = true;
             this.lbExpediente.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbExpediente.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lbExpediente.Location = new System.Drawing.Point(241, 309);
+            this.lbExpediente.Location = new System.Drawing.Point(113, 309);
             this.lbExpediente.Name = "lbExpediente";
             this.lbExpediente.Size = new System.Drawing.Size(111, 22);
             this.lbExpediente.TabIndex = 88;
             this.lbExpediente.Text = "Expediente:";
-            this.lbExpediente.Visible = false;
             // 
             // RecibirManual
             // 

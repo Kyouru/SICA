@@ -34,7 +34,7 @@ namespace SICA.Forms.Letras
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE LETRA SET ESTADO = 'RECEPCION PENDIENTE', UBICACION = 'RECEPCION PENDIENTE' WHERE ID_LETRA = " + row["ID"].ToString();
+                    strSQL = "UPDATE LETRA SET ESTADO = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString();
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -96,7 +96,7 @@ namespace SICA.Forms.Letras
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE LETRA SET ESTADO = 'CUSTODIADO', UBICACION = 'CUSTODIADO' WHERE ID_LETRA = " + row["ID"].ToString() + "";
+                    strSQL = "UPDATE LETRA SET ESTADO = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString() + "";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

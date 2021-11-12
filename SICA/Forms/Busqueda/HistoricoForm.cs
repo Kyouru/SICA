@@ -21,50 +21,12 @@ namespace SICA.Forms
         private void HistoricoForm_Load(object sender, EventArgs e)
         {
             btEditar.Visible = Globals.auBusquedaEditar;
-
-            string strSQL = "";
-            DataTable dt = new DataTable();
-
-            try
-            {
-                LoadingScreen.iniciarLoading();
-
-                strSQL = Globals.mostrarSQL;
-
-                if (!Conexion.conectar())
-                    return;
-
-                if (!Conexion.iniciaCommand(strSQL))
-                    return;
-
-                if (!Conexion.ejecutarQuery())
-                    return;
-
-                dt = Conexion.llenarDataTable();
-                if (dt is null)
-                    return;
-
-                Conexion.cerrar();
-
-                dgv.DataSource = dt;
-                dgv.Columns[0].Visible = false;
-
-                LoadingScreen.cerrarLoading();
-            }
-            catch (Exception ex)
-            {
-                GlobalFunctions.casoError(ex, strSQL);
-            }
         }
 
         private void btEditar_Click(object sender, EventArgs e)
         {
-            if (dgv.Rows.Count > 0)
-            {
-                Globals.IdInventario = Int32.Parse(dgv.Rows[0].Cells[0].Value.ToString());
-                EditarForm ef = new EditarForm();
-                ef.ShowDialog();
-            }
+            EditarForm ef = new EditarForm();
+            ef.ShowDialog();
         }
     }
 }

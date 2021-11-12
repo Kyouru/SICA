@@ -69,7 +69,7 @@ namespace SICA.Forms.Letras
                 string strSQL = "";
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
-                    strSQL = "INSERT INTO LETRA (SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, F_GIRO, F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION, CONCATENADO) VALUES ";
+                    strSQL = "INSERT INTO LETRA (SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, F_GIRO, F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, FECHA_ESTADO, OBSERVACION, CONCATENADO) VALUES ";
                     strSQL += " ('" + row.Cells["SOCIO"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["NOMBRE"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["SOLICITUD"].Value.ToString() + "',";
@@ -80,10 +80,9 @@ namespace SICA.Forms.Letras
                     strSQL += " " + double.Parse(row.Cells["IMPORTE"].Value.ToString().Trim()) + ",";
                     strSQL += " '" + row.Cells["ACEPTANTE"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["MD"].Value.ToString() + "',";
-                    strSQL += " 'CUSTODIADO',";
-                    strSQL += " 'SAN ISIDRO',";
+                    strSQL += " " + Globals.IdCustodiado + ",";
                     strSQL += " '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',";
-                    strSQL += " '" + observacion + "',";
+                    strSQL += " '" + GlobalFunctions.lCadena(observacion) + "',";
                     strSQL += " '" + row.Cells["SOCIO"].Value.ToString() + ";" + row.Cells["NOMBRE"].Value.ToString() + ";" + row.Cells["SOLICITUD"].Value.ToString() + ";" + row.Cells["ACEPTANTE"].Value.ToString() + "')";
 
                     if (!Conexion.iniciaCommand(strSQL))

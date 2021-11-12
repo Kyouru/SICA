@@ -152,6 +152,18 @@
     <Compile Include="Forms\Busqueda\EditarForm.Designer.cs">
       <DependentUpon>EditarForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Busqueda\Historico\HistoricoEdicion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Busqueda\Historico\HistoricoEdicion.Designer.cs">
+      <DependentUpon>HistoricoEdicion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Busqueda\Historico\HistoricoMovimiento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Busqueda\Historico\HistoricoMovimiento.Designer.cs">
+      <DependentUpon>HistoricoMovimiento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DocuClass\DocuClassEntregar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -411,6 +423,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Busqueda\EditarForm.resx">
       <DependentUpon>EditarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Busqueda\Historico\HistoricoEdicion.resx">
+      <DependentUpon>HistoricoEdicion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Busqueda\Historico\HistoricoMovimiento.resx">
+      <DependentUpon>HistoricoMovimiento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CarritoForm.resx">
       <DependentUpon>CarritoForm.cs</DependentUpon>

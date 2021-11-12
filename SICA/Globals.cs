@@ -1,10 +1,4 @@
-﻿using SICA.Forms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace SICA
@@ -16,6 +10,7 @@ namespace SICA
 
         public static String ExportarPath = Application.StartupPath + "\\Exportar\\";
         public static String strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
+        public static String strQueryArea = "";
 
         public static String mostrarSQL = "";
 
@@ -35,9 +30,15 @@ namespace SICA
         public static Int32 CantidadCarrito = 0;
         public static String CarritoSeleccionado = "";
 
-        public static Int32 IdCUSTODIA = 1;
+        public static Int32 IdAreaCustodia = 1;
         public static Int32 IdIM = 2;
         public static Int32 IdDC = 10;
+
+        public static Int32 IdCustodiado = 1;
+        public static Int32 IdPrestado = 2;
+        public static Int32 IdMigrado = 3;
+        public static Int32 IdTransito = 4;
+        public static Int32 IdStandBy = 5;
 
         public static String strIronMountainSolicitar = "IM_SOLICITAR";
         public static String strIronMountainRecibir = "IM_RECIBIR";
@@ -73,7 +74,6 @@ namespace SICA
 
         public static String strSeleccionarUsuario = "";
 
-
         //Permisos
 
         public static bool auBusqueda = false;
@@ -86,6 +86,7 @@ namespace SICA
         public static bool auRecibirNuevo = false;
         public static bool auRecibirReingreso = false;
         public static bool auRecibirConfirmar = false;
+        public static bool auRecibirManual = false;
         public static bool auPagare = false;
         public static bool auPagareBuscar = false;
         public static bool auPagareRecibir = false;

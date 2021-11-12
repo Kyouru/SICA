@@ -20,7 +20,7 @@ namespace SICA.Forms.Recibir
         private void RecibirManual_Load(object sender, EventArgs e)
         {
 
-            string strSQL = "SELECT * FROM LISTA WHERE (COD_LISTA <= 3) ORDER BY COD_LISTA, ORDEN_LISTA ASC";
+            string strSQL = "SELECT ID_DEPARTAMENTO, NOMBRE_DEPARTAMENTO FROM LDEPARTAMENTO ORDER BY ORDEN ASC";
             DataTable dt = new DataTable("Listas");
             if (!Conexion.conectar())
                 return;
@@ -35,44 +35,52 @@ namespace SICA.Forms.Recibir
             if (dt is null)
                 return;
 
+            cmbCodDepartamento.DataSource = dt;
+            cmbCodDepartamento.DisplayMember = "NOMBRE_DEPARTAMENTO";
+            cmbCodDepartamento.ValueMember = "ID_DEPARTAMENTO";
+
+            strSQL = "SELECT ID_DOCUMENTO, NOMBRE_DOCUMENTO FROM LDOCUMENTO ORDER BY ORDEN ASC";
+            dt = new DataTable("Listas");
+
+            if (!Conexion.iniciaCommand(strSQL))
+                return;
+
+            if (!Conexion.ejecutarQuery())
+                return;
+
+            dt = Conexion.llenarDataTable();
+            if (dt is null)
+                return;
+
+            cmbCodDocumento.DataSource = dt;
+            cmbCodDocumento.DisplayMember = "NOMBRE_DOCUMENTO";
+            cmbCodDocumento.ValueMember = "ID_DOCUMENTO";
+
+            strSQL = "SELECT ID_DESCRIPCION1, NOMBRE_DESCRIPCION1 FROM LDESCRIPCION1 ORDER BY ORDEN ASC";
+            dt = new DataTable("Listas");
+
+            if (!Conexion.iniciaCommand(strSQL))
+                return;
+
+            if (!Conexion.ejecutarQuery())
+                return;
+
+            dt = Conexion.llenarDataTable();
+            if (dt is null)
+                return;
+
+            cmbDescripcion1.DataSource = dt;
+            cmbDescripcion1.DisplayMember = "NOMBRE_DESCRIPCION1";
+            cmbDescripcion1.ValueMember = "EXPEDIENTE";
+
             Conexion.cerrar();
 
-            foreach (DataRow row in dt.Rows)
-            {
-                ComboboxItem item = new ComboboxItem();
-                item.Text = row["NOMBRE_ELEMENTO"].ToString();
-                item.Value = row["EXP"].ToString();
-
-                if (row["COD_LISTA"].ToString() == "1")
-                {
-                    cmbCodDepartamento.Items.Add(item);
-                }
-                else if (row["COD_LISTA"].ToString() == "2")
-                {
-                    cmbCodDocumento.Items.Add(item);
-                }
-                else if (row["COD_LISTA"].ToString() == "3")
-                {
-                    cmbDescripcion1.Items.Add(item);
-                }
-            }
-
-        }
-        public class ComboboxItem
-        {
-            public string Text { get; set; }
-            public object Value { get; set; }
-
-            public override string ToString()
-            {
-                return Text;
-            }
         }
 
         private void btRegistrar_Click(object sender, EventArgs e)
         {
             string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-            string strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, CODIGO_DEPARTAMENTO, CODIGO_DOCUMENTO, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, USUARIO_POSEE, CUSTODIADO) ";
+            string strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, ID_DEPARTAMENTO_FK, ID_DOCUMENTO_FK, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, ID_USUARIO_POSEE, ID_ESTADO_FK, EXPEDIENTE) ";
             strSQL += "VALUES (";
 
             if (cmbCodDepartamento.Text != "")
@@ -87,109 +95,168 @@ namespace SICA.Forms.Recibir
                         }
                         else
                         {
+                            Globals.strQueryArea = "";
                             Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                             suf.ShowDialog();
                             if (Globals.IdUsernameSelect > 0)
                             {
                                 string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
-                                strSQL += "'" + tbNumeroCaja.Text + "', ";
 
-                                strSQL += "'" + cmbCodDepartamento.Text + "', ";
-                                strSQL += "'" + cmbCodDocumento.Text + "', ";
-                                if (cbFecha.Checked)
+
+                                DataTable dt = new DataTable();
+                                dt.Columns.Add("STATUS");
+                                dt.Columns.Add("NUMERO CAJA");
+                                dt.Columns.Add("CODIGO DEPARTAMENTO");
+                                dt.Columns.Add("CODIGO DOCUMENTO");
+                                dt.Columns.Add("FECHA DESDE");
+                                dt.Columns.Add("FECHA HASTA");
+                                dt.Columns.Add("DESCRIPCION 1");
+                                dt.Columns.Add("DESCRIPCION 2");
+                                dt.Columns.Add("DESCRIPCION 3");
+                                dt.Columns.Add("DESCRIPCION 4");
+                                dt.Columns.Add("DESCRIPCION 5");
+                                dt.Columns.Add("EXPEDIENTE");
+                                dt.Columns.Add("PAGARE");
+                                dt.Columns.Add("DESC_CONCAT");
+                                dt.Columns.Add("ID DEPARTAMENTO");
+                                dt.Columns.Add("ID DOCUMENTO");
+
+                                DataRow row = dt.NewRow();
+
+                                if (cbNumeroCaja.Checked)
                                 {
-                                    strSQL += "'" + dtpDesde.Value.ToString("yyyy-MM-dd") + "', ";
-                                    strSQL += "'" + dtpHasta.Value.ToString("yyyy-MM-dd") + "', ";
+                                    row["NUMERO CAJA"] = GlobalFunctions.lCadena(tbNumeroCaja.Text);
                                 }
                                 else
                                 {
-                                    strSQL += "NULL, NULL, ";
+                                    row["NUMERO CAJA"] = "";
                                 }
+                                row["CODIGO DEPARTAMENTO"] = (cmbCodDepartamento.SelectedItem as DataRowView)["NOMBRE_DEPARTAMENTO"].ToString();
+                                row["CODIGO DOCUMENTO"] = (cmbCodDocumento.SelectedItem as DataRowView)["NOMBRE_DOCUMENTO"].ToString();
+                                row["ID DEPARTAMENTO"] = (cmbCodDepartamento.SelectedItem as DataRowView)["ID_DEPARTAMENTO"].ToString();
+                                row["ID DOCUMENTO"] = (cmbCodDocumento.SelectedItem as DataRowView)["ID_DOCUMENTO"].ToString();
+                                if (cbFecha.Checked)
+                                {
+                                    row["FECHA DESDE"] = dtpDesde.Value.ToString("yyyy-MM-dd");
+                                    row["FECHA HASTA"] = dtpHasta.Value.ToString("yyyy-MM-dd");
+                                }
+                                else
+                                {
+                                    row["FECHA DESDE"] = "";
+                                    row["FECHA HASTA"] = "";
+                                }
+                                row["DESCRIPCION 1"] = (cmbDescripcion1.SelectedItem as DataRowView)["NOMBRE_DESCRIPCION1"].ToString();
 
-                                strSQL += "'" + cmbDescripcion1.Text + "', ";
 
                                 if (cbDescripcion2.Checked)
                                 {
-                                    strSQL += "'" + tbDescripcion2.Text + "', ";
+                                    row["DESCRIPCION 2"] = GlobalFunctions.lCadena(tbDescripcion2.Text);
                                 }
                                 else
                                 {
-                                    strSQL += "NULL, ";
+                                    row["DESCRIPCION 2"] = "";
                                 }
 
                                 if (cbDescripcion3.Checked)
                                 {
-                                    strSQL += "'" + tbDescripcion3.Text + "', ";
+                                    row["DESCRIPCION 3"] = GlobalFunctions.lCadena(tbDescripcion3.Text);
                                 }
                                 else
                                 {
-                                    strSQL += "NULL, ";
+                                    row["DESCRIPCION 3"] = "";
                                 }
 
                                 if (cbDescripcion4.Checked)
                                 {
-                                    strSQL += "'" + tbDescripcion4.Text + "', ";
+                                    row["DESCRIPCION 4"] = GlobalFunctions.lCadena(tbDescripcion4.Text);
                                 }
                                 else
                                 {
-                                    strSQL += "NULL, ";
+                                    row["DESCRIPCION 4"] = "";
                                 }
+
 
                                 if (cbDescripcion5.Checked)
                                 {
-                                    strSQL += "'" + tbDescripcion5.Text + "', ";
+                                    row["DESCRIPCION 5"] = GlobalFunctions.lCadena(tbDescripcion5.Text);
                                 }
                                 else
                                 {
-                                    strSQL += "NULL, ";
+                                    row["DESCRIPCION 5"] = "";
                                 }
 
-                                //DESC_CONCAT
-                                strSQL += "'" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + ";', ";
-                                strSQL += "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
-                                strSQL += "'" + Globals.Username + "', 'CUSTODIADO')";
-
-                                if (!Conexion.conectar())
-                                    return;
-
-                                if (!Conexion.iniciaCommand(strSQL))
-                                    return;
-
-                                if (!Conexion.ejecutarQuery())
-                                    return;
-
-                                int lastinsertid = Conexion.lastIdInsert();
-
-                                strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
-
-                                if (!Conexion.iniciaCommand(strSQL))
-                                    return;
-                                if (!Conexion.ejecutarQuery())
-                                    return;
+                                row["DESC_CONCAT"] = row["CODIGO DEPARTAMENTO"].ToString() + ";" + row["CODIGO DOCUMENTO"].ToString() + ";" + row["FECHA DESDE"].ToString() + ";" + row["FECHA HASTA"].ToString() + ";" + row["DESCRIPCION 1"].ToString() + ";" + row["DESCRIPCION 2"].ToString() + ";" + row["DESCRIPCION 3"].ToString() + ";" + row["DESCRIPCION 4"].ToString() + ";" + row["DESCRIPCION 5"].ToString() + ";";
 
                                 if (cmbExpediente.Visible && cmbExpediente.Text == "SI")
                                 {
-                                    strSQL = "INSERT INTO EXPEDIENTE_TRANSITO (SOLICITUD_SISGO, EXPEDIENTE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO, FECHA_ENTRADA) VALUES ('";
-                                    strSQL += tbDescripcion2.Text + "', 1, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
-
-                                    if (!Conexion.iniciaCommand(strSQL))
-                                        return;
-                                    if (!Conexion.ejecutarQuery())
-                                        return;
+                                    row["EXPEDIENTE"] = "SI";
                                 }
+                                else
+                                {
+                                    row["EXPEDIENTE"] = "NO";
+                                }
+
                                 if (cmbPagare.Visible && cmbPagare.Text == "SI")
                                 {
-                                    strSQL = "INSERT INTO PAGARE_TRANSITO (SOLICITUD_SISGO, PAGARE, ID_INVENTARIO_GENERAL_FK, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, CONCATENADO, FECHA_ENTRADA) VALUES ('";
-                                    strSQL += tbDescripcion2.Text + "', 1, " + lastinsertid + ", '" + cmbDescripcion1.Text + "', '" + tbDescripcion2.Text + "', '" + tbDescripcion3.Text + "', '" + tbDescripcion4.Text + "', '" + tbDescripcion5.Text + "', '" + cmbCodDocumento.Text + ";" + cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                                    row["PAGARE"] = "SI";
+                                }
+                                else
+                                {
+                                    row["PAGARE"] = "NO";
+                                }
+
+                                /*
+                                DataGridView dgv = new DataGridView();
+                                dt.Columns.Add("STATUS");
+                                dt.Columns.Add("NUMERO CAJA");
+                                dt.Columns.Add("CODIGO DEPARTAMENTO");
+                                dt.Columns.Add("CODIGO DOCUMENTO");
+                                dt.Columns.Add("FECHA DESDE");
+                                dt.Columns.Add("FECHA HASTA");
+                                dt.Columns.Add("DESCRIPCION 1");
+                                dt.Columns.Add("DESCRIPCION 2");
+                                dt.Columns.Add("DESCRIPCION 3");
+                                dt.Columns.Add("DESCRIPCION 4");
+                                dt.Columns.Add("DESCRIPCION 5");
+                                dt.Columns.Add("EXPEDIENTE");
+                                dt.Columns.Add("PAGARE");
+                                dt.Columns.Add("DESC_CONCAT");
+                                dt.Columns.Add("ID DEPARTAMENTO");
+                                dt.Columns.Add("ID DOCUMENTO");
+                                dgv.Rows.Add(row.ItemArray);
+                                */
+
+                                try
+                                {
+                                    if (!Conexion.conectar())
+                                        return;
+                                    if (!Conexion.iniciaCommand(RecibirFunctions.ArmarStrNuevoIngreso(row)))
+                                        return;
+                                    if (!Conexion.ejecutarQuery())
+                                        return;
+                                    int lastinsertid = Conexion.lastIdInsert();
+
+                                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (" + lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
 
                                     if (!Conexion.iniciaCommand(strSQL))
                                         return;
                                     if (!Conexion.ejecutarQuery())
                                         return;
-                                }
 
-                                Conexion.cerrar();
+                                    if (cmbPagare.Visible && cmbPagare.Text == "SI")
+                                    {
+
+                                        if (!RecibirFunctions.RecibirPagare(row, observacion))
+                                            return;
+                                    }
+                                    Conexion.cerrar();
+                                }
+                                catch (Exception ex)
+                                {
+                                    GlobalFunctions.casoError(ex, strSQL);
+                                    return;
+                                }
 
                                 MessageBox.Show("Registro Completado");
                                 this.Close();
@@ -288,55 +355,13 @@ namespace SICA.Forms.Recibir
 
         private void cmbDescripcion1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbDescripcion1.SelectedIndex >= 0)
+            if ((cmbDescripcion1.SelectedItem as DataRowView)["EXPEDIENTE"].ToString() == "1")
             {
-                if ((cmbDescripcion1.SelectedItem as ComboboxItem).Value.ToString() == "True")
-                {
-                    lbPagare.Visible = true;
-                    cmbPagare.Visible = true;
-                    lbExpediente.Visible = true;
-                    cmbExpediente.Visible = true;
-                    lbDescripcion2.Text = "Solicitud:";
-                    lbDescripcion3.Text = "Cod. Prestamo:";
-                    lbDescripcion4.Text = "Nombre:";
-
-                    foreach (ComboboxItem item in cmbCodDepartamento.Items)
-                    {
-                        if (item.Value.ToString() == "True")
-                        {
-                            cmbCodDepartamento.Text = item.Text;
-                        }
-                    }
-
-                    foreach (ComboboxItem item in cmbCodDocumento.Items)
-                    {
-                        if (item.Value.ToString() == "True")
-                        {
-                            cmbCodDocumento.Text = item.Text;
-                        }
-                    }
-
-                    cbDescripcion2.Checked = true;
-                    cbDescripcion2.Enabled = false;
-                    cbDescripcion3.Checked = true;
-                    cbDescripcion3.Enabled = false;
-                    cbDescripcion4.Checked = true;
-                    cbDescripcion4.Enabled = false;
-                }
-                else
-                {
-                    lbPagare.Visible = false;
-                    cmbPagare.Visible = false;
-                    lbExpediente.Visible = false;
-                    cmbExpediente.Visible = false;
-                    lbDescripcion2.Text = "Descripción 2:";
-                    lbDescripcion3.Text = "Descripción 3:";
-                    lbDescripcion4.Text = "Descripción 4:";
-
-                    cbDescripcion2.Enabled = true;
-                    cbDescripcion3.Enabled = true;
-                    cbDescripcion4.Enabled = true;
-                }
+                cmbExpediente.Text = "SI";
+            }
+            else
+            {
+                cmbExpediente.Text = "NO";
             }
         }
     }

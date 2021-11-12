@@ -31,8 +31,8 @@ namespace SICA.Forms.Pagare
 
                 DataTable dt = new DataTable();
 
-                strSQL = "SELECT SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, USUARIO_POSEE";
-                strSQL += " FROM PAGARE PA";
+                strSQL = "SELECT SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, U.NOMBRE_USUARIO";
+                strSQL += " FROM PAGARE PA LEFT JOIN USUARIO U ON U.ID_USUARIO = PA.ID_USUARIO_POSEE";
                 strSQL += " WHERE 1 = 1";
 
                 if (tbBuscar.Text != "")

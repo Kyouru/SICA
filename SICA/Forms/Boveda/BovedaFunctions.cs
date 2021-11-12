@@ -31,7 +31,7 @@ namespace SICA.Forms.Boveda
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_USUARIO_POSEE] = " + Globals.IdUsername + ", [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -73,7 +73,7 @@ namespace SICA.Forms.Boveda
 
                 strSQL = "SELECT TC.ID_INVENTARIO_GENERAL_FK AS ID, '0' AS NRO, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5 FROM TMP_CARRITO TC";
                 strSQL += " LEFT JOIN INVENTARIO_GENERAL IG ON TC.ID_INVENTARIO_GENERAL_FK = IG.ID_INVENTARIO_GENERAL";
-                strSQL += " WHERE TIPO = '" + Globals.strBovedaGuardarDOC + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                strSQL += " WHERE TIPO = '" + Globals.strBovedaGuardarDOC + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
                     return false;
@@ -95,7 +95,7 @@ namespace SICA.Forms.Boveda
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.UsernameSelect + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_USUARIO_POSEE] = " + Globals.IdUsernameSelect + ", [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString();
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -121,7 +121,6 @@ namespace SICA.Forms.Boveda
             }
         }
 
-
         public static bool GuardarCajaCarrito()
         {
             string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
@@ -133,7 +132,7 @@ namespace SICA.Forms.Boveda
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5 FROM TMP_CARRITO TC";
                 strSQL += " LEFT JOIN INVENTARIO_GENERAL IG ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA";
-                strSQL += " WHERE TIPO = '" + Globals.strBovedaGuardarCAJA + "' AND IG.USUARIO_POSEE = '" + Globals.Username + "'";
+                strSQL += " WHERE TIPO = '" + Globals.strBovedaGuardarCAJA + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername + "";
 
                 if (!Conexion.conectar())
                     return false;
@@ -154,7 +153,7 @@ namespace SICA.Forms.Boveda
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = '" + Globals.UsernameSelect + "', FECHA_POSEE = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_DE_CAJA"].ToString() + "' AND USUARIO_POSEE = '" + Globals.Username + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET ID_USUARIO_POSEE = " + Globals.IdUsernameSelect + ", FECHA_POSEE = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_DE_CAJA"].ToString() + "' AND ID_USUARIO_POSEE = " + Globals.IdUsername + "";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

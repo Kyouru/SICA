@@ -20,6 +20,7 @@ namespace SICA
         public static SqlDataReader reader;
         public static bool conectar()
         {
+
             try
             {
                 ConnString connString = new ConnString();
@@ -34,7 +35,23 @@ namespace SICA
                 }
                 conexion = conexion.Replace("@USER@", Globals.user);
                 conexion = conexion.Replace("@PASS@", Globals.pass);
-                connection = new SqlConnection(conexion);
+
+                if (connection != null)
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        connection = new SqlConnection(conexion);
+                    }
+                }
+                else
+                {
+                    connection = new SqlConnection(conexion);
+                }
+
                 connection.Open();
                 return true;
             }

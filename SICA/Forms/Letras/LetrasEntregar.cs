@@ -18,7 +18,20 @@ namespace SICA.Forms.Letras
         public LetrasEntregar()
         {
             InitializeComponent();
+            Globals.CarritoSeleccionado = tipo_carrito;
             actualizarCantidad();
+        }
+        public void actualizarCantidad(int cantidad = -1)
+        {
+            if (cantidad >= 0)
+            {
+                cantidadcarrito = cantidad;
+            }
+            else
+            {
+                cantidadcarrito = GlobalFunctions.CantidadCarrito(tipo_carrito);
+            }
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
@@ -30,9 +43,9 @@ namespace SICA.Forms.Letras
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable("LETRAS");
 
-                strSQL = "SELECT L.ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, UBICACION, FECHA_ESTADO, OBSERVACION";
+                strSQL = "SELECT L.ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, FECHA_ESTADO, OBSERVACION";
                 strSQL += " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK) ";
-                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = 'CUSTODIADO'";
+                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = " + Globals.IdCustodiado;
 
                 if (tbBusquedaLibre.Text != "")
                 {
@@ -50,6 +63,7 @@ namespace SICA.Forms.Letras
                 if (dt is null)
                     return;
 
+                actualizarCantidad();
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;
@@ -69,6 +83,7 @@ namespace SICA.Forms.Letras
         {
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryArea = "";
                 Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
@@ -76,7 +91,7 @@ namespace SICA.Forms.Letras
                 {
                     string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
                     LetrasFunctions.EntregarCarrito(observacion);
-                    actualizarCantidad();
+                    actualizarCantidad(0);
                 }
             }
         }
@@ -85,9 +100,9 @@ namespace SICA.Forms.Letras
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
-                vCarrito.Show();
+                vCarrito.ShowDialog();
+                btBuscar_Click(sender, e);
             }
         }
         private void dgv_KeyDown(object sender, KeyEventArgs e)
@@ -116,14 +131,9 @@ namespace SICA.Forms.Letras
                     }
                     ++cantidadcarrito;
                 }
-                Conexion.cerrar();
 
-                foreach (DataGridViewRow row in dgv.SelectedRows)
-                {
-                    if (!row.IsNewRow)
-                        dgv.Rows.Remove(row);
-                }
-                actualizarCantidad();
+                btBuscar_Click(sender, e);
+                Conexion.cerrar();
             }
         }
         private void tbBusquedaLibre_KeyDown(object sender, KeyEventArgs e)
@@ -138,15 +148,10 @@ namespace SICA.Forms.Letras
             GlobalFunctions.ExportarDataGridViewCSV(dgv, null);
         }
 
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(tipo_carrito) + ")";
-        }
-
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
-            actualizarCantidad();
+            btBuscar_Click(sender, e);
         }
     }
 

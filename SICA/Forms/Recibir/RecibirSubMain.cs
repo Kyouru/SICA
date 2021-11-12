@@ -113,5 +113,6 @@ namespace SICA.Forms.Recibir
             ActivateButton(sender, RGBColors.color4);
             OpenChildForm(new RecibirConfirmar());
         }
+
     }
 }

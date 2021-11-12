@@ -9,7 +9,6 @@ using System.Reflection;
 using SICA.Forms;
 using SimpleLogger;
 using System.Diagnostics;
-using System.Globalization;
 using Microsoft.Office.Interop.Excel;
 
 namespace SICA
@@ -201,11 +200,11 @@ namespace SICA
                 outputCsv[0] += columnNames;
 
                 //Recorremos el DataTable rellenando la hoja de trabajo
-                for (int i = 1; (i - 1) < dgv.Rows.Count - 1; i++)
+                for (int i = 1; (i - 1) <= dgv.Rows.Count - 1; i++)
                 {
                     for (int j = 0; j < dgv.Columns.Count; j++)
                     {
-                        if (dgv.Rows[i].Cells[j] != null)
+                        if (dgv.Rows[i - 1].Cells[j] != null)
                         {
                             outputCsv[i] += dgv.Rows[i - 1].Cells[j].Value.ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
                         }
@@ -263,11 +262,11 @@ namespace SICA
                 outputCsv[0 + offset] += columnNames;
 
                 //Recorremos el DataTable rellenando la hoja de trabajo
-                for (int i = 1; (i - 1) < dt.Rows.Count - 1; i++)
+                for (int i = 1; (i - 1) <= dt.Rows.Count - 1; i++)
                 {
                     for (int j = 0; j < dt.Columns.Count; j++)
                     {
-                        if (dt.Rows[i][j] != null)
+                        if (dt.Rows[i - 1][j] != null)
                         {
                             outputCsv[i + offset] += dt.Rows[i - 1][j].ToString() + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
                         }
@@ -421,9 +420,9 @@ namespace SICA
             MessageBox.Show(ex.Message + "\n" + strSQL);
         }
 
-        public static bool verificarCaja(string numero_caja, string usuario)
+        public static bool verificarCaja(string numero_caja, int id_usuario)
         {
-            string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND USUARIO_POSEE <> '" + usuario + "'";
+            string strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE NUMERO_DE_CAJA = '" + numero_caja + "' AND ID_USUARIO_POSEE <> " + id_usuario + "";
             int i = -1;
             if (!Conexion.conectar())
             {
@@ -513,9 +512,6 @@ namespace SICA
                 return;
             }
         }
-
-
-
         public static bool verificarSesion(int id)
         {
             System.Data.DataTable dt;
@@ -607,26 +603,6 @@ namespace SICA
             ReleaseObject(xlApp);
         }
 
-        public static string actualizarCantidad(string tipocarrito)
-        {
-            string vRet;
-            string strSQL = "SELECT COUNT(*) FROM TMP_CARRITO WHERE TIPO = '" + tipocarrito + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
-            try
-            {
-                Conexion.conectar();
-                Conexion.iniciaCommand(strSQL);
-
-                vRet = "(" + Conexion.ejecutarQueryEscalar() + ")";
-
-                Conexion.cerrar();
-                return vRet;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         public static string lCadena(string input)
         {
             return input.Replace("'", "''").Trim().TrimEnd('\r', '\n');
@@ -665,10 +641,11 @@ namespace SICA
                     Globals.auRecibirNuevo = bool.Parse(dt.Rows[0]["RECIBIR_NUEVO"].ToString());
                     Globals.auRecibirReingreso = bool.Parse(dt.Rows[0]["RECIBIR_REINGRESO"].ToString());
                     Globals.auRecibirConfirmar = bool.Parse(dt.Rows[0]["RECIBIR_CONFIRMAR"].ToString());
-                    Globals.auPagare = bool.Parse(dt.Rows[0]["RECIBIR_CONFIRMAR"].ToString());
+                    Globals.auRecibirManual = bool.Parse(dt.Rows[0]["RECIBIR_MANUAL"].ToString());
+                    Globals.auPagare = bool.Parse(dt.Rows[0]["PAGARE"].ToString());
                     Globals.auPagareBuscar = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
-                    Globals.auPagareRecibir = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
-                    Globals.auPagareEntregar = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
+                    Globals.auPagareRecibir = bool.Parse(dt.Rows[0]["PAGARE_RECIBIR"].ToString());
+                    Globals.auPagareEntregar = bool.Parse(dt.Rows[0]["PAGARE_ENTREGAR"].ToString());
                     Globals.auLetra = bool.Parse(dt.Rows[0]["PAGARE_BUSCAR"].ToString());
                     Globals.auLetraNuevo = bool.Parse(dt.Rows[0]["LETRA_NUEVO"].ToString());
                     Globals.auLetraEntregar = bool.Parse(dt.Rows[0]["LETRA_ENTREGAR"].ToString());

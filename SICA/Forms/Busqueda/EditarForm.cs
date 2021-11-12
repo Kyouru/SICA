@@ -28,33 +28,27 @@ namespace SICA.Forms.Busqueda
             InitializeComponent();
         }
 
-        private void cbFechaDesde_CheckedChanged(object sender, EventArgs e)
+        private void cbFecha_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbFechaDesde.Checked)
+            if (cbFecha.Checked)
             {
-                cbFechaDesde.Visible = true;
+                lbDesde.Visible = true;
+                lbHasta.Visible = true;
+                dtpFechaDesde.Visible = true;
+                dtpFechaHasta.Visible = true;
             }
             else
             {
-                cbFechaDesde.Visible = false;
-            }
-        }
-
-        private void cbFechaHasta_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbFechaHasta.Checked)
-            {
-                cbFechaHasta.Visible = true;
-            }
-            else
-            {
-                cbFechaHasta.Visible = false;
+                lbDesde.Visible = false;
+                lbHasta.Visible = false;
+                dtpFechaDesde.Visible = false;
+                dtpFechaHasta.Visible = false;
             }
         }
 
         private void EditarForm_Load(object sender, EventArgs e)
         {
-            string strSQL = "SELECT * FROM DEPARTAMENTO WHERE ANULADO = FALSE ORDER BY ORDEN DESC";
+            string strSQL = "SELECT * FROM LDEPARTAMENTO WHERE ANULADO = 0 ORDER BY ORDEN DESC";
             DataTable dt;
 
             if (!Conexion.conectar())
@@ -72,7 +66,7 @@ namespace SICA.Forms.Busqueda
             cmbDepartamento.DisplayMember = "NOMBRE_DEPARTAMENTO";
             cmbDepartamento.ValueMember = "ID_DEPARTAMENTO";
 
-            strSQL = "SELECT * FROM DOCUMENTO WHERE ANULADO = FALSE ORDER BY ORDEN DESC";
+            strSQL = "SELECT * FROM LDOCUMENTO WHERE ANULADO = 0 ORDER BY ORDEN DESC";
 
             if (!Conexion.iniciaCommand(strSQL))
                 return;
@@ -86,7 +80,27 @@ namespace SICA.Forms.Busqueda
             cmbDocumento.DisplayMember = "NOMBRE_DOCUMENTO";
             cmbDocumento.ValueMember = "ID_DOCUMENTO";
 
-            strSQL = "SELECT * FROM (INVENTARIO_GENERAL IG LEFT JOIN DEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO) LEFT JOIN DOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO WHERE IG.ID_INVENTARIO_GENERAL = " + Globals.IdInventario;
+            strSQL = "SELECT ID_DESCRIPCION1, NOMBRE_DESCRIPCION1 FROM LDESCRIPCION1 ORDER BY ORDEN ASC";
+            dt = new DataTable("Listas");
+
+            if (!Conexion.iniciaCommand(strSQL))
+                return;
+
+            if (!Conexion.ejecutarQuery())
+                return;
+
+            dt = Conexion.llenarDataTable();
+            if (dt is null)
+                return;
+
+            cmbDescripcion1.DataSource = dt;
+            cmbDescripcion1.DisplayMember = "NOMBRE_DESCRIPCION1";
+            cmbDescripcion1.ValueMember = "EXPEDIENTE";
+
+            strSQL = @"SELECT *
+                FROM (INVENTARIO_GENERAL IG LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)
+                LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO
+                WHERE IG.ID_INVENTARIO_GENERAL = " + Globals.IdInventario;
 
             if (!Conexion.iniciaCommand(strSQL))
                 return;
@@ -103,18 +117,27 @@ namespace SICA.Forms.Busqueda
                 cmbDocumento.SelectedValue = dt.Rows[0]["ID_DOCUMENTO_FK"].ToString();
                 dtpFechaDesde.Text = dt.Rows[0]["FECHA_DESDE"].ToString();
                 dtpFechaHasta.Text = dt.Rows[0]["FECHA_HASTA"].ToString();
-                tbDescripcion1.Text = dt.Rows[0]["DESCRIPCION_1"].ToString();
+                cmbDescripcion1.Text = dt.Rows[0]["DESCRIPCION_1"].ToString();
                 tbDescripcion2.Text = dt.Rows[0]["DESCRIPCION_2"].ToString();
                 tbDescripcion3.Text = dt.Rows[0]["DESCRIPCION_3"].ToString();
                 tbDescripcion4.Text = dt.Rows[0]["DESCRIPCION_4"].ToString();
                 tbDescripcion5.Text = dt.Rows[0]["DESCRIPCION_5"].ToString();
+
+                if (dt.Rows[0]["EXPEDIENTE"].ToString() == "1")
+                {
+                    cmbExpediente.Text = "SI";
+                }
+                else
+                {
+                    cmbExpediente.Text = "NO";
+                }
 
                 caja = tbCaja.Text;
                 departamento = cmbDepartamento.SelectedValue.ToString();
                 documento = cmbDocumento.SelectedValue.ToString();
                 fechadesde = dtpFechaDesde.Text;
                 fechahasta = dtpFechaHasta.Text;
-                descripcion1 = tbDescripcion1.Text;
+                descripcion1 = cmbDescripcion1.Text;
                 descripcion2 = tbDescripcion2.Text;
                 descripcion3 = tbDescripcion3.Text;
                 descripcion4 = tbDescripcion4.Text;
@@ -147,8 +170,8 @@ namespace SICA.Forms.Busqueda
             if (correcto)
             {
                 strSQL = "INSERT INTO INVENTARIO_ANTERIOR (ID_INVENTARIO_GENERAL_FK, FECHA_MODIFICACION, ID_USUARIO_FK, NUMERO_DE_CAJA, CAJA_CLIENTE, ID_DEPARTAMENTO_FK, ID_DOCUMENTO_FK, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5) VALUES";
-                strSQL += " (" + Globals.IdInventario + ", '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', " + Globals.IdUsername + ", '" + caja + "'" + ", '" + caja + "'" + ", " + departamento + "" + ", " + documento + "" + ", '" + fechadesde + "'" + ", '" + fechahasta + "'" + ", '" + descripcion1 + "'" + ", '" + descripcion2 + "'" + ", '" + descripcion3 + "'" + ", '" + descripcion4 + "'" + ", '" + descripcion5 + "')";
-
+                strSQL += " (" + Globals.IdInventario + ", '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', " + Globals.IdUsername + ", '" + caja + "'" + ", '" + caja + "'" + ", " + departamento + "" + ", " + documento + "" + ", '" + fechadesde + "'" + ", '" + fechahasta + "'" + ", '" + GlobalFunctions.lCadena(descripcion1) + "'" + ", '" + GlobalFunctions.lCadena(descripcion2) + "'" + ", '" + GlobalFunctions.lCadena(descripcion3) + "'" + ", '" + GlobalFunctions.lCadena(descripcion4) + "'" + ", '" + GlobalFunctions.lCadena(descripcion5) + "')";
+                
                 if (!Conexion.conectar())
                     return;
 
@@ -163,20 +186,31 @@ namespace SICA.Forms.Busqueda
                 strSQL += " CAJA_CLIENTE = '" + tbCaja.Text + "',";
                 strSQL += " ID_DEPARTAMENTO_FK = " + Int32.Parse((cmbDepartamento.SelectedItem as DataRowView)["ID_DEPARTAMENTO"].ToString()) + ",";
                 strSQL += " ID_DOCUMENTO_FK = " + Int32.Parse((cmbDocumento.SelectedItem as DataRowView)["ID_DOCUMENTO"].ToString()) + ",";
-                strSQL += " DESCRIPCION_1 = '" + tbDescripcion1.Text.Replace("'", "'''") + "',";
-                strSQL += " DESCRIPCION_2 = '" + tbDescripcion2.Text.Replace("'", "'''") + "',";
-                strSQL += " DESCRIPCION_3 = '" + tbDescripcion3.Text.Replace("'", "'''") + "',";
-                strSQL += " DESCRIPCION_4 = '" + tbDescripcion4.Text.Replace("'", "'''") + "',";
-                strSQL += " DESCRIPCION_5 = '" + tbDescripcion5.Text.Replace("'", "'''") + "',";
-                strSQL += " DESC_CONCAT = '" + tbDescripcion1.Text.Replace("'", "'''") + ";" + tbDescripcion2.Text.Replace("'", "'''") + ";" + tbDescripcion3.Text.Replace("'", "'''") + ";" + tbDescripcion4.Text.Replace("'", "'''") + ";" + tbDescripcion5.Text.Replace("'", "'''") + ";" + (cmbDepartamento.SelectedItem as DataRowView)["NOMBRE_DEPARTAMENTO"].ToString() + ";" + (cmbDocumento.SelectedItem as DataRowView)["NOMBRE_DOCUMENTO"].ToString() + ";'";
+                strSQL += " DESCRIPCION_1 = '" + GlobalFunctions.lCadena(cmbDescripcion1.Text) + "',";
+                strSQL += " DESCRIPCION_2 = '" + GlobalFunctions.lCadena(tbDescripcion2.Text) + "',";
+                strSQL += " DESCRIPCION_3 = '" + GlobalFunctions.lCadena(tbDescripcion3.Text) + "',";
+                strSQL += " DESCRIPCION_4 = '" + GlobalFunctions.lCadena(tbDescripcion4.Text) + "',";
+                strSQL += " DESCRIPCION_5 = '" + GlobalFunctions.lCadena(tbDescripcion5.Text) + "',";
+                strSQL += " DESC_CONCAT = '" + GlobalFunctions.lCadena(cmbDescripcion1.Text + ";" + tbDescripcion2.Text + ";" + tbDescripcion3.Text + ";" + tbDescripcion4.Text + ";" + tbDescripcion5.Text) + ";" + (cmbDepartamento.SelectedItem as DataRowView)["NOMBRE_DEPARTAMENTO"].ToString() + ";" + (cmbDocumento.SelectedItem as DataRowView)["NOMBRE_DOCUMENTO"].ToString() + ";'";
 
-                if (cbFechaDesde.Checked)
+                if (cbFecha.Checked)
                 {
                     strSQL += ", FECHA_DESDE = '" + dtpFechaDesde.Value.ToString("yyyy-MM-dd") + "'";
-                }
-                if (cbFechaDesde.Checked)
-                {
                     strSQL += ", FECHA_HASTA = '" + dtpFechaHasta.Value.ToString("yyyy-MM-dd") + "'";
+                }
+                else
+                {
+                    strSQL += ", FECHA_DESDE = NULL";
+                    strSQL += ", FECHA_HASTA = NULL";
+                }
+
+                if (cmbExpediente.Text == "SI")
+                {
+                    strSQL += ", EXPEDIENTE = 1";
+                }
+                else
+                {
+                    strSQL += ", EXPEDIENTE = 0";
                 }
 
                 strSQL += " WHERE ID_INVENTARIO_GENERAL = " + Globals.IdInventario;

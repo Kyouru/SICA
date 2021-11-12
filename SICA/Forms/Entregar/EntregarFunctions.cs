@@ -1,4 +1,5 @@
 ﻿
+using SICA.Forms.Entregar;
 using SimpleLogger;
 using System;
 using System.Data;
@@ -46,7 +47,7 @@ namespace SICA
                 {
 
                     strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO, ANULADO)
-                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "',";
+                            VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "',";
 
 
                     if (!Globals.EntregarConfirmacion)
@@ -63,27 +64,19 @@ namespace SICA
 
                     if (!Conexion.ejecutarQuery())
                         return false;
-                    
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = @estado, [ID_USUARIO_POSEE] = '" + Globals.IdUsername.ToString() + "', [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
 
-                    if (!Conexion.iniciaCommand(strSQL))
-                        return false;
 
-                    if (Globals.EntregarConfirmacion)
+                    if (!Globals.EntregarConfirmacion)
                     {
-                        //CUSTODIADO
-                        if (!Conexion.agregarParametroCommand("@estado", "1"))
+                        strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = " + Globals.IdPrestado + ", [ID_USUARIO_POSEE] = " + Globals.IdUsernameSelect + ", [FECHA_POSEE] = " + fecha + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
+
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return false;
+                        if (!Conexion.agregarParametroCommand("@estado", Globals.IdPrestado.ToString()))
+                            return false;
+                        if (!Conexion.ejecutarQuery())
                             return false;
                     }
-                    else
-                    {
-                        //PRESTADO
-                        if (!Conexion.agregarParametroCommand("@estado", "2"))
-                            return false;
-                    }
-                    if (!Conexion.ejecutarQuery())
-                        return false;
-
                     j++;
                 }
 
@@ -149,7 +142,7 @@ namespace SICA
                 {
 
                     strSQL = @"INSERT INTO INVENTARIO_HISTORICO (ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_ENTREGA_FK, ID_AREA_RECIBE_FK, ID_INVENTARIO_GENERAL_FK, FECHA_INICIO, OBSERVACION, FECHA_FIN, RECIBIDO, ANULADO) 
-                            VALUES (" + Globals.IdUsername.ToString() + ", " + Globals.IdUsernameSelect.ToString() + ", " + Globals.IdArea.ToString() + ", " + Globals.IdAreaSelect.ToString() + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "', ";
+                            VALUES (" + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + Globals.IdArea + ", " + Globals.IdAreaSelect + ", " + row["ID"].ToString() + ", " + fecha + ", '" + observacion + "', ";
 
 
                     if (!Globals.EntregarConfirmacion)
@@ -169,8 +162,7 @@ namespace SICA
 
                     if (!Globals.EntregarConfirmacion)
                     {
-                        //PRESTADO
-                        strSQL = @"UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = 2, [ID_USUARIO_POSEE] = '" + Globals.IdUsername + "', [FECHA_POSEE] = " + fecha
+                        strSQL = @"UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = " + Globals.IdPrestado + ", [ID_USUARIO_POSEE] = '" + Globals.IdUsernameSelect + "', [FECHA_POSEE] = " + fecha
                                 + " WHERE ID_INVENTARIO_GENERAL = " + row["ID"].ToString() + "";
 
                         if (!Conexion.iniciaCommand(strSQL))
@@ -197,9 +189,10 @@ namespace SICA
                 if (!Conexion.ejecutarQuery())
                     return false;
 
+                Conexion.cerrar();
+
                 GlobalFunctions.ExportarDataTableCSV(dt, Globals.ExportarPath + "CARGO_DOC_" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + Globals.Username + ".csv", "CARGO DE DOCUMENTOS", true);
 
-                Conexion.cerrar();
                 return true;
             }
             catch (Exception ex)

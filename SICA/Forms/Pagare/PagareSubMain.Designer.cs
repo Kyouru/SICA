@@ -31,9 +31,9 @@
             this.pnSubMain = new System.Windows.Forms.Panel();
             this.pnTop = new System.Windows.Forms.Panel();
             this.btEntregar = new FontAwesome.Sharp.IconButton();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.btRecibir = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.pnTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,8 +48,8 @@
             // pnTop
             // 
             this.pnTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.pnTop.Controls.Add(this.btEntregar);
             this.pnTop.Controls.Add(this.panel1);
+            this.pnTop.Controls.Add(this.btEntregar);
             this.pnTop.Controls.Add(this.btRecibir);
             this.pnTop.Controls.Add(this.btBuscar);
             this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -64,31 +64,21 @@
             this.btEntregar.Dock = System.Windows.Forms.DockStyle.Left;
             this.btEntregar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btEntregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btEntregar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btEntregar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btEntregar.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btEntregar.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btEntregar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btEntregar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btEntregar.IconSize = 30;
             this.btEntregar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btEntregar.Location = new System.Drawing.Point(500, 0);
             this.btEntregar.Name = "btEntregar";
             this.btEntregar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btEntregar.Rotation = 0D;
-            this.btEntregar.Size = new System.Drawing.Size(250, 44);
+            this.btEntregar.Size = new System.Drawing.Size(250, 45);
             this.btEntregar.TabIndex = 4;
             this.btEntregar.Text = "Entregar";
             this.btEntregar.UseVisualStyleBackColor = false;
             this.btEntregar.Click += new System.EventHandler(this.btEntregar_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(500, 44);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(548, 1);
-            this.panel1.TabIndex = 8;
             // 
             // btRecibir
             // 
@@ -96,17 +86,16 @@
             this.btRecibir.Dock = System.Windows.Forms.DockStyle.Left;
             this.btRecibir.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btRecibir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btRecibir.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btRecibir.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btRecibir.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btRecibir.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btRecibir.IconColor = System.Drawing.Color.Gainsboro;
+            this.btRecibir.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btRecibir.IconSize = 30;
             this.btRecibir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btRecibir.Location = new System.Drawing.Point(250, 0);
             this.btRecibir.Name = "btRecibir";
             this.btRecibir.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btRecibir.Rotation = 0D;
             this.btRecibir.Size = new System.Drawing.Size(250, 45);
             this.btRecibir.TabIndex = 9;
             this.btRecibir.Text = "Recibir";
@@ -119,22 +108,30 @@
             this.btBuscar.Dock = System.Windows.Forms.DockStyle.Left;
             this.btBuscar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.btBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btBuscar.Flip = FontAwesome.Sharp.FlipOrientation.Normal;
             this.btBuscar.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btBuscar.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btBuscar.IconChar = FontAwesome.Sharp.IconChar.None;
             this.btBuscar.IconColor = System.Drawing.Color.Gainsboro;
+            this.btBuscar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btBuscar.IconSize = 30;
             this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btBuscar.Location = new System.Drawing.Point(0, 0);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.btBuscar.Rotation = 0D;
             this.btBuscar.Size = new System.Drawing.Size(250, 45);
             this.btBuscar.TabIndex = 10;
             this.btBuscar.Text = "Buscar";
             this.btBuscar.UseVisualStyleBackColor = false;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(750, 44);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(298, 1);
+            this.panel1.TabIndex = 11;
             // 
             // PagareSubMain
             // 
@@ -155,9 +152,9 @@
 
         private System.Windows.Forms.Panel pnSubMain;
         private System.Windows.Forms.Panel pnTop;
-        private System.Windows.Forms.Panel panel1;
         private FontAwesome.Sharp.IconButton btEntregar;
         private FontAwesome.Sharp.IconButton btRecibir;
         private FontAwesome.Sharp.IconButton btBuscar;
+        private System.Windows.Forms.Panel panel1;
     }
 }

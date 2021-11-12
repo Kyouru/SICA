@@ -46,8 +46,8 @@ namespace SICA
                         FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, TRIM(DESCRIPCION_1) AS DESC_1, TRIM(DESCRIPCION_2) AS DESC_2,
                         TRIM(DESCRIPCION_3) AS DESC_3, TRIM(DESCRIPCION_4) AS DESC_4, TRIM(DESCRIPCION_5) AS DESC_5, TRIM(LE.NOMBRE_ESTADO) AS CUSTODIADO, TRIM(U.NOMBRE_USUARIO) AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA
                         FROM (((INVENTARIO_GENERAL IG
-                        LEFT JOIN DEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)
-                        LEFT JOIN DOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO)
+                        LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)
+                        LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO)
                         LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)
                         LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK";
                 strSQL += " WHERE 1 = 1";
@@ -115,9 +115,7 @@ namespace SICA
             {
                 if (dgvBusqueda.SelectedCells.Count == 1)
                 {
-                    Globals.mostrarSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, U1.NOMBRE_USUARIO AS ENTREGA, U2.NOMBRE_USUARIO AS RECIBE, FORMAT(FECHA_INICIO, 'dd/MM/yyyy hh:mm:ss') AS FECHA_ENTREGA, FORMAT(FECHA_FIN, 'dd/MM/yyyy hh:mm:ss') AS FECHA_RECIBE, NUMERO_CAJA";
-                    Globals.mostrarSQL += " FROM ((INVENTARIO_HISTORICO IH LEFT JOIN USUARIO U1 ON IH.ID_USUARIO_ENTREGA_FK = U1.ID_USUARIO) LEFT JOIN USUARIO U2 ON IH.ID_USUARIO_RECIBE_FK = U2.ID_USUARIO) LEFT JOIN INVENTARIO_GENERAL IG ON IG.ID_INVENTARIO_GENERAL = IH.ID_INVENTARIO_GENERAL_FK WHERE IH.ANULADO = 0 AND IH.RECIBIDO = 1 AND IG.ID_INVENTARIO_GENERAL = " + Int32.Parse(dgvBusqueda.Rows[dgvBusqueda.SelectedCells[0].RowIndex].Cells["ID"].Value.ToString());
-                    Globals.mostrarSQL += " ORDER BY FECHA_INICIO";
+                    Globals.IdInventario = Int32.Parse(dgvBusqueda.Rows[dgvBusqueda.SelectedCells[0].RowIndex].Cells["ID"].Value.ToString());
                     HistoricoForm vHistorico = new HistoricoForm();
                     vHistorico.Show();
                 }

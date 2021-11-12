@@ -10,11 +10,29 @@ using System.Windows.Forms;
 
 namespace SICA.Forms.Pagare
 {
+
     public partial class PagareEntregar : Form
     {
+        int cantidadcarrito = 0;
+        readonly string tipo_carrito = Globals.strPagareEntregar;
+
         public PagareEntregar()
         {
             InitializeComponent();
+            Globals.CarritoSeleccionado = tipo_carrito;
+            actualizarCantidad();
+        }
+        public void actualizarCantidad(int cantidad = -1)
+        {
+            if (cantidad >= 0)
+            {
+                cantidadcarrito = cantidad;
+            }
+            else
+            {
+                cantidadcarrito = GlobalFunctions.CantidadCarrito(tipo_carrito);
+            }
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
         }
 
         private void btBuscar_Click(object sender, EventArgs e)
@@ -28,7 +46,7 @@ namespace SICA.Forms.Pagare
                 DataTable dt = new DataTable();
 
                 strSQL = @"SELECT ID_PAGARE, SOLICITUD_SISGO AS SOLICITUD, DESCRIPCION_3 AS CODIGO, DESCRIPCION_4 AS NOMBRE, DESCRIPCION_5
-                        FROM PAGARE PA WHERE USUARIO_POSEE = '" + Globals.Username + "'";
+                        FROM PAGARE PA WHERE ID_USUARIO_POSEE = " + Globals.IdUsername + "";
                 strSQL += " ORDER BY SOLICITUD_SISGO DESC";
 
                 if (!Conexion.conectar())
@@ -44,6 +62,7 @@ namespace SICA.Forms.Pagare
                 if (dt is null)
                     return;
 
+                actualizarCantidad();
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;
@@ -67,20 +86,16 @@ namespace SICA.Forms.Pagare
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = Globals.strPagareEntregar;
                 CarritoForm vCarrito = new CarritoForm();
-                vCarrito.Show();
+                vCarrito.ShowDialog();
+                btBuscar_Click(sender, e);
             }
         }
 
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(Globals.strPagareEntregar);
-            actualizarCantidad();
-        }
-        private void actualizarCantidad()
-        {
-            lbCantidad.Text = "(" + GlobalFunctions.CantidadCarrito(Globals.strPagareEntregar) + ")";
+            btBuscar_Click(sender, e);
         }
 
         private void dgv_KeyDown(object sender, KeyEventArgs e)
@@ -90,7 +105,7 @@ namespace SICA.Forms.Pagare
                 if (dgv.SelectedRows.Count == 1)
                 {
                     GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells["ID_PAGARE"].Value.ToString(), dgv.SelectedRows[0].Cells["SOLICITUD_SISGO"].Value.ToString(), Globals.strPagareEntregar);
-                    actualizarCantidad();
+                    btBuscar_Click(sender, e);
                 }
             }
         }
@@ -100,6 +115,7 @@ namespace SICA.Forms.Pagare
 
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryArea = "";
                 Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
@@ -107,9 +123,7 @@ namespace SICA.Forms.Pagare
                 {
 
                     PagareFunctions.EntregarPagareCarrito();
-                    actualizarCantidad();
-
-                    //btActualizar_Click(sender, e);
+                    actualizarCantidad(0);
                 }
             }
         }

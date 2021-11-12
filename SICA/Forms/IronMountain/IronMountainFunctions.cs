@@ -28,7 +28,8 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = 'EN TRANSITO A CP' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
+                    //TRANSITO
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = " + Globals.IdTransito + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -102,7 +103,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = '" + Globals.Username + "', [FECHA_POSEE] = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = 'EN TRANSITO A CP'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = " + Globals.IdCustodiado + ", [ID_USUARIO_POSEE] = " + Globals.IdUsername + ", [FECHA_POSEE] = " + fecha + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND ID_ESTADO_FK = " + Globals.IdTransito;
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -164,7 +165,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO ARMAR_CAJA_HISTORICO (NUMERO_CAJA, USUARIO, FECHA, ID_INVENTARIO_GENERAL_FK) VALUES ('" + caja + "', '" + Globals.Username + "', " + fecha + ", " + row["ID_INVENTARIO_GENERAL_FK"].ToString() + ")";
+                    strSQL = "INSERT INTO ARMAR_CAJA_HISTORICO (NUMERO_CAJA, ID_USUARIO_FK, FECHA, ID_INVENTARIO_GENERAL_FK) VALUES ('" + caja + "', " + Globals.IdUsername + ", " + fecha + ", " + row["ID_INVENTARIO_GENERAL_FK"].ToString() + ")";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -202,7 +203,7 @@ namespace SICA
             {
                 DataTable dt = new DataTable();
                 string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = 'IM_ENVIAR' AND ID_USUARIO_FK = " + Globals.IdUsername;
+                strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = " + Globals.strIronMountainEnviar + " AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
                     return false;
@@ -216,7 +217,7 @@ namespace SICA
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = 'EN TRANSITO A IM' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = " + Globals.IdStandBy + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "'";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -294,7 +295,7 @@ namespace SICA
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET [USUARIO_POSEE] = 'IRON MOUNTAIN' WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND USUARIO_POSEE = 'EN TRANSITO A IM'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET [ID_ESTADO_FK] = " + Globals.IdCustodiado + ", [ID_USUARIO_POSEE] = " + Globals.IdIM + " WHERE NUMERO_DE_CAJA = '" + row["NUMERO_CAJA"].ToString() + "' AND ID_USUARIO_POSEE = " + Globals.IdUsername;
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

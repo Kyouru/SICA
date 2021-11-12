@@ -20,8 +20,9 @@ namespace SICA.Forms.Pagare
                 string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
                 DataTable dt = new DataTable();
 
-                strSQL = "SELECT TC.ID_AUX_FK, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, USUARIO_POSEE FROM TMP_CARRITO TC";
-                strSQL += " LEFT JOIN PAGARE PA ON TC.ID_AUX_FK = PA.ID_PAGARE";
+                strSQL = "SELECT TC.ID_AUX_FK, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, U.NOMBRE_USUARIO";
+                strSQL += " FROM (TMP_CARRITO TC LEFT JOIN PAGARE PA ON TC.ID_AUX_FK = PA.ID_PAGARE)";
+                strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = PA.ID_USUARIO_POSEE";
                 strSQL += " WHERE TIPO = '" + Globals.strPagareRecibir + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
@@ -38,13 +39,13 @@ namespace SICA.Forms.Pagare
                 foreach (DataRow row in dt.Rows)
                 {
                     strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1)";
+                    strSQL += Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE PAGARE SET [USUARIO_POSEE] = '" + Globals.UsernameSelect + "' WHERE ID_PAGARE = " + row["ID_AUX_FK"].ToString();
+                    strSQL = "UPDATE PAGARE SET [ID_USUARIO_POSEE] = " + Globals.IdUsernameSelect + " WHERE ID_PAGARE = " + row["ID_AUX_FK"].ToString();
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -79,8 +80,9 @@ namespace SICA.Forms.Pagare
                 string observacion = Microsoft.VisualBasic.Interaction.InputBox("Escriba una observacion (opcional):", "Observación", "");
                 DataTable dt = new DataTable();
 
-                strSQL = "SELECT TC.ID_AUX_FK, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, USUARIO_POSEE FROM TMP_CARRITO TC";
-                strSQL += " LEFT JOIN PAGARE PA ON TC.ID_AUX_FK = PA.ID_PAGARE";
+                strSQL = "SELECT TC.ID_AUX_FK, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, U.NOMBRE_USUARIO";
+                strSQL += " FROM (TMP_CARRITO TC LEFT JOIN PAGARE PA ON TC.ID_AUX_FK = PA.ID_PAGARE)";
+                strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = PA.ID_USUARIO_POSEE";
                 strSQL += " WHERE TIPO = '" + Globals.strPagareEntregar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
@@ -112,7 +114,7 @@ namespace SICA.Forms.Pagare
                 foreach (DataRow row in dt.Rows)
                 {
                     strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + observacion + "', " + recibido +")";
+                    strSQL += Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', " + recibido +")";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

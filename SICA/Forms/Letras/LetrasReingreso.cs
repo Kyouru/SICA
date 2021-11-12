@@ -98,6 +98,7 @@ namespace SICA.Forms.Letras
         {
             if (lbCantidad.Text != "(0)")
             {
+                Globals.strQueryArea = "";
                 Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();

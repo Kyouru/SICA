@@ -11,16 +11,27 @@ namespace SICA.Forms.IronMountain
         public IronMountainRecibir()
         {
             InitializeComponent();
-            lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
+            Globals.CarritoSeleccionado = tipo_carrito;
+            actualizarCantidad();
         }
-
+        public void actualizarCantidad(int cantidad = -1)
+        {
+            if (cantidad >= 0)
+            {
+                cantidadcarrito = cantidad;
+            }
+            else
+            {
+                cantidadcarrito = GlobalFunctions.CantidadCarrito(tipo_carrito);
+            }
+            lbCantidad.Text = "(" + cantidadcarrito + ")";
+        }
         private void btSiguiente_Click(object sender, EventArgs e)
         {
             if (lbCantidad.Text != "(0)")
             {
                 IronMountainFunctions.RecibirCajasCarrito();
-                cantidadcarrito = 0;
-                btActualizar_Click(sender, e);
+                actualizarCantidad(0);
             }
         }
 
@@ -48,8 +59,8 @@ namespace SICA.Forms.IronMountain
                     }
                     ++cantidadcarrito;
                 }
-                Conexion.cerrar();
                 btActualizar_Click(sender, e);
+                Conexion.cerrar();
             }
         }
 
@@ -61,16 +72,16 @@ namespace SICA.Forms.IronMountain
         private void btLimpiarCarrito_Click(object sender, EventArgs e)
         {
             GlobalFunctions.LimpiarCarrito(tipo_carrito);
-            lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
+            btActualizar_Click(sender, e);
         }
 
         private void btVerCarrito_Click(object sender, EventArgs e)
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.CarritoSeleccionado = tipo_carrito;
                 CarritoForm vCarrito = new CarritoForm();
-                vCarrito.Show();
+                vCarrito.ShowDialog();
+                btActualizar_Click(sender, e);
             }
         }
 
@@ -79,7 +90,6 @@ namespace SICA.Forms.IronMountain
             string strSQL = "";
             try
             {
-                lbCantidad.Text = GlobalFunctions.actualizarCantidad(tipo_carrito);
 
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
@@ -104,6 +114,7 @@ namespace SICA.Forms.IronMountain
                 if (dt is null)
                     return;
 
+                actualizarCantidad();
                 Conexion.cerrar();
 
                 dgv.DataSource = dt;

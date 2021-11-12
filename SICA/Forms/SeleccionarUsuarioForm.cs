@@ -73,15 +73,15 @@ namespace SICA.Forms
                         return;
                     Conexion.cerrar();
 
-                    if (dt.Rows[0][0].ToString() == "1")
+                    if (dt.Rows[0][0].ToString() == Globals.IdAreaCustodia.ToString())
                     {
                         Globals.EntregarConfirmacion = true;
                         Globals.strEntregarEstado = "CUSTODIADO";
                     }
                     else
                     {
-                        //Globals.EntregarConfirmacion = false;
-                        Globals.EntregarConfirmacion = true;
+                        Globals.EntregarConfirmacion = false;
+                        //Globals.EntregarConfirmacion = true;
                         Globals.strEntregarEstado = "PRESTADO";
                     }
                     LoadingScreen.cerrarLoading();
