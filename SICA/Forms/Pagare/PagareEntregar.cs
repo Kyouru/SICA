@@ -104,7 +104,7 @@ namespace SICA.Forms.Pagare
             {
                 if (dgv.SelectedRows.Count == 1)
                 {
-                    GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells["ID_PAGARE"].Value.ToString(), dgv.SelectedRows[0].Cells["SOLICITUD_SISGO"].Value.ToString(), Globals.strPagareEntregar);
+                    GlobalFunctions.AgregarCarrito("0", dgv.SelectedRows[0].Cells["ID_PAGARE"].Value.ToString(), dgv.SelectedRows[0].Cells["SOLICITUD"].Value.ToString(), Globals.strPagareEntregar);
                     btBuscar_Click(sender, e);
                 }
             }
@@ -121,7 +121,6 @@ namespace SICA.Forms.Pagare
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
                 {
-
                     PagareFunctions.EntregarPagareCarrito();
                     actualizarCantidad(0);
                 }

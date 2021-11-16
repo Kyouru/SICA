@@ -34,7 +34,7 @@ namespace SICA.Forms.Letras
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "UPDATE LETRA SET ESTADO = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString();
+                    strSQL = "UPDATE LETRA SET ID_ESTADO_FK = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString();
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
@@ -89,14 +89,14 @@ namespace SICA.Forms.Letras
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", NULL, '" + observacion + "', 1)";
+                    strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
+                    strSQL += row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + Globals.IdAreaSelect + ", " + Globals.IdUsernameSelect + ", " + fecha + ", " + fecha + ", NULL, '" + observacion + "', 1)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE LETRA SET ESTADO = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString() + "";
+                    strSQL = "UPDATE LETRA SET ID_ESTADO_FK = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString() + "";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

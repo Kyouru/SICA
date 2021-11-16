@@ -73,6 +73,7 @@
             this.btMovimiento.TabIndex = 38;
             this.btMovimiento.Text = "Historico Movimientos";
             this.btMovimiento.UseVisualStyleBackColor = false;
+            this.btMovimiento.Click += new System.EventHandler(this.btMovimiento_Click);
             // 
             // btHistoricoEdicion
             // 
@@ -94,6 +95,7 @@
             this.btHistoricoEdicion.TabIndex = 39;
             this.btHistoricoEdicion.Text = "Historico Edicion";
             this.btHistoricoEdicion.UseVisualStyleBackColor = false;
+            this.btHistoricoEdicion.Click += new System.EventHandler(this.btHistoricoEdicion_Click);
             // 
             // HistoricoForm
             // 

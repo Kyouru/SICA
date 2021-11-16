@@ -43,9 +43,10 @@ namespace SICA.Forms.Letras
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable("LETRAS");
 
-                strSQL = "SELECT L.ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, FECHA_ESTADO, OBSERVACION";
-                strSQL += " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK) ";
-                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND ESTADO = " + Globals.IdCustodiado;
+                strSQL = "SELECT L.ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, LE.NOMBRE_ESTADO, FECHA_ESTADO, OBSERVACION";
+                strSQL += " FROM ((LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK) ";
+                strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = L.ID_ESTADO_FK) ";
+                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND ID_ESTADO_FK = " + Globals.IdCustodiado;
 
                 if (tbBusquedaLibre.Text != "")
                 {

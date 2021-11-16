@@ -69,7 +69,7 @@ namespace SICA.Forms.Letras
                 string strSQL = "";
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
-                    strSQL = "INSERT INTO LETRA (SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, F_GIRO, F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO, FECHA_ESTADO, OBSERVACION, CONCATENADO) VALUES ";
+                    strSQL = "INSERT INTO LETRA (SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, F_GIRO, F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ID_ESTADO_FK, FECHA_ESTADO, OBSERVACION, CONCATENADO) VALUES ";
                     strSQL += " ('" + row.Cells["SOCIO"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["NOMBRE"].Value.ToString() + "',";
                     strSQL += " '" + row.Cells["SOLICITUD"].Value.ToString() + "',";

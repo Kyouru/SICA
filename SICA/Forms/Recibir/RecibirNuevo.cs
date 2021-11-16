@@ -25,7 +25,7 @@ namespace SICA.Forms.Recibir
             ofd.CheckPathExists = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                LoadingScreen.iniciarLoading();
+                //LoadingScreen.iniciarLoading();
 
                 if (!File.Exists(ofd.FileName))
                     return;
@@ -107,8 +107,11 @@ namespace SICA.Forms.Recibir
 
                 Conexion.cerrar();
 
+                string concat = "";
+                int repeticiones = 0;
                 for (int row = 1; row <= rows; row++)
                 {
+                    concat = "";
                     DataRow newrow = dt.NewRow();
                     for (int col = 1; col <= cols; col++)
                     {
@@ -266,6 +269,7 @@ namespace SICA.Forms.Recibir
                                             {
                                                 existe = true;
                                                 newrow[13] = dtrow["ID_DEPARTAMENTO"].ToString();
+                                                concat += dtrow["NOMBRE_DEPARTAMENTO"].ToString() + ";";
                                                 break;
                                             }
                                         }
@@ -291,6 +295,7 @@ namespace SICA.Forms.Recibir
                                             {
                                                 existe = true;
                                                 newrow[14] = dtrow["ID_DOCUMENTO"].ToString();
+                                                concat += dtrow["NOMBRE_DOCUMENTO"].ToString() + ";";
                                                 break;
                                             }
                                         }
@@ -307,12 +312,20 @@ namespace SICA.Forms.Recibir
                                         valido = false;
                                         newrow["STATUS"] = newrow["STATUS"].ToString() + "Fecha Desde Invalida;";
                                     }
+                                    else
+                                    {
+                                        concat += cellText + ";";
+                                    }
                                     break;
                                 case 5:
                                     if (cellText != "" && !GlobalFunctions.IsDate(newrow["FECHA HASTA"].ToString()))
                                     {
                                         valido = false;
                                         newrow["STATUS"] = newrow["STATUS"].ToString() + "Fecha Hasta Invalida;";
+                                    }
+                                    else
+                                    {
+                                        concat += cellText + ";";
                                     }
                                     break;
                                 case 6:
@@ -321,6 +334,10 @@ namespace SICA.Forms.Recibir
                                         valido = false;
                                         newrow["STATUS"] = newrow["STATUS"].ToString() + "Descripcion 1 Vacío;";
                                     }
+                                    else
+                                    {
+                                        concat += cellText + ";";
+                                    }
                                     break;
                                 case 7:
                                     if (cellText == "")
@@ -328,21 +345,54 @@ namespace SICA.Forms.Recibir
                                         valido = false;
                                         newrow["STATUS"] = newrow["STATUS"].ToString() + "Descripcion 2 Vacío;";
                                     }
+                                    else
+                                    {
+                                        concat += cellText + ";";
+                                    }
+                                    break;
+                                case 8:
+                                    concat += cellText + ";";
+                                    break;
+                                case 9:
+                                    concat += cellText + ";";
+                                    break;
+                                case 10:
+                                    concat += cellText + ";";
                                     break;
                             }
-
                             if (valido)
                             {
                                 newrow["STATUS"] = "OK";
                             }
                         }
                     }
-
+                    //row == 1 Cabecera
                     if (row > 1)
-                        dt.Rows.Add(newrow);
-                }
+                    {
+                        //validar duplicado
+                        strSQL = "SELECT COUNT(*) FROM INVENTARIO_GENERAL WHERE DESC_CONCAT LIKE '%" + concat + "%'";
 
-                GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                        if (!Conexion.conectar())
+                            return;
+                        if (!Conexion.iniciaCommand(strSQL))
+                            return;
+                        repeticiones = Conexion.ejecutarQueryEscalar();
+                        if (!(repeticiones == 0))
+                        {
+                            newrow["STATUS"] = "DUPLICADO";
+                        }
+                        dt.Rows.Add(newrow);
+                    }
+                }
+                Conexion.cerrar();
+                //GlobalFunctions.cerrarExcel(xlWorkBook, xlWorkSheet, xlApp);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(range);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
+                xlWorkBook.Close(0);
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkBook);
+                xlApp.Quit();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
+
 
                 dgv.DataSource = dt;
 
@@ -353,7 +403,7 @@ namespace SICA.Forms.Recibir
                 {
                     btCargarValido.Visible = true;
                 }
-
+                btCargarValido.Visible = true;
                 LoadingScreen.cerrarLoading();
             }
         }
@@ -381,6 +431,11 @@ namespace SICA.Forms.Recibir
                         return;
                     foreach (DataGridViewRow row in dgv.Rows)
                     {
+                        if (row.Cells["STATUS"].Value.ToString() != "OK")
+                        {
+                            continue;
+                        }
+
                         if (row.Cells["PAGARE"].Value.ToString() == "SI")
                         {
                             pagare = true;
@@ -428,24 +483,6 @@ namespace SICA.Forms.Recibir
             RecibirManual recibirManual = new RecibirManual();
             recibirManual.ShowDialog();
         }
-
-        public static void ReleaseObject(object obj)
-        {
-            try
-            {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-                obj = null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Unable to release the object(object:{0})\n" + ex.Message, obj.ToString());
-            }
-            finally
-            {
-                GC.Collect();
-            }
-        }
-
 
     }
 

@@ -13,7 +13,7 @@ namespace SICA
         public static string ArmarStrNuevoIngreso(DataRow row)
         {
             string strSQL;
-            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, ID_DEPARTAMENTO_FK, ID_DOCUMENTO_FK, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, ID_USUARIO_POSEE, ID_ESTADO_FK, EXPEDIENTE)";
+            strSQL = "INSERT INTO INVENTARIO_GENERAL (NUMERO_DE_CAJA, ID_DEPARTAMENTO_FK, ID_DOCUMENTO_FK, FECHA_DESDE, FECHA_HASTA, DESCRIPCION_1, DESCRIPCION_2, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, DESC_CONCAT, FECHA_POSEE, ID_USUARIO_POSEE, ID_ESTADO_FK, FECHA_MODIFICA, ID_USUARIO_MODIFICA, EXPEDIENTE)";
             strSQL += "VALUES (";
             if (row["NUMERO CAJA"].ToString() != "")
             {
@@ -110,7 +110,7 @@ namespace SICA
             //DESC_CONCAT
             strSQL += "'" + GlobalFunctions.lCadena(row["CODIGO DEPARTAMENTO"].ToString() + ";" + row["CODIGO DOCUMENTO"].ToString() + ";" + row["FECHA DESDE"].ToString() + ";" + row["FECHA HASTA"].ToString() + ";" + row["DESCRIPCION 1"].ToString() + ";" + row["DESCRIPCION 2"].ToString() + ";" + row["DESCRIPCION 3"].ToString() + ";" + row["DESCRIPCION 4"].ToString() + ";" + row["DESCRIPCION 5"].ToString()) + ";', ";
             strSQL += "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', ";
-            strSQL += "" + Globals.IdUsername + ", " + Globals.IdCustodiado + ", ";
+            strSQL += "" + Globals.IdUsername + ", " + Globals.IdCustodiado + ", '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', " + Globals.IdUsername + ", ";
             if (row["EXPEDIENTE"].ToString() == "SI")
             {
                 strSQL += "1)";
@@ -167,15 +167,15 @@ namespace SICA
                     return false;
                 long lastinsertid = Conexion.lastIdInsert();
 
-                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, ANULADO) VALUES (";
-                strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 0)";
+                strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (";
+                strSQL += lastinsertid + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 1, 0)";
 
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
                 if (!Conexion.ejecutarQuery())
                     return false;
             }
-            Conexion.cerrar();
+            //Conexion.cerrar();
             return true;
         }
 
@@ -199,10 +199,11 @@ namespace SICA
                 if (dt is null)
                     return false;
 
+                //MODIFICAR CUANDO TODOS TENGAN CUENTA
                 foreach (DataRow row in dt.Rows)
                 {
 
-                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION, RECIBIDO, ANULADO) VALUES (" + row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
+                    strSQL = "INSERT INTO INVENTARIO_HISTORICO (ID_INVENTARIO_GENERAL_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_ENTREGA_FK, ID_AREA_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION, RECIBIDO, ANULADO) VALUES (" + row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + Globals.IdArea+ ", " + Globals.IdAreaSelect + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -212,7 +213,6 @@ namespace SICA
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
-
                 }
 
                 strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strRecibirReingreso + "'";

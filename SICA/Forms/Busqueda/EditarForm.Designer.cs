@@ -260,6 +260,7 @@ namespace SICA.Forms.Busqueda
             this.lbDesde.Size = new System.Drawing.Size(72, 22);
             this.lbDesde.TabIndex = 42;
             this.lbDesde.Text = "Desde:";
+            this.lbDesde.Visible = false;
             // 
             // lbHasta
             // 
@@ -271,6 +272,7 @@ namespace SICA.Forms.Busqueda
             this.lbHasta.Size = new System.Drawing.Size(63, 22);
             this.lbHasta.TabIndex = 43;
             this.lbHasta.Text = "Hasta:";
+            this.lbHasta.Visible = false;
             // 
             // cmbDescripcion1
             // 

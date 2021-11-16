@@ -593,13 +593,11 @@ namespace SICA
 
         public static void cerrarExcel(Workbook xlWorkBook, Worksheet xlWorkSheet, Microsoft.Office.Interop.Excel.Application xlApp)
         {
-            // cerrar
-            xlWorkBook.Close(false, Type.Missing, Type.Missing);
-            xlApp.Quit();
 
-            // liberar
             ReleaseObject(xlWorkSheet);
+            xlWorkBook.Close(true);
             ReleaseObject(xlWorkBook);
+            xlApp.Quit();
             ReleaseObject(xlApp);
         }
 
