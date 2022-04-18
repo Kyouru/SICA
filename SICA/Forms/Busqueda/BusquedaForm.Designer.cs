@@ -39,10 +39,9 @@
             this.btExcel = new FontAwesome.Sharp.IconButton();
             this.btBuscar = new FontAwesome.Sharp.IconButton();
             this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbUsuario = new System.Windows.Forms.TextBox();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.cbFecha = new System.Windows.Forms.CheckBox();
+            this.btEdit = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBusqueda)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,7 +62,7 @@
             this.tbBusquedaLibre.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbBusquedaLibre.Location = new System.Drawing.Point(539, 12);
             this.tbBusquedaLibre.Name = "tbBusquedaLibre";
-            this.tbBusquedaLibre.Size = new System.Drawing.Size(228, 24);
+            this.tbBusquedaLibre.Size = new System.Drawing.Size(378, 24);
             this.tbBusquedaLibre.TabIndex = 4;
             this.tbBusquedaLibre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
             // 
@@ -138,8 +137,9 @@
             this.btExcel.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btExcel.IconSize = 30;
             this.btExcel.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btExcel.Location = new System.Drawing.Point(1022, 2);
+            this.btExcel.Location = new System.Drawing.Point(992, 2);
             this.btExcel.Name = "btExcel";
+            this.btExcel.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
             this.btExcel.Size = new System.Drawing.Size(48, 38);
             this.btExcel.TabIndex = 12;
             this.btExcel.UseVisualStyleBackColor = true;
@@ -154,7 +154,7 @@
             this.btBuscar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btBuscar.IconSize = 30;
             this.btBuscar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btBuscar.Location = new System.Drawing.Point(968, 2);
+            this.btBuscar.Location = new System.Drawing.Point(938, 2);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Size = new System.Drawing.Size(48, 38);
             this.btBuscar.TabIndex = 5;
@@ -171,27 +171,6 @@
             this.label1.Size = new System.Drawing.Size(53, 22);
             this.label1.TabIndex = 13;
             this.label1.Text = "Caja:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(773, 12);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 22);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "Usuario:";
-            // 
-            // tbUsuario
-            // 
-            this.tbUsuario.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tbUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUsuario.Location = new System.Drawing.Point(858, 12);
-            this.tbUsuario.Name = "tbUsuario";
-            this.tbUsuario.Size = new System.Drawing.Size(98, 24);
-            this.tbUsuario.TabIndex = 16;
-            this.tbUsuario.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBusquedaLibre_KeyDown);
             // 
             // dtpFecha
             // 
@@ -217,16 +196,31 @@
             this.cbFecha.UseVisualStyleBackColor = true;
             this.cbFecha.CheckedChanged += new System.EventHandler(this.cbFecha_CheckedChanged);
             // 
+            // btEdit
+            // 
+            this.btEdit.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btEdit.IconChar = FontAwesome.Sharp.IconChar.Edit;
+            this.btEdit.IconColor = System.Drawing.Color.Gainsboro;
+            this.btEdit.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btEdit.IconSize = 30;
+            this.btEdit.Location = new System.Drawing.Point(1046, 2);
+            this.btEdit.Name = "btEdit";
+            this.btEdit.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.btEdit.Size = new System.Drawing.Size(48, 38);
+            this.btEdit.TabIndex = 19;
+            this.btEdit.UseVisualStyleBackColor = true;
+            this.btEdit.Click += new System.EventHandler(this.btEdit_Click);
+            // 
             // BusquedaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1111, 605);
+            this.Controls.Add(this.btEdit);
             this.Controls.Add(this.cbFecha);
             this.Controls.Add(this.dtpFecha);
-            this.Controls.Add(this.tbUsuario);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btExcel);
             this.Controls.Add(this.panel1);
@@ -253,9 +247,8 @@
         private System.Windows.Forms.Panel panel1;
         private FontAwesome.Sharp.IconButton btExcel;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbUsuario;
         private System.Windows.Forms.DateTimePicker dtpFecha;
         private System.Windows.Forms.CheckBox cbFecha;
+        private FontAwesome.Sharp.IconButton btEdit;
     }
 }

@@ -9,7 +9,6 @@ namespace SICA
         public static string lastSQL = "";
 
         public static String ExportarPath = Application.StartupPath + "\\Exportar\\";
-        public static String strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
         public static String strQueryArea = "";
 
         public static String mostrarSQL = "";
@@ -33,6 +32,9 @@ namespace SICA
         public static Int32 IdAreaCustodia = 1;
         public static Int32 IdIM = 2;
         public static Int32 IdDC = 10;
+        public static Int32 IdAreaBoveda = 9;
+
+        public static Int32 IdExpediente = 1;
 
         public static Int32 IdCustodiado = 1;
         public static Int32 IdPrestado = 2;

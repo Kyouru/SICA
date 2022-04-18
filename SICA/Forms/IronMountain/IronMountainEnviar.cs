@@ -63,6 +63,7 @@ namespace SICA.Forms.IronMountain
                             vCarrito.ShowDialog();
                         }
                     }
+                    btActualizar_Click(sender, e);
                 }
             }
         }
@@ -98,12 +99,13 @@ namespace SICA.Forms.IronMountain
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
                 strSQL = "SELECT ID_INVENTARIO_GENERAL AS ID, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, DESCRIPCION_1 AS DESC_1, DESCRIPCION_2 AS DESC_2, DESCRIPCION_3 AS DESC_3, DESCRIPCION_4 AS DESC_4, DESCRIPCION_5 AS DESC_5, LE.NOMBRE_ESTADO AS CUSTODIADO, U.NOMBRE_USUARIO AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
-                strSQL += " FROM ((((INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.NUMERO_DE_CAJA = TC.NUMERO_CAJA)";
+                strSQL += " FROM (((((INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.NUMERO_DE_CAJA = TC.NUMERO_CAJA)";
                 strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)";
                 strSQL += " LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO)";
                 strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)";
-                strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK";
+                strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK)";
                 strSQL += " WHERE IG.NUMERO_DE_CAJA <> '' AND IG.ID_USUARIO_POSEE = " + Globals.IdUsername + "";
+                strSQL += " AND NUMERO_DE_CAJA NOT IN (SELECT NUMERO_CAJA FROM INVENTARIO_HISTORICO WHERE RECIBIDO = 0 AND ID_USUARIO_RECIBE_FK = " + Globals.IdIM + ")";
                 strSQL += " AND TC.NUMERO_CAJA IS NULL";
                 strSQL += " ORDER BY DOC.NOMBRE_DOCUMENTO";
 

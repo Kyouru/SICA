@@ -45,8 +45,11 @@ namespace SICA.Forms.Pagare
 
                 DataTable dt = new DataTable();
 
-                strSQL = @"SELECT ID_PAGARE, SOLICITUD_SISGO AS SOLICITUD, DESCRIPCION_3 AS CODIGO, DESCRIPCION_4 AS NOMBRE, DESCRIPCION_5
-                        FROM PAGARE PA WHERE ID_USUARIO_POSEE = " + Globals.IdUsername + "";
+                strSQL = "SELECT ID_PAGARE, SOLICITUD_SISGO AS SOLICITUD, DESCRIPCION_3 AS CODIGO, DESCRIPCION_4 AS NOMBRE, DESCRIPCION_5";
+                strSQL += " FROM (PAGARE PA LEFT JOIN (SELECT * FROM USUARIO WHERE ID_AREA_FK = " + Globals.IdAreaCustodia + ") U ON U.ID_USUARIO = PA.ID_USUARIO_POSEE)";
+                strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX_FK = PA.ID_PAGARE";
+                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL";
+                strSQL += " AND U.ID_USUARIO IS NOT NULL";
                 strSQL += " ORDER BY SOLICITUD_SISGO DESC";
 
                 if (!Conexion.conectar())
@@ -116,7 +119,6 @@ namespace SICA.Forms.Pagare
             if (lbCantidad.Text != "(0)")
             {
                 Globals.strQueryArea = "";
-                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

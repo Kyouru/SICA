@@ -71,7 +71,7 @@ namespace SICA.Forms.Recibir
 
             cmbDescripcion1.DataSource = dt;
             cmbDescripcion1.DisplayMember = "NOMBRE_DESCRIPCION1";
-            cmbDescripcion1.ValueMember = "EXPEDIENTE";
+            cmbDescripcion1.ValueMember = "ID_DESCRIPCION1";
 
             Conexion.cerrar();
 
@@ -95,8 +95,7 @@ namespace SICA.Forms.Recibir
                         }
                         else
                         {
-                            Globals.strQueryArea = "";
-                            Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
+                            Globals.strQueryArea = "AND ID_AREA <> " + Globals.IdAreaCustodia;
                             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                             suf.ShowDialog();
                             if (Globals.IdUsernameSelect > 0)
@@ -355,7 +354,7 @@ namespace SICA.Forms.Recibir
 
         private void cmbDescripcion1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((cmbDescripcion1.SelectedItem as DataRowView)["EXPEDIENTE"].ToString() == "1")
+            if ((cmbDescripcion1.SelectedItem as DataRowView)["ID_DESCRIPCION1"].ToString() == Globals.IdExpediente.ToString())
             {
                 cmbExpediente.Text = "SI";
             }

@@ -74,7 +74,7 @@ namespace SICA
                 try
                 {
                     DataTable dt = new DataTable("Password");
-                    String strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO, ID_AREA_FK, CAMBIAR_PASSWORD, ACCESO_PERMITIDO FROM USUARIO WHERE NOMBRE_USUARIO = @username AND REAL = 1";
+                    String strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO, ID_AREA_FK, CAMBIAR_PASSWORD, ACCESO_PERMITIDO FROM USUARIO WHERE NOMBRE_USUARIO = @username";
 
                     if (!Conexion.conectar())
                         return;

@@ -36,13 +36,13 @@ namespace SICA.Forms.Recibir
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable("INVENTARIO_GENERAL");
 
-                strSQL = "SELECT IG.ID_INVENTARIO_GENERAL AS ID, IG.NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, FORMAT(IG.FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(IG.FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, IG.DESCRIPCION_1 AS DESC_1, IG.DESCRIPCION_2 AS DESC_2, IG.DESCRIPCION_3 AS DESC_3, IG.DESCRIPCION_4 AS DESC_4, IG.DESCRIPCION_5 AS DESC_5, LE.NOMBRE_ESTADO AS CUSTODIADO, U.NOMBRE_USUARIO AS POSEE";
+                strSQL = "SELECT IG.ID_INVENTARIO_GENERAL AS ID, IG.NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, FORMAT(IG.FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(IG.FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, IG.DESCRIPCION_1 AS DESC_1, IG.DESCRIPCION_2 AS DESC_2, IG.DESCRIPCION_3 AS DESC_3, IG.DESCRIPCION_4 AS DESC_4, IG.DESCRIPCION_5 AS DESC_5, LE.NOMBRE_ESTADO AS CUSTODIADO, U.NOMBRE_USUARIO AS POSEE, FORMAT(FECHA_POSEE, 'dd/MM/yyyy hh:mm:ss') AS FECHA";
                 strSQL += " FROM ((((INVENTARIO_GENERAL IG LEFT JOIN TMP_CARRITO TC ON IG.ID_INVENTARIO_GENERAL = TC.ID_INVENTARIO_GENERAL_FK)";
                 strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = IG.ID_ESTADO_FK)";
                 strSQL += " LEFT JOIN LDOCUMENTO DOC ON DOC.ID_DOCUMENTO = IG.ID_DOCUMENTO_FK)";
                 strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON DEP.ID_DEPARTAMENTO = IG.ID_DEPARTAMENTO_FK)";
                 strSQL += " LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE";
-                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND (IG.ID_ESTADO_FK = " + Globals.IdPrestado + " OR IG.ID_ESTADO_FK = " + Globals.IdTransito + ") AND IG.ID_USUARIO_POSEE <> " + Globals.IdUsername + " AND U.REAL = 1";
+                strSQL += " WHERE TC.ID_TMP_CARRITO IS NULL AND (IG.ID_ESTADO_FK = " + Globals.IdPrestado + " OR IG.ID_ESTADO_FK = " + Globals.IdTransito + ") AND IG.ID_USUARIO_POSEE <> " + Globals.IdUsername + "";
 
                 if (tbBusquedaLibre.Text != "")
                 {
@@ -81,7 +81,6 @@ namespace SICA.Forms.Recibir
             if (lbCantidad.Text != "(0)")
             {
                 Globals.strQueryArea = "";
-                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

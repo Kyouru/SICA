@@ -31,7 +31,13 @@ namespace SICA.Forms.IronMountain
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
-            string strSQL = "" ;
+            if (tbBusquedaLibre.Text + tbCaja.Text == "")
+            {
+                MessageBox.Show("Filtro Vacio");
+                return;
+            }
+
+            string strSQL = "";
             try
             {
                 LoadingScreen.iniciarLoading();

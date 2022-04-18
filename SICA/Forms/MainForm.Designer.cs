@@ -303,10 +303,9 @@
             this.btActualizar.IconColor = System.Drawing.Color.Gainsboro;
             this.btActualizar.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btActualizar.IconSize = 20;
-            this.btActualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btActualizar.Location = new System.Drawing.Point(6, 3);
             this.btActualizar.Name = "btActualizar";
-            this.btActualizar.Size = new System.Drawing.Size(36, 28);
+            this.btActualizar.Size = new System.Drawing.Size(34, 28);
             this.btActualizar.TabIndex = 42;
             this.btActualizar.UseVisualStyleBackColor = true;
             this.btActualizar.Click += new System.EventHandler(this.btActualizar_Click);

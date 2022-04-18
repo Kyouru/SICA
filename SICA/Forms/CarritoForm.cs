@@ -28,18 +28,12 @@ namespace SICA.Forms
                     strSQL += " WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "' AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                     strSQL += " ORDER BY NUMERO_CAJA";
                 }
-                
-                else if (Globals.CarritoSeleccionado == Globals.strPagareRecibir)
+                else if (Globals.CarritoSeleccionado == Globals.strPagareEntregar || Globals.CarritoSeleccionado == Globals.strPagareRecibir)
                 {
-                    strSQL = @"SELECT ID_TMP_CARRITO, ID_PAGARE, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5, FORMAT(FECHA_INICIO, 'dd/MM/yyyy hh:mm:ss') AS FECHA_INICIO
-                        FROM (PAGARE PA LEFT JOIN PAGARE_HISTORICO PH ON PA.ID_PAGARE = PH.ID_PAGARE_FK)
-                        LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX = PA.ID_PAGARE
-                        WHERE PH.ANULADO = 0
-                        AND PH.RECIBIDO = 0
-                        AND PH.ID_USUARIO_RECIBE_FK = " + Globals.IdUsername +
-                        "AND TC.TIPO = '" + Globals.CarritoSeleccionado + "'" +
-                        "AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
-
+                    strSQL = "SELECT ID_TMP_CARRITO, SOLICITUD_SISGO, DESCRIPCION_3, DESCRIPCION_4, DESCRIPCION_5";
+                    strSQL += " FROM PAGARE PA LEFT JOIN TMP_CARRITO TC ON TC.ID_AUX_FK = PA.ID_PAGARE";
+                    strSQL += " WHERE TC.TIPO = '" + Globals.CarritoSeleccionado + "'";
+                    strSQL += " AND TC.ID_USUARIO_FK = " + Globals.IdUsername;
                 }
                 else if (Globals.CarritoSeleccionado == Globals.strVerificarCAJA)
                 {

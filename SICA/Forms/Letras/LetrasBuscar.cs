@@ -21,7 +21,8 @@ namespace SICA.Forms.Letras
         {
             string strSQL = "";
             LoadingScreen.iniciarLoading();
-            strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO FROM LETRA WHERE 1 = 1";
+            strSQL = "SELECT SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, NOMBRE_ESTADO";
+            strSQL += " FROM LETRA L LEFT JOIN LESTADO LE ON L.ID_ESTADO_FK = LE.ID_ESTADO WHERE 1 = 1";
             if (tbBusquedaLibre.Text != "")
             {
                 strSQL += " AND CONCATENADO LIKE @busqueda_libre";

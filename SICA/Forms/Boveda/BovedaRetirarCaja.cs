@@ -23,12 +23,12 @@ namespace SICA.Forms.Boveda
             {
                 LoadingScreen.iniciarLoading();
                 DataTable dt = new DataTable();
-                strSQL = "SELECT U.ID_USUARIO AS ID_BOVEDA, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, U.NOMBRE_USUARIO AS BOVEDA";
+                strSQL = "SELECT U.ID_USUARIO AS ID_BOVEDA, U.NOMBRE_USUARIO AS BOVEDA, NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC, FORMAT(FECHA_DESDE, 'dd/MM/yyyy') AS DESDE, FORMAT(FECHA_HASTA, 'dd/MM/yyyy') AS HASTA, TRIM(DESCRIPCION_1) AS DESC_1, TRIM(DESCRIPCION_2) AS DESC_2, TRIM(DESCRIPCION_3) AS DESC_3, TRIM(DESCRIPCION_4) AS DESC_4, TRIM(DESCRIPCION_5) AS DESC_5";
                 strSQL += " FROM (((INVENTARIO_GENERAL IG LEFT JOIN USUARIO U ON U.ID_USUARIO = IG.ID_USUARIO_POSEE)";
                 strSQL += " LEFT JOIN TMP_CARRITO TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA)";
                 strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)";
                 strSQL += " LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO";
-                strSQL += " WHERE U.BOVEDA = 1 AND IG.ID_ESTADO_FK = " + Globals.IdCustodiado + " AND TC.ID_TMP_CARRITO IS NULL";
+                strSQL += " WHERE U.ID_AREA_FK = " + Globals.IdAreaBoveda + " AND IG.ID_ESTADO_FK = " + Globals.IdCustodiado + " AND TC.ID_TMP_CARRITO IS NULL";
                 if (tbCaja.Text != "")
                 {
                     strSQL += " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
@@ -79,7 +79,6 @@ namespace SICA.Forms.Boveda
                         return;
                     if (!RetirarCaja(dgv.SelectedRows[0].Cells["CAJA"].Value.ToString(), Int32.Parse(dgv.SelectedRows[0].Cells["ID_BOVEDA"].Value.ToString())))
                         return;
-                    btBuscar_Click(sender, e);
                 }
             }
         }
@@ -146,7 +145,7 @@ namespace SICA.Forms.Boveda
 
                 if (dt.Rows.Count > 0)
                 {
-                    strSQL = "UPDATE INVENTARIO_GENERAL SET USUARIO_POSEE = " + Globals.IdUsername + ", FECHA_POSEE = " + fecha + " WHERE ID_USUARIO_POSEE = " + id_boveda + " AND NUMERO_DE_CAJA = '" + numero_caja + "'";
+                    strSQL = "UPDATE INVENTARIO_GENERAL SET ID_USUARIO_POSEE = " + Globals.IdUsername + ", FECHA_POSEE = " + fecha + " WHERE ID_USUARIO_POSEE = " + id_boveda + " AND NUMERO_DE_CAJA = '" + numero_caja + "'";
 
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;

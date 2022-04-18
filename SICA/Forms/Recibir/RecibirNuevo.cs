@@ -410,8 +410,7 @@ namespace SICA.Forms.Recibir
 
         private void btCargarValido_Click(object sender, EventArgs e)
         {
-            Globals.strQueryArea = "";
-            Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
+            Globals.strQueryArea = "AND ID_AREA <> " + Globals.IdAreaCustodia;
             SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
             suf.ShowDialog();
             if (Globals.IdUsernameSelect > 0)

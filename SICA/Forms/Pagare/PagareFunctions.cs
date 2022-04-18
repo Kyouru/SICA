@@ -38,14 +38,14 @@ namespace SICA.Forms.Pagare
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 1)";
+                    strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (";
+                    strSQL += row["ID_AUX_FK"].ToString() + ", " + Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', 1, 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE PAGARE SET [ID_USUARIO_POSEE] = " + Globals.IdUsernameSelect + " WHERE ID_PAGARE = " + row["ID_AUX_FK"].ToString();
+                    strSQL = "UPDATE PAGARE SET [ID_USUARIO_POSEE] = " + Globals.IdUsername + ", [FECHA_POSEE] = " + fecha + " WHERE ID_PAGARE = " + row["ID_AUX_FK"].ToString();
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -96,7 +96,7 @@ namespace SICA.Forms.Pagare
                 if (dt is null)
                     return false;
 
-                strSQL = "SELECT * FROM USUARIO WHERE CUSTODIA = 1 AND ID_USUARIO = " + Globals.IdUsernameSelect;
+                strSQL = "SELECT * FROM USUARIO WHERE ID_AREA_FK = " + Globals.IdAreaCustodia + " AND ID_USUARIO = " + Globals.IdUsernameSelect;
 
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
@@ -113,9 +113,15 @@ namespace SICA.Forms.Pagare
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += Globals.IdUsernameSelect + ", " + Globals.IdUsername + ", " + row["ID"].ToString() + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', " + recibido +")";
+                    strSQL = "INSERT INTO PAGARE_HISTORICO (ID_PAGARE_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, RECIBIDO, ANULADO) VALUES (";
+                    strSQL += row["ID_AUX_FK"].ToString() + ", " + Globals.IdUsername + ", " + Globals.IdUsernameSelect + ", " + fecha + ", " + fecha + ", '" + GlobalFunctions.lCadena(observacion) + "', " + recibido +", 0)";
 
+                    if (!Conexion.iniciaCommand(strSQL))
+                        return false;
+                    if (!Conexion.ejecutarQuery())
+                        return false;
+
+                    strSQL = "UPDATE PAGARE SET [ID_USUARIO_POSEE] = " + Globals.IdUsernameSelect + ", [FECHA_POSEE] = " + fecha + " WHERE ID_PAGARE = " + row["ID_AUX_FK"].ToString();
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())

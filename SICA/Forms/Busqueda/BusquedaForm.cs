@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using SICA.Forms;
+using SICA.Forms.Busqueda;
 using SimpleLogger;
 using System;
 using System.Data;
@@ -29,6 +30,12 @@ namespace SICA
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
+            if (tbBusquedaLibre.Text + tbCaja.Text == "") // + tbUsuario.Text == "")
+            {
+                MessageBox.Show("Filtro Vacio");
+                return;
+            }
+
             string strSQL = "";
             string fecha;
 
@@ -57,8 +64,8 @@ namespace SICA
                     strSQL += " AND NUMERO_DE_CAJA LIKE '%" + tbCaja.Text + "%'";
                 if (fecha != "")
                     strSQL += " AND FECHA_DESDE <= @fecha_desde AND FECHA_HASTA >= @fecha_hasta";
-                if (tbUsuario.Text != "")
-                    strSQL += " AND U.NOMBRE_USUARIO LIKE '%" + tbUsuario.Text + "%'";
+                //if (tbUsuario.Text != "")
+                //    strSQL += " AND U.NOMBRE_USUARIO LIKE '%" + tbUsuario.Text + "%'";
                 //strSQL += " ORDER BY CODIGO_DOCUMENTO";
                 
                 if (!Conexion.conectar())
@@ -136,6 +143,16 @@ namespace SICA
             else
             {
                 dtpFecha.Enabled = false;
+            }
+        }
+
+        private void btEdit_Click(object sender, EventArgs e)
+        {
+            if (dgvBusqueda.SelectedCells.Count == 1)
+            {
+                Globals.IdInventario = Int32.Parse(dgvBusqueda.Rows[dgvBusqueda.SelectedCells[0].RowIndex].Cells["ID"].Value.ToString());
+                EditarForm ef = new EditarForm();
+                ef.ShowDialog();
             }
         }
     }

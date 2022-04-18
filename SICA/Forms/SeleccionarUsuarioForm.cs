@@ -19,7 +19,9 @@ namespace SICA.Forms
             Globals.IdUsernameSelect = -1;
 
             string strSQL = "SELECT ID_AREA, NOMBRE_AREA FROM AREA WHERE ANULADO = 0";
+            strSQL += Globals.strQueryArea;
             strSQL += " ORDER BY ORDEN";
+            Globals.strQueryArea = "";
 
             try
             {
@@ -104,8 +106,7 @@ namespace SICA.Forms
         {
             if (cmbArea.SelectedIndex >= 0)
             {
-                string strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1";
-                strSQL += " AND ID_USUARIO <> " + Globals.IdUsername;
+                string strSQL = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE  ID_USUARIO <> " + Globals.IdUsername;
                 strSQL += " AND ID_AREA_FK = " + (cmbArea.SelectedItem as DataRowView)["ID_AREA"].ToString() + " ORDER BY ORDEN";
 
                 DataTable dt = new DataTable("USUARIO");

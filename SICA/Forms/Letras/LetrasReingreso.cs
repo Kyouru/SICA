@@ -23,9 +23,10 @@ namespace SICA.Forms.Letras
         {
             string strSQL = "";
             LoadingScreen.iniciarLoading();
-            strSQL = "SELECT ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, ESTADO";
-            strSQL += " FROM LETRA LE LEFT JOIN TMP_CARRITO TC ON LE.ID_LETRA = TC.ID_AUX_FK";
-            strSQL += " WHERE ESTADO <> 'CUSTODIADO' AND TC.ID_TMP_CARRITO IS NULL";
+            strSQL = "SELECT ID_LETRA, SOCIO, NOMBRE, SOLICITUD, N_LIQ, NUMERO, FORMAT(F_GIRO, 'dd/MM/yyyy') AS F_GIRO, FORMAT(F_VENCIMIENTO, 'dd/MM/yyyy') AS F_VENCIMIENTO, IMPORTE, ACEPTANTE, MD, NOMBRE_ESTADO";
+            strSQL += " FROM (LETRA L LEFT JOIN TMP_CARRITO TC ON L.ID_LETRA = TC.ID_AUX_FK)";
+            strSQL += " LEFT JOIN LESTADO LE ON LE.ID_ESTADO = L.ID_ESTADO_FK";
+            strSQL += " WHERE ID_ESTADO_FK <> " + Globals.IdCustodiado  + " AND TC.ID_TMP_CARRITO IS NULL";
             if (tbBusquedaLibre.Text != "")
             {
                 strSQL += " AND CONCATENADO LIKE @busqueda_libre";
@@ -99,7 +100,6 @@ namespace SICA.Forms.Letras
             if (lbCantidad.Text != "(0)")
             {
                 Globals.strQueryArea = "";
-                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE REAL = 1 AND ID_AREA_FK != 1";
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

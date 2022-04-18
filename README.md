@@ -10,3 +10,5 @@ Version Alpha
 *El splash de Loading se puede cerrar con la tecla Enter o Intro o ESC*
 
 *Pendiente revision de los procesos de Boveda, Custodia de Letras, Acceso por perfil*
+
+*Cambio Base de datos MySQL*

@@ -81,8 +81,7 @@ namespace SICA.Forms.Boveda
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryArea = " AND ID_AREA = " + Globals.IdAreaCustodia;
-                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO, CUSTODIA FROM USUARIO WHERE BOVEDA = 1";
+                Globals.strQueryArea = " AND ID_AREA = " + Globals.IdAreaBoveda;
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)

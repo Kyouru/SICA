@@ -203,7 +203,7 @@ namespace SICA
             {
                 DataTable dt = new DataTable();
                 string fecha = "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = " + Globals.strIronMountainEnviar + " AND ID_USUARIO_FK = " + Globals.IdUsername;
+                strSQL = "SELECT DISTINCT NUMERO_CAJA FROM TMP_CARRITO WHERE TIPO = '" + Globals.strIronMountainEnviar + "' AND ID_USUARIO_FK = " + Globals.IdUsername;
 
                 if (!Conexion.conectar())
                     return false;

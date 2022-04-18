@@ -42,7 +42,7 @@ namespace SICA.Forms.Letras
                         return false;
 
                     strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_AREA_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, RECIBIDO, ANULADO)";
-                    strSQL += " VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", " + Globals.IdArea + ", " + Globals.IdUsernameSelect + ", " + Globals.IdAreaSelect + ", " + fecha + ", " + fecha + ", '" + observacion + "', 0, 0)";
+                    strSQL += " VALUES (" + row["ID"].ToString() + ", " + Globals.IdUsername + ", " + Globals.IdArea + ", " + Globals.IdUsernameSelect + ", " + Globals.IdAreaSelect + ", " + fecha + ", " + fecha + ", '" + observacion + "', 1, 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
@@ -89,21 +89,21 @@ namespace SICA.Forms.Letras
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_ENTREGA_FK, ID_USUARIO_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO) VALUES (";
-                    strSQL += row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + Globals.IdAreaSelect + ", " + Globals.IdUsernameSelect + ", " + fecha + ", " + fecha + ", NULL, '" + observacion + "', 1)";
+                    strSQL = "INSERT INTO LETRA_HISTORICO (ID_LETRA_FK, ID_USUARIO_ENTREGA_FK, ID_USUARIO_RECIBE_FK, ID_AREA_ENTREGA_FK, ID_AREA_RECIBE_FK, FECHA_INICIO, FECHA_FIN, OBSERVACION_ENTREGA, OBSERVACION_RECIBE, RECIBIDO, ANULADO) VALUES (";
+                    strSQL += row["ID"].ToString() + ", " + entrega + ", " + Globals.IdUsername + ", " + Globals.IdAreaSelect + ", " + Globals.IdArea + ", " + fecha + ", " + fecha + ", NULL, '" + observacion + "', 1, 0)";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
 
-                    strSQL = "UPDATE LETRA SET ID_ESTADO_FK = " + Globals.IdPrestado + " WHERE ID_LETRA = " + row["ID"].ToString() + "";
+                    strSQL = "UPDATE LETRA SET ID_ESTADO_FK = " + Globals.IdCustodiado + " WHERE ID_LETRA = " + row["ID"].ToString() + "";
                     if (!Conexion.iniciaCommand(strSQL))
                         return false;
                     if (!Conexion.ejecutarQuery())
                         return false;
                 }
 
-                strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strRecibirReingreso + "'";
+                strSQL = "DELETE FROM TMP_CARRITO WHERE ID_USUARIO_FK = " + Globals.IdUsername + " AND TIPO = '" + Globals.strLetrasReingreso + "'";
                 if (!Conexion.iniciaCommand(strSQL))
                     return false;
                 if (!Conexion.ejecutarQuery())

@@ -42,7 +42,7 @@ namespace SICA.Forms.Boveda
 
                 DataTable dt = new DataTable("BOVEDA");
 
-                strSQL = "SELECT DISTINCT NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART, DOC.NOMBRE_DOCUMENTO AS DOC";
+                strSQL = "SELECT DISTINCT NUMERO_DE_CAJA AS CAJA, DEP.NOMBRE_DEPARTAMENTO AS DEPART";
                 strSQL += " FROM (((INVENTARIO_GENERAL IG LEFT JOIN (SELECT * FROM TMP_CARRITO WHERE TIPO = '" + tipo_carrito + "') TC ON TC.NUMERO_CAJA = IG.NUMERO_DE_CAJA)";
                 strSQL += " LEFT JOIN LDEPARTAMENTO DEP ON IG.ID_DEPARTAMENTO_FK = DEP.ID_DEPARTAMENTO)";
                 strSQL += " LEFT JOIN LDOCUMENTO DOC ON IG.ID_DOCUMENTO_FK = DOC.ID_DOCUMENTO)";
@@ -84,8 +84,8 @@ namespace SICA.Forms.Boveda
         {
             if (lbCantidad.Text != "(0)")
             {
-                Globals.strQueryArea = " AND ID_AREA = " + Globals.IdAreaCustodia;
-                Globals.strQueryUser = "SELECT ID_USUARIO, NOMBRE_USUARIO FROM USUARIO WHERE BOVEDA = 1";
+                Globals.strQueryArea = " AND ID_AREA = " + Globals.IdAreaBoveda;
+                
                 SeleccionarUsuarioForm suf = new SeleccionarUsuarioForm();
                 suf.ShowDialog();
                 if (Globals.IdUsernameSelect > 0)
